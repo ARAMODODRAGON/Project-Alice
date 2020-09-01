@@ -9,4 +9,9 @@ typedef unsigned long ulong;
 #include <string>
 using std::string;
 
+#include "DataTypes/Array.hpp"
+#include "DataTypes/ArrayList.hpp"
+#include "DataTypes/SList.hpp"
+#include "DataTypes/DList.hpp"
+
 #endif // !_GENERAL_TYPES_HPP
