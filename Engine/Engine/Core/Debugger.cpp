@@ -7,7 +7,7 @@
 Debugger::Debugger() {
 
 	// find a unique file name to use
-	uint i = 0;
+	size_t i = 0;
 	logFilepath = LOG_FILE_PATH + std::to_string(i);
 	std::fstream file(logFilepath);
 	while (file.is_open()) {
@@ -22,7 +22,7 @@ Debugger::Debugger() {
 
 Debugger::~Debugger() { }
 
-void Debugger::Log(const string& msg, const string& file, uint line) {
+void Debugger::Log(const string& msg, const string& file, size_t line) {
 	// open file at the end
 	std::ofstream filestream;
 	filestream.open(logFilepath, std::ios::app);
@@ -37,7 +37,7 @@ void Debugger::Log(const string& msg, const string& file, uint line) {
 	filestream.close();
 }
 
-void Debugger::Trace(const string& msg, const string& file, uint line) {
+void Debugger::Trace(const string& msg, const string& file, size_t line) {
 	// open file at the end
 	std::ofstream filestream;
 	filestream.open(logFilepath, std::ios::app);
@@ -52,7 +52,7 @@ void Debugger::Trace(const string& msg, const string& file, uint line) {
 	filestream.close();
 }
 
-void Debugger::Warning(const string& msg, const string& file, uint line) {
+void Debugger::Warning(const string& msg, const string& file, size_t line) {
 	// open file at the end
 	std::ofstream filestream;
 	filestream.open(logFilepath, std::ios::app);
@@ -67,7 +67,7 @@ void Debugger::Warning(const string& msg, const string& file, uint line) {
 	filestream.close();
 }
 
-void Debugger::Error(const string& msg, const string& file, uint line) {
+void Debugger::Error(const string& msg, const string& file, size_t line) {
 	// open file at the end
 	std::ofstream filestream;
 	filestream.open(logFilepath, std::ios::app);
@@ -82,7 +82,7 @@ void Debugger::Error(const string& msg, const string& file, uint line) {
 	filestream.close();
 }
 
-void Debugger::FatalError(const string& msg, const string& file, uint line) {
+void Debugger::FatalError(const string& msg, const string& file, size_t line) {
 	// open file at the end
 	std::ofstream filestream;
 	filestream.open(logFilepath, std::ios::app);

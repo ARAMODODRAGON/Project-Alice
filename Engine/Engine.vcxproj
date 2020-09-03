@@ -22,19 +22,21 @@
     <ClInclude Include="Engine\Common.hpp" />
     <ClInclude Include="Engine\Core\Debugger.hpp" />
     <ClInclude Include="Engine\Core\Engine.hpp" />
-    <ClInclude Include="Engine\DataTypes\Array.hpp" />
-    <ClInclude Include="Engine\DataTypes\ArrayList.hpp" />
     <ClInclude Include="Engine\DataTypes\Bounds.hpp" />
-    <ClInclude Include="Engine\DataTypes\DList.hpp" />
     <ClInclude Include="Engine\DataTypes\Lambda.hpp" />
-    <ClInclude Include="Engine\DataTypes\SList.hpp" />
+    <ClInclude Include="Engine\Entity.hpp" />
     <ClInclude Include="Engine\GeneralMacros.hpp" />
     <ClInclude Include="Engine\GeneralTypes.hpp" />
+    <ClInclude Include="Engine\Math.hpp" />
+    <ClInclude Include="Engine\Physics\Overlap.hpp" />
+    <ClInclude Include="Engine\RTTR.hpp" />
+    <ClInclude Include="Engine\ScriptableObject.hpp" />
     <ClInclude Include="Engine\Utilities.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Core\Debugger.cpp" />
     <ClCompile Include="Engine\Core\Engine.cpp" />
+    <ClCompile Include="Engine\Math.cpp" />
     <ClCompile Include="Engine\Utilities.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -91,11 +93,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\GameDev\boost_1_72_0;C:\GameDev\SDL\include;C:\GameDev\OpenGL\include;$(ProjectDir);$(IncludePath)</IncludePath>
+    <IncludePath>C:\GameDev\boost_1_72_0;C:\GameDev\SDL\include;C:\GameDev\OpenGL\include;C:\GameDev\glm-0.9.9.6;C:\GameDev\nlohmann-json\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\GameDev\boost_1_72_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\GameDev\boost_1_72_0;C:\GameDev\SDL\include;C:\GameDev\OpenGL\include;C:\GameDev\glm-0.9.9.6;C:\GameDev\nlohmann-json\include;C:\GameDev\rttr-0.9.5\install\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\GameDev\boost_1_72_0\stage\lib;C:\GameDev\rttr-0.9.5\install\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -113,6 +117,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <UseFullPaths>false</UseFullPaths>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -126,8 +131,9 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

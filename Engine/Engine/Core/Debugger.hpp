@@ -13,11 +13,11 @@ class Debugger {
 
 public:
 
-	void Log(const string& msg, const string& file, uint line);
-	void Trace(const string& msg, const string& file, uint line);
-	void Warning(const string& msg, const string& file, uint line);
-	void Error(const string& msg, const string& file, uint line);
-	void FatalError(const string& msg, const string& file, uint line);
+	void Log(const string& msg, const string& file, size_t line);
+	void Trace(const string& msg, const string& file, size_t line);
+	void Warning(const string& msg, const string& file, size_t line);
+	void Error(const string& msg, const string& file, size_t line);
+	void FatalError(const string& msg, const string& file, size_t line);
 
 };
 
