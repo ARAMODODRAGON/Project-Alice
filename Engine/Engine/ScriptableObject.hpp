@@ -1,10 +1,14 @@
 #ifndef _SCRIPTABLE_OBJECT_HPP
 #define _SCRIPTABLE_OBJECT_HPP
 #include "GeneralTypes.hpp"
+#include "RTTR.hpp"
 
 class ScriptableObject {
-
 public:
+
+	// constructor & destructor
+	ScriptableObject();
+	virtual ~ScriptableObject() = 0;
 
 	// events
 	virtual void Start() { }
@@ -13,24 +17,11 @@ public:
 	virtual void OnDestroy() { }
 
 	// static functions
-	template<class T> static T* Create();
-	template<class T> static T* Create(const string& filename);
-	static void Destroy(const ScriptableObject* scr);
+	template<class T> static T* Create() { }
+	template<class T> static T* Create(const string& filename) { }
+	static void Destroy(const ScriptableObject* scr) { }
 
+	RTTR_ENABLE() 
 };
-
-void ScriptableObject::Destroy(const ScriptableObject* scr) { 
-
-}
-
-template<class T>
-inline T* ScriptableObject::Create() {
-	return nullptr;
-}
-
-template<class T>
-inline T* ScriptableObject::Create(const string& filename) {
-	return nullptr;
-}
 
 #endif // !_SCRIPTABLE_OBJECT_HPP
