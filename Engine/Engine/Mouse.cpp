@@ -5,9 +5,9 @@ Mouse::MouseState Mouse::mouseState;
 Mouse::MouseState::MouseState()
 	: allStatesChanges(0) { }
 
-void Mouse::SetNewPosition(int x, int y) {
+void Mouse::SetNewPosition(const ivec2& pos) {
 	mouseState.oldPos = mouseState.newPos;
-	mouseState.newPos = vec2(x, y);
+	mouseState.newPos = pos;
 	mouseState.posDiff = mouseState.newPos - mouseState.oldPos;
 }
 

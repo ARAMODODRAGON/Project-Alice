@@ -1,7 +1,6 @@
 #include "Game.hpp"
-#include <SDL_events.h>
 
-Game::Game() : window(nullptr), timer(nullptr), isRunning(false), shouldQuit(false) { }
+Game::Game() : window(nullptr), timer(nullptr), sysEvents(nullptr), isRunning(false), shouldQuit(false) { }
 
 Game::~Game() { }
 
@@ -18,8 +17,6 @@ void Game::Run() {
 	}
 
 	while (isRunning && !shouldQuit) {
-
-		PollEvents();
 
 		Update();
 
@@ -40,6 +37,8 @@ bool Game::Start() {
 
 	timer = new Timer();
 
+	sysEvents = new SystemEvents(this);
+
 	return true;
 }
 
@@ -48,15 +47,15 @@ void Game::Update() { }
 void Game::Draw() { }
 
 bool Game::Exit() {
-	return true;
-}
 
-void Game::PollEvents() {
-	static SDL_Event e;
-	while (SDL_PollEvent(&e)) {
-		switch (e.type) {
-			case SDL_QUIT: Quit(); break;
-			default: break;
-		}
-	}
+	if (sysEvents) delete sysEvents;
+	sysEvents = nullptr;
+
+	if (timer) delete timer;
+	timer = nullptr;
+	
+	if (window) delete window;
+	window = nullptr;
+
+	return true;
 }

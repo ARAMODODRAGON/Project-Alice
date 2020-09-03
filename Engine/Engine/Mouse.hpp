@@ -46,7 +46,7 @@ private:
 
 	/// functions
 
-	static void SetNewPosition(int x, int y);
+	static void SetNewPosition(const ivec2& pos);
 	static void SetButtons(bool left, bool right, bool middle);
 
 };

@@ -4,6 +4,8 @@
 
 class AliceGame : public Game {
 
+	int quitTimer;
+	const int max_quit_time;
 
 public:
 

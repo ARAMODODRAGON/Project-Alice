@@ -1,6 +1,7 @@
 #include "AliceGame.hpp"
+#include <Engine/Keyboard.hpp>
 
-AliceGame::AliceGame() : Game() { }
+AliceGame::AliceGame() : Game(), quitTimer(0), max_quit_time(60) { }
 
 AliceGame::~AliceGame() { }
 
@@ -11,15 +12,24 @@ bool AliceGame::Start() {
 	return true;
 }
 
-void AliceGame::Update() { 
+void AliceGame::Update() {
+
+	GetSystemEvents()->PollEvents();
+
+	if (Keyboard::GetKey(KeyCode::Escape)) {
+		++quitTimer;
+		if (quitTimer > max_quit_time) Quit();
+	} else {
+		quitTimer = 0;
+	}
 
 }
 
-void AliceGame::Draw() { 
+void AliceGame::Draw() {
 
 	GetWindow()->ClearScreen(vec4(0.0f, 0.0f, 1.0f, 1.0f));
 
-	
+
 	GetTimer()->WaitForEndOfFrame();
 	GetWindow()->SwapBuffers();
 }

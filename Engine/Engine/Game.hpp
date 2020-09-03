@@ -3,11 +3,13 @@
 #include "Core/Window.hpp"
 #include "Core/Timer.hpp"
 #include "Core/Debugger.hpp"
+#include "Core/SystemEvents.hpp"
 
 class Game {
 
 	Window* window;
 	Timer* timer;
+	SystemEvents* sysEvents;
 
 	bool isRunning;
 	bool shouldQuit;
@@ -22,8 +24,9 @@ public:
 	void Quit() { shouldQuit = true; }
 	
 	// getters
-	Window* GetWindow() { return window; }
-	Timer* GetTimer() { return timer; }
+	Window* GetWindow() const { return window; }
+	Timer* GetTimer() const { return timer; }
+	SystemEvents* GetSystemEvents() const { return sysEvents; }
 
 protected:
 
@@ -32,11 +35,6 @@ protected:
 	virtual void Update();
 	virtual void Draw();
 	virtual bool Exit();
-
-private:
-
-	// private events
-	void PollEvents();
 
 };
 
