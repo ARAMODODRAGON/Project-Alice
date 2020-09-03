@@ -19,7 +19,8 @@ RTTR_REGISTRATION {
 
 // TODO: add VAO code
 Entity::Entity()
-	: isActive(true)
+	: level(nullptr)
+	, isActive(true)
 	, name("Entity")
 	, isVisible(true)
 	, spriteIndex(0)

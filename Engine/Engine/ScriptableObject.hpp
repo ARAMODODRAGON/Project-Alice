@@ -1,7 +1,7 @@
 #ifndef _SCRIPTABLE_OBJECT_HPP
 #define _SCRIPTABLE_OBJECT_HPP
-#include "GeneralTypes.hpp"
-#include "RTTR.hpp"
+#include "General/Types.hpp"
+#include "General/RTTR.hpp"
 
 class ScriptableObject {
 public:
@@ -17,11 +17,11 @@ public:
 	virtual void OnDestroy() { }
 
 	// static functions
-	template<class T> static T* Create() { }
-	template<class T> static T* Create(const string& filename) { }
-	static void Destroy(const ScriptableObject* scr) { }
+	template<class T> static T* Create();
+	static void Destroy(const ScriptableObject* scr);
+	template<class T> T* FindWithType();
 
-	RTTR_ENABLE() 
+	RTTR_ENABLE()
 };
 
 #endif // !_SCRIPTABLE_OBJECT_HPP

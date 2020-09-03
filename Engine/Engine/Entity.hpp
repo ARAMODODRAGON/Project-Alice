@@ -1,8 +1,8 @@
 #ifndef _ENTITY_HPP
 #define _ENTITY_HPP
-#include "GeneralTypes.hpp"
+#include "General/Types.hpp"
 #include "Physics/Overlap.hpp"
-#include "RTTR.hpp"
+#include "General/RTTR.hpp"
 
 class Entity {
 	// base properties

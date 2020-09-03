@@ -1,7 +1,7 @@
 #ifndef _CORE_DEBUGGER_HPP
 #define _CORE_DEBUGGER_HPP
-#include "../GeneralMacros.hpp"
-#include "../GeneralTypes.hpp"
+#include "../General/Macros.hpp"
+#include "../General/Types.hpp"
 
 class Debugger {
 	SINGLETON(Debugger);
@@ -21,10 +21,10 @@ public:
 
 };
 
-#define LOG(msg) Debugger::Get()->Log(msg, __FILE__, __LINE__)
-#define TRACE(msg) Debugger::Get()->Trace(msg, __FILE__, __LINE__)
-#define WARNING(msg) Debugger::Get()->Warning(msg, __FILE__, __LINE__)
-#define ERROR(msg) Debugger::Get()->Error(msg, __FILE__, __LINE__)
-#define FATAL_ERROR(msg) Debugger::Get()->FatalError(msg, __FILE__, __LINE__)
+#define DEBUG_LOG(msg) Debugger::Get()->Log(msg, __FILE__, __LINE__)
+#define DEBUG_TRACE(msg) Debugger::Get()->Trace(msg, __FILE__, __LINE__)
+#define DEBUG_WARNING(msg) Debugger::Get()->Warning(msg, __FILE__, __LINE__)
+#define DEBUG_ERROR(msg) Debugger::Get()->Error(msg, __FILE__, __LINE__)
+#define DEBUG_FATAL_ERROR(msg) Debugger::Get()->FatalError(msg, __FILE__, __LINE__)
 
 #endif // !_CORE_DEBUGGER_HPP
