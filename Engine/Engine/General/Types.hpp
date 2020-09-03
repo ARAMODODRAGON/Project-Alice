@@ -22,5 +22,6 @@ using std::pair;
 
 #include "Math.hpp"
 
+typedef unsigned char ubyte;
 
 #endif // !_GENERAL_TYPES_HPP

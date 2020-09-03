@@ -21,5 +21,7 @@ TYPE& operator=(const TYPE&) = delete;		\
 TYPE(TYPE&&) = delete;						\
 TYPE& operator=(TYPE&&) = delete;
 
+// this only works if the enum has a __SIZE__ value in it
+#define ENUM_SIZE(Enum) static_cast<size_t>(Enum::__SIZE__)
 
 #endif // !_GENERAL_MACROS_HPP
