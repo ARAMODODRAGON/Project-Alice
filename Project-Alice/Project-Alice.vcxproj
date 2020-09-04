@@ -152,9 +152,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AliceGame.hpp" />
+    <ClInclude Include="Scripts\Player\OWPlayer.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AliceGame.cpp" />
+    <ClCompile Include="Scripts\Player\OWPlayer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

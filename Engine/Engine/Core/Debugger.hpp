@@ -27,4 +27,6 @@ public:
 #define DEBUG_ERROR(msg) Debugger::Get()->Error(msg, __FILE__, __LINE__)
 #define DEBUG_FATAL_ERROR(msg) Debugger::Get()->FatalError(msg, __FILE__, __LINE__)
 
+#define VTOS(value) to_string(value)
+
 #endif // !_CORE_DEBUGGER_HPP

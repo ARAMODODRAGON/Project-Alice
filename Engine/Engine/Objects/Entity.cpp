@@ -2,7 +2,7 @@
 
 RTTR_REGISTRATION {
 	registration::class_<Entity>("Entity")
-		.constructor<>() (rttr::detail::as_raw_pointer(), rttr::detail::public_access())
+		.public_object_constructor
 		.property("isActive", &Entity::isActive)
 		.property("name", &Entity::name)
 		.property("position", &Entity::position)

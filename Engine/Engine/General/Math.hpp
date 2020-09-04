@@ -14,4 +14,7 @@ using glm::uvec4;
 using glm::mat3;
 using glm::mat4;
 
+#include <glm/gtx/string_cast.hpp>
+using glm::to_string;
+
 #endif // !_MATH_HPP

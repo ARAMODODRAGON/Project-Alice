@@ -1,5 +1,5 @@
 {
-    "type" : "Entity",
+    "type" : "OWPlayer",
     "data" : {
         "name": "Alice",
         "velocity": {"x": 100, "y": 200}

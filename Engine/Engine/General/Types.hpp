@@ -12,6 +12,7 @@ typedef unsigned char ubyte;
 #include <bitset>
 #include <utility>
 using std::string;
+using std::to_string;
 using std::array;
 using std::vector;
 using std::list;
