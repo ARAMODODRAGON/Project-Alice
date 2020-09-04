@@ -29,4 +29,8 @@ public:
 
 #define VTOS(value) to_string(value)
 
+inline const string& to_string(const string& str) {
+	return str;
+}
+
 #endif // !_CORE_DEBUGGER_HPP

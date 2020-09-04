@@ -62,6 +62,9 @@ public:
 	const string& GetName() const { return name; }
 	void SetName(const string& name_) { name = name_; }
 	const vec2& GetVelocity() const { return velocity; }
+	void SetVelocity(const vec2& velocity_) { velocity = velocity_; }
+	const vec2& GetPosition() const { return position; }
+	void SetPosition(const vec2& position_) { position = position_; }
 
 	RTTR_ENABLE() RTTR_REGISTRATION_FRIEND
 };

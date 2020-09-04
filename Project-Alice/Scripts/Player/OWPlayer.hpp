@@ -4,7 +4,7 @@
 
 class OWPlayer : public Entity {
 
-	array<unsigned int, 4> inventory;
+	vector<float> inventory;
 
 public:
 

@@ -4,7 +4,7 @@
 #include <glew.h>
 
 Window::Window()
-	: window(nullptr), glContext(nullptr), screenSize(0.0f) { }
+	: window(nullptr), glContext(nullptr), screenSize(0) { }
 
 Window::~Window() {
 	// destroy window and context
