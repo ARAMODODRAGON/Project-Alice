@@ -2,7 +2,7 @@
 #define _ENTITY_HPP
 #include "General/Types.hpp"
 #include "Physics/Overlap.hpp"
-#include "General/RTTR.hpp"
+#include "General/Serialization.hpp"
 
 class Entity {
 	// base properties

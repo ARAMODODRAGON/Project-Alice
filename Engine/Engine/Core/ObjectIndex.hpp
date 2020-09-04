@@ -1,9 +1,7 @@
 #ifndef _CORE_OBJECT_INDEX_HPP
 #define _CORE_OBJECT_INDEX_HPP
 #include "../General/Types.hpp"
-
-#include <nlohmann/json.hpp>
-using namespace nlohmann;
+#include "../General/Serialization.hpp"
 
 class ObjectIndex {
 

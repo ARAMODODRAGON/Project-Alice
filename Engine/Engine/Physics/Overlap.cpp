@@ -1,5 +1,5 @@
 #include "Overlap.hpp"
-#include "../General/RTTR.hpp"
+#include "../General/Serialization.hpp"
 
 RTTR_REGISTRATION {
 	registration::class_<Overlap>("Overlap")

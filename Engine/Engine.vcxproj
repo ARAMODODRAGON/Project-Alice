@@ -34,7 +34,7 @@
     <ClInclude Include="Engine\Keyboard.hpp" />
     <ClInclude Include="Engine\Mouse.hpp" />
     <ClInclude Include="Engine\Physics\Overlap.hpp" />
-    <ClInclude Include="Engine\General\RTTR.hpp" />
+    <ClInclude Include="Engine\General\Serialization.hpp" />
     <ClInclude Include="Engine\ScriptableObject.hpp" />
   </ItemGroup>
   <ItemGroup>
