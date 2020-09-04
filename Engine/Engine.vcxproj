@@ -22,6 +22,7 @@
     <ClInclude Include="Engine\Button.hpp" />
     <ClInclude Include="Engine\Common.hpp" />
     <ClInclude Include="Engine\Core\Debugger.hpp" />
+    <ClInclude Include="Engine\Core\ObjectIndex.hpp" />
     <ClInclude Include="Engine\Core\SystemEvents.hpp" />
     <ClInclude Include="Engine\Core\Timer.hpp" />
     <ClInclude Include="Engine\Core\Window.hpp" />
@@ -38,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Core\Debugger.cpp" />
+    <ClCompile Include="Engine\Core\ObjectIndex.cpp" />
     <ClCompile Include="Engine\Core\SystemEvents.cpp" />
     <ClCompile Include="Engine\Core\Timer.cpp" />
     <ClCompile Include="Engine\Core\Window.cpp" />

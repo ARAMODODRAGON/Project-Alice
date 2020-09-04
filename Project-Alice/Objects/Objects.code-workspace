@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{ "path": "./Entities" },
+		{ "path": "./Levels" },
+		{ "path": "./Scriptables" }
+	],
+	"settings": { "[json]": {
+		"editor.quickSuggestions": {
+			"strings": true,
+		},
+		"editor.suggest.insertMode": "replace"
+	}}
+}

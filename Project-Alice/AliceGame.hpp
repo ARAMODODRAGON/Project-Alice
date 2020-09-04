@@ -7,6 +7,10 @@ class AliceGame : public Game {
 	int quitTimer;
 	const int max_quit_time;
 
+	ObjectIndex* entityIndex;
+	ObjectIndex* levelIndex;
+	ObjectIndex* scriptableIndex;
+
 public:
 
 	AliceGame();

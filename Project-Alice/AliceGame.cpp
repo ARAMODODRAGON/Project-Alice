@@ -1,13 +1,23 @@
 #include "AliceGame.hpp"
 #include <Engine/Keyboard.hpp>
 
-AliceGame::AliceGame() : Game(), quitTimer(0), max_quit_time(60) { }
+AliceGame::AliceGame()
+	: Game()
+	, quitTimer(0)
+	, max_quit_time(60)
+	, entityIndex(nullptr)
+	, levelIndex(nullptr)
+	, scriptableIndex(nullptr) { }
 
 AliceGame::~AliceGame() { }
 
 bool AliceGame::Start() {
 	if (!Game::Start()) return false;
 
+	// initialize the indexes
+	entityIndex = new ObjectIndex("Objects/Entities");
+	levelIndex = new ObjectIndex("Objects/Levels");
+	scriptableIndex = new ObjectIndex("Objects/Scriptables");
 
 	return true;
 }
@@ -37,6 +47,13 @@ void AliceGame::Draw() {
 bool AliceGame::Exit() {
 	if (!Game::Exit()) return false;
 
+	// delete the indexes
+	if (entityIndex) delete entityIndex;
+	entityIndex = nullptr;
+	if (levelIndex) delete levelIndex;
+	levelIndex = nullptr;
+	if (scriptableIndex) delete scriptableIndex;
+	scriptableIndex = nullptr;
 
 	return true;
 }

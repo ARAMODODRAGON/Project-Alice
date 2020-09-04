@@ -4,6 +4,7 @@
 #include "Core/Timer.hpp"
 #include "Core/Debugger.hpp"
 #include "Core/SystemEvents.hpp"
+#include "Core/ObjectIndex.hpp"
 
 class Game {
 
