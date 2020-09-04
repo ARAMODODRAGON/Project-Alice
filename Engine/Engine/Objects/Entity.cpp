@@ -2,6 +2,7 @@
 
 RTTR_REGISTRATION {
 	registration::class_<Entity>("Entity")
+		.constructor<>() (rttr::detail::as_raw_pointer(), rttr::detail::public_access())
 		.property("isActive", &Entity::isActive)
 		.property("name", &Entity::name)
 		.property("position", &Entity::position)
@@ -19,8 +20,7 @@ RTTR_REGISTRATION {
 
 // TODO: add VAO code
 Entity::Entity()
-	: level(nullptr)
-	, isActive(true)
+	: isActive(true)
 	, name("Entity")
 	, isVisible(true)
 	, spriteIndex(0)

@@ -1,12 +1,16 @@
 #ifndef _ENTITY_HPP
 #define _ENTITY_HPP
-#include "General/Types.hpp"
-#include "Physics/Overlap.hpp"
-#include "General/Serialization.hpp"
+#include "../General/Types.hpp"
+#include "../Physics/Overlap.hpp"
+#include "../General/Serialization.hpp"
+#include "EntityFactory.hpp"
 
 class Entity {
+	// factory
+	friend EntityFactory;
+	EntityFactory* factory; // the factory that this entity is attached to
+
 	// base properties
-	class Level* level;
 	bool isActive;
 	string name;
 	vec2 position;
@@ -42,7 +46,7 @@ public:
 
 	// constructor & destructor
 	Entity();
-	virtual ~Entity() = 0; // abstract class
+	virtual ~Entity(); // abstract class
 
 	// events
 	virtual void Start() { }
@@ -51,8 +55,12 @@ public:
 	virtual void OnDestroy() { }
 
 	// static functions
-	static void Destroy(const Entity* e) { }
-	template<class T> static T* CreateEntity() { }
+	//static void Destroy(const Entity* e) { }
+	//template<class T> static T* CreateEntity() { }
+
+	// getters & setters
+	const string& GetName() const { return name; }
+	void SetName(const string& name_) { name = name_; }
 
 	RTTR_ENABLE() RTTR_REGISTRATION_FRIEND
 };

@@ -1,5 +1,5 @@
 #include "ObjectIndex.hpp"
-#include "Debugger.hpp"
+#include "../Core/Debugger.hpp"
 #include <fstream>
 
 #define INDEXFILE "/Index.json"
@@ -43,28 +43,26 @@ void ObjectIndex::PrintAll() const {
 	}
 }
 
-json ObjectIndex::GetJSON(const string& name) {
+bool ObjectIndex::GetJSON(json* j, const string& name) {
 	// try getting the filepath
 	string filepath;
 	try {
 		filepath = folder + "/" + index.at(name);
 	} catch (std::out_of_range&) {
 		DEBUG_ERROR("Could not find object file with the name" + name);
-		return json();
+		return false;
 	}
 
 	// try opening the file
 	std::fstream file(filepath);
 	if (!file.is_open()) {
 		DEBUG_ERROR("could not find file with path: " + filepath);
-		return json();
+		return false;
 	}
 
 	// load data into a json object
-	json j;
-	file >> j;
+	file >> *j;
 	file.close();
 
-	// return the data. should be fine with the move constructor and all
-	return j;
+	return true;
 }

@@ -17,7 +17,7 @@ public:
 
 	// functions
 	void PrintAll() const;
-	json GetJSON(const string& name);
+	bool GetJSON(json* j, const string& name);
 
 };
 

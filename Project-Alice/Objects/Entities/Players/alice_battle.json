@@ -1,3 +1,6 @@
 {
-    "name" : "Alice"
+    "type" : "Entity",
+    "data" : {
+        "name": "Guy"
+    }
 }

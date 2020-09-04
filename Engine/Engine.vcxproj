@@ -22,11 +22,12 @@
     <ClInclude Include="Engine\Button.hpp" />
     <ClInclude Include="Engine\Common.hpp" />
     <ClInclude Include="Engine\Core\Debugger.hpp" />
-    <ClInclude Include="Engine\Core\ObjectIndex.hpp" />
+    <ClInclude Include="Engine\Objects\EntityFactory.hpp" />
+    <ClInclude Include="Engine\Objects\ObjectIndex.hpp" />
     <ClInclude Include="Engine\Core\SystemEvents.hpp" />
     <ClInclude Include="Engine\Core\Timer.hpp" />
     <ClInclude Include="Engine\Core\Window.hpp" />
-    <ClInclude Include="Engine\Entity.hpp" />
+    <ClInclude Include="Engine\Objects\Entity.hpp" />
     <ClInclude Include="Engine\Game.hpp" />
     <ClInclude Include="Engine\General\Macros.hpp" />
     <ClInclude Include="Engine\General\Types.hpp" />
@@ -35,21 +36,22 @@
     <ClInclude Include="Engine\Mouse.hpp" />
     <ClInclude Include="Engine\Physics\Overlap.hpp" />
     <ClInclude Include="Engine\General\Serialization.hpp" />
-    <ClInclude Include="Engine\ScriptableObject.hpp" />
+    <ClInclude Include="Engine\Objects\ScriptableObject.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Core\Debugger.cpp" />
-    <ClCompile Include="Engine\Core\ObjectIndex.cpp" />
+    <ClCompile Include="Engine\Objects\EntityFactory.cpp" />
+    <ClCompile Include="Engine\Objects\ObjectIndex.cpp" />
     <ClCompile Include="Engine\Core\SystemEvents.cpp" />
     <ClCompile Include="Engine\Core\Timer.cpp" />
     <ClCompile Include="Engine\Core\Window.cpp" />
-    <ClCompile Include="Engine\Entity.cpp" />
+    <ClCompile Include="Engine\Objects\Entity.cpp" />
     <ClCompile Include="Engine\Game.cpp" />
     <ClCompile Include="Engine\General\Math.cpp" />
     <ClCompile Include="Engine\Keyboard.cpp" />
     <ClCompile Include="Engine\Mouse.cpp" />
     <ClCompile Include="Engine\Physics\Overlap.cpp" />
-    <ClCompile Include="Engine\ScriptableObject.cpp" />
+    <ClCompile Include="Engine\Objects\ScriptableObject.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -111,7 +113,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\GameDev\boost_1_72_0;C:\GameDev\SDL\include;C:\GameDev\OpenGL\include;C:\GameDev\glm-0.9.9.6;C:\GameDev\nlohmann-json\include;C:\GameDev\rttr-0.9.5\install\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\GameDev\boost_1_72_0\stage\lib;C:\GameDev\rttr-0.9.5\install\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\GameDev\boost_1_72_0\stage\lib;C:\GameDev\rttr-0.9.5\install\lib;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.18362.0\um\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -138,7 +140,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>

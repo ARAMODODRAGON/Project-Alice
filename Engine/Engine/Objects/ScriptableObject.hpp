@@ -1,7 +1,7 @@
 #ifndef _SCRIPTABLE_OBJECT_HPP
 #define _SCRIPTABLE_OBJECT_HPP
-#include "General/Types.hpp"
-#include "General/Serialization.hpp"
+#include "../General/Types.hpp"
+#include "../General/Serialization.hpp"
 
 class ScriptableObject {
 public:

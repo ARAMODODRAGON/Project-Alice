@@ -7,7 +7,8 @@ AliceGame::AliceGame()
 	, max_quit_time(60)
 	, entityIndex(nullptr)
 	, levelIndex(nullptr)
-	, scriptableIndex(nullptr) { }
+	, scriptableIndex(nullptr)
+	, efactory(nullptr) { }
 
 AliceGame::~AliceGame() { }
 
@@ -18,6 +19,18 @@ bool AliceGame::Start() {
 	entityIndex = new ObjectIndex("Objects/Entities");
 	levelIndex = new ObjectIndex("Objects/Levels");
 	scriptableIndex = new ObjectIndex("Objects/Scriptables");
+
+	//auto ty = type::get<Entity>();
+	//if (!ty.is_valid()) {
+	//	DEBUG_ERROR("Its not valid!");
+	//} else {
+	//	DEBUG_LOG("name is: " + ty.get_name());
+	//}
+
+	// initialize the factory
+	efactory = new EntityFactory(entityIndex); // register the index
+	Entity* e = efactory->Make<Entity>("Alice Battle");
+	if (e) DEBUG_LOG(e->GetName());
 
 	return true;
 }
@@ -33,12 +46,15 @@ void AliceGame::Update() {
 		quitTimer = 0;
 	}
 
+	efactory->Update();
+
 }
 
 void AliceGame::Draw() {
 
 	GetWindow()->ClearScreen(vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
+	efactory->Draw();
 
 	GetTimer()->WaitForEndOfFrame();
 	GetWindow()->SwapBuffers();
@@ -46,6 +62,10 @@ void AliceGame::Draw() {
 
 bool AliceGame::Exit() {
 	if (!Game::Exit()) return false;
+
+	// delete the factory
+	if (efactory) delete efactory;
+	efactory = nullptr;
 
 	// delete the indexes
 	if (entityIndex) delete entityIndex;

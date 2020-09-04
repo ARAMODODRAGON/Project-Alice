@@ -5,7 +5,6 @@
 #include "Core/Debugger.hpp"
 #include "Core/SystemEvents.hpp"
 #include "General/Serialization.hpp"
-#include "Core/ObjectIndex.hpp"
 
 class Game {
 
