@@ -37,7 +37,7 @@ void AliceGame::Update() {
 
 void AliceGame::Draw() {
 
-	GetWindow()->ClearScreen(vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	GetWindow()->ClearScreen(vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
 
 	GetTimer()->WaitForEndOfFrame();
