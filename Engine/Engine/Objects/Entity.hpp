@@ -61,6 +61,7 @@ public:
 	// getters & setters
 	const string& GetName() const { return name; }
 	void SetName(const string& name_) { name = name_; }
+	const vec2& GetVelocity() const { return velocity; }
 
 	RTTR_ENABLE() RTTR_REGISTRATION_FRIEND
 };

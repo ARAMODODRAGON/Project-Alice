@@ -23,6 +23,7 @@
     <ClInclude Include="Engine\Common.hpp" />
     <ClInclude Include="Engine\Core\Debugger.hpp" />
     <ClInclude Include="Engine\Objects\EntityFactory.hpp" />
+    <ClInclude Include="Engine\Objects\JsonToObjectLoader.hpp" />
     <ClInclude Include="Engine\Objects\ObjectIndex.hpp" />
     <ClInclude Include="Engine\Core\SystemEvents.hpp" />
     <ClInclude Include="Engine\Core\Timer.hpp" />

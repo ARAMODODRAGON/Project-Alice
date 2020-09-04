@@ -4,6 +4,7 @@
 #include "../General/Serialization.hpp"
 #include "ObjectIndex.hpp"
 #include "../Core/Debugger.hpp"
+#include "JsonToObjectLoader.hpp"
 
 class Entity;
 
@@ -36,7 +37,6 @@ public:
 	// factory methods
 	template<class T> T* Make();
 	template<class T> T* Make(const string& objectName);
-	//Entity* Make(const string& objectName);
 	void Destroy(Entity* entity);
 
 private:
@@ -88,7 +88,7 @@ inline T* EntityFactory::Make(const string& objectName) {
 	}
 
 	// load the data into the object
-	// TODO: load the data
+	JsonToObject(objectTy, obj, j["data"]);
 
 	// add it into the factory
 	Add(obj.get_value<Entity*>());

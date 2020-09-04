@@ -30,8 +30,10 @@ bool AliceGame::Start() {
 	// initialize the factory
 	efactory = new EntityFactory(entityIndex); // register the index
 	Entity* e = efactory->Make<Entity>("Alice Battle");
-	if (e) DEBUG_LOG(e->GetName());
-
+	if (e) {
+		DEBUG_LOG("Entity name: " + e->GetName());
+		DEBUG_LOG("Entity velocity is: {" + std::to_string(e->GetVelocity().x) + ", " + std::to_string(e->GetVelocity().y) + "}");
+	}
 	return true;
 }
 

@@ -1,6 +1,7 @@
 {
     "type" : "Entity",
     "data" : {
-        "name": "Guy"
+        "name": "Alice",
+        "velocity": {"x": 100, "y": 200}
     }
 }
