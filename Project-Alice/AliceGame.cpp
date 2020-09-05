@@ -6,9 +6,7 @@ AliceGame::AliceGame()
 	, quitTimer(0)
 	, max_quit_time(60)
 	, entityIndex(nullptr)
-	, levelIndex(nullptr)
-	, scriptableIndex(nullptr)
-	, efactory(nullptr) { }
+	, scriptableIndex(nullptr) { }
 
 AliceGame::~AliceGame() { }
 
@@ -17,12 +15,10 @@ bool AliceGame::Start() {
 
 	// initialize the indexes
 	entityIndex = new ObjectIndex("Objects/Entities");
-	levelIndex = new ObjectIndex("Objects/Levels");
 	scriptableIndex = new ObjectIndex("Objects/Scriptables");
 
-	// initialize the factory
-	efactory = new EntityFactory(entityIndex); // register the index
-	efactory->Make<Entity>("Alice OW");
+	// create a level manager
+	levelManager = new LevelManager("Objects/Levels", "testlevel_0", entityIndex);
 
 	return true;
 }
@@ -38,15 +34,15 @@ void AliceGame::Update() {
 		quitTimer = 0;
 	}
 
-	efactory->Update();
-
+	levelManager->Update();
+	
 }
 
 void AliceGame::Draw() {
 
 	GetWindow()->ClearScreen(vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
-	efactory->Draw();
+	levelManager->Draw();
 
 	GetTimer()->WaitForEndOfFrame();
 	GetWindow()->SwapBuffers();
@@ -55,15 +51,13 @@ void AliceGame::Draw() {
 bool AliceGame::Exit() {
 	if (!Game::Exit()) return false;
 
-	// delete the factory
-	if (efactory) delete efactory;
-	efactory = nullptr;
+	// delete the level manager
+	if (levelManager) delete levelManager;
+	levelManager = nullptr;
 
 	// delete the indexes
 	if (entityIndex) delete entityIndex;
 	entityIndex = nullptr;
-	if (levelIndex) delete levelIndex;
-	levelIndex = nullptr;
 	if (scriptableIndex) delete scriptableIndex;
 	scriptableIndex = nullptr;
 

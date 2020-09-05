@@ -1,8 +1,6 @@
 #ifndef ALICE_GAME_HPP
 #define ALICE_GAME_HPP
 #include <Engine/Game.hpp>
-#include <Engine/Objects/ObjectIndex.hpp>
-#include <Engine/Objects/Entity.hpp>
 
 class AliceGame : public Game {
 
@@ -11,11 +9,10 @@ class AliceGame : public Game {
 
 	// objects
 	ObjectIndex* entityIndex;
-	ObjectIndex* levelIndex;
 	ObjectIndex* scriptableIndex;
 
-	// factory
-	EntityFactory* efactory;
+	// level manager
+	LevelManager* levelManager;
 
 public:
 

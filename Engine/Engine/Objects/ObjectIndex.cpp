@@ -66,3 +66,11 @@ bool ObjectIndex::GetJSON(json* j, const string& name) {
 
 	return true;
 }
+
+bool ObjectIndex::Contains(const string& name) {
+	if (index.find(name) != index.end()) {
+		return true;
+	} else {
+		return false;
+	}
+}

@@ -18,11 +18,8 @@ inline void JsonToObject(rttr::type ty, variant& object, const json& j) {
 			SetVariantFromValue(vari, prop.get_type(), it.value());
 			prop.set_value(object, vari);
 		}
-		//SetPropertyFromValue(object, prop, it.value().type(), it.value());
 	}
 }
-
-//inline void SetPropertyFromValue(variant& object, property& prop, const json::value_t& jtype, const json& value) { }
 
 inline void SetVariantFromValue(variant& vari, const type& propty, const json& jvalue) {
 	switch (jvalue.type()) {
