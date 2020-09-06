@@ -48,18 +48,22 @@ public:
 	Entity();
 	virtual ~Entity(); // abstract class
 
+protected:
+
 	// events
 	virtual void Start() { }
 	virtual void Update() { }
 	virtual void LateUpdate() { }
 	virtual void OnDestroy() { }
 
+public:
+
 	// creation / destruction
 	template<class T> T* Make();
 	Entity* Make();
 	template<class T> T* Make(const string& objectName);
 	Entity* Make(const string& objectName);
-	void Destroy(Entity* entity);
+	static void Destroy(Entity* entity);
 
 	// getters & setters
 	const string& GetName() const { return name; }

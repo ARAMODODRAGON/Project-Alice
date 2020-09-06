@@ -26,9 +26,13 @@ Level::~Level() {
 }
 
 void Level::Update() {
+	eFactory->Cleanup();
 
+	eFactory->Update();
 }
 
 void Level::Draw() {
+	eFactory->LateUpdate();
 
+	eFactory->Draw();
 }

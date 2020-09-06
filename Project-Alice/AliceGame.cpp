@@ -6,7 +6,9 @@ AliceGame::AliceGame()
 	, quitTimer(0)
 	, max_quit_time(60)
 	, entityIndex(nullptr)
-	, scriptableIndex(nullptr) { }
+	, scriptableIndex(nullptr)
+	, levelManager(nullptr)
+	, soFactory(nullptr) { }
 
 AliceGame::~AliceGame() { }
 
@@ -19,6 +21,10 @@ bool AliceGame::Start() {
 
 	// create a level manager
 	levelManager = new LevelManager("Objects/Levels", "test_0", entityIndex);
+
+	// create the factory
+	soFactory = new ScriptableObjectFactory(scriptableIndex);
+	soFactory->Make<ScriptableObject>("Player Stats");
 
 	return true;
 }
@@ -37,16 +43,24 @@ void AliceGame::Update() {
 		quitTimer = 0;
 	}
 
-	// update level
+	// cleanup the factory
+	soFactory->Cleanup();
+
+	// update 
+	soFactory->Update();
 	levelManager->GetLevel()->Update();
-	
+
 }
 
 void AliceGame::Draw() {
 
 	GetWindow()->ClearScreen(vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
-	// draw level
+	// late update
+	soFactory->LateUpdate();
+
+	// draw 
+	soFactory->Draw();
 	levelManager->GetLevel()->Draw();
 
 	GetTimer()->WaitForEndOfFrame();
@@ -55,6 +69,10 @@ void AliceGame::Draw() {
 
 bool AliceGame::Exit() {
 	if (!Game::Exit()) return false;
+
+	// delete the factory
+	if (soFactory) delete soFactory;
+	soFactory = nullptr;
 
 	// delete the level manager
 	if (levelManager) delete levelManager;

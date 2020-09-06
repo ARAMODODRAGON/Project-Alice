@@ -1,32 +1,39 @@
-#ifndef _CORE_ENTITY_FACTORY_HPP
-#define _CORE_ENTITY_FACTORY_HPP
+#ifndef _OBJECTS_SCRIPTABLE_OBJECT_FACTORY_HPP
+#define _OBJECTS_SCRIPTABLE_OBJECT_FACTORY_HPP
 #include "../General/Types.hpp"
 #include "../General/Serialization.hpp"
 #include "ObjectIndex.hpp"
 #include "../Core/Debugger.hpp"
 #include "JsonToObjectLoader.hpp"
 
-class Entity;
+class ScriptableObject;
 
-class EntityFactory {
+class ScriptableObjectFactory {
 
-	// an entity with matching data
-	struct EC {
-		Entity* entity;
+	static ScriptableObjectFactory* primaryFactory;
+
+	// an scriptable with matching data
+	struct SC {
+		ScriptableObject* object;
 		bool shouldDestroy;
 
-		EC(Entity* entity_) : entity(entity_), shouldDestroy(false) { }
+		SC(ScriptableObject* object_) : object(object_), shouldDestroy(false) { }
 	};
 	// all the entities
-	vector<EC> objects;
+	vector<SC> objects;
 
 	// an object index
 	ObjectIndex* index;
 
 public:
 
-	EntityFactory(ObjectIndex* index_ = nullptr);
-	~EntityFactory();
+	ScriptableObjectFactory(ObjectIndex* scriptableIndex);
+	~ScriptableObjectFactory();
+
+	// register this as the main instance of a scriptable object factory
+	void SetPrimary();
+	void UnSetPrimary();
+	static ScriptableObjectFactory* GetPrimary() { return primaryFactory; }
 
 	// events
 	void Update();
@@ -37,18 +44,17 @@ public:
 	// factory methods
 	template<class T> T* Make();
 	template<class T> T* Make(const string& objectName);
-	void Destroy(Entity* entity);
+	void Destroy(ScriptableObject* object);
 
 private:
 
-	// helper function. registers this factory onto the entity, adds it into the vector, and calls Start()
-	void Add(Entity* e);
+	// helper function. registers this factory onto the object, adds it into the vector, and calls Start()
+	void Add(ScriptableObject* obj);
 
 };
 
-
 template<class T>
-inline T* EntityFactory::Make() {
+inline T* ScriptableObjectFactory::Make() {
 	T* e = new T();
 	Add(e);
 	return e;
@@ -56,7 +62,7 @@ inline T* EntityFactory::Make() {
 
 
 template<class T>
-inline T* EntityFactory::Make(const string& objectName) {
+inline T* ScriptableObjectFactory::Make(const string& objectName) {
 	// if theres no index to search through then the object cant be built
 	if (!index) {
 		DEBUG_ERROR("No index available to search through");
@@ -75,7 +81,7 @@ inline T* EntityFactory::Make(const string& objectName) {
 
 	// now confirm that the class exists and can convert to type T
 	auto givenTy = type::get<T>();
-	auto entityTy = type::get<Entity>();
+	auto entityTy = type::get<ScriptableObject>();
 	// if it doesnt derive from T and entity return null
 	if (!objectTy.is_derived_from(givenTy) && objectTy.is_derived_from(entityTy))
 		return nullptr;
@@ -91,11 +97,10 @@ inline T* EntityFactory::Make(const string& objectName) {
 	JsonToObject(objectTy, obj, j["data"]);
 
 	// add it into the factory
-	Add(obj.get_value<Entity*>());
+	Add(obj.get_value<ScriptableObject*>());
 
 	// now return the object
 	return obj.get_value<T*>();
 }
 
-
-#endif // !_CORE_ENTITY_FACTORY_HPP
+#endif // !_OBJECTS_SCRIPTABLE_OBJECT_FACTORY_HPP

@@ -14,6 +14,9 @@ class AliceGame : public Game {
 	// level manager
 	LevelManager* levelManager;
 
+	// scriptable objects
+	ScriptableObjectFactory* soFactory;
+
 public:
 
 	AliceGame();

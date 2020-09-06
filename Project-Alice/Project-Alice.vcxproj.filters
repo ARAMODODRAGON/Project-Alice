@@ -21,12 +21,18 @@
     <ClInclude Include="Scripts\Player\OWPlayer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Scripts\Player\PlayerStats.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AliceGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\Player\OWPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Player\PlayerStats.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

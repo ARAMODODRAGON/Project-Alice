@@ -21,28 +21,30 @@ EntityFactory::~EntityFactory() {
 
 void EntityFactory::Update() {
 	for (EC& ec : objects) {
+		if (ec.shouldDestroy) continue;
 		ec.entity->Update();
 	}
 }
-
 void EntityFactory::LateUpdate() {
 	for (EC& ec : objects) {
+		if (ec.shouldDestroy) continue;
 		ec.entity->LateUpdate();
 	}
 }
-
 void EntityFactory::Draw() {
 	//for (EC& ec : objects) {
+	//	if (ec.shouldDestroy) continue;
 	//	ec.entity->Draw();
 	//}
 }
 
 void EntityFactory::Cleanup() {
 	// look for destroyable objects
-	for (EC& ec : objects) {
-		if (ec.shouldDestroy) {
-			ec.entity->OnDestroy();
-			delete ec.entity;
+	for (auto it = objects.begin(); it != objects.end(); ++it) {
+		if (it->shouldDestroy) {
+			it->entity->OnDestroy();
+			delete it->entity;
+			it = objects.erase(it);
 		}
 	}
 }

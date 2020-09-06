@@ -52,7 +52,7 @@ Entity* Entity::Make(const string& objectName) {
 }
 
 void Entity::Destroy(Entity* entity) {
-	if (factory) return factory->Destroy(entity);
-	else DEBUG_ERROR("No factory attached to the entity " + name);
+	if (entity->factory) return entity->factory->Destroy(entity);
+	else DEBUG_ERROR("No factory attached to the entity " + entity->name);
 }
 

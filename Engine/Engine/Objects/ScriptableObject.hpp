@@ -1,9 +1,14 @@
 #ifndef _SCRIPTABLE_OBJECT_HPP
 #define _SCRIPTABLE_OBJECT_HPP
-#include "../General/Types.hpp"
-#include "../General/Serialization.hpp"
+#include "ScriptableObjectFactory.hpp"
 
 class ScriptableObject {
+
+	friend ScriptableObjectFactory;
+	ScriptableObjectFactory* factory;
+
+	string name;
+
 public:
 
 	// constructor & destructor
@@ -14,14 +19,40 @@ public:
 	virtual void Start() { }
 	virtual void Update() { }
 	virtual void LateUpdate() { }
+	virtual void Draw() { }
 	virtual void OnDestroy() { }
 
-	// static functions
-	template<class T> static T* Create();
-	static void Destroy(const ScriptableObject* scr);
-	template<class T> T* FindWithType();
+	// getters & setters
+	string GetName() const { return name; }
 
-	RTTR_ENABLE()
+	// creation & destruction
+	template<class T> T* Make();
+	template<class T> T* Make(const string& objectName);
+	static void Destroy(ScriptableObject* scr);
+
+	RTTR_ENABLE() RTTR_REGISTRATION_FRIEND
 };
 
 #endif // !_SCRIPTABLE_OBJECT_HPP
+
+// creation & destruction
+
+template<class T>
+inline T* ScriptableObject::Make() {
+	if (factory)
+		return factory->Make<T>();
+	else {
+		DEBUG_ERROR("No attached factory");
+		return nullptr;
+	}
+}
+
+template<class T>
+inline T* ScriptableObject::Make(const string& objectName) {
+	if (factory)
+		return factory->Make<T>(objectName);
+	else {
+		DEBUG_ERROR("No attached factory");
+		return nullptr;
+	}
+}
