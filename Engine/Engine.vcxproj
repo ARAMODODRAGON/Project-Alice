@@ -22,6 +22,8 @@
     <ClInclude Include="Engine\Button.hpp" />
     <ClInclude Include="Engine\Common.hpp" />
     <ClInclude Include="Engine\Core\Debugger.hpp" />
+    <ClInclude Include="Engine\Core\Level.hpp" />
+    <ClInclude Include="Engine\Core\LevelManager.hpp" />
     <ClInclude Include="Engine\Objects\EntityFactory.hpp" />
     <ClInclude Include="Engine\Objects\JsonToObjectLoader.hpp" />
     <ClInclude Include="Engine\Objects\ObjectIndex.hpp" />
@@ -41,6 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Core\Debugger.cpp" />
+    <ClCompile Include="Engine\Core\Level.cpp" />
+    <ClCompile Include="Engine\Core\LevelManager.cpp" />
     <ClCompile Include="Engine\Objects\EntityFactory.cpp" />
     <ClCompile Include="Engine\Objects\ObjectIndex.cpp" />
     <ClCompile Include="Engine\Core\SystemEvents.cpp" />

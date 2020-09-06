@@ -1,9 +1,8 @@
 #ifndef _CORE_LEVEL_HPP
 #define _CORE_LEVEL_HPP
+#include "LevelManager.hpp"
 #include "../Objects/EntityFactory.hpp"
 #include "../General/Serialization.hpp"
-
-class LevelManager;
 
 class Level {
 
@@ -11,6 +10,9 @@ class Level {
 	LevelManager* levelManager;
 
 	EntityFactory* eFactory;
+
+	string updateText;
+	string nextLevel;
 
 public:
 

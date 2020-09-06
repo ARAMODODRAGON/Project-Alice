@@ -18,12 +18,15 @@ bool AliceGame::Start() {
 	scriptableIndex = new ObjectIndex("Objects/Scriptables");
 
 	// create a level manager
-	levelManager = new LevelManager("Objects/Levels", "testlevel_0", entityIndex);
+	levelManager = new LevelManager("Objects/Levels", "test_0", entityIndex);
 
 	return true;
 }
 
 void AliceGame::Update() {
+
+	// level load actions
+	levelManager->DoLevelAction();
 
 	GetSystemEvents()->PollEvents();
 
@@ -34,7 +37,8 @@ void AliceGame::Update() {
 		quitTimer = 0;
 	}
 
-	levelManager->Update();
+	// update level
+	levelManager->GetLevel()->Update();
 	
 }
 
@@ -42,7 +46,8 @@ void AliceGame::Draw() {
 
 	GetWindow()->ClearScreen(vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
-	levelManager->Draw();
+	// draw level
+	levelManager->GetLevel()->Draw();
 
 	GetTimer()->WaitForEndOfFrame();
 	GetWindow()->SwapBuffers();
