@@ -33,3 +33,26 @@ Entity::Entity()
 
 Entity::~Entity() { }
 
+Entity* Entity::Make() {
+	if (factory)
+		return factory->Make<Entity>();
+	else {
+		DEBUG_ERROR("No factory attached to the entity " + name);
+		return nullptr;
+	}
+}
+
+Entity* Entity::Make(const string& objectName) {
+	if (factory)
+		return factory->Make<Entity>(objectName);
+	else {
+		DEBUG_ERROR("No factory attached to the entity " + name);
+		return nullptr;
+	}
+}
+
+void Entity::Destroy(Entity* entity) {
+	if (factory) return factory->Destroy(entity);
+	else DEBUG_ERROR("No factory attached to the entity " + name);
+}
+

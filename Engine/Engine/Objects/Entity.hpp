@@ -27,7 +27,7 @@ class Entity {
 	vec2 spriteTiling; // the size of one tiling for drawing sprites. in pixel coords. loaded from file
 	vec2 pivot;
 	vec2 scale;
-	float rotation; 
+	float rotation;
 	int layer;
 	/* void Draw(const Camera* ca) { } */
 
@@ -54,9 +54,12 @@ public:
 	virtual void LateUpdate() { }
 	virtual void OnDestroy() { }
 
-	// static functions
-	//static void Destroy(const Entity* e) { }
-	//template<class T> static T* CreateEntity() { }
+	// creation / destruction
+	template<class T> T* Make();
+	Entity* Make();
+	template<class T> T* Make(const string& objectName);
+	Entity* Make(const string& objectName);
+	void Destroy(Entity* entity);
 
 	// getters & setters
 	const string& GetName() const { return name; }
@@ -68,5 +71,25 @@ public:
 
 	RTTR_ENABLE() RTTR_REGISTRATION_FRIEND
 };
+
+template<class T>
+inline T* Entity::Make() {
+	if (factory)
+		return factory->Make<T>();
+	else {
+		DEBUG_ERROR("No factory attached to the entity " + name);
+		return nullptr;
+	}
+}
+
+template<class T>
+inline T* Entity::Make(const string& objectName) {
+	if (factory)
+		return factory->Make<T>(objectName);
+	else {
+		DEBUG_ERROR("No factory attached to the entity " + name);
+		return nullptr;
+	}
+}
 
 #endif // !_ENTITY_HPP
