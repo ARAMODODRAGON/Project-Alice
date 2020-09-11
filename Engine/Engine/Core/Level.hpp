@@ -1,7 +1,7 @@
 #ifndef _CORE_LEVEL_HPP
 #define _CORE_LEVEL_HPP
 #include "LevelManager.hpp"
-#include "../Objects/EntityFactory.hpp"
+#include "../Objects/ObjectFactory.hpp"
 #include "../General/Serialization.hpp"
 
 class Level {
@@ -9,19 +9,21 @@ class Level {
 	// levelmanager that this is attached to
 	LevelManager* levelManager;
 
-	EntityFactory* eFactory;
-
-	string updateText;
-	string nextLevel;
+	ObjectFactory* objFactory;
 
 public:
 
-	Level(const json& data, LevelManager* levelManager_, ObjectIndex* entityIndex_ = nullptr);
+	Level(const json& data, LevelManager* levelManager_, FileIndex* objectIndex_ = nullptr);
 	~Level();
 
 	// events
 	void Update();
 	void Draw();
+
+private:
+
+	// loading functions
+	void LoadObjects(const json& data);
 
 };
 

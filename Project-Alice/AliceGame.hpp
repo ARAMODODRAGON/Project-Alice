@@ -7,15 +7,9 @@ class AliceGame : public Game {
 	int quitTimer;
 	const int max_quit_time;
 
-	// objects
-	ObjectIndex* entityIndex;
-	ObjectIndex* scriptableIndex;
-
-	// level manager
+	// objects & level manager
+	FileIndex* objIndex;
 	LevelManager* levelManager;
-
-	// scriptable objects
-	ScriptableObjectFactory* soFactory;
 
 public:
 

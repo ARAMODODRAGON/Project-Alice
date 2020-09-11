@@ -1,21 +1,21 @@
 #include "LevelManager.hpp"
 #include "Level.hpp"
 
-LevelManager::LevelManager(const string& levelFolder, const string& defaultLevel, ObjectIndex* entityIndex_)
+LevelManager::LevelManager(const string& levelFolder, const string& defaultLevel, FileIndex* objectIndex_)
 	: levelIndex(nullptr)
-	, entityIndex(entityIndex_)
+	, objectIndex(objectIndex_)
 	, currentLevel(nullptr)
 	, frozenLevel(nullptr)
 	, levelToLoad("")
 	, levelAction(LevelAction::None) {
 	// create a level index based on the given folder
-	levelIndex = new ObjectIndex(levelFolder);
+	levelIndex = new FileIndex(levelFolder);
 
 	// now load the first level
 	if (levelIndex->Contains(defaultLevel)) {
 		json data;
 		levelIndex->GetJSON(&data, defaultLevel);
-		currentLevel = new Level(data, this, entityIndex);
+		currentLevel = new Level(data, this, objectIndex);
 	}
 }
 
@@ -31,7 +31,7 @@ LevelManager::~LevelManager() {
 	levelIndex = nullptr;
 
 	// clear any other objects
-	entityIndex = nullptr;
+	objectIndex = nullptr;
 }
 
 void LevelManager::DoLevelAction() {
@@ -56,7 +56,7 @@ void LevelManager::DoLevelAction() {
 			// load new level
 			json data;
 			levelIndex->GetJSON(&data, levelToLoad);
-			currentLevel = new Level(data, this, entityIndex);
+			currentLevel = new Level(data, this, objectIndex);
 
 			// reset
 			ResetActions();
@@ -83,7 +83,7 @@ void LevelManager::DoLevelAction() {
 			// load new level
 			json data;
 			levelIndex->GetJSON(&data, levelToLoad);
-			currentLevel = new Level(data, this, entityIndex);
+			currentLevel = new Level(data, this, objectIndex);
 
 			// reset
 			ResetActions();
@@ -105,7 +105,7 @@ void LevelManager::DoLevelAction() {
 			// load new level
 			json data;
 			levelIndex->GetJSON(&data, levelToLoad);
-			frozenLevel = new Level(data, this, entityIndex);
+			frozenLevel = new Level(data, this, objectIndex);
 
 			// reset
 			ResetActions();

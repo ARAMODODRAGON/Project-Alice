@@ -1,7 +1,6 @@
 #ifndef _CORE_LEVEL_MANAGER_HPP
 #define _CORE_LEVEL_MANAGER_HPP
-#include "../Objects/ObjectIndex.hpp"
-#include <boost/function.hpp>
+#include "../Objects/FileIndex.hpp"
 
 class Level;
 
@@ -18,8 +17,8 @@ class LevelManager {
 	};
 
 	// indexes used for searching
-	ObjectIndex* levelIndex; // required for level loading
-	ObjectIndex* entityIndex; // passes down to every level
+	FileIndex* levelIndex; // required for level loading
+	FileIndex* objectIndex; // passes down to every level
 
 	// levels
 	Level* currentLevel;
@@ -33,7 +32,7 @@ class LevelManager {
 
 public:
 
-	LevelManager(const string& levelFolder, const string& defaultLevel, ObjectIndex* entityIndex_ = nullptr);
+	LevelManager(const string& levelFolder, const string& defaultLevel, FileIndex* objectIndex_ = nullptr);
 	~LevelManager();
 
 	Level* GetLevel() const { return currentLevel; }

@@ -1,38 +1,70 @@
 #include "Level.hpp"
+#include "../Objects/Object.hpp"
 
-Level::Level(const json& data, LevelManager* levelManager_, ObjectIndex* entityIndex_)
-	: levelManager(levelManager_), eFactory(nullptr) {
+Level::Level(const json& data, LevelManager* levelManager_, FileIndex* objectIndex_)
+	: levelManager(levelManager_), objFactory(nullptr) {
 	// create the entity factory
-	eFactory = new EntityFactory(entityIndex_);
+	objFactory = new ObjectFactory(objectIndex_);
 
-	// load data in from the json file
-	// TODO
-	if (data.contains("updateText") && data["updateText"].is_string())
-		updateText = data["updateText"].get<string>();
-	if (data.contains("nextLevel") && data["nextLevel"].is_string())
-		nextLevel = data["nextLevel"].get<string>();
-
-	printf("%s\n", updateText.c_str());
-	
-	if (nextLevel.size()) levelManager->LoadLevel(nextLevel);
+	if (data.contains("Objects") && data["Objects"].is_array())
+		LoadObjects(data["Objects"]);
 }
 
 Level::~Level() {
 	// delete factory
-	if (eFactory) delete eFactory;
-	eFactory = nullptr;
+	if (objFactory) delete objFactory;
+	objFactory = nullptr;
 	// clear any other values
 	levelManager = nullptr;
 }
 
 void Level::Update() {
-	eFactory->Cleanup();
+	objFactory->Cleanup();
 
-	eFactory->Update();
+	objFactory->Update();
 }
 
 void Level::Draw() {
-	eFactory->LateUpdate();
+	objFactory->LateUpdate();
 
-	eFactory->Draw();
+
+}
+
+void Level::LoadObjects(const json& data) {
+	for (auto it = data.begin(); it != data.end(); ++it) {
+		if (!it->is_object()) {
+			DEBUG_ERROR("Non object in object array! Skipped");
+			continue;
+		}
+		const json& objData = (*it);
+
+		// construct using index
+		if (objData.contains("objectName") && objData["objectName"].is_string()) {
+			string objectName = objData["objectName"].get<string>();
+
+			// construct with instance data
+			if (objData.contains("data") && objData.is_object())
+				objFactory->Make(objectName, objData["data"]);
+
+			// construct without instance data
+			else objFactory->Make<Object>(objectName);
+		}
+		// construct using type
+		else if (objData.contains("type") && objData["type"].is_string()) {
+			string typName = objData["type"].get<string>();
+			type typ = type::get_by_name(typName.c_str());
+
+			// construct with instance data
+			if (objData.contains("data") && objData.is_object())
+				objFactory->Make(typ, objData["data"]);
+
+			// construct without instance data
+			else objFactory->Make(typ);
+		}
+		// if nothing print error
+		else {
+			DEBUG_ERROR("No Type or ObjectName found");
+		}
+
+	}
 }

@@ -19,6 +19,7 @@ using nlohmann::json;
 #include <rttr/variant_array_view.h>
 #include <rttr/access_levels.h>
 #include <rttr/policy.h>
+#include <rttr/rttr_cast.h>
 using rttr::type;
 using rttr::registration;
 using rttr::method;
@@ -29,6 +30,7 @@ using rttr::variant;
 using rttr::variant_array_view;
 using rttr::access_levels;
 using rttr::policy;
+using rttr::rttr_cast;
 
 #define public_access_ rttr::detail::public_access()
 #define protected_access_ rttr::detail::protected_access()

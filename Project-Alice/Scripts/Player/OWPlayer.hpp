@@ -1,23 +1,17 @@
 #ifndef PLAYER_OWPLAYER_HPP
 #define PLAYER_OWPLAYER_HPP
-#include <Engine/Objects/Entity.hpp>
+#include <Engine/Objects/Object.hpp>
 
-class OWPlayer : public Entity {
-
-	vector<float> inventory;
+class OWPlayer : public Object {
 
 public:
 
 	OWPlayer();
 	~OWPlayer();
 
-	// events
-	virtual void Start();
-	virtual void Update();
-	virtual void LateUpdate();
-	virtual void OnDestroy();
+	void Start() override;
 
-	RTTR_ENABLE(Entity) RTTR_REGISTRATION_FRIEND
+	RTTR_ENABLE(Object)
 };
 
 #endif // !PLAYER_OWPLAYER_HPP

@@ -1,14 +1,13 @@
 #include "AliceGame.hpp"
 #include <Engine/Keyboard.hpp>
+#include <functional>
 
 AliceGame::AliceGame()
 	: Game()
 	, quitTimer(0)
 	, max_quit_time(60)
-	, entityIndex(nullptr)
-	, scriptableIndex(nullptr)
-	, levelManager(nullptr)
-	, soFactory(nullptr) { }
+	, objIndex(nullptr)
+	, levelManager(nullptr) { }
 
 AliceGame::~AliceGame() { }
 
@@ -16,15 +15,10 @@ bool AliceGame::Start() {
 	if (!Game::Start()) return false;
 
 	// initialize the indexes
-	entityIndex = new ObjectIndex("Objects/Entities");
-	scriptableIndex = new ObjectIndex("Objects/Scriptables");
+	objIndex = new FileIndex("ObjectAssets/Objects");
 
 	// create a level manager
-	levelManager = new LevelManager("Objects/Levels", "test_0", entityIndex);
-
-	// create the factory
-	soFactory = new ScriptableObjectFactory(scriptableIndex);
-	soFactory->Make<ScriptableObject>("Player Stats");
+	levelManager = new LevelManager("ObjectAssets/Levels", "test_0", objIndex);
 
 	return true;
 }
@@ -43,11 +37,7 @@ void AliceGame::Update() {
 		quitTimer = 0;
 	}
 
-	// cleanup the factory
-	soFactory->Cleanup();
-
 	// update 
-	soFactory->Update();
 	levelManager->GetLevel()->Update();
 
 }
@@ -56,11 +46,7 @@ void AliceGame::Draw() {
 
 	GetWindow()->ClearScreen(vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
-	// late update
-	soFactory->LateUpdate();
-
 	// draw 
-	soFactory->Draw();
 	levelManager->GetLevel()->Draw();
 
 	GetTimer()->WaitForEndOfFrame();
@@ -70,19 +56,13 @@ void AliceGame::Draw() {
 bool AliceGame::Exit() {
 	if (!Game::Exit()) return false;
 
-	// delete the factory
-	if (soFactory) delete soFactory;
-	soFactory = nullptr;
-
 	// delete the level manager
 	if (levelManager) delete levelManager;
 	levelManager = nullptr;
 
 	// delete the indexes
-	if (entityIndex) delete entityIndex;
-	entityIndex = nullptr;
-	if (scriptableIndex) delete scriptableIndex;
-	scriptableIndex = nullptr;
+	if (objIndex) delete objIndex;
+	objIndex = nullptr;
 
 	return true;
 }

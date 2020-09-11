@@ -1,10 +1,10 @@
-#include "ObjectIndex.hpp"
+#include "FileIndex.hpp"
 #include "../Core/Debugger.hpp"
 #include <fstream>
 
 #define INDEXFILE "/Index.json"
 
-ObjectIndex::ObjectIndex(const string& folder_) : folder(folder_) {
+FileIndex::FileIndex(const string& folder_) : folder(folder_) {
 
 	std::fstream file(folder_ + INDEXFILE);
 	if (!file.is_open()) {
@@ -35,15 +35,15 @@ ObjectIndex::ObjectIndex(const string& folder_) : folder(folder_) {
 	}
 }
 
-ObjectIndex::~ObjectIndex() { }
+FileIndex::~FileIndex() { }
 
-void ObjectIndex::PrintAll() const {
+void FileIndex::PrintAll() const {
 	for (auto it : index) {
 		DEBUG_LOG("\"" + it.first + "\" : \"" + it.second + "\"");
 	}
 }
 
-bool ObjectIndex::GetJSON(json* j, const string& name) {
+bool FileIndex::GetJSON(json* j, const string& name) {
 	// try getting the filepath
 	string filepath;
 	try {
@@ -67,7 +67,7 @@ bool ObjectIndex::GetJSON(json* j, const string& name) {
 	return true;
 }
 
-bool ObjectIndex::Contains(const string& name) {
+bool FileIndex::Contains(const string& name) {
 	if (index.find(name) != index.end()) {
 		return true;
 	} else {

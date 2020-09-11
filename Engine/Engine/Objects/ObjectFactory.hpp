@@ -2,53 +2,50 @@
 #define _CORE_ENTITY_FACTORY_HPP
 #include "../General/Types.hpp"
 #include "../General/Serialization.hpp"
-#include "ObjectIndex.hpp"
+#include "FileIndex.hpp"
 #include "../Core/Debugger.hpp"
 #include "JsonToObjectLoader.hpp"
 
-class Entity;
+class Object;
 
-class EntityFactory {
+class ObjectFactory {
 
-	// an entity with matching data
-	struct EC {
-		Entity* entity;
-		bool shouldDestroy;
-
-		EC(Entity* entity_) : entity(entity_), shouldDestroy(false) { }
-	};
+	// an object with a bool. this bool is whether or not the object should destroy
+	using PairType = pair<Object*, bool>;
 	// all the entities
-	vector<EC> objects;
+	vector<PairType> objects;
 
 	// an object index
-	ObjectIndex* index;
+	FileIndex* index;
 
 public:
 
-	EntityFactory(ObjectIndex* index_ = nullptr);
-	~EntityFactory();
+	ObjectFactory(FileIndex* index_ = nullptr);
+	~ObjectFactory();
 
 	// events
 	void Update();
 	void LateUpdate();
-	void Draw();
 	void Cleanup();
 
 	// factory methods
 	template<class T> T* Make();
 	template<class T> T* Make(const string& objectName);
-	void Destroy(Entity* entity);
+	Object* Make(const type typ);
+	Object* Make(const string& objectName, const json& instanceData);
+	Object* Make(const type typ, const json& instanceData);
+	void Destroy(Object* entity);
 
 private:
 
 	// helper function. registers this factory onto the entity, adds it into the vector, and calls Start()
-	void Add(Entity* e);
+	void Add(Object* e);
 
 };
 
 
 template<class T>
-inline T* EntityFactory::Make() {
+inline T* ObjectFactory::Make() {
 	T* e = new T();
 	Add(e);
 	return e;
@@ -56,7 +53,7 @@ inline T* EntityFactory::Make() {
 
 
 template<class T>
-inline T* EntityFactory::Make(const string& objectName) {
+inline T* ObjectFactory::Make(const string& objectName) {
 	// if theres no index to search through then the object cant be built
 	if (!index) {
 		DEBUG_ERROR("No index available to search through");
@@ -74,8 +71,8 @@ inline T* EntityFactory::Make(const string& objectName) {
 	}
 
 	// now confirm that the class exists and can convert to type T
-	auto givenTy = type::get<T>();
-	auto entityTy = type::get<Entity>();
+	type givenTy = type::get<T>();
+	type entityTy = type::get<Object>();
 	// if it doesnt derive from T and entity return null
 	if (!objectTy.is_derived_from(givenTy) && objectTy.is_derived_from(entityTy))
 		return nullptr;
@@ -91,7 +88,7 @@ inline T* EntityFactory::Make(const string& objectName) {
 	JsonToObject(objectTy, obj, j["data"]);
 
 	// add it into the factory
-	Add(obj.get_value<Entity*>());
+	Add(obj.get_value<Object*>());
 
 	// now return the object
 	return obj.get_value<T*>();

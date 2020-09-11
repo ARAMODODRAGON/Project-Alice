@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{ "path": "./ObjectAssets/Objects" },
+		{ "path": "./ObjectAssets/Levels" },
+		{ "path": "./logs" }
+	],
+	"settings": { 
+		"[json]": {
+			"editor.quickSuggestions": {
+				"strings": true,
+			},
+			"editor.suggest.insertMode": "replace"
+		}
+	}
+}
