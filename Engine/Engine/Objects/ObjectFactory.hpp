@@ -7,6 +7,7 @@
 #include "JsonToObjectLoader.hpp"
 
 class Object;
+class Level;
 
 class ObjectFactory {
 
@@ -15,12 +16,13 @@ class ObjectFactory {
 	// all the entities
 	vector<PairType> objects;
 
-	// an object index
+	// an object index & level
+	Level* level;
 	FileIndex* index;
 
 public:
 
-	ObjectFactory(FileIndex* index_ = nullptr);
+	ObjectFactory(Level* level_, FileIndex* index_ = nullptr);
 	~ObjectFactory();
 
 	// events

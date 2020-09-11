@@ -19,6 +19,7 @@ public:
 	void PrintAll() const;
 	bool GetJSON(json* j, const string& name);
 	bool Contains(const string& name);
+	string GetPath(const string& name);
 
 };
 

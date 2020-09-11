@@ -74,3 +74,9 @@ bool FileIndex::Contains(const string& name) {
 		return false;
 	}
 }
+
+string FileIndex::GetPath(const string& name) {
+	if (index.find(name) != index.end())
+		return index[name];
+	else return string();
+}

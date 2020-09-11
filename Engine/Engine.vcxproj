@@ -39,6 +39,10 @@
     <ClInclude Include="Engine\Input\Keyboard.hpp" />
     <ClInclude Include="Engine\Input\Mouse.hpp" />
     <ClInclude Include="Engine\General\Serialization.hpp" />
+    <ClInclude Include="Engine\Rendering\ContentHandler.hpp" />
+    <ClInclude Include="Engine\Rendering\ContentLoadFunctions.hpp" />
+    <ClInclude Include="Engine\Rendering\ContentTypes.hpp" />
+    <ClInclude Include="Engine\Rendering\Sprite.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Core\Debugger.cpp" />
@@ -55,6 +59,9 @@
     <ClCompile Include="Engine\General\Math.cpp" />
     <ClCompile Include="Engine\Input\Keyboard.cpp" />
     <ClCompile Include="Engine\Input\Mouse.cpp" />
+    <ClCompile Include="Engine\Rendering\ContentHandler.cpp" />
+    <ClCompile Include="Engine\Rendering\ContentLoadFunctions.cpp" />
+    <ClCompile Include="Engine\Rendering\ContentTypes.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -1,9 +1,10 @@
 #include "ObjectFactory.hpp"
 #include "Object.hpp"
+#include "../Core/Level.hpp"
 
 // register the index
-ObjectFactory::ObjectFactory(FileIndex* index_)
-	: index(index_) {
+ObjectFactory::ObjectFactory(Level* level_, FileIndex* index_)
+	: level(level_), index(index_) {
 	// allocate some memory
 	objects.reserve(10);
 }
@@ -149,6 +150,7 @@ void ObjectFactory::Add(Object* e) {
 	// add the factory pointer
 	//type::get<Object>().get_property("factory").set_value(e, this);
 	e->factory = this;
+	e->level = level;
 
 	// call start
 	e->Start();

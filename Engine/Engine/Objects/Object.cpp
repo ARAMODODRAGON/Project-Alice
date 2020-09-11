@@ -15,7 +15,8 @@ RTTR_REGISTRATION {
 
 // TODO: add VAO code
 Object::Object()
-	: factory(nullptr)
+	: level(nullptr)
+	, factory(nullptr)
 	, isActive(true)
 	, name("Object")
 	, rotation(0.0f) { }
@@ -45,7 +46,7 @@ void Object::Destroy(Object* entity) {
 	else DEBUG_ERROR("No factory attached to the entity " + entity->name);
 }
 
-void Object::DestroyComponent(Component* comp) { 
+void Object::DestroyComponent(Component* comp) {
 	// find the object and destroy immediately
 	for (auto it = components.begin(); it != components.end(); ++it) {
 		if ((*it) == comp) {
