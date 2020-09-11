@@ -28,7 +28,7 @@
     <ClInclude Include="Engine\Objects\ObjectFactory.hpp" />
     <ClInclude Include="Engine\Objects\JsonToObjectLoader.hpp" />
     <ClInclude Include="Engine\Objects\FileIndex.hpp" />
-    <ClInclude Include="Engine\Core\SystemEvents.hpp" />
+    <ClInclude Include="Engine\Input\SystemEvents.hpp" />
     <ClInclude Include="Engine\Core\Timer.hpp" />
     <ClInclude Include="Engine\Core\Window.hpp" />
     <ClInclude Include="Engine\Objects\Object.hpp" />
@@ -47,7 +47,7 @@
     <ClCompile Include="Engine\Objects\Component.cpp" />
     <ClCompile Include="Engine\Objects\ObjectFactory.cpp" />
     <ClCompile Include="Engine\Objects\FileIndex.cpp" />
-    <ClCompile Include="Engine\Core\SystemEvents.cpp" />
+    <ClCompile Include="Engine\Input\SystemEvents.cpp" />
     <ClCompile Include="Engine\Core\Timer.cpp" />
     <ClCompile Include="Engine\Core\Window.cpp" />
     <ClCompile Include="Engine\Objects\Object.cpp" />

@@ -3,7 +3,7 @@
 #include "Core/Window.hpp"
 #include "Core/Timer.hpp"
 #include "Core/Debugger.hpp"
-#include "Core/SystemEvents.hpp"
+#include "Input/SystemEvents.hpp"
 #include "General/Serialization.hpp"
 #include "Core/Level.hpp"
 
