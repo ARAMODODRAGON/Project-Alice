@@ -1,6 +1,5 @@
 #include "AliceGame.hpp"
-#include <Engine/Keyboard.hpp>
-#include <functional>
+#include <Engine/Input/Keyboard.hpp>
 
 AliceGame::AliceGame()
 	: Game()

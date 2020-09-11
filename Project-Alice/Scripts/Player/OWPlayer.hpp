@@ -1,6 +1,6 @@
 #ifndef PLAYER_OWPLAYER_HPP
 #define PLAYER_OWPLAYER_HPP
-#include <Engine/Objects/Object.hpp>
+#include <Engine/Common.hpp>
 
 class OWPlayer : public Object {
 

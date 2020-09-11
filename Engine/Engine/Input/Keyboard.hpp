@@ -1,7 +1,7 @@
 #ifndef __INPUT_KEYBOARD_HPP
 #define __INPUT_KEYBOARD_HPP
-#include "General/Macros.hpp"
-#include "General/Types.hpp"
+#include "../General/Macros.hpp"
+#include "../General/Types.hpp"
 #include "Button.hpp"
 
 enum class KeyCode : unsigned int {

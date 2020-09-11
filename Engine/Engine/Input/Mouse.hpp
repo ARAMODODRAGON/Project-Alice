@@ -1,8 +1,8 @@
 #ifndef __INPUT_MOUSE_HPP
 #define __INPUT_MOUSE_HPP
-#include "General/Macros.hpp"
-#include "General/Math.hpp"
-#include "General/Types.hpp"
+#include "../General/Macros.hpp"
+#include "../General/Math.hpp"
+#include "../General/Types.hpp"
 #include "Button.hpp"
 
 class Mouse {

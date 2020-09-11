@@ -1,8 +1,8 @@
 #include "SystemEvents.hpp"
 #include <SDL_events.h>
 #include "Timer.hpp"
-#include "../Keyboard.hpp"
-#include "../Mouse.hpp"
+#include "../Input/Keyboard.hpp"
+#include "../Input/Mouse.hpp"
 #include "../Game.hpp"
 
 SystemEvents::SystemEvents(Game * game_) : game(game_) { }
