@@ -4,10 +4,11 @@
 using std::string;
 #include <vector>
 using std::vector;
+#include <glm/vec2.hpp>
+using glm::uvec2;
 
-unsigned int LoadTexture(const string& path);
-unsigned int LoadFragShader(const string& path);
-unsigned int LoadVertShader(const string& path);
-unsigned int LoadShaderProgram(const vector<string>& vertexShaderPaths, const vector<string>& fragmentShaderPaths);
+unsigned int LoadTexture(const string& path, uvec2& outSize);
+unsigned int LoadShader(const string& path);
+unsigned int LoadShaderProgram(const vector<string>& shaderPaths);
 
 #endif // !_RENDERING_CONTENT_LOAD_FUNCTIONS_HPP
