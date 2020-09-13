@@ -1,10 +1,10 @@
 #include "Level.hpp"
 #include "../Objects/Object.hpp"
 
-Level::Level(const json& data, LevelManager* levelManager_, FileIndex* objectIndex_)
+Level::Level(const json& data, LevelManager* levelManager_, FileIndex* objectIndex_, ContentHandler* content_) // TODO
 	: levelManager(levelManager_), objFactory(nullptr) {
 	// create the entity factory
-	objFactory = new ObjectFactory(objectIndex_);
+	objFactory = new ObjectFactory(this, objectIndex_);
 
 	if (data.contains("Objects") && data["Objects"].is_array())
 		LoadObjects(data["Objects"]);

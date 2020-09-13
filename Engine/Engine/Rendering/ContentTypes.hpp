@@ -1,10 +1,13 @@
 #ifndef _RENDERING_CONTENT_TYPES_HPP
 #define _RENDERING_CONTENT_TYPES_HPP
+#include <glm/vec2.hpp>
+using glm::uvec2;
 
 class Texture {
 
 	struct Data {
 		unsigned int id;
+		uvec2 size;
 		unsigned int refcount;
 	};
 	Data* data;
@@ -13,7 +16,7 @@ public:
 
 	// constructors/operators & destructor
 	Texture();
-	Texture(unsigned int id_);
+	Texture(unsigned int id_, const uvec2& size_);
 
 	Texture(const Texture& other);
 	Texture& operator=(const Texture& other);
@@ -26,6 +29,7 @@ public:
 	unsigned int GetID() const { if (data) return data->id; else return -1; }
 	operator unsigned int() const { if (data) return data->id; else return -1; }
 	unsigned int GetRefCount() const { if (data) return data->refcount; else return -1; }
+	uvec2 GetSize() const { if (data) return data->size; else return uvec2(); }
 
 private:
 
@@ -58,6 +62,7 @@ public:
 	// functions
 	unsigned int GetID() const { if (data) return data->id; else return -1; }
 	operator unsigned int() { if (data) return data->id; else return -1; }
+	unsigned int GetRefCount() const { if (data) return data->refcount; else return -1; }
 
 private:
 

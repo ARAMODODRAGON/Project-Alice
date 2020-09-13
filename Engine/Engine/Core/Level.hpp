@@ -9,11 +9,15 @@ class Level {
 	// levelmanager that this is attached to
 	LevelManager* levelManager;
 
+	// objects
 	ObjectFactory* objFactory;
+
+	// rendering
+	
 
 public:
 
-	Level(const json& data, LevelManager* levelManager_, FileIndex* objectIndex_ = nullptr);
+	Level(const json& data, LevelManager* levelManager_, FileIndex* objectIndex_ = nullptr, ContentHandler* content_ = nullptr);
 	~Level();
 
 	// events

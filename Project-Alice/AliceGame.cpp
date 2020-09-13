@@ -6,6 +6,7 @@ AliceGame::AliceGame()
 	, quitTimer(0)
 	, max_quit_time(60)
 	, objIndex(nullptr)
+	, content(nullptr)
 	, levelManager(nullptr) { }
 
 AliceGame::~AliceGame() { }
@@ -15,9 +16,12 @@ bool AliceGame::Start() {
 
 	// initialize the indexes
 	objIndex = new FileIndex("ObjectAssets/Objects");
+	
+	// initialize the content handler
+	content = new ContentHandler("Resources/Textures", "ObjectAssets/Shaders");
 
 	// create a level manager
-	levelManager = new LevelManager("ObjectAssets/Levels", "test_0", objIndex);
+	levelManager = new LevelManager("ObjectAssets/Levels", "test_0", objIndex, content);
 
 	return true;
 }
@@ -58,6 +62,10 @@ bool AliceGame::Exit() {
 	// delete the level manager
 	if (levelManager) delete levelManager;
 	levelManager = nullptr;
+
+	// delete content handler
+	if (content) delete content;
+	content = nullptr;
 
 	// delete the indexes
 	if (objIndex) delete objIndex;

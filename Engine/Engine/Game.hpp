@@ -6,6 +6,7 @@
 #include "Input/SystemEvents.hpp"
 #include "General/Serialization.hpp"
 #include "Core/Level.hpp"
+#include "Rendering/ContentHandler.hpp"
 
 class Game {
 

@@ -7,7 +7,9 @@
 class ContentHandler {
 
 	// textures and shaders with file index
+	using TexturePairType = pair<const string, Texture>;
 	map<string, Texture> textures;
+	using ShaderPairType = pair<const string, Shader>;
 	map<string, Shader> shaders;
 	FileIndex textureIndex;
 	FileIndex shaderIndex;

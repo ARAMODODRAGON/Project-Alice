@@ -1,9 +1,10 @@
 #include "LevelManager.hpp"
 #include "Level.hpp"
 
-LevelManager::LevelManager(const string& levelFolder, const string& defaultLevel, FileIndex* objectIndex_)
+LevelManager::LevelManager(const string& levelFolder, const string& defaultLevel, FileIndex* objectIndex_, ContentHandler* content_)
 	: levelIndex(nullptr)
 	, objectIndex(objectIndex_)
+	, content(content_)
 	, currentLevel(nullptr)
 	, frozenLevel(nullptr)
 	, levelToLoad("")

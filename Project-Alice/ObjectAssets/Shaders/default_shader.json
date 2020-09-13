@@ -1,0 +1,6 @@
+{
+    "shaders": [
+        "path/to/vert",
+        "path/to/frag"
+    ]
+}

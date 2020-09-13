@@ -4,9 +4,10 @@
 
 Texture::Texture() : data(nullptr) { }
 
-Texture::Texture(unsigned int id_) : data(nullptr) {
+Texture::Texture(unsigned int id_, const uvec2& size_) : data(nullptr) {
 	data = new Data();
 	data->id = id_;
+	data->size = size_;
 	data->refcount = 1;
 }
 
@@ -18,6 +19,7 @@ Texture& Texture::operator=(const Texture& other) {
 	FreeThis();
 	data = other.data;
 	if (data) data->refcount++;
+	return *this;
 }
 
 Texture::Texture(Texture&& other) : data(other.data) {
@@ -28,6 +30,7 @@ Texture& Texture::operator=(Texture&& other) {
 	FreeThis();
 	data = other.data;
 	other.data = nullptr;
+	return *this;
 }
 
 Texture::~Texture() { FreeThis(); }
@@ -60,6 +63,7 @@ Shader& Shader::operator=(const Shader& other) {
 	FreeThis();
 	data = other.data;
 	if (data) data->refcount++;
+	return *this;
 }
 
 Shader::Shader(Shader&& other) : data(other.data) {
@@ -70,6 +74,7 @@ Shader& Shader::operator=(Shader&& other) {
 	FreeThis();
 	data = other.data;
 	other.data = nullptr;
+	return *this;
 }
 
 Shader::~Shader() { FreeThis(); }

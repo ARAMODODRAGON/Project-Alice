@@ -1,6 +1,7 @@
 #ifndef _CORE_LEVEL_MANAGER_HPP
 #define _CORE_LEVEL_MANAGER_HPP
 #include "../Objects/FileIndex.hpp"
+#include "../Rendering/ContentHandler.hpp"
 
 class Level;
 
@@ -20,6 +21,9 @@ class LevelManager {
 	FileIndex* levelIndex; // required for level loading
 	FileIndex* objectIndex; // passes down to every level
 
+	// content handler passed to levels
+	ContentHandler* content;
+
 	// levels
 	Level* currentLevel;
 	Level* frozenLevel;
@@ -32,7 +36,7 @@ class LevelManager {
 
 public:
 
-	LevelManager(const string& levelFolder, const string& defaultLevel, FileIndex* objectIndex_ = nullptr);
+	LevelManager(const string& levelFolder, const string& defaultLevel, FileIndex* objectIndex_ = nullptr, ContentHandler* content_ = nullptr);
 	~LevelManager();
 
 	Level* GetLevel() const { return currentLevel; }

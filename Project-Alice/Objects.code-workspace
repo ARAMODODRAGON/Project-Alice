@@ -2,7 +2,9 @@
 	"folders": [
 		{ "path": "./ObjectAssets/Objects" },
 		{ "path": "./ObjectAssets/Levels" },
-		{ "path": "./logs" }
+		{ "path": "./logs" },
+		{ "path": "./Resources/Textures" },
+		{ "path": "./ObjectAssets/Shaders" }
 	],
 	"settings": { 
 		"[json]": {

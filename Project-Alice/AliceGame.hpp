@@ -9,6 +9,7 @@ class AliceGame : public Game {
 
 	// objects & level manager
 	FileIndex* objIndex;
+	ContentHandler* content;
 	LevelManager* levelManager;
 
 public:
