@@ -21,7 +21,6 @@ class Object {
 	string name;
 	vec2 position;
 	vec2 velocity;
-	vec2 scale;
 	float rotation;
 
 	// components
@@ -65,9 +64,6 @@ public:
 
 	vec2 GetVelocity() const { return velocity; }
 	void SetVelocity(const vec2& velocity_) { velocity = velocity_; }
-
-	vec2 GetScale() const { return scale; }
-	void SetScale(const vec2& scale_) { scale = scale_; }
 
 	float GetRotation() const { return rotation; }
 	void SetRotation(const float& rotation_) { rotation = rotation_; }

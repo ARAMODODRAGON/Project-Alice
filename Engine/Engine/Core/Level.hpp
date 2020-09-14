@@ -3,6 +3,7 @@
 #include "LevelManager.hpp"
 #include "../Objects/ObjectFactory.hpp"
 #include "../General/Serialization.hpp"
+#include "../Rendering/RenderScene.hpp"
 
 class Level {
 
@@ -13,7 +14,7 @@ class Level {
 	ObjectFactory* objFactory;
 
 	// rendering
-	
+	RenderScene* renderScene;
 
 public:
 
@@ -23,6 +24,9 @@ public:
 	// events
 	void Update();
 	void Draw();
+
+	// getters
+	RenderScene* GetRenderScene() const { return renderScene; }
 
 private:
 

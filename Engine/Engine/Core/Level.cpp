@@ -2,7 +2,10 @@
 #include "../Objects/Object.hpp"
 
 Level::Level(const json& data, LevelManager* levelManager_, FileIndex* objectIndex_, ContentHandler* content_) // TODO
-	: levelManager(levelManager_), objFactory(nullptr) {
+	: levelManager(levelManager_), objFactory(nullptr), renderScene(nullptr) {
+	// initialize the render scene
+	renderScene = new RenderScene(content_);
+
 	// create the entity factory
 	objFactory = new ObjectFactory(this, objectIndex_);
 
@@ -14,6 +17,9 @@ Level::~Level() {
 	// delete factory
 	if (objFactory) delete objFactory;
 	objFactory = nullptr;
+	// delete render scene
+	if (renderScene) delete renderScene;
+	renderScene = nullptr;
 	// clear any other values
 	levelManager = nullptr;
 }
@@ -27,7 +33,7 @@ void Level::Update() {
 void Level::Draw() {
 	objFactory->LateUpdate();
 
-
+	renderScene->Draw();
 }
 
 void Level::LoadObjects(const json& data) {

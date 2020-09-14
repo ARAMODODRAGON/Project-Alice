@@ -39,9 +39,13 @@
     <ClInclude Include="Engine\Input\Keyboard.hpp" />
     <ClInclude Include="Engine\Input\Mouse.hpp" />
     <ClInclude Include="Engine\General\Serialization.hpp" />
+    <ClInclude Include="Engine\Rendering\Camera.hpp" />
     <ClInclude Include="Engine\Rendering\ContentHandler.hpp" />
     <ClInclude Include="Engine\Rendering\ContentLoadFunctions.hpp" />
     <ClInclude Include="Engine\Rendering\ContentTypes.hpp" />
+    <ClInclude Include="Engine\Rendering\IRenderer.hpp" />
+    <ClInclude Include="Engine\Rendering\Rect.hpp" />
+    <ClInclude Include="Engine\Rendering\RenderScene.hpp" />
     <ClInclude Include="Engine\Rendering\Sprite.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -59,9 +63,12 @@
     <ClCompile Include="Engine\General\Math.cpp" />
     <ClCompile Include="Engine\Input\Keyboard.cpp" />
     <ClCompile Include="Engine\Input\Mouse.cpp" />
+    <ClCompile Include="Engine\Rendering\Camera.cpp" />
     <ClCompile Include="Engine\Rendering\ContentHandler.cpp" />
     <ClCompile Include="Engine\Rendering\ContentLoadFunctions.cpp" />
     <ClCompile Include="Engine\Rendering\ContentTypes.cpp" />
+    <ClCompile Include="Engine\Rendering\RenderScene.cpp" />
+    <ClCompile Include="Engine\Rendering\Sprite.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
