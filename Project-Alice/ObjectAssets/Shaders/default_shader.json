@@ -1,6 +1,6 @@
 {
     "shaders": [
-        "path/to/vert",
-        "path/to/frag"
+        "Resources/Shaders/DefaultShader.vert",
+        "Resources/Shaders/DefaultShader.frag"
     ]
 }

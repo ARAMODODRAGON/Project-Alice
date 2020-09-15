@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Core\GameContext.hpp" />
     <ClInclude Include="Engine\Input\Button.hpp" />
     <ClInclude Include="Engine\Common.hpp" />
     <ClInclude Include="Engine\Core\Debugger.hpp" />
@@ -50,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Core\Debugger.cpp" />
+    <ClCompile Include="Engine\Core\GameContext.cpp" />
     <ClCompile Include="Engine\Core\Level.cpp" />
     <ClCompile Include="Engine\Core\LevelManager.cpp" />
     <ClCompile Include="Engine\Objects\Component.cpp" />

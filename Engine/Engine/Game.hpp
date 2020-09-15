@@ -7,6 +7,8 @@
 #include "General/Serialization.hpp"
 #include "Core/Level.hpp"
 #include "Rendering/ContentHandler.hpp"
+#include "Core/GameContext.hpp"
+#include "Rendering/ContentHandler.hpp"
 
 class Game {
 

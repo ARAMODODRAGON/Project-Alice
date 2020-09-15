@@ -22,6 +22,7 @@ public:
 	void SwapBuffers();
 
 	// getters & setters
+	uvec2 GetScreenSize() const { return screenSize; }
 
 };
 

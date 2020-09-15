@@ -4,7 +4,7 @@
 AliceGame::AliceGame()
 	: Game()
 	, quitTimer(0)
-	, max_quit_time(60)
+	, max_quit_time(15)
 	, objIndex(nullptr)
 	, content(nullptr)
 	, levelManager(nullptr) { }

@@ -7,13 +7,18 @@
 class Component {
 
 	// base properties
-	class Object* object; // the object that this component is attached to
+	friend class Object;
+	Object* object; // the object that this component is attached to
 	bool isActive;
 
 public:
 
 	Component();
 	virtual ~Component() = 0 { }; // abstract
+
+	// virtual functions
+	virtual void Start() { }
+	virtual void OnDestroy() { }
 
 	// getters & setters
 	Object* GetObject() const { return object; }

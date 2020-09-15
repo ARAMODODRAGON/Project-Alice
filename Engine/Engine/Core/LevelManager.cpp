@@ -1,5 +1,6 @@
 #include "LevelManager.hpp"
 #include "Level.hpp"
+#include "GameContext.hpp"
 
 LevelManager::LevelManager(const string& levelFolder, const string& defaultLevel, FileIndex* objectIndex_, ContentHandler* content_)
 	: levelIndex(nullptr)
@@ -9,6 +10,10 @@ LevelManager::LevelManager(const string& levelFolder, const string& defaultLevel
 	, frozenLevel(nullptr)
 	, levelToLoad("")
 	, levelAction(LevelAction::None) {
+	if (GameContext::levelManager == nullptr)
+		GameContext::levelManager = this;
+	else DEBUG_ERROR("GameContext::levelManager was not null");
+
 	// create a level index based on the given folder
 	levelIndex = new FileIndex(levelFolder);
 
@@ -16,7 +21,8 @@ LevelManager::LevelManager(const string& levelFolder, const string& defaultLevel
 	if (levelIndex->Contains(defaultLevel)) {
 		json data;
 		levelIndex->GetJSON(&data, defaultLevel);
-		currentLevel = new Level(data, this, objectIndex);
+		currentLevel = new Level(this, objectIndex, content);
+		currentLevel->LoadData(data);
 	}
 }
 
@@ -33,6 +39,8 @@ LevelManager::~LevelManager() {
 
 	// clear any other objects
 	objectIndex = nullptr;
+	if (GameContext::levelManager == this)
+		GameContext::levelManager = nullptr;
 }
 
 void LevelManager::DoLevelAction() {
@@ -57,7 +65,8 @@ void LevelManager::DoLevelAction() {
 			// load new level
 			json data;
 			levelIndex->GetJSON(&data, levelToLoad);
-			currentLevel = new Level(data, this, objectIndex);
+			currentLevel = new Level(this, objectIndex, content);
+			currentLevel->LoadData(data);
 
 			// reset
 			ResetActions();
@@ -84,7 +93,8 @@ void LevelManager::DoLevelAction() {
 			// load new level
 			json data;
 			levelIndex->GetJSON(&data, levelToLoad);
-			currentLevel = new Level(data, this, objectIndex);
+			currentLevel = new Level(this, objectIndex, content);
+			currentLevel->LoadData(data);
 
 			// reset
 			ResetActions();
@@ -106,7 +116,8 @@ void LevelManager::DoLevelAction() {
 			// load new level
 			json data;
 			levelIndex->GetJSON(&data, levelToLoad);
-			frozenLevel = new Level(data, this, objectIndex);
+			frozenLevel = new Level(this, objectIndex, content);
+			frozenLevel->LoadData(data);
 
 			// reset
 			ResetActions();

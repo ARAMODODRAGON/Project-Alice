@@ -2,10 +2,7 @@
     "Objects": [
         { 
             "objectName": "Alice OW", 
-            "data": {
-                "name": "Alice 69420",
-                "position": { "x": 10, "y": 20 }
-            }
+            "data": { }
         }
     ]
 }

@@ -18,15 +18,17 @@ class Level {
 
 public:
 
-	Level(const json& data, LevelManager* levelManager_, FileIndex* objectIndex_ = nullptr, ContentHandler* content_ = nullptr);
+	Level(LevelManager* levelManager_, FileIndex* objectIndex_, ContentHandler* content_);
 	~Level();
 
 	// events
+	void LoadData(const json& data);
 	void Update();
 	void Draw();
 
 	// getters
 	RenderScene* GetRenderScene() const { return renderScene; }
+	ObjectFactory* GetFactory() const { return objFactory; }
 
 private:
 

@@ -147,11 +147,6 @@ void ObjectFactory::Add(Object* e) {
 	}
 	objects.push_back(PairType(e, false));
 	
-	// add the factory pointer
-	//type::get<Object>().get_property("factory").set_value(e, this);
-	e->factory = this;
-	e->level = level;
-
 	// call start
 	e->Start();
 }

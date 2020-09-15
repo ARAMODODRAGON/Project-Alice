@@ -1,8 +1,14 @@
 #include "Game.hpp"
 
-Game::Game() : window(nullptr), timer(nullptr), sysEvents(nullptr), isRunning(false), shouldQuit(false) { }
+Game::Game() : window(nullptr), timer(nullptr), sysEvents(nullptr), isRunning(false), shouldQuit(false) { 
+	// set this to the current game
+	GameContext::game = this;
+}
 
-Game::~Game() { }
+Game::~Game() { 
+	// unset this
+	GameContext::game = nullptr;
+}
 
 void Game::Run() {
 	if (isRunning) {

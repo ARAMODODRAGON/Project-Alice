@@ -8,7 +8,6 @@ RTTR_REGISTRATION {
 		.property("name", &Object::name)
 		.property("position", &Object::position)
 		.property("velocity", &Object::velocity)
-		.property("scale", &Object::scale)
 		.property("rotation", &Object::rotation)
 		.property("components", &Object::components);
 }
@@ -19,9 +18,19 @@ Object::Object()
 	, factory(nullptr)
 	, isActive(true)
 	, name("Object")
-	, rotation(0.0f) { }
+	, rotation(0.0f) { 
+	level = GameContext::GetLevel();
+	factory = level->GetFactory();
+}
 
-Object::~Object() { }
+Object::~Object() { 
+	// destroy the components
+	for (Component* c : components) {
+		c->OnDestroy();
+		delete c;
+	}
+	components.clear();
+}
 
 Object* Object::Make() {
 	if (factory)
@@ -50,6 +59,7 @@ void Object::DestroyComponent(Component* comp) {
 	// find the object and destroy immediately
 	for (auto it = components.begin(); it != components.end(); ++it) {
 		if ((*it) == comp) {
+			comp->OnDestroy();
 			delete comp;
 			components.erase(it);
 			return;

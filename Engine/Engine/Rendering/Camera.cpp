@@ -1,14 +1,21 @@
 #include "Camera.hpp"
 #include "../Core/Level.hpp"
 #include <glm/gtc/matrix_transform.hpp>
+#include "../Game.hpp"
+#undef GetObject
 
-Camera::Camera() {
-	GetObject()->GetLevel()->GetRenderScene()->AddCamera(this);
+void Camera::Start() {
+	rendScene = GetObject()->GetLevel()->GetRenderScene();
+	rendScene->AddCamera(this);
+	SetCameraSize(GameContext::game->GetWindow()->GetScreenSize());
 }
 
-Camera::~Camera() {
-	GetObject()->GetLevel()->GetRenderScene()->RemoveCamera(this);
+void Camera::OnDestroy() {
+	rendScene->RemoveCamera(this);
 }
+
+Camera::Camera() : rendScene(nullptr) { }
+Camera::~Camera() { }
 
 void Camera::UpdateView() {
 	// update the view

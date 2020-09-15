@@ -4,6 +4,7 @@
 #include "../General/Serialization.hpp"
 #include "ObjectFactory.hpp"
 #include "Component.hpp"
+#include "../Core/GameContext.hpp"
 
 class Level;
 
@@ -100,7 +101,9 @@ inline T* Object::AddComponent() {
 	components.push_back(comp);
 
 	// add object reference
-	type::get<Component>().get_property("object").set_value(comp, this);
+	Component* c = comp;
+	c->object = this;
+	c->Start();
 
 	// return
 	return comp;

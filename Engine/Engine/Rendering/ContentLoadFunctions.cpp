@@ -96,7 +96,7 @@ unsigned int LoadShader(const string& path) {
 
 	// check if the shader type is supported
 	GLuint shaderType = GetShaderType(path);
-	if (shaderType != -1) {
+	if (shaderType == -1) {
 		DEBUG_ERROR("Shader could not be loaded as its not a valid shader type: " + path);
 		return -1;
 	}
@@ -135,7 +135,8 @@ unsigned int LoadShaderProgram(const vector<string>& shaderPaths) {
 	// create shader
 	GLuint shaderProgram = glCreateProgram();
 
-	vector<GLuint> shaders(2);
+	vector<GLuint> shaders;
+	shaders.reserve(4);
 	for (const string& path : shaderPaths) {
 		// load the shader
 		GLuint shaderID = LoadShader(path);
@@ -165,7 +166,7 @@ unsigned int LoadShaderProgram(const vector<string>& shaderPaths) {
 		// get error message and print
 		GLchar infoLog[512];
 		glGetProgramInfoLog(shaderProgram, 512, 0, infoLog);
-		DEBUG_LOG("Failed to link program: " + string(infoLog));
+		DEBUG_ERROR("Failed to link program: " + string(infoLog));
 		// delete shaders/program
 		for (GLuint id : shaders) glDeleteShader(id);
 		glDeleteProgram(shaderProgram);

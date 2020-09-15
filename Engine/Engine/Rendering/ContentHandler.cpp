@@ -70,15 +70,20 @@ Shader ContentHandler::LoadShader(const string& shaderName) {
 	// get all shader paths
 	json j;
 	shaderIndex.GetJSON(&j, shaderName);
-	if (j.contains("shaders") && j["shaders"].is_array()) {
-		vector<string> shaderPaths(3);
-		for (size_t i = 0; i < j.size(); ++i) {
-			if (j[i].is_string()) {
-				shaderPaths.push_back(j[i].get<string>());
-			}
-		}
+	if (j.contains("shaders")) {
+		json& arr = j["shaders"];
+		if (arr.is_array()) {
 
-		shaderID = ::LoadShaderProgram(shaderPaths);
+			vector<string> shaderPaths;
+			shaderPaths.reserve(4);
+			for (size_t i = 0; i < arr.size(); ++i) {
+				if (arr[i].is_string()) {
+					shaderPaths.push_back(arr[i].get<string>());
+				}
+			}
+
+			shaderID = ::LoadShaderProgram(shaderPaths);
+		}
 	}
 
 	// check if it failed
