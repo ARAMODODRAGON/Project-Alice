@@ -1,3 +1,5 @@
 {
-    "Test 0": "Resources/Textures/TestSprite-1.png"
+    "Test 0": "Resources/Textures/TestSprite-1.png",
+    "Flashing Grey Orb": "Resources/Textures/Grey Orb Flashing.png",
+    "Test Character": "Resources/Textures/Other Test Chara.png"
 }

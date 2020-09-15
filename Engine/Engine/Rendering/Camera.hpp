@@ -1,6 +1,7 @@
 #ifndef _RENDERING_CAMERA_HPP
 #define _RENDERING_CAMERA_HPP
 #include "../Objects/Object.hpp"
+#include "Rect.hpp"
 #include "RenderScene.hpp"
 
 class RenderScene;

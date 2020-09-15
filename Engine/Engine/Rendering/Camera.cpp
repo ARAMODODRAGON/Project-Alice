@@ -19,9 +19,11 @@ Camera::~Camera() { }
 
 void Camera::UpdateView() {
 	// update the view
-	view = glm::translate(mat4(), vec3(GetObject()->GetPosition(), 0.0f));
+	view = glm::translate(mat4(), -vec3(GetObject()->GetPosition(), 0.0f));
+	//DEBUG_LOG("position is: " + VTOS(GetObject()->GetPosition()));
 
 	// update the ortho
 	vec2 halfsize = size * 0.5f;
 	proj = glm::ortho(-halfsize.x, halfsize.x, -halfsize.y, halfsize.y);
+
 }

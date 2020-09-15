@@ -4,7 +4,7 @@
 
 Texture::Texture() : data(nullptr) { }
 
-Texture::Texture(unsigned int id_, const uvec2& size_) : data(nullptr) {
+Texture::Texture(unsigned int id_, const vec2& size_) : data(nullptr) {
 	data = new Data();
 	data->id = id_;
 	data->size = size_;

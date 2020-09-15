@@ -5,8 +5,11 @@
 class OWPlayer : public Object {
 
 	Sprite* sprite;
+	Camera* cam;
 	float colorMix;
 	bool increaseMix;
+	unsigned int animTimer;
+	bool facingUp : 1;
 
 public:
 
@@ -15,6 +18,7 @@ public:
 
 	void Start() override;
 	void Update() override;
+	void LateUpdate() override;
 
 	RTTR_ENABLE(Object)
 };

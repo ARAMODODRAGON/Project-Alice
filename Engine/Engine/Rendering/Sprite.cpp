@@ -38,9 +38,6 @@ Sprite::Sprite()
 	indicies[0] = uvec3(0, 1, 2); // first tri
 	indicies[1] = uvec3(3, 2, 1); // second tri
 
-	// default texture size
-	drawSize = vec2(1.0f);
-
 	// initialize Vertex Array Object
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -77,8 +74,11 @@ Sprite::~Sprite() {
 
 void Sprite::LoadTexture(const string& textureName) {
 	texture = rendScene->GetContent()->LoadTexture(textureName);
-	SetTextureRect(Rect(vec2(0.0f), texture.GetSize()));
-	//SetTextureRect(Rect(vec2(0.0f), vec2(1.0f)));
+	tilingSize = texture.GetSize();
+	tilingOffset = vec2(0.0f);
+	tilingMargin = vec2(0.0f);
+	tilingIndex = 0;
+	UpdateVertexArray();
 }
 void Sprite::LoadShader(const string& shaderName) {
 	shader = rendScene->GetContent()->LoadShader(shaderName);
@@ -88,29 +88,39 @@ void Sprite::LoadShader(const string& shaderName) {
 	projLoc = glGetUniformLocation(shader, "projMat");
 	modelLoc = glGetUniformLocation(shader, "modelMat");
 	colorLoc = glGetUniformLocation(shader, "color");
-}
-
-Rect Sprite::GetTextureRect() const {
-	Rect rect;
-	rect.min = verticies[0].uvCoord * vec2(texture.GetSize()); // bottom left
-	rect.max = verticies[3].uvCoord * vec2(texture.GetSize()); // top right
-	return rect;
-}
-void Sprite::SetTextureRect(Rect rect) {
-	// normalize the rect
-	rect.min /= texture.GetSize();
-	rect.max /= texture.GetSize();
-
-	// set the coords
-	verticies[0].uvCoord = rect.min;						// bottom left
-	verticies[1].uvCoord = vec2(rect.min.x, rect.max.y);	// top left
-	verticies[2].uvCoord = vec2(rect.max.x, rect.min.y);	// bottom right
-	verticies[3].uvCoord = rect.max;						// top right
-	drawSize = rect.max - rect.min;
-	UpdateVertexArray();
+	//DEBUG_LOG("View Location is: " + VTOS(viewLoc));
 }
 
 void Sprite::UpdateVertexArray() {
+	// first calculate the new rect
+	Rect rect;
+	vec2 dist = tilingSize + tilingMargin; // dist between rects
+	int columns = static_cast<int>((texture.GetSize().x - tilingOffset.x) / dist.x); // number of columns
+
+	// special case where the texture doesnt load so it cant calculate any columns
+	if (columns == 0) return;
+
+	rect.min.x = (tilingIndex % columns) * dist.x + tilingOffset.x; // % returns remainder. remainder == column position
+	rect.min.y = (tilingIndex / columns) * dist.y + tilingOffset.y; // / returns the row
+	rect.max = rect.min + tilingSize;
+
+	// normalize rect
+	vec2 size = texture.GetSize();
+	if (size.x != 0.0f && size.y != 0.0f) {
+		rect.min /= size;
+		rect.max /= size;
+	} else {
+		rect.min = vec2(0.0f);
+		rect.max = vec2(1.0f);
+	}
+
+	// update the vertex array. the rect must be flipped vertically since the texture 0,0 is the top left
+	verticies[0].uvCoord = vec2(rect.min.x, rect.max.y);	// bottom left
+	verticies[1].uvCoord = rect.min;						// top left
+	verticies[2].uvCoord = rect.max;						// bottom right
+	verticies[3].uvCoord = vec2(rect.max.x, rect.min.y);	// top right
+
+	// update the VAO
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * 4, &verticies);
@@ -122,6 +132,18 @@ void Sprite::Draw(const Camera& camera) {
 	// quit
 	if (!GetIsActive() || color.a == 0.0f) return;
 
+	// create the model matrix
+	mat4 model;
+	// pivot
+	model = glm::translate(model, -vec3(pivot / tilingSize, 0.0f));
+	// scale
+	model = glm::scale(model, vec3(scale * glm::normalize(tilingSize), 1.0f));
+	// rotation
+	model = glm::rotate(model, rotation, vec3(0.0f, 0.0f, 1.0f));
+	// position
+	vec3 position = vec3(GetObject()->GetPosition() + offset, layer);
+	model = glm::translate(model, position);
+
 	// bind vertex array, shader, and texture
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
@@ -129,22 +151,6 @@ void Sprite::Draw(const Camera& camera) {
 	glUseProgram(shader);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
-
-	// create the model matrix
-	mat4 model;
-
-	// pivot
-	model = glm::translate(model, vec3(pivot * drawSize, 0.0f));
-
-	// scale
-	model = glm::scale(model, vec3(scale, 1.0f));
-
-	// rotation
-	model = glm::rotate(model, rotation, vec3(0.0f, 0.0f, 1.0f));
-
-	// position
-	vec3 position = vec3(GetObject()->GetPosition() + offset, layer);
-	model = glm::translate(model, position);
 
 	// set uniforms
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera.GetViewMat()));
