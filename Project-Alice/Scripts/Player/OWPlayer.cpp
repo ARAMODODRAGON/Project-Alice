@@ -29,8 +29,8 @@ void OWPlayer::Start() {
 	sprite->SetTilingMargin(vec2(7.0f, 7.0f));
 
 	// create a camera
-	cam = Make<Object>()->AddComponent<Camera>();
-	vec2 size = GameContext::game->GetWindow()->GetScreenSize() / 4u;
+	cam = AddComponent<Camera>();
+	vec2 size = GameContext::game->GetWindow()->GetScreenSize() / 65u;
 	cam->SetCameraSize(size);
 }
 
