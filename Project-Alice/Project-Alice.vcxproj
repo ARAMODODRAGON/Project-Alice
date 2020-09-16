@@ -70,8 +70,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\GameDev\boost_1_72_0;C:\GameDev\SDL\include;C:\GameDev\OpenGL\include;C:\GameDev\glm-0.9.9.6;C:\GameDev\nlohmann-json\include;C:\GameDev\rttr-0.9.5\install\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\GameDev\boost_1_72_0\stage\lib;C:\GameDev\rttr-0.9.5\install\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\GameDev\SDL\include;C:\GameDev\OpenGL\include;C:\GameDev\nlohmann-json\include;C:\GameDev\rttr-0.9.5\install\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\GameDev\rttr-0.9.5\install\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>C:\GameDev\boost_1_72_0;C:\GameDev\SDL\include;C:\GameDev\OpenGL\include;C:\GameDev\glm-0.9.9.6;C:\GameDev\nlohmann-json\include;C:\GameDev\rttr-0.9.5\install\include;$(IncludePath)</IncludePath>
@@ -87,7 +87,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Documents\~~~Project Alice\Project-Alice\Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <UseFullPaths>false</UseFullPaths>
     </ClCompile>
     <Link>
