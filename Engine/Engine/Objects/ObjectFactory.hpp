@@ -14,7 +14,7 @@ class ObjectFactory {
 	// an object with a bool. this bool is whether or not the object should destroy
 	using PairType = pair<Object*, bool>;
 	// all the entities
-	vector<PairType> objects;
+	vector<PairType> objects; // TODO: seperate array for new objects, these then get pushed into this array during cleanup
 
 	// an object index & level
 	Level* level;

@@ -2,7 +2,11 @@
     "Objects": [
         { 
             "objectName": "Alice OW", 
-            "data": { }
+            "data": { 
+                "shootColor": { "x": 0, "y": 0, "z": 1, "w": 1},
+                "shootSpeed": 100,
+                "shootDestroyTimer": 60
+            }
         }
     ]
 }

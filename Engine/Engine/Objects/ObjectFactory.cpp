@@ -21,15 +21,15 @@ ObjectFactory::~ObjectFactory() {
 }
 
 void ObjectFactory::Update() {
-	for (PairType& ec : objects) {
-		if (ec.second || !ec.first->GetIsActive()) continue;
-		ec.first->Update();
+	for (auto it = objects.begin(); it != objects.end(); ++it) {
+		if (it->second || !it->first->GetIsActive()) continue;
+		it->first->Update();
 	}
 }
 void ObjectFactory::LateUpdate() {
-	for (PairType& ec : objects) {
-		if (ec.second || !ec.first->GetIsActive()) continue;
-		ec.first->LateUpdate();
+	for (auto it = objects.begin(); it != objects.end(); ++it) {
+		if (it->second || !it->first->GetIsActive()) continue;
+		it->first->LateUpdate();
 	}
 }
 
@@ -40,6 +40,8 @@ void ObjectFactory::Cleanup() {
 			it->first->OnDestroy();
 			delete it->first;
 			it = objects.erase(it);
+			// if erase returns an iterator at the end of the array then it quits
+			if (it == objects.end()) break;
 		}
 	}
 }

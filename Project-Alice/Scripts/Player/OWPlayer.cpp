@@ -1,9 +1,13 @@
 #include "OWPlayer.hpp"
 #include <Engine/Common.hpp>
+#include "../Projectile.hpp"
 
 RTTR_REGISTRATION {
 	registration::class_<OWPlayer>("OWPlayer")
-		.public_object_constructor;
+		.public_object_constructor
+		.property("shootColor", &OWPlayer::shootColor)
+		.property("shootSpeed", &OWPlayer::shootSpeed)
+		.property("shootDestroyTimer", &OWPlayer::shootDestroyTimer);
 }
 
 OWPlayer::OWPlayer()
@@ -12,7 +16,9 @@ OWPlayer::OWPlayer()
 	, colorMix(0.0f)
 	, increaseMix(true)
 	, animTimer(0)
-	, facingUp(false) { }
+	, facing(Facing::Down)
+	, shootColor(1.0f)
+	, shootSpeed(1.0f) { }
 
 OWPlayer::~OWPlayer() { }
 
@@ -27,9 +33,10 @@ void OWPlayer::Start() {
 	sprite->SetTilingSize(vec2(17.0f, 29.0f));
 	sprite->SetTilingOffset(vec2(4.0f, 7.0f));
 	sprite->SetTilingMargin(vec2(7.0f, 7.0f));
+	sprite->SetLayer(-2);
 
 	// create a camera
-	cam = AddComponent<Camera>();
+	cam = Make<Object>()->AddComponent<Camera>();
 	vec2 size = GameContext::game->GetWindow()->GetScreenSize() / 65u;
 	cam->SetCameraSize(size);
 }
@@ -40,10 +47,31 @@ void OWPlayer::Update() {
 	const static float move_delta = delta * 7.0f;
 	//const float slow_value = (Keyboard::GetKey(KeyCode::LeftShift) ? 0.4f : 1.0f);
 
-	if (Keyboard::GetKey(KeyCode::ArrowUp)) velocity.y += 1.0f;
-	if (Keyboard::GetKey(KeyCode::ArrowDown)) velocity.y -= 1.0f;
-	if (Keyboard::GetKey(KeyCode::ArrowRight)) velocity.x += 1.0f;
-	if (Keyboard::GetKey(KeyCode::ArrowLeft)) velocity.x -= 1.0f;
+	const Button UP = Keyboard::GetKey(KeyCode::ArrowUp);
+	const Button DOWN = Keyboard::GetKey(KeyCode::ArrowDown);
+	const Button RIGHT = Keyboard::GetKey(KeyCode::ArrowRight);
+	const Button LEFT = Keyboard::GetKey(KeyCode::ArrowLeft);
+
+	if (UP != DOWN) {
+		if (UP) {
+			facing = Facing::Up;
+			velocity.y += 1.0f;
+		}
+		if (DOWN) {
+			facing = Facing::Down;
+			velocity.y -= 1.0f;
+		}
+	}
+	if (LEFT != RIGHT) {
+		if (RIGHT) {
+			facing = Facing::Right;
+			velocity.x += 1.0f;
+		}
+		if (LEFT) {
+			facing = Facing::Left;
+			velocity.x -= 1.0f;
+		}
+	}
 
 	if (glm::length(velocity) > 0.0f)
 		SetPosition(GetPosition() + glm::normalize(velocity) * move_delta);
@@ -59,35 +87,53 @@ void OWPlayer::Update() {
 		cam->SetCameraSize(size);
 	}
 
-	//const static float color_delta = delta * 0.33f;
-	//if (increaseMix) {
-	//	colorMix += color_delta;
-	//	if (colorMix > 1.0f) {
-	//		colorMix = 1.0f;
-	//		increaseMix = false;
-	//	}
-	//} else {
-	//	colorMix -= color_delta;
-	//	if (colorMix < 0.0f) {
-	//		colorMix = 0.0f;
-	//		increaseMix = true;
-	//	}
-	//}
-	//
-	//#define BRIGHT 0.1f
-	//const static vec4 primary_color = vec4(1.0f, BRIGHT, BRIGHT, 1.0f);
-	//const static vec4 secondary_color = vec4(BRIGHT, BRIGHT, 1.0f, 1.0f);
-	//sprite->SetColor(glm::mix(primary_color, secondary_color, colorMix));
+	if (Keyboard::GetKey(KeyCode::KeyC).Pressed()) {
+		// create a projectile
+		if (Projectile* proj = Make<Projectile>()) {
+			// set sprite properties
+			proj->GetSprite()->SetColor(shootColor);
+			proj->GetSprite()->SetLayer(1);
+
+			// set physics
+			proj->SetPosition(GetPosition());
+			proj->SetDestroyTime(shootDestroyTimer);
+			switch (facing) {
+				case OWPlayer::Facing::Right:
+					proj->SetVelocity(vec2(1.0f, 0.0f) * shootSpeed);
+					break;
+				case OWPlayer::Facing::Up:
+					proj->SetVelocity(vec2(0.0f, 1.0f) * shootSpeed);
+					break;
+				case OWPlayer::Facing::Down:
+					proj->SetVelocity(vec2(0.0f, -1.0f) * shootSpeed);
+					break;
+				case OWPlayer::Facing::Left:
+					proj->SetVelocity(vec2(-1.0f, 0.0f) * shootSpeed);
+					break;
+				default: break;
+			}
+		}
+	}
 }
 
 void OWPlayer::LateUpdate() {
 	vec2 velocity = GetVelocity();
 
 	if (velocity.x == 0.0f && velocity.y == 0.0f) {
-		if (facingUp) {
-			sprite->SetTilingIndex(10);
-		} else {
-			sprite->SetTilingIndex(1);
+		switch (facing) {
+			case OWPlayer::Facing::Right:
+				sprite->SetTilingIndex(7);
+				break;
+			case OWPlayer::Facing::Up:
+				sprite->SetTilingIndex(10);
+				break;
+			case OWPlayer::Facing::Down:
+				sprite->SetTilingIndex(1);
+				break;
+			case OWPlayer::Facing::Left:
+				sprite->SetTilingIndex(4);
+				break;
+			default: break;
 		}
 		animTimer = 0;
 	} else {
@@ -98,10 +144,8 @@ void OWPlayer::LateUpdate() {
 		} else if (velocity.x > 0.0f) {
 			sprite->SetTilingIndex(FRAME_TIMER % 3 + 6);
 		} else if (velocity.y > 0.0f) {
-			facingUp = true;
 			sprite->SetTilingIndex(FRAME_TIMER % 3 + 9);
 		} else if (velocity.y < 0.0f) {
-			facingUp = false;
 			sprite->SetTilingIndex(FRAME_TIMER % 3);
 		}
 	}
