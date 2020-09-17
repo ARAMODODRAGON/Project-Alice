@@ -18,12 +18,8 @@ LevelManager::LevelManager(const string& levelFolder, const string& defaultLevel
 	levelIndex = new FileIndex(levelFolder);
 
 	// now load the first level
-	if (levelIndex->Contains(defaultLevel)) {
-		json data;
-		levelIndex->GetJSON(&data, defaultLevel);
-		currentLevel = new Level(this, objectIndex, content);
-		currentLevel->LoadData(data);
-	}
+	if (levelIndex->Contains(defaultLevel))
+		currentLevel = MakeLevel(defaultLevel);
 }
 
 LevelManager::~LevelManager() {
@@ -63,10 +59,7 @@ void LevelManager::DoLevelAction() {
 			delete currentLevel;
 
 			// load new level
-			json data;
-			levelIndex->GetJSON(&data, levelToLoad);
-			currentLevel = new Level(this, objectIndex, content);
-			currentLevel->LoadData(data);
+			currentLevel = MakeLevel(levelToLoad);
 
 			// reset
 			ResetActions();
@@ -90,11 +83,8 @@ void LevelManager::DoLevelAction() {
 			// unload current
 			delete currentLevel;
 
-			// load new level
-			json data;
-			levelIndex->GetJSON(&data, levelToLoad);
-			currentLevel = new Level(this, objectIndex, content);
-			currentLevel->LoadData(data);
+			// load new level 
+			currentLevel = MakeLevel(levelToLoad);
 
 			// reset
 			ResetActions();
@@ -112,12 +102,10 @@ void LevelManager::DoLevelAction() {
 
 			// delete frozen level
 			if (frozenLevel) delete frozenLevel;
+			frozenLevel = nullptr;
 
-			// load new level
-			json data;
-			levelIndex->GetJSON(&data, levelToLoad);
-			frozenLevel = new Level(this, objectIndex, content);
-			frozenLevel->LoadData(data);
+			// load new level 
+			frozenLevel = MakeLevel(levelToLoad);
 
 			// reset
 			ResetActions();
@@ -135,6 +123,7 @@ void LevelManager::DoLevelAction() {
 
 			// delete
 			delete frozenLevel; // check was made before reaching this case here
+			frozenLevel = nullptr;
 
 			// reset
 			ResetActions();
@@ -184,6 +173,7 @@ void LevelManager::DoLevelAction() {
 	}
 }
 
+#pragma region Level Loading
 
 void LevelManager::LoadLevel(const string& level) {
 	levelAction = LevelAction::Replace;
@@ -218,4 +208,20 @@ void LevelManager::UnloadAndSwap() {
 void LevelManager::ResetActions() {
 	levelAction = LevelAction::None;
 	levelToLoad = "";
+}
+
+#pragma endregion
+
+Level* LevelManager::MakeLevel(const string& levelToLoad_) {
+	// load data
+	json data;
+	levelIndex->GetJSON(&data, levelToLoad_);
+
+	// create level
+	Level* level = new Level(this, objectIndex, content);
+	level->LoadData(data);
+
+	// log and return
+	DEBUG_LOG("Loaded level \"" + levelToLoad_ + "\"");
+	return level;
 }

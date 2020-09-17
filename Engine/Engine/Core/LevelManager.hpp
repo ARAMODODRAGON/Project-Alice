@@ -62,6 +62,7 @@ private:
 
 	// helper functions
 	void ResetActions();
+	Level* MakeLevel(const string& levelToLoad_);
 
 };
 

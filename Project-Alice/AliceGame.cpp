@@ -21,7 +21,7 @@ bool AliceGame::Start() {
 	content = new ContentHandler("Resources/Textures", "Resources/Shaders");
 
 	// create a level manager
-	levelManager = new LevelManager("Resources/Levels", "test_0", objIndex, content);
+	levelManager = new LevelManager("Resources/Levels", "battle_test_0", objIndex, content);
 
 	return true;
 }
