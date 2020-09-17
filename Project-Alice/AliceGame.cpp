@@ -15,13 +15,13 @@ bool AliceGame::Start() {
 	if (!Game::Start()) return false;
 
 	// initialize the indexes
-	objIndex = new FileIndex("ObjectAssets/Objects");
+	objIndex = new FileIndex("Resources/Objects");
 	
 	// initialize the content handler
-	content = new ContentHandler("Resources/Textures", "ObjectAssets/Shaders");
+	content = new ContentHandler("Resources/Textures", "Resources/Shaders");
 
 	// create a level manager
-	levelManager = new LevelManager("ObjectAssets/Levels", "test_0", objIndex, content);
+	levelManager = new LevelManager("Resources/Levels", "test_0", objIndex, content);
 
 	return true;
 }

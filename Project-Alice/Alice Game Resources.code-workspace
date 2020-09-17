@@ -1,6 +1,5 @@
 {
 	"folders": [
-		{ "path": "./ObjectAssets" },
 		{ "path": "./Resources" },
 		{ "path": "./Logs" }
 	],
@@ -10,6 +9,10 @@
 				"strings": true,
 			},
 			"editor.suggest.insertMode": "replace"
+		},
+		"files.associations": {
+			"*.object": "json",
+			"*.level": "json"
 		}
 	}
 }

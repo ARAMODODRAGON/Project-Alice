@@ -20,6 +20,7 @@ public:
 	bool GetJSON(json* j, const string& name);
 	bool Contains(const string& name);
 	string GetPath(const string& name);
+	string GetRelativePath(const string& name);
 
 };
 

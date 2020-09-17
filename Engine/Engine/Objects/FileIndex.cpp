@@ -77,6 +77,12 @@ bool FileIndex::Contains(const string& name) {
 
 string FileIndex::GetPath(const string& name) {
 	if (index.find(name) != index.end())
-		return index[name];
+		return folder + "/" + index[name];
 	else return string();
+}
+
+string FileIndex::GetRelativePath(const string& name) {
+	if (index.find(name) != index.end())
+		return index[name];
+	return string();
 }
