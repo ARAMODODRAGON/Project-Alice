@@ -73,7 +73,7 @@ void BattleManager::RemoveEnemy(BTEnemy* enemy) {
 
 #pragma endregion
 
-#pragma region Getters
+#pragma region Getters & Setters
 
 size_t BattleManager::GetPlayerCount() {
 	return Get()->players.size();
@@ -89,6 +89,14 @@ size_t BattleManager::GetEnemyCount() {
 
 BTEnemy* BattleManager::GetEnemy(size_t index) {
 	return Get()->enemies[index];
+}
+
+Rect BattleManager::GetBattleArea() {
+	return Get()->battleArea;
+}
+
+void BattleManager::SetBattleArea(const Rect& battleArea_) { 
+	Get()->battleArea = battleArea_;
 }
 
 #pragma endregion
