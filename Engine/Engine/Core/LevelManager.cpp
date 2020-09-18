@@ -264,12 +264,12 @@ void LevelManager::MakeLevel(const string& levelToLoad_, bool loadAsCurrent) {
 	if (loadAsCurrent) {
 		currentLevel = new Level(objectIndex);
 		currentLevel->Init(data);
+		DEBUG_LOG("Loaded level \"" + levelToLoad_ + "\" as primary");
 	} else {
 		frozenLevel = new Level(objectIndex);
 		frozenLevel->Init(data);
+		DEBUG_LOG("Loaded level \"" + levelToLoad_ + "\" as secondary");
 	}
 
-	// log 
-	DEBUG_LOG("Loaded level \"" + levelToLoad_ + "\"");
 
 }

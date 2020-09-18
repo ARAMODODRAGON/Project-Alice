@@ -18,7 +18,7 @@ bool AliceGame::Init() {
 	// initialize the content handler
 	ContentHandler::Init("Resources/Textures", "Resources/Shaders");
 	// create a level manager
-	LevelManager::Init("Resources/Levels", "test_0", objIndex);
+	LevelManager::Init("Resources/Levels", "battle_test_0", objIndex);
 
 	return true;
 }
