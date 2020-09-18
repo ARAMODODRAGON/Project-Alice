@@ -2,25 +2,30 @@
 #include <SDL_image.h>
 #include <glew.h>
 #include "ContentLoadFunctions.hpp"
+#include "../Core/Debugger.hpp"
 
-ContentHandler::ContentHandler(const string& textureIndexPath_, const string& shaderIndexPath_)
-	: textureIndex(textureIndexPath_), shaderIndex(shaderIndexPath_) { }
+ContentHandler::ContentHandler()
+	: textureIndex(nullptr), shaderIndex(nullptr) { }
 
-ContentHandler::~ContentHandler() {
-	// delete textures
-	for (TexturePairType& tp : textures) {
-		GLuint id = tp.second;
-		glDeleteTextures(1, &id);
-	}
-	textures.clear();
-
-	// delete shaders
-	for (ShaderPairType& sp : shaders)
-		glDeleteProgram(sp.second);
-	shaders.clear();
+ContentHandler::~ContentHandler() { 
+	if (textureIndex) delete textureIndex;
+	textureIndex = nullptr; 
+	if (shaderIndex) delete shaderIndex;
+	shaderIndex = nullptr;
 }
 
-void ContentHandler::CleanUp() {
+void ContentHandler::Init(const string& textureIndexPath_, const string& shaderIndexPath_) {
+	Get()->textureIndex = new FileIndex(textureIndexPath_);
+	Get()->shaderIndex = new FileIndex(shaderIndexPath_);
+}
+
+void ContentHandler::Clean() {
+	if (Get()->textureIndex == Get()->shaderIndex) {
+		DEBUG_ERROR("ContentHandler has not been initialized");
+		return;
+	}
+
+	auto& textures = Get()->textures;
 	// delete textures
 	for (auto it = textures.begin(); it != textures.end(); ++it) {
 		if (it->second.GetRefCount() == 1) {
@@ -30,6 +35,7 @@ void ContentHandler::CleanUp() {
 		}
 	}
 
+	auto& shaders = Get()->shaders;
 	// delete shaders
 	for (auto it = shaders.begin(); it != shaders.end(); ++it) {
 		if (it->second.GetRefCount() == 1) {
@@ -39,13 +45,41 @@ void ContentHandler::CleanUp() {
 	}
 }
 
+void ContentHandler::Exit() {
+	if (Get()->textureIndex == Get()->shaderIndex) {
+		DEBUG_ERROR("ContentHandler has not been initialized");
+		return;
+	}
+
+	auto& textures = Get()->textures;
+	// delete textures
+	for (TexturePairType& tp : textures) {
+		GLuint id = tp.second;
+		glDeleteTextures(1, &id);
+	}
+	textures.clear();
+
+	auto& shaders = Get()->shaders;
+	// delete shaders
+	for (ShaderPairType& sp : shaders)
+		glDeleteProgram(sp.second);
+	shaders.clear();
+}
+
 Texture ContentHandler::LoadTexture(const string& textureName) {
+	if (Get()->textureIndex == Get()->shaderIndex) {
+		DEBUG_ERROR("ContentHandler has not been initialized");
+		return Texture();
+	}
+	auto& textures = Get()->textures;
+	auto* textureIndex = Get()->textureIndex;
+
 	// first check if the texture is already loaded
 	if (textures.find(textureName) != textures.end())
 		return textures[textureName];
 
 	// get the path
-	string path = textureIndex.GetPath(textureName);
+	string path = textureIndex->GetPath(textureName);
 
 	// load the texture
 	uvec2 size;
@@ -61,6 +95,13 @@ Texture ContentHandler::LoadTexture(const string& textureName) {
 }
 
 Shader ContentHandler::LoadShader(const string& shaderName) {
+	if (Get()->textureIndex == Get()->shaderIndex) {
+		DEBUG_ERROR("ContentHandler has not been initialized");
+		return Shader();
+	}
+	auto& shaders = Get()->shaders;
+	auto* shaderIndex = Get()->shaderIndex;
+
 	// check if the shader is already loaded
 	if (shaders.find(shaderName) != shaders.end())
 		return shaders[shaderName];
@@ -69,7 +110,7 @@ Shader ContentHandler::LoadShader(const string& shaderName) {
 
 	// get all shader paths
 	json j;
-	shaderIndex.GetJSON(&j, shaderName);
+	shaderIndex->GetJSON(&j, shaderName);
 	if (j.contains("shaders")) {
 		json& arr = j["shaders"];
 		if (arr.is_array()) {

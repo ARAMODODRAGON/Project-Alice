@@ -9,8 +9,6 @@ class AliceGame : public Game {
 
 	// objects & level manager
 	FileIndex* objIndex;
-	ContentHandler* content;
-	LevelManager* levelManager;
 
 public:
 
@@ -20,7 +18,7 @@ public:
 private:
 
 	// events
-	bool Start() override;
+	bool Init() override;
 	void Update() override;
 	void Draw() override;
 	bool Exit() override;

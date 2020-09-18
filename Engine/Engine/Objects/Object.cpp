@@ -1,4 +1,5 @@
 #include "Object.hpp"
+#include "../Core/Level.hpp"
 
 RTTR_REGISTRATION {
 	registration::class_<Object>("Object")
@@ -19,7 +20,7 @@ Object::Object()
 	, isActive(true)
 	, name("Object")
 	, rotation(0.0f) { 
-	level = GameContext::GetLevel();
+	level = LevelManager::GetLevel();
 	factory = level->GetFactory();
 }
 

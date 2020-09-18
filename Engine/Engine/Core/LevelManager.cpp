@@ -1,26 +1,13 @@
 #include "LevelManager.hpp"
 #include "Level.hpp"
-#include "GameContext.hpp"
 
-LevelManager::LevelManager(const string& levelFolder, const string& defaultLevel, FileIndex* objectIndex_, ContentHandler* content_)
+LevelManager::LevelManager()
 	: levelIndex(nullptr)
-	, objectIndex(objectIndex_)
-	, content(content_)
+	, objectIndex(nullptr)
 	, currentLevel(nullptr)
 	, frozenLevel(nullptr)
 	, levelToLoad("")
-	, levelAction(LevelAction::None) {
-	if (GameContext::levelManager == nullptr)
-		GameContext::levelManager = this;
-	else DEBUG_ERROR("GameContext::levelManager was not null");
-
-	// create a level index based on the given folder
-	levelIndex = new FileIndex(levelFolder);
-
-	// now load the first level
-	if (levelIndex->Contains(defaultLevel))
-		currentLevel = MakeLevel(defaultLevel);
-}
+	, levelAction(LevelAction::None) { }
 
 LevelManager::~LevelManager() {
 	// delete levels
@@ -35,15 +22,71 @@ LevelManager::~LevelManager() {
 
 	// clear any other objects
 	objectIndex = nullptr;
-	if (GameContext::levelManager == this)
-		GameContext::levelManager = nullptr;
+}
+
+void LevelManager::Init(const string& levelFolder, const string& defaultLevel, FileIndex* objectIndex_) {
+	auto* inst = Get();
+	// set object index
+	inst->objectIndex = objectIndex_;
+
+	// create a level index based on the given folder
+	inst->levelIndex = new FileIndex(levelFolder);
+
+	// now load the first level
+	if (inst->levelIndex->Contains(defaultLevel))
+		inst->MakeLevel(defaultLevel);
+}
+
+void LevelManager::Update() {
+	auto* inst = Get();
+	if (inst->currentLevel)
+		inst->currentLevel->Update();
+	else {
+		DEBUG_ERROR("levelmanager has not been initialized correctly!");
+	}
+}
+
+void LevelManager::LateUpdate() {
+	auto* inst = Get();
+	if (inst->currentLevel)
+		inst->currentLevel->LateUpdate();
+	else {
+		DEBUG_ERROR("levelmanager has not been initialized correctly!");
+	}
+}
+
+void LevelManager::Draw() {
+	auto* inst = Get();
+	if (inst->currentLevel)
+		inst->currentLevel->Draw();
+	else {
+		DEBUG_ERROR("levelmanager has not been initialized correctly!");
+	}
+}
+
+void LevelManager::Clean() {
+	auto* inst = Get();
+	if (inst->currentLevel) {
+		// first is a level action
+		inst->DoLevelAction();
+
+		// now clean level
+		inst->currentLevel->Clean();
+	} else {
+		DEBUG_ERROR("levelmanager has not been initialized correctly!");
+	}
+}
+
+void LevelManager::Exit() {
+	auto* inst = Get();
+	if (inst->currentLevel) {
+		inst->currentLevel->Exit();
+		if (inst->frozenLevel)
+			inst->frozenLevel->Exit();
+	}
 }
 
 void LevelManager::DoLevelAction() {
-	if (!currentLevel) {
-		DEBUG_ERROR("No level currently loaded and so no actions can be taken");
-	}
-
 	switch (levelAction) {
 		case LevelAction::Replace:
 		{
@@ -59,7 +102,7 @@ void LevelManager::DoLevelAction() {
 			delete currentLevel;
 
 			// load new level
-			currentLevel = MakeLevel(levelToLoad);
+			MakeLevel(levelToLoad);
 
 			// reset
 			ResetActions();
@@ -84,7 +127,7 @@ void LevelManager::DoLevelAction() {
 			delete currentLevel;
 
 			// load new level 
-			currentLevel = MakeLevel(levelToLoad);
+			MakeLevel(levelToLoad);
 
 			// reset
 			ResetActions();
@@ -105,7 +148,7 @@ void LevelManager::DoLevelAction() {
 			frozenLevel = nullptr;
 
 			// load new level 
-			frozenLevel = MakeLevel(levelToLoad);
+			MakeLevel(levelToLoad, false);
 
 			// reset
 			ResetActions();
@@ -176,33 +219,33 @@ void LevelManager::DoLevelAction() {
 #pragma region Level Loading
 
 void LevelManager::LoadLevel(const string& level) {
-	levelAction = LevelAction::Replace;
-	levelToLoad = level;
+	Get()->levelAction = LevelAction::Replace;
+	Get()->levelToLoad = level;
 }
 
 void LevelManager::SwapAndLoadLevel(const string& level) {
-	levelAction = LevelAction::SwapThenReplace;
-	levelToLoad = level;
+	Get()->levelAction = LevelAction::SwapThenReplace;
+	Get()->levelToLoad = level;
 }
 
 void LevelManager::LoadFrozen(const string& level) {
-	levelAction = LevelAction::ReplaceFrozen;
-	levelToLoad = level;
+	Get()->levelAction = LevelAction::ReplaceFrozen;
+	Get()->levelToLoad = level;
 }
 
 void LevelManager::UnloadFrozen() {
-	levelAction = LevelAction::DeleteFrozen;
-	levelToLoad = "";
+	Get()->levelAction = LevelAction::DeleteFrozen;
+	Get()->levelToLoad = "";
 }
 
 void LevelManager::Swap() {
-	levelAction = LevelAction::Swap;
-	levelToLoad = "";
+	Get()->levelAction = LevelAction::Swap;
+	Get()->levelToLoad = "";
 }
 
 void LevelManager::UnloadAndSwap() {
-	levelAction = LevelAction::UnloadAndSwap;
-	levelToLoad = "";
+	Get()->levelAction = LevelAction::UnloadAndSwap;
+	Get()->levelToLoad = "";
 }
 
 void LevelManager::ResetActions() {
@@ -212,16 +255,21 @@ void LevelManager::ResetActions() {
 
 #pragma endregion
 
-Level* LevelManager::MakeLevel(const string& levelToLoad_) {
+void LevelManager::MakeLevel(const string& levelToLoad_, bool loadAsCurrent) {
 	// load data
 	json data;
 	levelIndex->GetJSON(&data, levelToLoad_);
 
 	// create level
-	Level* level = new Level(this, objectIndex, content);
-	level->LoadData(data);
+	if (loadAsCurrent) {
+		currentLevel = new Level(objectIndex);
+		currentLevel->Init(data);
+	} else {
+		frozenLevel = new Level(objectIndex);
+		frozenLevel->Init(data);
+	}
 
-	// log and return
+	// log 
 	DEBUG_LOG("Loaded level \"" + levelToLoad_ + "\"");
-	return level;
+
 }

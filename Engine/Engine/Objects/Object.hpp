@@ -4,7 +4,6 @@
 #include "../General/Serialization.hpp"
 #include "ObjectFactory.hpp"
 #include "Component.hpp"
-#include "../Core/GameContext.hpp"
 
 class Level;
 

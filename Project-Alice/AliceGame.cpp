@@ -5,33 +5,27 @@ AliceGame::AliceGame()
 	: Game()
 	, quitTimer(0)
 	, max_quit_time(15)
-	, objIndex(nullptr)
-	, content(nullptr)
-	, levelManager(nullptr) { }
+	, objIndex(nullptr) { }
 
 AliceGame::~AliceGame() { }
 
-bool AliceGame::Start() {
-	if (!Game::Start()) return false;
+bool AliceGame::Init() {
+	if (!Game::Init()) return false;
 
 	// initialize the indexes
 	objIndex = new FileIndex("Resources/Objects");
 	
 	// initialize the content handler
-	content = new ContentHandler("Resources/Textures", "Resources/Shaders");
-
+	ContentHandler::Init("Resources/Textures", "Resources/Shaders");
 	// create a level manager
-	levelManager = new LevelManager("Resources/Levels", "battle_test_0", objIndex, content);
+	LevelManager::Init("Resources/Levels", "test_0", objIndex);
 
 	return true;
 }
 
 void AliceGame::Update() {
 
-	// level load actions
-	levelManager->DoLevelAction();
-
-	GetSystemEvents()->PollEvents();
+	PollEvents();
 
 	if (Keyboard::GetKey(KeyCode::Escape)) {
 		++quitTimer;
@@ -41,7 +35,7 @@ void AliceGame::Update() {
 	}
 
 	// update 
-	levelManager->GetLevel()->Update();
+	LevelManager::Update();
 
 }
 
@@ -50,7 +44,7 @@ void AliceGame::Draw() {
 	GetWindow()->ClearScreen(vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
 	// draw 
-	levelManager->GetLevel()->Draw();
+	LevelManager::Draw();
 
 	GetTimer()->WaitForEndOfFrame();
 	GetWindow()->SwapBuffers();
@@ -60,12 +54,9 @@ bool AliceGame::Exit() {
 	if (!Game::Exit()) return false;
 
 	// delete the level manager
-	if (levelManager) delete levelManager;
-	levelManager = nullptr;
-
+	LevelManager::Exit();
 	// delete content handler
-	if (content) delete content;
-	content = nullptr;
+	ContentHandler::Exit();
 
 	// delete the indexes
 	if (objIndex) delete objIndex;

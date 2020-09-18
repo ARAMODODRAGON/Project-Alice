@@ -1,10 +1,11 @@
 #include "Timer.hpp"
+#include "Debugger.hpp"
 
 Timer::Timer()
 	: fps(60), counts_per_frame { 0 }, counts_per_second { 0 }, lastCounts { 0 }, currentCounts { 0 } {
 	// get the count frequency
 	if (!QueryPerformanceFrequency(&counts_per_second)) {
-		ERROR("System does not support a high-resolution performance counter");
+		DEBUG_ERROR("System does not support a high-resolution performance counter");
 	} else {
 		counts_per_frame.QuadPart = counts_per_second.QuadPart / fps;
 	}

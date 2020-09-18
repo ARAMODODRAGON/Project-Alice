@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Battle\BattleManager.hpp" />
-    <ClInclude Include="Engine\Core\GameContext.hpp" />
     <ClInclude Include="Engine\Input\Button.hpp" />
     <ClInclude Include="Engine\Common.hpp" />
     <ClInclude Include="Engine\Core\Debugger.hpp" />
@@ -53,7 +52,6 @@
   <ItemGroup>
     <ClCompile Include="Engine\Battle\BattleManager.cpp" />
     <ClCompile Include="Engine\Core\Debugger.cpp" />
-    <ClCompile Include="Engine\Core\GameContext.cpp" />
     <ClCompile Include="Engine\Core\Level.cpp" />
     <ClCompile Include="Engine\Core\LevelManager.cpp" />
     <ClCompile Include="Engine\Objects\Component.cpp" />
@@ -71,6 +69,7 @@
     <ClCompile Include="Engine\Rendering\ContentHandler.cpp" />
     <ClCompile Include="Engine\Rendering\ContentLoadFunctions.cpp" />
     <ClCompile Include="Engine\Rendering\ContentTypes.cpp" />
+    <ClCompile Include="Engine\Rendering\IRenderer.cpp" />
     <ClCompile Include="Engine\Rendering\RenderScene.cpp" />
     <ClCompile Include="Engine\Rendering\Sprite.cpp" />
   </ItemGroup>

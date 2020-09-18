@@ -11,6 +11,5 @@
 #include "Input/Keyboard.hpp"
 #include "Input/Mouse.hpp"
 #include "Game.hpp"
-#undef GetObject
 
 #endif // !_COMMON_HPP

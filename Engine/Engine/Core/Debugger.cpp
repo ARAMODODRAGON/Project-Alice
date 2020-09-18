@@ -25,7 +25,7 @@ Debugger::~Debugger() { }
 void Debugger::Log(const string& msg, const string& file, size_t line) {
 	// open file at the end
 	std::ofstream filestream;
-	filestream.open(logFilepath, std::ios::app);
+	filestream.open(Get()->logFilepath, std::ios::app);
 
 	// add msg
 	filestream << "[Log(ln:" << line << ")]: " << msg << std::endl << "\t[file: " << file << "]" << std::endl;
@@ -40,7 +40,7 @@ void Debugger::Log(const string& msg, const string& file, size_t line) {
 void Debugger::Trace(const string& msg, const string& file, size_t line) {
 	// open file at the end
 	std::ofstream filestream;
-	filestream.open(logFilepath, std::ios::app);
+	filestream.open(Get()->logFilepath, std::ios::app);
 
 	// add msg
 	filestream << "[Trace(ln:" << line << ")]: " << msg << std::endl << "\t[file: " << file << "]" << std::endl;
@@ -55,7 +55,7 @@ void Debugger::Trace(const string& msg, const string& file, size_t line) {
 void Debugger::Warning(const string& msg, const string& file, size_t line) {
 	// open file at the end
 	std::ofstream filestream;
-	filestream.open(logFilepath, std::ios::app);
+	filestream.open(Get()->logFilepath, std::ios::app);
 
 	// add msg
 	filestream << "[Warning(ln:" << line << ")]: " << msg << std::endl << "\t[file: " << file << "]" << std::endl;
@@ -70,7 +70,7 @@ void Debugger::Warning(const string& msg, const string& file, size_t line) {
 void Debugger::Error(const string& msg, const string& file, size_t line) {
 	// open file at the end
 	std::ofstream filestream;
-	filestream.open(logFilepath, std::ios::app);
+	filestream.open(Get()->logFilepath, std::ios::app);
 
 	// add msg
 	filestream << "[Error(ln:" << line << ")]: " << msg << std::endl << "\t[file: " << file << "]" << std::endl;
@@ -85,7 +85,7 @@ void Debugger::Error(const string& msg, const string& file, size_t line) {
 void Debugger::FatalError(const string& msg, const string& file, size_t line) {
 	// open file at the end
 	std::ofstream filestream;
-	filestream.open(logFilepath, std::ios::app);
+	filestream.open(Get()->logFilepath, std::ios::app);
 
 	// add msg
 	filestream << "[FatalError(ln:" << line << ")]: " << msg << std::endl << "\t[file: " << file << "]" << std::endl;

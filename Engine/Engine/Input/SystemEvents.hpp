@@ -6,17 +6,21 @@
 class Game;
 
 class SystemEvents {
+	PRIVATE_SINGLETON(SystemEvents);
 
 	Game* game;
 	ivec2 mousepos;
 	unsigned int mouseState;
 
-public:
-
-	SystemEvents(Game* game_);
+	SystemEvents();
 	~SystemEvents();
 
-	void PollEvents();
+public:
+
+	// events
+	static void Init(Game* game_);
+	static void PollEvents();
+	static void Exit();
 
 private:
 

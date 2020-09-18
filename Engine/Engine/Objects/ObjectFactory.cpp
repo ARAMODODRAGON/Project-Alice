@@ -25,6 +25,13 @@ void ObjectFactory::Update() {
 		if (it->second || !it->first->GetIsActive()) continue;
 		it->first->Update();
 	}
+
+	// temporary loop to update position
+	for (auto it = objects.begin(); it != objects.end(); ++it) {
+		if (it->second || !it->first->GetIsActive()) continue;
+		Object* o = it->first;
+		o->SetPosition(o->GetPosition() + o->GetVelocity());
+	}
 }
 void ObjectFactory::LateUpdate() {
 	for (auto it = objects.begin(); it != objects.end(); ++it) {

@@ -2,7 +2,7 @@
 #include "../Core/Debugger.hpp"
 #include "Camera.hpp"
 
-RenderScene::RenderScene(ContentHandler* content_) : content(content_) { }
+RenderScene::RenderScene() { }
 
 RenderScene::~RenderScene() {
 	renderers.clear();

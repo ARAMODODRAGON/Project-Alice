@@ -7,9 +7,6 @@
 
 class Level {
 
-	// levelmanager that this is attached to
-	LevelManager* levelManager;
-
 	// objects
 	ObjectFactory* objFactory;
 
@@ -18,13 +15,16 @@ class Level {
 
 public:
 
-	Level(LevelManager* levelManager_, FileIndex* objectIndex_, ContentHandler* content_);
+	Level(FileIndex* objectIndex_);
 	~Level();
 
 	// events
-	void LoadData(const json& data);
+	void Init(const json& data);
 	void Update();
+	void LateUpdate();
 	void Draw();
+	void Clean();
+	void Exit();
 
 	// getters
 	RenderScene* GetRenderScene() const { return renderScene; }

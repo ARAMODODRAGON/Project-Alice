@@ -4,7 +4,7 @@
 #include "../General/Types.hpp"
 
 class Debugger {
-	SINGLETON(Debugger);
+	PRIVATE_SINGLETON(Debugger);
 
 	string logFilepath;
 
@@ -13,19 +13,19 @@ class Debugger {
 
 public:
 
-	void Log(const string& msg, const string& file, size_t line);
-	void Trace(const string& msg, const string& file, size_t line);
-	void Warning(const string& msg, const string& file, size_t line);
-	void Error(const string& msg, const string& file, size_t line);
-	void FatalError(const string& msg, const string& file, size_t line);
+	static void Log(const string& msg, const string& file, size_t line);
+	static void Trace(const string& msg, const string& file, size_t line);
+	static void Warning(const string& msg, const string& file, size_t line);
+	static void Error(const string& msg, const string& file, size_t line);
+	static void FatalError(const string& msg, const string& file, size_t line);
 
 };
 
-#define DEBUG_LOG(msg) Debugger::Get()->Log(msg, __FILE__, __LINE__)
-#define DEBUG_TRACE(msg) Debugger::Get()->Trace(msg, __FILE__, __LINE__)
-#define DEBUG_WARNING(msg) Debugger::Get()->Warning(msg, __FILE__, __LINE__)
-#define DEBUG_ERROR(msg) Debugger::Get()->Error(msg, __FILE__, __LINE__)
-#define DEBUG_FATAL_ERROR(msg) Debugger::Get()->FatalError(msg, __FILE__, __LINE__)
+#define DEBUG_LOG(msg) Debugger::Log(msg, __FILE__, __LINE__)
+#define DEBUG_TRACE(msg) Debugger::Trace(msg, __FILE__, __LINE__)
+#define DEBUG_WARNING(msg) Debugger::Warning(msg, __FILE__, __LINE__)
+#define DEBUG_ERROR(msg) Debugger::Error(msg, __FILE__, __LINE__)
+#define DEBUG_FATAL_ERROR(msg) Debugger::FatalError(msg, __FILE__, __LINE__)
 
 #define VTOS(value) to_string(value)
 

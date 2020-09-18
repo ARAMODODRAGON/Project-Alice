@@ -1,41 +1,69 @@
 #include "Game.hpp"
+#include <exception>
+#include "Input/SystemEvents.hpp"
 
-Game::Game() : window(nullptr), timer(nullptr), sysEvents(nullptr), isRunning(false), shouldQuit(false) { 
-	// set this to the current game
-	GameContext::game = this;
+Game* Game::_instance = nullptr;
+
+Game::Game() : window(nullptr), timer(nullptr), isRunning(false), shouldQuit(false) {
+	if (_instance == nullptr)
+		_instance = this;
 }
-
-Game::~Game() { 
-	// unset this
-	GameContext::game = nullptr;
+Game::~Game() {
+	if (_instance == this)
+		_instance = nullptr;
 }
 
 void Game::Run() {
+	if (_instance != this) {
+		DEBUG_ERROR("There are multiple game instances!");
+		return;
+	}
 	if (isRunning) {
 		DEBUG_WARNING("Game is already running!");
 		return;
 	}
 
 	isRunning = true;
-	if (!Start()) {
-		DEBUG_ERROR("Failed to start correctly. Quitting...");
+	try {
+		if (!Init()) {
+			DEBUG_ERROR("Failed to start correctly. Quitting...");
+			isRunning = false;
+		}
+	} catch (std::exception& e) {
+		DEBUG_ERROR(string("Exception caught while initializing: ") + e.what());
 		isRunning = false;
 	}
 
 	while (isRunning && !shouldQuit) {
 
-		Update();
+		try {
+			Update();
+		} catch (std::exception& e) {
+			DEBUG_ERROR(string("Exception caught: ") + e.what());
+		}
 
-		Draw();
+		try {
+			Draw();
+		} catch (std::exception& e) {
+			DEBUG_ERROR(string("Exception caught: ") + e.what());
+		}
 
 	}
 
-	if (!Exit()) {
-		DEBUG_ERROR("Failed to exit correctly. Quitting...");
+	try {
+		if (!Exit()) {
+			DEBUG_ERROR("Failed to exit correctly. Quitting...");
+		}
+	} catch (std::exception& e) {
+		DEBUG_ERROR(string("Exception caught while exiting: ") + e.what());
 	}
 }
 
-bool Game::Start() {
+void Game::PollEvents() {
+	SystemEvents::PollEvents();
+}
+
+bool Game::Init() {
 
 	window = new Window();
 	if (!window->Initialize("Game", uvec2(1280, 720)))
@@ -43,7 +71,8 @@ bool Game::Start() {
 
 	timer = new Timer();
 
-	sysEvents = new SystemEvents(this);
+	// initialize system events
+	SystemEvents::Init(this);
 
 	return true;
 }
@@ -54,12 +83,11 @@ void Game::Draw() { }
 
 bool Game::Exit() {
 
-	if (sysEvents) delete sysEvents;
-	sysEvents = nullptr;
+	SystemEvents::Exit();
 
 	if (timer) delete timer;
 	timer = nullptr;
-	
+
 	if (window) delete window;
 	window = nullptr;
 

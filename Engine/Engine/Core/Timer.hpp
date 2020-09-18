@@ -6,6 +6,8 @@
 #include <Windows.h>
 #include <profileapi.h>
 #endif
+// defined by windows for some reason...
+#undef GetObject
 
 class Timer {
 

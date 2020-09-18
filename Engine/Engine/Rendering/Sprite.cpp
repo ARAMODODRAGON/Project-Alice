@@ -4,6 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "Camera.hpp"
+#include "ContentHandler.hpp"
 
 void Sprite::Start() {
 	// add to render scene
@@ -73,7 +74,7 @@ Sprite::~Sprite() {
 }
 
 void Sprite::LoadTexture(const string& textureName) {
-	texture = rendScene->GetContent()->LoadTexture(textureName);
+	texture = ContentHandler::LoadTexture(textureName);
 	tilingSize = texture.GetSize();
 	tilingOffset = vec2(0.0f);
 	tilingMargin = vec2(0.0f);
@@ -81,7 +82,7 @@ void Sprite::LoadTexture(const string& textureName) {
 	UpdateVertexArray();
 }
 void Sprite::LoadShader(const string& shaderName) {
-	shader = rendScene->GetContent()->LoadShader(shaderName);
+	shader = ContentHandler::LoadShader(shaderName);
 
 	// get uniforms
 	viewLoc = glGetUniformLocation(shader, "viewMat");

@@ -8,14 +8,12 @@ class Camera;
 
 class RenderScene {
 
-	ContentHandler* content;
-
 	vector<IRenderer*> renderers;
 	vector<Camera*> cameras;
 
 public:
 
-	RenderScene(ContentHandler* content_);
+	RenderScene();
 	~RenderScene();
 
 	// functions
@@ -23,9 +21,6 @@ public:
 	void RemoveRenderer(IRenderer* renderer);
 	void AddCamera(Camera* camera);
 	void RemoveCamera(Camera* camera);
-
-	// getter
-	ContentHandler* GetContent() const { return content; }
 
 	// events
 	void Draw();

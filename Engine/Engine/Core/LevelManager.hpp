@@ -2,10 +2,12 @@
 #define _CORE_LEVEL_MANAGER_HPP
 #include "../Objects/FileIndex.hpp"
 #include "../Rendering/ContentHandler.hpp"
+#include "../General/Macros.hpp"
 
 class Level;
 
 class LevelManager {
+	PRIVATE_SINGLETON(LevelManager);
 
 	enum class LevelAction : unsigned char {
 		None,				// do nothing
@@ -21,48 +23,48 @@ class LevelManager {
 	FileIndex* levelIndex; // required for level loading
 	FileIndex* objectIndex; // passes down to every level
 
-	// content handler passed to levels
-	ContentHandler* content;
-
 	// levels
 	Level* currentLevel;
 	Level* frozenLevel;
 	string levelToLoad;
 	LevelAction levelAction;
 
-	// functions
-	//boost::function1<Level*, const string&> creationMethod;
-	//boost::function1<void, Level*> destructionMethod;
+	LevelManager();
+	~LevelManager();
 
 public:
 
-	LevelManager(const string& levelFolder, const string& defaultLevel, FileIndex* objectIndex_ = nullptr, ContentHandler* content_ = nullptr);
-	~LevelManager();
+	// events
+	static void Init(const string& levelFolder, const string& defaultLevel, FileIndex* objectIndex_ = nullptr);
+	static void Update();
+	static void LateUpdate();
+	static void Draw();
+	static void Clean();
+	static void Exit();
 
-	Level* GetLevel() const { return currentLevel; }
-	// this must be called for any of the level action functions to work
-	void DoLevelAction();
-
-	// level action functions (Note: any action will override eachother)
+	static Level* GetLevel() { return Get()->currentLevel; }
+	
+	/// level action functions (Note: any action will override eachother)
 
 	// replaces the current level with a new one
-	void LoadLevel(const string& level);
+	static void LoadLevel(const string& level);
 	// replaces the frozen level and then swaps to it
-	void SwapAndLoadLevel(const string& level);
+	static void SwapAndLoadLevel(const string& level);
 	// replaces the frozen level
-	void LoadFrozen(const string& level);
+	static void LoadFrozen(const string& level);
 	// deletes the frozen level (if there is one)
-	void UnloadFrozen();
+	static void UnloadFrozen();
 	// swaps the frozen and unfrozen levels
-	void Swap();
+	static void Swap();
 	// unloads the current level and swaps to the frozen one
-	void UnloadAndSwap();
+	static void UnloadAndSwap();
 
 private:
 
 	// helper functions
+	void DoLevelAction();
 	void ResetActions();
-	Level* MakeLevel(const string& levelToLoad_);
+	void MakeLevel(const string& levelToLoad_, bool loadAsCurrent = true);
 
 };
 

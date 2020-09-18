@@ -2,12 +2,11 @@
 #include "../Core/Level.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 #include "../Game.hpp"
-#undef GetObject
 
 void Camera::Start() {
 	rendScene = GetObject()->GetLevel()->GetRenderScene();
 	rendScene->AddCamera(this);
-	SetCameraSize(GameContext::game->GetWindow()->GetScreenSize());
+	SetCameraSize(Game::Get()->GetWindow()->GetScreenSize());
 }
 
 void Camera::OnDestroy() {

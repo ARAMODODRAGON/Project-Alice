@@ -37,7 +37,7 @@ void OWPlayer::Start() {
 
 	// create a camera
 	cam = Make<Object>()->AddComponent<Camera>();
-	vec2 size = GameContext::game->GetWindow()->GetScreenSize() / 65u;
+	vec2 size = Game::Get()->GetWindow()->GetScreenSize() / 65u;
 	cam->SetCameraSize(size);
 }
 
@@ -73,9 +73,10 @@ void OWPlayer::Update() {
 		}
 	}
 
-	if (glm::length(velocity) > 0.0f)
-		SetPosition(GetPosition() + glm::normalize(velocity) * move_delta);
-	SetVelocity(velocity);
+	if (velocity.x == 0.0f && velocity.y == 0.0f)
+		SetVelocity(vec2(0.0f));
+	else
+		SetVelocity(glm::normalize(velocity) * move_delta);
 
 	if (Keyboard::GetKey(KeyCode::KeyW)) {
 		vec2 size = cam->GetCameraSize();
