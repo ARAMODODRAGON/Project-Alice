@@ -18,10 +18,13 @@
     <ClInclude Include="AliceGame.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\Player\OWPlayer.hpp">
+    <ClInclude Include="Scripts\Test\Player\OWPlayer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\Projectile.hpp">
+    <ClInclude Include="Scripts\Test\Projectile.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Battle\BattleCamera.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -29,10 +32,13 @@
     <ClCompile Include="AliceGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\Player\OWPlayer.cpp">
+    <ClCompile Include="Scripts\Test\Player\OWPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Scripts\Projectile.cpp">
+    <ClCompile Include="Scripts\Test\Projectile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Battle\BattleCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

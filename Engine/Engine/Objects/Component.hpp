@@ -14,7 +14,7 @@ class Component {
 public:
 
 	Component();
-	virtual ~Component() = 0 { }; // abstract
+	virtual ~Component() = 0 { } // abstract
 
 	// virtual functions
 	virtual void Start() { }

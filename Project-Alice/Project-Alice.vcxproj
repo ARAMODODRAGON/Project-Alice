@@ -152,13 +152,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AliceGame.hpp" />
-    <ClInclude Include="Scripts\Player\OWPlayer.hpp" />
-    <ClInclude Include="Scripts\Projectile.hpp" />
+    <ClInclude Include="Scripts\Battle\BattleCamera.hpp" />
+    <ClInclude Include="Scripts\Test\Player\OWPlayer.hpp" />
+    <ClInclude Include="Scripts\Test\Projectile.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AliceGame.cpp" />
-    <ClCompile Include="Scripts\Player\OWPlayer.cpp" />
-    <ClCompile Include="Scripts\Projectile.cpp" />
+    <ClCompile Include="Scripts\Battle\BattleCamera.cpp" />
+    <ClCompile Include="Scripts\Test\Player\OWPlayer.cpp" />
+    <ClCompile Include="Scripts\Test\Projectile.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

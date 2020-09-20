@@ -1,6 +1,7 @@
 {
     "Objects": [ 
-        { "type": "", "data": {  } },
-        { "type": "" }
+        { "type": "BattleCamera" },
+        { "type": "BTEnemy" },
+        { "type": "BTPlayer" }
     ]
 }

@@ -37,7 +37,7 @@ void OWPlayer::Start() {
 
 	// create a camera
 	cam = Make<Object>()->AddComponent<Camera>();
-	vec2 size = Game::Get()->GetWindow()->GetScreenSize() / 65u;
+	vec2 size = Game::Get()->GetWindow()->GetScreenSize() / 65.0f;
 	cam->SetCameraSize(size);
 }
 

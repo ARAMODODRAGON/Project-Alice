@@ -16,10 +16,10 @@ class BattleManager {
 	vector<BTEnemy*> enemies;
 	Rect battleArea;
 
-public:
-
 	BattleManager();
 	~BattleManager();
+
+public:
 
 	// adders & removers
 	static void AddPlayer(BTPlayer* player);

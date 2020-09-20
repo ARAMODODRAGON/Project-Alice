@@ -54,25 +54,35 @@ void Level::LoadObjects(const json& data) {
 		// construct using index
 		if (objData.contains("objectName") && objData["objectName"].is_string()) {
 			string objectName = objData["objectName"].get<string>();
+			Object* o = nullptr;
 
 			// construct with instance data
 			if (objData.contains("data") && objData.is_object())
-				objFactory->Make(objectName, objData["data"]);
+				o = objFactory->Make(objectName, objData["data"]);
 
 			// construct without instance data
-			else objFactory->Make<Object>(objectName);
+			else o = objFactory->Make<Object>(objectName);
+
+			// check
+			if (o == nullptr) DEBUG_ERROR("Could not make object of name " + objectName);
+			else DEBUG_LOG("Successfully made object of name " + objectName);
 		}
 		// construct using type
 		else if (objData.contains("type") && objData["type"].is_string()) {
 			string typName = objData["type"].get<string>();
 			type typ = type::get_by_name(typName.c_str());
+			Object* o = nullptr;
 
 			// construct with instance data
 			if (objData.contains("data") && objData.is_object())
-				objFactory->Make(typ, objData["data"]);
+				o = objFactory->Make(typ, objData["data"]);
 
-			// construct without instance data
-			else objFactory->Make(typ);
+		   // construct without instance data
+			else  o = objFactory->Make(typ);
+
+			// check
+			if (o == nullptr) DEBUG_ERROR("Could not make object of type " + typName);
+			else DEBUG_LOG("Successfully made object of type " + typName);
 		}
 		// if nothing print error
 		else {
