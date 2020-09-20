@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Battle\BTPlayer.h" />
     <ClInclude Include="Engine\Battle\BattleManager.hpp" />
     <ClInclude Include="Engine\Input\Button.hpp" />
     <ClInclude Include="Engine\Common.hpp" />
@@ -50,6 +51,7 @@
     <ClInclude Include="Engine\Rendering\Sprite.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Battle\BTPlayer.cpp" />
     <ClCompile Include="Engine\Battle\BattleManager.cpp" />
     <ClCompile Include="Engine\Core\Debugger.cpp" />
     <ClCompile Include="Engine\Core\Level.cpp" />
