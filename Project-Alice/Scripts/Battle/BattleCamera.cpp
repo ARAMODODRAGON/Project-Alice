@@ -18,12 +18,13 @@ void BattleCamera::Start() {
 		SetIsActive(false); // disable so the camera is 
 		return; // quit early
 	}
-	cam->SetCameraSize(Game::Get()->GetWindow()->GetScreenSize());
+	vec2 size = Game::Get()->GetWindow()->GetScreenSize() / 65.0f;
+	cam->SetCameraSize(size);
 }
 
 void BattleCamera::LateUpdate() {
 	// update the camera size according to the window size
-	vec2 screenSize = Game::Get()->GetWindow()->GetScreenSize();
+	vec2 screenSize = Game::Get()->GetWindow()->GetScreenSize() / 65.0f;
 	if (cam->GetCameraSize() != screenSize) {
 		cam->SetCameraSize(screenSize);
 	}
