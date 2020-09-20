@@ -18,7 +18,7 @@ void BattleCamera::Start() {
 		SetIsActive(false); // disable so the camera is 
 		return; // quit early
 	}
-	cam->SetCameraSize(Game::Get()->GetWindow()->GetScreenSize());
+	cam->SetCameraSize(Game::Get()->GetWindow()->GetScreenSize()) ;
 }
 
 void BattleCamera::LateUpdate() {
