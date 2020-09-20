@@ -9,10 +9,10 @@ BattleManager::BattleManager() {
 BattleManager::~BattleManager() {
 	if (players.size() > 0)
 		DEBUG_ERROR("The player list in the BattleManager was not empty. There were " + VTOS(players.size()) + " players left!");
-	players.clear();
+	//players.clear();
 	if (enemies.size() > 0)
 		DEBUG_ERROR("The enemy list in the BattleManager was not empty. There were " + VTOS(enemies.size()) + " enemies left!");
-	enemies.clear();
+	//enemies.clear();
 }
 
 #pragma region Adders & Removers
@@ -27,7 +27,7 @@ void BattleManager::AddPlayer(BTPlayer* player) {
 		}
 	}
 
-	Get()->players.push_back(player);
+	players.push_back(player);
 	DEBUG_LOG("Added player!");
 }
 
@@ -54,7 +54,7 @@ void BattleManager::AddEnemy(BTEnemy* enemy) {
 		}
 	}
 
-	Get()->enemies.push_back(enemy);
+	enemies.push_back(enemy);
 	DEBUG_LOG("Added enemy!");
 }
 
