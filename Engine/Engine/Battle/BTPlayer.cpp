@@ -1,8 +1,7 @@
 #include "BTPlayer.h"
 
 RTTR_REGISTRATION{
-	registration::class_<BTPlayer>("OWPlayer")
-		.public_object_constructor;
+	registration::class_<BTPlayer>("OWPlayer");
 }
 
 BTPlayer::BTPlayer() {
