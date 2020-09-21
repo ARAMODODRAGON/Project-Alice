@@ -64,11 +64,11 @@ void BattleManager::RemoveEnemy(BTEnemy* enemy) {
 	for (auto it = enemies.begin(); it != enemies.end(); ++it) {
 		if ((*it) == enemy) {
 			enemies.erase(it);
-			DEBUG_LOG("Successfully removed player from battle!");
+			DEBUG_LOG("Successfully removed Enemy from battle!");
 			return;
 		}
 	}
-	DEBUG_ERROR("Could not remove player from battle. It was not found!");
+	//DEBUG_ERROR("Could not remove Enemy from battle. It was not found!");
 }
 
 #pragma endregion

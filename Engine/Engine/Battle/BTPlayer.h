@@ -11,7 +11,7 @@ class BTPlayer : public Object {
 
 public:
 	BTPlayer();
-	virtual ~BTPlayer() = 0;
+	virtual ~BTPlayer();
 };
 
 #endif

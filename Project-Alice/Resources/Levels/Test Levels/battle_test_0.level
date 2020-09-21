@@ -2,6 +2,6 @@
     "Objects": [ 
         { "type": "BattleCamera" },
         { "type": "PLAYER HERE" }, 
-        { "type": "ENEMY HERE" }
+        { "type": "TestEnemy" }
     ]
 }
