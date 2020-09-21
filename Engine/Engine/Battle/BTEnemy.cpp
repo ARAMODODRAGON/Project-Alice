@@ -5,9 +5,9 @@ RTTR_REGISTRATION{
 		.property("movmentSpeed",&BTEnemy::movmentSpeed);
 }
 
-BTEnemy::BTEnemy() : movmentSpeed(0) { BattleManager::AddEnemy(this); }
+BTEnemy::BTEnemy() : movmentSpeed(.05f) { BattleManager::AddEnemy(this); }
 
-BTEnemy::~BTEnemy() { OnDestroy(); }
+BTEnemy::~BTEnemy() { BattleManager::RemoveEnemy(this); }
 
 void BTEnemy::Start()
 {
@@ -23,6 +23,6 @@ void BTEnemy::LateUpdate()
 
 void BTEnemy::OnDestroy()
 {
-	BattleManager::RemoveEnemy(this);
+	
 
 }

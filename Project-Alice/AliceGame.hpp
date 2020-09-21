@@ -1,6 +1,8 @@
 #ifndef ALICE_GAME_HPP
 #define ALICE_GAME_HPP
 #include <Engine/Game.hpp>
+#include <cstdlib>
+#include <time.h>
 
 class AliceGame : public Game {
 
