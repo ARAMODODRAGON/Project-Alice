@@ -5,36 +5,20 @@
 #include "../General/Serialization.hpp"
 #include "../Rendering/RenderScene.hpp"
 
-class Level {
-
-	// objects
-	ObjectFactory* objFactory;
-
-	// rendering
-	RenderScene* renderScene;
+class ILevel {
 
 public:
 
-	Level(FileIndex* objectIndex_);
-	~Level();
+	ILevel() { }
+	virtual ~ILevel() = 0 { }
 
 	// events
-	void Init(const json& data);
-	void Update();
-	void LateUpdate();
-	void Draw();
-	void Clean();
-	void Exit();
+	virtual void Init() = 0;
+	virtual void Update() = 0;
+	virtual void LateUpdate() = 0;
+	virtual void Exit() = 0;
 
-	// getters
-	RenderScene* GetRenderScene() const { return renderScene; }
-	ObjectFactory* GetFactory() const { return objFactory; }
-
-private:
-
-	// loading functions
-	void LoadObjects(const json& data);
-
+	RTTR_ENABLE() RTTR_REGISTRATION_FRIEND
 };
 
 #endif // !_CORE_LEVEL_HPP

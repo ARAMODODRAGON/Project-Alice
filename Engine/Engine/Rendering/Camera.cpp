@@ -4,16 +4,15 @@
 #include "../Game.hpp"
 
 void Camera::Start() {
-	rendScene = GetObject()->GetLevel()->GetRenderScene();
-	rendScene->AddCamera(this);
+	RenderScene::AddCamera(this);
 	SetCameraSize(Game::Get()->GetWindow()->GetScreenSize());
 }
 
 void Camera::OnDestroy() {
-	rendScene->RemoveCamera(this);
+	RenderScene::RemoveCamera(this);
 }
 
-Camera::Camera() : rendScene(nullptr) { }
+Camera::Camera() { }
 Camera::~Camera() { }
 
 void Camera::UpdateView() {

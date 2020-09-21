@@ -1,15 +1,17 @@
 #ifndef _CORE_ENTITY_FACTORY_HPP
 #define _CORE_ENTITY_FACTORY_HPP
 #include "../General/Types.hpp"
+#include "../General/Macros.hpp"
 #include "../General/Serialization.hpp"
 #include "FileIndex.hpp"
 #include "../Core/Debugger.hpp"
 #include "JsonToObjectLoader.hpp"
 
 class Object;
-class Level;
+class ILevel;
 
 class ObjectFactory {
+	PRIVATE_SINGLETON(ObjectFactory);
 
 	// an object with a bool. this bool is whether or not the object should destroy
 	using PairType = pair<Object*, bool>;
@@ -17,31 +19,34 @@ class ObjectFactory {
 	vector<PairType> objects; // TODO: seperate array for new objects, these then get pushed into this array during cleanup
 
 	// an object index & level
-	Level* level;
 	FileIndex* index;
 
 public:
 
-	ObjectFactory(Level* level_, FileIndex* index_ = nullptr);
+	ObjectFactory();
 	~ObjectFactory();
 
 	// events
-	void Update();
-	void LateUpdate();
-	void Cleanup();
+	static void Init(const string& indexPath);
+	static void Update();
+	static void LateUpdate();
+	static void Cleanup();
+	static void Exit();
+	static void Clear();
 
 	// factory methods
-	template<class T> T* Make();
-	template<class T> T* Make(const string& objectName);
-	Object* Make(const type typ);
-	Object* Make(const string& objectName, const json& instanceData);
-	Object* Make(const type typ, const json& instanceData);
-	void Destroy(Object* entity);
+	template<class T> static T* Make();
+	template<class T> static T* Make(const string& objectName);
+	static Object* Make(const type typ);
+	static Object* Make(const string& objectName, const json& instanceData);
+	static Object* Make(const type typ, const json& instanceData);
+	static void Destroy(Object* entity);
 
 private:
 
-	// helper function. registers this factory onto the entity, adds it into the vector, and calls Start()
+	// helper functions
 	void Add(Object* e);
+	void DestroyAll();
 
 };
 
@@ -49,7 +54,7 @@ private:
 template<class T>
 inline T* ObjectFactory::Make() {
 	T* e = new T();
-	Add(e);
+	Get()->Add(e);
 	return e;
 }
 
@@ -57,14 +62,14 @@ inline T* ObjectFactory::Make() {
 template<class T>
 inline T* ObjectFactory::Make(const string& objectName) {
 	// if theres no index to search through then the object cant be built
-	if (!index) {
+	if (!Get()->index) {
 		DEBUG_ERROR("No index available to search through");
 		return nullptr;
 	}
 	// load the data in and confirm that the name matches a type
 	json j;
 	// if it fails return null
-	if (!index->GetJSON(&j, objectName)) return nullptr;
+	if (!Get()->index->GetJSON(&j, objectName)) return nullptr;
 	string name = j["type"].get<string>();
 	auto objectTy = type::get_by_name(name.c_str());
 	if (!objectTy.is_valid()) {
@@ -90,7 +95,7 @@ inline T* ObjectFactory::Make(const string& objectName) {
 	JsonToObject(objectTy, obj, j["data"]);
 
 	// add it into the factory
-	Add(obj.get_value<Object*>());
+	Get()->Add(obj.get_value<Object*>());
 
 	// now return the object
 	return obj.get_value<T*>();

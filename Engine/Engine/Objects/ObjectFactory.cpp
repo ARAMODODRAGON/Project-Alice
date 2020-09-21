@@ -3,24 +3,22 @@
 #include "../Core/Level.hpp"
 
 // register the index
-ObjectFactory::ObjectFactory(Level* level_, FileIndex* index_)
-	: level(level_), index(index_) {
+ObjectFactory::ObjectFactory()
+	: index(nullptr) {
 	// allocate some memory
-	objects.reserve(10);
+	objects.reserve(20);
 }
 
-ObjectFactory::~ObjectFactory() {
-	// deregister the index
-	index = nullptr;
-	// delete all objects
-	for (PairType& ec : objects) {
-		ec.first->OnDestroy();
-		delete ec.first;
-	}
-	objects.clear();
+ObjectFactory::~ObjectFactory() { DestroyAll(); }
+
+void ObjectFactory::Init(const string& indexPath) {
+	Get()->index = new FileIndex(indexPath);
 }
 
 void ObjectFactory::Update() {
+	// get reference
+	auto& objects = Get()->objects;
+
 	for (auto it = objects.begin(); it != objects.end(); ++it) {
 		if (it->second || !it->first->GetIsActive()) continue;
 		it->first->Update();
@@ -34,6 +32,9 @@ void ObjectFactory::Update() {
 	}
 }
 void ObjectFactory::LateUpdate() {
+	// get reference
+	auto& objects = Get()->objects;
+
 	for (auto it = objects.begin(); it != objects.end(); ++it) {
 		if (it->second || !it->first->GetIsActive()) continue;
 		it->first->LateUpdate();
@@ -41,6 +42,9 @@ void ObjectFactory::LateUpdate() {
 }
 
 void ObjectFactory::Cleanup() {
+	// get reference
+	auto& objects = Get()->objects;
+
 	// look for destroyable objects
 	for (auto it = objects.begin(); it != objects.end(); ++it) {
 		if (it->second) {
@@ -53,13 +57,27 @@ void ObjectFactory::Cleanup() {
 	}
 }
 
+void ObjectFactory::Exit() { Get()->DestroyAll(); }
+
+void ObjectFactory::Clear() { 
+	// get ref
+	auto& objects = Get()->objects;
+
+	// delete all objects
+	for (PairType& ec : objects) {
+		ec.first->OnDestroy();
+		delete ec.first;
+	}
+	objects.clear();
+}
+
 Object* ObjectFactory::Make(const type typ) {
 	// check if it inherits from object
 	if (!typ.is_derived_from(type::get<Object>())) {
 		DEBUG_ERROR("Type " + typ.get_name() + " is not a type of Object");
 		return nullptr;
 	}
-	
+
 	// create
 	variant obj = typ.get_constructor().invoke();
 	if (!obj) {
@@ -69,20 +87,20 @@ Object* ObjectFactory::Make(const type typ) {
 
 	// add to the factory and return
 	Object* object = obj.get_value<Object*>();
-	Add(object);
+	Get()->Add(object);
 	return object;
 }
 
 Object* ObjectFactory::Make(const string& objectName, const json& instanceData) {
 	// if theres no index to search through then the object cant be built
-	if (!index) {
+	if (!Get()->index) {
 		DEBUG_ERROR("No index available to search through");
 		return nullptr;
 	}
 	// load the data in and confirm that the name matches a type
 	json j;
 	// if it fails return null
-	if (!index->GetJSON(&j, objectName)) return nullptr;
+	if (!Get()->index->GetJSON(&j, objectName)) return nullptr;
 	string name = j["type"].get<string>();
 	type instTy = type::get_by_name(name.c_str());
 	if (!instTy.is_valid()) {
@@ -111,7 +129,7 @@ Object* ObjectFactory::Make(const string& objectName, const json& instanceData) 
 
 	// add it into the factory and return
 	Object* object = obj.get_value<Object*>();
-	Add(object);
+	Get()->Add(object);
 	return object;
 }
 
@@ -134,11 +152,14 @@ Object* ObjectFactory::Make(const type typ, const json& instanceData) {
 
 	// add to the factory and return
 	Object* object = obj.get_value<Object*>();
-	Add(object);
+	Get()->Add(object);
 	return object;
 }
 
 void ObjectFactory::Destroy(Object* entity) {
+	// get reference
+	auto& objects = Get()->objects;
+
 	// find the entity and label it destroyed
 	for (PairType& e : objects) {
 		if (e.first == entity) {
@@ -155,7 +176,15 @@ void ObjectFactory::Add(Object* e) {
 		return;
 	}
 	objects.push_back(PairType(e, false));
-	
+
 	// call start
 	e->Start();
+}
+
+void ObjectFactory::DestroyAll() {
+	// clear the objects
+	Clear();
+	// delete the index
+	if (index) delete index;
+	index = nullptr;
 }

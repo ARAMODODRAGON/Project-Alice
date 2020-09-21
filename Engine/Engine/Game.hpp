@@ -43,6 +43,11 @@ protected:
 	virtual bool Exit();
 	void PollEvents();
 
+public:
+
+	// public events
+	virtual ILevel* LevelLoad(const string& levelToLoad) = 0;
+
 };
 
 #endif // !_GAME_HPP

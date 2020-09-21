@@ -8,8 +8,7 @@
 
 void Sprite::Start() {
 	// add to render scene
-	rendScene = GetObject()->GetLevel()->GetRenderScene();
-	rendScene->AddRenderer(this);
+	RenderScene::AddRenderer(this);
 
 	// try to load a default shader
 	LoadShader("default");
@@ -17,12 +16,11 @@ void Sprite::Start() {
 
 void Sprite::OnDestroy() {
 	// remove from render scene
-	rendScene->RemoveRenderer(this);
+	RenderScene::RemoveRenderer(this);
 }
 
 Sprite::Sprite()
-	: rendScene(nullptr)
-	, viewLoc(-1), projLoc(-1), modelLoc(-1), colorLoc(-1)
+	: viewLoc(-1), projLoc(-1), modelLoc(-1), colorLoc(-1)
 	, VAO(-1), VBO(-1), EBO(-1)
 	, pivot(0.0f)
 	, scale(1.0f)

@@ -5,16 +5,13 @@
 #include "ObjectFactory.hpp"
 #include "Component.hpp"
 
-class Level;
+class ILevel;
 
 class Object {
-
-	// factory
 	friend ObjectFactory;
-	ObjectFactory* factory; // the factory that this entity is attached to
 
 	// level
-	Level* level;
+	ILevel* level;
 
 	// base properties
 	bool isActive;
@@ -48,10 +45,10 @@ public:
 	// component creation / destruction
 	template<class T> T* AddComponent();
 	void DestroyComponent(Component* comp);
-	template<class T> T* FindComponentWithType();
+	template<class T> T* GetComponent();
 
 	// getters & setters
-	Level* GetLevel() const { return level; }
+	ILevel* GetLevel() const { return level; }
 
 	bool GetIsActive() const { return isActive; }
 	void SetIsActive(bool isActive_) { isActive = isActive_; }
@@ -73,22 +70,12 @@ public:
 
 template<class T>
 inline T* Object::Make() {
-	if (factory)
-		return factory->Make<T>();
-	else {
-		DEBUG_ERROR("No factory attached to the entity " + name);
-		return nullptr;
-	}
+	return ObjectFactory::Make<T>();
 }
 
 template<class T>
 inline T* Object::Make(const string& objectName) {
-	if (factory)
-		return factory->Make<T>(objectName);
-	else {
-		DEBUG_ERROR("No factory attached to the entity " + name);
-		return nullptr;
-	}
+	return ObjectFactory::Make<T>(objectName);
 }
 
 // component creation / destruction
@@ -109,7 +96,7 @@ inline T* Object::AddComponent() {
 }
 
 template<class T>
-inline T* Object::FindComponentWithType() {
+inline T* Object::GetComponent() {
 	for (Component* c : components) {
 		if (c->get_type() == type::get<T>()) {
 			return rttr_cast<T*>(c);

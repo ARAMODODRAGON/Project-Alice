@@ -4,17 +4,17 @@
 
 RenderScene::RenderScene() { }
 
-RenderScene::~RenderScene() {
-	renderers.clear();
-	cameras.clear();
-}
+RenderScene::~RenderScene() { Clear(); }
 
 
 void RenderScene::AddRenderer(IRenderer* renderer) {
-	renderers.push_back(renderer);
+	Get()->renderers.push_back(renderer);
 }
 
 void RenderScene::RemoveRenderer(IRenderer* renderer) {
+	// get reference
+	auto& renderers = Get()->renderers;
+
 	for (auto it = renderers.begin(); it != renderers.end(); ++it) {
 		if ((*it) == renderer) {
 			renderers.erase(it);
@@ -26,10 +26,13 @@ void RenderScene::RemoveRenderer(IRenderer* renderer) {
 }
 
 void RenderScene::AddCamera(Camera* camera) {
-	cameras.push_back(camera);
+	Get()->cameras.push_back(camera);
 }
 
 void RenderScene::RemoveCamera(Camera* camera) {
+	// get reference
+	auto& cameras = Get()->cameras;
+
 	for (auto it = cameras.begin(); it != cameras.end(); ++it) {
 		if ((*it) == camera) {
 			cameras.erase(it);
@@ -41,11 +44,24 @@ void RenderScene::RemoveCamera(Camera* camera) {
 }
 
 
+void RenderScene::Init() { }
+
+void RenderScene::Exit() { }
+
 void RenderScene::Draw() {
+	// get references
+	auto& cameras = Get()->cameras;
+	auto& renderers = Get()->renderers;
+
 	for (Camera* cam : cameras) {
 		cam->UpdateView();
 		for (IRenderer* rend : renderers) {
 			rend->Draw(*cam); // call draw on all, let each one handle their own code
 		}
 	}
+}
+
+void RenderScene::Clear() {
+	Get()->renderers.clear();
+	Get()->cameras.clear();
 }

@@ -8,9 +8,6 @@ class RenderScene;
 
 class Camera : public Component {
 
-	// the renderscene that this is attached to
-	RenderScene* rendScene;
-
 	/// cameras properties
 	vec2 size;
 	mat4 view, proj;

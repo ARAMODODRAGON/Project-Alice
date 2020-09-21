@@ -2,11 +2,13 @@
 #define _RENDERER_RENDER_SCENE_HPP
 #include "ContentHandler.hpp"
 #include "../General/Types.hpp"
+#include "../General/Macros.hpp"
 #include "IRenderer.hpp"
 
 class Camera;
 
 class RenderScene {
+	PRIVATE_SINGLETON(RenderScene);
 
 	vector<IRenderer*> renderers;
 	vector<Camera*> cameras;
@@ -17,13 +19,16 @@ public:
 	~RenderScene();
 
 	// functions
-	void AddRenderer(IRenderer* renderer);
-	void RemoveRenderer(IRenderer* renderer);
-	void AddCamera(Camera* camera);
-	void RemoveCamera(Camera* camera);
+	static void AddRenderer(IRenderer* renderer);
+	static void RemoveRenderer(IRenderer* renderer);
+	static void AddCamera(Camera* camera);
+	static void RemoveCamera(Camera* camera);
 
 	// events
-	void Draw();
+	static void Init();
+	static void Exit();
+	static void Draw();
+	static void Clear();
 
 };
 

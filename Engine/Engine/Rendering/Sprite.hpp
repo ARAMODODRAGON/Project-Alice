@@ -9,9 +9,6 @@ class RenderScene;
 
 class Sprite : public Component, public IRenderer {
 
-	// the renderscene that this is attached to
-	RenderScene* rendScene;
-
 	struct Vertex {
 		vec2 position;
 		vec2 uvCoord;

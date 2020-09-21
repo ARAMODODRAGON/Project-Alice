@@ -4,7 +4,6 @@
 RTTR_REGISTRATION {
 	registration::class_<Object>("Object")
 		.public_object_constructor
-		.property("factory", &Object::factory)
 		.property("isActive", &Object::isActive)
 		.property("name", &Object::name)
 		.property("position", &Object::position)
@@ -16,15 +15,13 @@ RTTR_REGISTRATION {
 // TODO: add VAO code
 Object::Object()
 	: level(nullptr)
-	, factory(nullptr)
 	, isActive(true)
 	, name("Object")
-	, rotation(0.0f) { 
+	, rotation(0.0f) {
 	level = LevelManager::GetLevel();
-	factory = level->GetFactory();
 }
 
-Object::~Object() { 
+Object::~Object() {
 	// destroy the components
 	for (Component* c : components) {
 		c->OnDestroy();
@@ -34,26 +31,16 @@ Object::~Object() {
 }
 
 Object* Object::Make() {
-	if (factory)
-		return factory->Make<Object>();
-	else {
-		DEBUG_ERROR("No factory attached to the entity " + name);
-		return nullptr;
-	}
+	return ObjectFactory::Make<Object>();
+
 }
 
 Object* Object::Make(const string& objectName) {
-	if (factory)
-		return factory->Make<Object>(objectName);
-	else {
-		DEBUG_ERROR("No factory attached to the entity " + name);
-		return nullptr;
-	}
+	return ObjectFactory::Make<Object>(objectName);
 }
 
 void Object::Destroy(Object* entity) {
-	if (entity->factory) return entity->factory->Destroy(entity);
-	else DEBUG_ERROR("No factory attached to the entity " + entity->name);
+	return ObjectFactory::Destroy(entity);
 }
 
 void Object::DestroyComponent(Component* comp) {

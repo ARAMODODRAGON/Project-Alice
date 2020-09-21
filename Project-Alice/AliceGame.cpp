@@ -4,21 +4,18 @@
 AliceGame::AliceGame()
 	: Game()
 	, quitTimer(0)
-	, max_quit_time(15)
-	, objIndex(nullptr) { }
+	, max_quit_time(15) { }
 
 AliceGame::~AliceGame() { }
 
 bool AliceGame::Init() {
 	if (!Game::Init()) return false;
 
-	// initialize the indexes
-	objIndex = new FileIndex("Resources/Objects");
-	
-	// initialize the content handler
+	// initialize the singletons
 	ContentHandler::Init("Resources/Textures", "Resources/Shaders");
-	// create a level manager
-	LevelManager::Init("Resources/Levels", "battle_test_0", objIndex);
+	RenderScene::Init();
+	ObjectFactory::Init("Resources/Objects");
+	LevelManager::Init("battle_test_0");
 
 	return true;
 }
@@ -53,20 +50,63 @@ void AliceGame::Draw() {
 bool AliceGame::Exit() {
 	if (!Game::Exit()) return false;
 
-	// delete the level manager
+	// Exit the singletons
 	LevelManager::Exit();
-	// delete content handler
+	ObjectFactory::Exit();
+	RenderScene::Exit();
 	ContentHandler::Exit();
-
-	// delete the indexes
-	if (objIndex) delete objIndex;
-	objIndex = nullptr;
 
 	return true;
 }
 
+void LoadObjects(const json& data) {
+	for (auto it = data.begin(); it != data.end(); ++it) {
+		if (!it->is_object()) {
+			DEBUG_ERROR("Non object in object array! Skipped");
+			continue;
+		}
+		const json& objData = (*it);
 
+		// construct using index
+		if (objData.contains("objectName") && objData["objectName"].is_string()) {
+			string objectName = objData["objectName"].get<string>();
+			Object* o = nullptr;
 
+			// construct with instance data
+			if (objData.contains("data") && objData.is_object())
+				o = ObjectFactory::Make(objectName, objData["data"]);
+
+			// construct without instance data
+			else o = ObjectFactory::Make<Object>(objectName);
+
+			// check
+			if (o == nullptr) DEBUG_ERROR("Could not make object of name " + objectName);
+			else DEBUG_LOG("Successfully made object of name " + objectName);
+		}
+		// construct using type
+		else if (objData.contains("type") && objData["type"].is_string()) {
+			string typName = objData["type"].get<string>();
+			type typ = type::get_by_name(typName.c_str());
+			Object* o = nullptr;
+
+			// construct with instance data
+			if (objData.contains("data") && objData.is_object())
+				o = ObjectFactory::Make(typ, objData["data"]);
+
+			// construct without instance data
+			else  o = ObjectFactory::Make(typ);
+
+			// check
+			if (o == nullptr) DEBUG_ERROR("Could not make object of type " + typName);
+			else DEBUG_LOG("Successfully made object of type " + typName);
+		}
+		// if nothing print error
+		else {
+			DEBUG_ERROR("No Type or ObjectName found");
+		}
+
+	}
+}
 
 int main(int argc, char* argv[]) {
 
