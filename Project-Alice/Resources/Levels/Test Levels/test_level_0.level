@@ -1,12 +1,15 @@
 {
-    "Objects": [
-        { 
-            "objectName": "OW Chara Test", 
-            "data": { 
-                "shootColor": { "x": 0, "y": 0, "z": 1, "w": 1},
-                "shootSpeed": 100,
-                "shootDestroyTimer": 60
+    "type": "Overworld",
+    "data": {
+        "objects": [
+            { 
+                "objectName": "OW Chara Test", 
+                "data": { 
+                    "shootColor": { "x": 0, "y": 0, "z": 1, "w": 1},
+                    "shootSpeed": 100,
+                    "shootDestroyTimer": 60
+                }
             }
-        }
-    ]
+        ]
+    }
 }

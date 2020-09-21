@@ -1,5 +1,5 @@
 #include "Level.hpp"
 
 RTTR_REGISTRATION {
-	registration::class_<ILevel>("ILevel"); // register base level
+	registration::class_<Level>("Level"); // register base level
 }

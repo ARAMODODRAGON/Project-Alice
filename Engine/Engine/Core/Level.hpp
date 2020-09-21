@@ -5,12 +5,12 @@
 #include "../General/Serialization.hpp"
 #include "../Rendering/RenderScene.hpp"
 
-class ILevel {
+class Level {
 
 public:
 
-	ILevel() { }
-	virtual ~ILevel() = 0 { }
+	Level() { }
+	virtual ~Level() = 0 { }
 
 	// events
 	virtual void Init() = 0;

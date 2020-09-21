@@ -1,5 +1,6 @@
 #include "AliceGame.hpp"
 #include <Engine/Input/Keyboard.hpp>
+#include <Engine/Battle/BattleLevel.hpp>
 
 AliceGame::AliceGame()
 	: Game()
@@ -15,7 +16,7 @@ bool AliceGame::Init() {
 	ContentHandler::Init("Resources/Textures", "Resources/Shaders");
 	RenderScene::Init();
 	ObjectFactory::Init("Resources/Objects");
-	LevelManager::Init("battle_test_0");
+	LevelManager::Init("Resources/Levels", "battle_test_0");
 
 	return true;
 }
@@ -33,16 +34,27 @@ void AliceGame::Update() {
 
 	// update 
 	LevelManager::Update();
+	ObjectFactory::Update();
 
 }
 
 void AliceGame::Draw() {
 
-	GetWindow()->ClearScreen(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	// late update
+	LevelManager::LateUpdate();
+	ObjectFactory::LateUpdate();
+
 
 	// draw 
-	LevelManager::Draw();
+	GetWindow()->ClearScreen(vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	RenderScene::Draw();
 
+	// cleanup
+	ObjectFactory::Cleanup();
+	LevelManager::Cleanup();
+	ContentHandler::Clean();
+
+	// wait for end of frame
 	GetTimer()->WaitForEndOfFrame();
 	GetWindow()->SwapBuffers();
 }
@@ -106,6 +118,15 @@ void LoadObjects(const json& data) {
 		}
 
 	}
+}
+
+void AliceGame::LevelLoad(Level* level, const json& data) { 
+	// destroy all objects
+	ObjectFactory::Clear();
+
+	// load the level data
+	if (data.contains("objects"))
+		LoadObjects(data["objects"]);
 }
 
 int main(int argc, char* argv[]) {

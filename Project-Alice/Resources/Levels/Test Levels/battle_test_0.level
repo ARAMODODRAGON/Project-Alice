@@ -1,7 +1,10 @@
 {
-    "Objects": [ 
-        { "type": "BattleCamera" },
-        { "type": "PLAYER HERE" }, 
-        { "type": "TestEnemy" }
-    ]
+    "type": "BattleLevel",
+    "data": {
+        "objects": [ 
+            { "type": "BattleCamera" },
+            { "type": "PLAYER HERE" }, 
+            { "type": "TestEnemy" }
+        ]
+    }
 }

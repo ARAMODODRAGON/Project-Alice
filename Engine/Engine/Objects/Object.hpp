@@ -5,13 +5,13 @@
 #include "ObjectFactory.hpp"
 #include "Component.hpp"
 
-class ILevel;
+class Level;
 
 class Object {
 	friend ObjectFactory;
 
 	// level
-	ILevel* level;
+	Level* level;
 
 	// base properties
 	bool isActive;
@@ -48,7 +48,7 @@ public:
 	template<class T> T* GetComponent();
 
 	// getters & setters
-	ILevel* GetLevel() const { return level; }
+	Level* GetLevel() const { return level; }
 
 	bool GetIsActive() const { return isActive; }
 	void SetIsActive(bool isActive_) { isActive = isActive_; }

@@ -55,6 +55,7 @@
     <ClInclude Include="Engine\Rendering\Sprite.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Battle\BattleLevel.cpp" />
     <ClCompile Include="Engine\Battle\BTEnemy.cpp" />
     <ClCompile Include="Engine\Battle\BTPlayer.cpp" />
     <ClCompile Include="Engine\Battle\BattleManager.cpp" />

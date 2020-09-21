@@ -9,6 +9,7 @@ class AliceGame : public Game {
 	int quitTimer;
 	const int max_quit_time;
 
+
 public:
 
 	AliceGame();
@@ -21,6 +22,7 @@ private:
 	void Update() override;
 	void Draw() override;
 	bool Exit() override;
+	void LevelLoad(Level* level, const json& data) override;
 
 };
 

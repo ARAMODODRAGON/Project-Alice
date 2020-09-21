@@ -3,9 +3,8 @@
 #include "../Objects/FileIndex.hpp"
 #include "../Rendering/ContentHandler.hpp"
 #include "../General/Macros.hpp"
-#include <functional>
 
-class ILevel;
+class Level;
 
 class LevelManager {
 	PRIVATE_SINGLETON(LevelManager);
@@ -16,11 +15,12 @@ class LevelManager {
 	};
 
 	// levels
-	ILevel* currentLevel;
+	Level* currentLevel;
 	
 	// loading levels
 	string levelToLoad;
 	LevelAction levelAction;
+	FileIndex* index;
 
 	LevelManager();
 	~LevelManager();
@@ -28,13 +28,13 @@ class LevelManager {
 public:
 
 	// events
-	static void Init(const string& defaultLevel);
+	static void Init(const string& levelFolder, const string& defaultLevel);
 	static void Update();
 	static void LateUpdate();
-	static void Clean();
+	static void Cleanup();
 	static void Exit();
 
-	static ILevel* GetLevel() { return Get()->currentLevel; }
+	static Level* GetLevel() { return Get()->currentLevel; }
 	
 	// load a level
 	static void LoadLevel(const string& level);

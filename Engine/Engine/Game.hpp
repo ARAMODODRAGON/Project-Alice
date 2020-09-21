@@ -7,6 +7,7 @@
 #include "Core/Level.hpp"
 #include "Rendering/ContentHandler.hpp"
 #include "Rendering/ContentHandler.hpp"
+#include "Objects/Object.hpp"
 
 class Game {
 
@@ -46,7 +47,7 @@ protected:
 public:
 
 	// public events
-	virtual ILevel* LevelLoad(const string& levelToLoad) = 0;
+	virtual void LevelLoad(Level* level, const json& data) = 0;
 
 };
 
