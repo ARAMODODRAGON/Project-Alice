@@ -5,7 +5,6 @@ LevelManager::LevelManager()
 	: levelIndex(nullptr)
 	, objectIndex(nullptr)
 	, currentLevel(nullptr)
-	, frozenLevel(nullptr)
 	, levelToLoad("")
 	, levelAction(LevelAction::None) { }
 
@@ -13,8 +12,6 @@ LevelManager::~LevelManager() {
 	// delete levels
 	if (currentLevel) delete currentLevel;
 	currentLevel = nullptr;
-	if (frozenLevel) delete frozenLevel;
-	frozenLevel = nullptr;
 
 	// delete level index
 	if (levelIndex) delete levelIndex;
@@ -81,8 +78,6 @@ void LevelManager::Exit() {
 	auto* inst = Get();
 	if (inst->currentLevel) {
 		inst->currentLevel->Exit();
-		if (inst->frozenLevel)
-			inst->frozenLevel->Exit();
 	}
 }
 
@@ -108,110 +103,110 @@ void LevelManager::DoLevelAction() {
 			ResetActions();
 			break;
 		}
-		case LevelAction::SwapThenReplace:
-		{
-			// check
-			if (!levelIndex->Contains(levelToLoad)) {
-				DEBUG_ERROR("No level titled " + levelToLoad + " could be found");
-				// reset
-				ResetActions();
-				return;
-			}
-
-			// swap
-			Level* tmp = currentLevel;
-			currentLevel = frozenLevel;
-			frozenLevel = tmp;
-
-			// unload current
-			delete currentLevel;
-
-			// load new level 
-			MakeLevel(levelToLoad);
-
-			// reset
-			ResetActions();
-			break;
-		}
-		case LevelAction::ReplaceFrozen:
-		{
-			// check
-			if (!levelIndex->Contains(levelToLoad)) {
-				DEBUG_ERROR("No level titled " + levelToLoad + " could be found");
-				// reset
-				ResetActions();
-				return;
-			}
-
-			// delete frozen level
-			if (frozenLevel) delete frozenLevel;
-			frozenLevel = nullptr;
-
-			// load new level 
-			MakeLevel(levelToLoad, false);
-
-			// reset
-			ResetActions();
-			break;
-		}
-		case LevelAction::DeleteFrozen:
-		{
-			// check 
-			if (!frozenLevel) {
-				DEBUG_WARNING("No frozen level currently loaded");
-				// reset
-				ResetActions();
-				return;
-			}
-
-			// delete
-			delete frozenLevel; // check was made before reaching this case here
-			frozenLevel = nullptr;
-
-			// reset
-			ResetActions();
-			break;
-		}
-		case LevelAction::Swap:
-		{
-			// check 
-			if (!frozenLevel) {
-				DEBUG_WARNING("No frozen level currently loaded");
-				// reset
-				ResetActions();
-				return;
-			}
-
-			// swap
-			Level* tmp = currentLevel;
-			currentLevel = frozenLevel;
-			frozenLevel = tmp;
-
-			// reset
-			ResetActions();
-			break;
-		}
-		case LevelAction::UnloadAndSwap:
-		{
-			// check 
-			if (!frozenLevel) {
-				DEBUG_WARNING("No frozen level currently loaded");
-				// reset
-				ResetActions();
-				return;
-			}
-
-			// unload
-			delete currentLevel;
-
-			// swap
-			currentLevel = frozenLevel;
-			frozenLevel = nullptr;
-
-			// reset
-			ResetActions();
-			break;
-		}
+		//case LevelAction::SwapThenReplace:
+		//{
+		//	// check
+		//	if (!levelIndex->Contains(levelToLoad)) {
+		//		DEBUG_ERROR("No level titled " + levelToLoad + " could be found");
+		//		// reset
+		//		ResetActions();
+		//		return;
+		//	}
+		//
+		//	// swap
+		//	Level* tmp = currentLevel;
+		//	currentLevel = frozenLevel;
+		//	frozenLevel = tmp;
+		//
+		//	// unload current
+		//	delete currentLevel;
+		//
+		//	// load new level 
+		//	MakeLevel(levelToLoad);
+		//
+		//	// reset
+		//	ResetActions();
+		//	break;
+		//}
+		//case LevelAction::ReplaceFrozen:
+		//{
+		//	// check
+		//	if (!levelIndex->Contains(levelToLoad)) {
+		//		DEBUG_ERROR("No level titled " + levelToLoad + " could be found");
+		//		// reset
+		//		ResetActions();
+		//		return;
+		//	}
+		//
+		//	// delete frozen level
+		//	if (frozenLevel) delete frozenLevel;
+		//	frozenLevel = nullptr;
+		//
+		//	// load new level 
+		//	MakeLevel(levelToLoad, false);
+		//
+		//	// reset
+		//	ResetActions();
+		//	break;
+		//}
+		//case LevelAction::DeleteFrozen:
+		//{
+		//	// check 
+		//	if (!frozenLevel) {
+		//		DEBUG_WARNING("No frozen level currently loaded");
+		//		// reset
+		//		ResetActions();
+		//		return;
+		//	}
+		//
+		//	// delete
+		//	delete frozenLevel; // check was made before reaching this case here
+		//	frozenLevel = nullptr;
+		//
+		//	// reset
+		//	ResetActions();
+		//	break;
+		//}
+		//case LevelAction::Swap:
+		//{
+		//	// check 
+		//	if (!frozenLevel) {
+		//		DEBUG_WARNING("No frozen level currently loaded");
+		//		// reset
+		//		ResetActions();
+		//		return;
+		//	}
+		//
+		//	// swap
+		//	Level* tmp = currentLevel;
+		//	currentLevel = frozenLevel;
+		//	frozenLevel = tmp;
+		//
+		//	// reset
+		//	ResetActions();
+		//	break;
+		//}
+		//case LevelAction::UnloadAndSwap:
+		//{
+		//	// check 
+		//	if (!frozenLevel) {
+		//		DEBUG_WARNING("No frozen level currently loaded");
+		//		// reset
+		//		ResetActions();
+		//		return;
+		//	}
+		//
+		//	// unload
+		//	delete currentLevel;
+		//
+		//	// swap
+		//	currentLevel = frozenLevel;
+		//	frozenLevel = nullptr;
+		//
+		//	// reset
+		//	ResetActions();
+		//	break;
+		//}
 		default: break;
 	}
 }
@@ -223,30 +218,30 @@ void LevelManager::LoadLevel(const string& level) {
 	Get()->levelToLoad = level;
 }
 
-void LevelManager::SwapAndLoadLevel(const string& level) {
-	Get()->levelAction = LevelAction::SwapThenReplace;
-	Get()->levelToLoad = level;
-}
-
-void LevelManager::LoadFrozen(const string& level) {
-	Get()->levelAction = LevelAction::ReplaceFrozen;
-	Get()->levelToLoad = level;
-}
-
-void LevelManager::UnloadFrozen() {
-	Get()->levelAction = LevelAction::DeleteFrozen;
-	Get()->levelToLoad = "";
-}
-
-void LevelManager::Swap() {
-	Get()->levelAction = LevelAction::Swap;
-	Get()->levelToLoad = "";
-}
-
-void LevelManager::UnloadAndSwap() {
-	Get()->levelAction = LevelAction::UnloadAndSwap;
-	Get()->levelToLoad = "";
-}
+//void LevelManager::SwapAndLoadLevel(const string& level) {
+//	Get()->levelAction = LevelAction::SwapThenReplace;
+//	Get()->levelToLoad = level;
+//}
+//
+//void LevelManager::LoadFrozen(const string& level) {
+//	Get()->levelAction = LevelAction::ReplaceFrozen;
+//	Get()->levelToLoad = level;
+//}
+//
+//void LevelManager::UnloadFrozen() {
+//	Get()->levelAction = LevelAction::DeleteFrozen;
+//	Get()->levelToLoad = "";
+//}
+//
+//void LevelManager::Swap() {
+//	Get()->levelAction = LevelAction::Swap;
+//	Get()->levelToLoad = "";
+//}
+//
+//void LevelManager::UnloadAndSwap() {
+//	Get()->levelAction = LevelAction::UnloadAndSwap;
+//	Get()->levelToLoad = "";
+//}
 
 void LevelManager::ResetActions() {
 	levelAction = LevelAction::None;
@@ -255,21 +250,14 @@ void LevelManager::ResetActions() {
 
 #pragma endregion
 
-void LevelManager::MakeLevel(const string& levelToLoad_, bool loadAsCurrent) {
+void LevelManager::MakeLevel(const string& levelToLoad_) {
 	// load data
 	json data;
 	levelIndex->GetJSON(&data, levelToLoad_);
 
 	// create level
-	if (loadAsCurrent) {
-		currentLevel = new Level(objectIndex);
-		currentLevel->Init(data);
-		DEBUG_LOG("Loaded level \"" + levelToLoad_ + "\" as primary");
-	} else {
-		frozenLevel = new Level(objectIndex);
-		frozenLevel->Init(data);
-		DEBUG_LOG("Loaded level \"" + levelToLoad_ + "\" as secondary");
-	}
-
+	currentLevel = new Level(objectIndex);
+	currentLevel->Init(data);
+	DEBUG_LOG("Loaded level \"" + levelToLoad_ + "\" as primary");
 
 }

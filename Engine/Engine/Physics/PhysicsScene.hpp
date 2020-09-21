@@ -1,0 +1,8 @@
+#ifndef _PHYSICS_PHYSICS_SCENE_HPP
+#define _PHYSICS_PHYSICS_SCENE_HPP
+
+class PhysicsScene {
+
+};
+
+#endif // !_PHYSICS_PHYSICS_SCENE_HPP
