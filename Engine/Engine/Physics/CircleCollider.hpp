@@ -1,0 +1,23 @@
+#ifndef _PHYSICS_CIRCLE_COLLIDER_HPP
+#define _PHYSICS_CIRCLE_COLLIDER_HPP
+#include "ColliderComponent.hpp"
+// inherits both component and collider
+
+class CircleCollider : public ColliderComponent {
+
+	float radius;
+
+public:
+
+	CircleCollider();
+	~CircleCollider();
+
+	// getters & setters
+	float GetRadius() const { return radius; }
+	void SetRadius(const float& radius_) { if (radius_ < 0.0f) radius = 0.0f; else radius = radius_; } // makes sure its not set to < 0
+	virtual BoundingCircle GetBounds() const override;
+
+	RTTR_ENABLE(ColliderComponent) RTTR_REGISTRATION_FRIEND
+};
+
+#endif // !_PHYSICS_CIRCLE_COLLIDER_HPP

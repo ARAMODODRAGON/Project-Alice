@@ -43,7 +43,10 @@
     <ClInclude Include="Engine\Input\Keyboard.hpp" />
     <ClInclude Include="Engine\Input\Mouse.hpp" />
     <ClInclude Include="Engine\General\Serialization.hpp" />
+    <ClInclude Include="Engine\Physics\CircleCollider.hpp" />
+    <ClInclude Include="Engine\Physics\ColliderComponent.hpp" />
     <ClInclude Include="Engine\Physics\Colliders.hpp" />
+    <ClInclude Include="Engine\Physics\ColType.hpp" />
     <ClInclude Include="Engine\Physics\PhysicsScene.hpp" />
     <ClInclude Include="Engine\Rendering\Camera.hpp" />
     <ClInclude Include="Engine\Rendering\ContentHandler.hpp" />
@@ -73,6 +76,10 @@
     <ClCompile Include="Engine\General\Math.cpp" />
     <ClCompile Include="Engine\Input\Keyboard.cpp" />
     <ClCompile Include="Engine\Input\Mouse.cpp" />
+    <ClCompile Include="Engine\Physics\CircleCollider.cpp" />
+    <ClCompile Include="Engine\Physics\ColliderComponent.cpp" />
+    <ClCompile Include="Engine\Physics\Colliders.cpp" />
+    <ClCompile Include="Engine\Physics\ColType.cpp" />
     <ClCompile Include="Engine\Rendering\Camera.cpp" />
     <ClCompile Include="Engine\Rendering\ContentHandler.cpp" />
     <ClCompile Include="Engine\Rendering\ContentLoadFunctions.cpp" />

@@ -26,6 +26,10 @@
     <ClCompile Include="Engine\Rendering\Sprite.cpp" />
     <ClCompile Include="Engine\Battle\BTEnemy.cpp" />
     <ClCompile Include="Engine\Battle\BattleLevel.cpp" />
+    <ClCompile Include="Engine\Physics\Colliders.cpp" />
+    <ClCompile Include="Engine\Physics\ColType.cpp" />
+    <ClCompile Include="Engine\Physics\CircleCollider.cpp" />
+    <ClCompile Include="Engine\Physics\ColliderComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Battle\BTEnemy.hpp" />
@@ -62,6 +66,9 @@
     <ClInclude Include="Engine\Rendering\RenderScene.hpp" />
     <ClInclude Include="Engine\Rendering\Sprite.hpp" />
     <ClInclude Include="Engine\Battle\BattleLevel.hpp" />
+    <ClInclude Include="Engine\Physics\ColType.hpp" />
+    <ClInclude Include="Engine\Physics\CircleCollider.hpp" />
+    <ClInclude Include="Engine\Physics\ColliderComponent.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Core\Debugger.cpp">

@@ -4,6 +4,7 @@
 #include "../General/Serialization.hpp"
 #include "ObjectFactory.hpp"
 #include "Component.hpp"
+#include "../Physics/Colliders.hpp"
 
 class Level;
 
@@ -34,6 +35,11 @@ public:
 	virtual void Update() { }
 	virtual void LateUpdate() { }
 	virtual void OnDestroy() { }
+
+	// collision callbacks
+	virtual void OnCollisionEnter(const CollisionData& col) { }
+	virtual void OnCollisionStay(const CollisionData& col) { }
+	virtual void OnCollisionExit(const CollisionData& col) { }
 
 	// object creation / destruction
 	template<class T> T* Make();
