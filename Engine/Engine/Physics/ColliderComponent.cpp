@@ -5,14 +5,10 @@ RTTR_REGISTRATION {
 	registration::class_<ColliderComponent>("ColliderComponent");
 }
 
-ColliderComponent::ColliderComponent(const ColType coltype) : Collider(coltype) { }
+ColliderComponent::ColliderComponent() { }
 
 ColliderComponent::~ColliderComponent() { }
 
 void ColliderComponent::Start() { }
 
 void ColliderComponent::OnDestroy() { }
-
-void ColliderComponent::InvokeCollisionCallbacks() { 
-	// TODO
-}

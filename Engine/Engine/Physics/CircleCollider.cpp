@@ -6,7 +6,7 @@ RTTR_REGISTRATION {
 		.property("radius", &CircleCollider::GetRadius, &CircleCollider::SetRadius);
 }
 
-CircleCollider::CircleCollider() : ColliderComponent(ColType::Circle), radius(0.5f) { }
+CircleCollider::CircleCollider() : radius(0.5f) { }
 
 CircleCollider::~CircleCollider() { }
 

@@ -7,8 +7,8 @@ class ColliderComponent : public Component, public Collider {
 
 public:
 
-	ColliderComponent(const ColType coltype);
-	~ColliderComponent();
+	ColliderComponent();
+	virtual ~ColliderComponent() = 0;
 
 	// events
 	void Start() override;
@@ -20,7 +20,6 @@ private:
 
 	friend class PhysicsScene;
 
-	void InvokeCollisionCallbacks();
 
 };
 

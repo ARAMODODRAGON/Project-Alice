@@ -94,10 +94,15 @@ struct BoundingCircle {
 class Collider;
 
 class CollisionData {
+public:
 	// the other collider in this collision
 	Collider* otherCollider;
 	// the collider on the object that collided
 	Collider* thisCollider;
+	// the collision mask
+	LayerMask collisionMask;
+	// the trigger mask
+	LayerMask triggerMask;
 };
 
 // does not inherit from component since some colliders may not be components (ie. TilemapCollider)
@@ -107,26 +112,36 @@ class Collider {
 	// data
 	bool isSimulated;
 	vec2 position;
-	const ColType coltype;
-	BoundingCircle bounds;
 	LayerMask collisionMask;
 	LayerMask triggerMask;
 
-	// collisions
-	forward_list<CollisionData> collisions;
+	// collisions (unsigned int tracks if the collision happened this frame)
+	// 0 - exit
+	// 1 - stay
+	// 2 - enter
+	list<pair<CollisionData, unsigned int>> collisions;
 
 public:
 
-	Collider(ColType coltype_) : position(0.0f), coltype(coltype_) { }
-	virtual ~Collider() = 0; // abstract
+	Collider() : position(0.0f) { }
+	virtual ~Collider() = 0 { } // abstract
 
 	// getters and setters
+
 	bool GetIsSimulated() const { return isSimulated; }
 	void SetIsSimulated(const bool isSimulated_) { isSimulated = isSimulated_; }
+
 	vec2 GetPosition() const { return position; }
 	void SetPosition(const vec2& position_) { position = position_; }
-	ColType GetColType() const { return coltype; }
+
+	virtual ColType GetColType() const = 0;
 	virtual BoundingCircle GetBounds() const = 0;
+
+	LayerMask GetCollisionMask() const { return collisionMask; }
+	void SetCollisionMask(const LayerMask& collisionMask_) { collisionMask = collisionMask_; }
+
+	LayerMask GetTriggerMask() const { return triggerMask; }
+	void SetTriggerMask(const LayerMask& triggerMask_) { triggerMask = triggerMask_; }
 
 	RTTR_ENABLE() RTTR_REGISTRATION_FRIEND
 };

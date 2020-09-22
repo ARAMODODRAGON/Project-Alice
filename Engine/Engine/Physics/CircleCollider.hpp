@@ -14,7 +14,8 @@ public:
 
 	// getters & setters
 	float GetRadius() const { return radius; }
-	void SetRadius(const float& radius_) { if (radius_ < 0.0f) radius = 0.0f; else radius = radius_; } // makes sure its not set to < 0
+	void SetRadius(float radius_) { if (radius_ < 0.0f) radius = 0.0f; else radius = radius_; } // makes sure its not set to < 0
+	virtual ColType GetColType() const override { return ColType::Circle; }
 	virtual BoundingCircle GetBounds() const override;
 
 	RTTR_ENABLE(ColliderComponent) RTTR_REGISTRATION_FRIEND

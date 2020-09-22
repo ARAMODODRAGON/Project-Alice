@@ -30,6 +30,7 @@
     <ClCompile Include="Engine\Physics\ColType.cpp" />
     <ClCompile Include="Engine\Physics\CircleCollider.cpp" />
     <ClCompile Include="Engine\Physics\ColliderComponent.cpp" />
+    <ClCompile Include="Engine\Physics\PhysicsScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Battle\BTEnemy.hpp" />
