@@ -14,7 +14,7 @@ unsigned int LoadTexture(const string& path, uvec2& outSize) {
 	}
 
 	// grab the size
-	outSize = uvec2(surface->w, surface->h); 
+	outSize = uvec2(surface->w, surface->h);
 
 	// create and bind a texture object
 	GLuint textureID;
@@ -22,8 +22,27 @@ unsigned int LoadTexture(const string& path, uvec2& outSize) {
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
 	// check the pixel format of the image
-	//DEBUG_LOG("bytes per pixel: " + VTOS(surface->format->BytesPerPixel));
-	int mode = (surface->format->BytesPerPixel == 4 ? GL_RGBA : GL_RGB);
+	DEBUG_LOG("bytes per pixel: " + VTOS(surface->format->BytesPerPixel));
+	int mode = GL_RGBA;
+	// contains an alpha channel
+	if (surface->format->BytesPerPixel == 4) {
+		if (surface->format->Rmask == 0x000000ff)
+			mode = GL_RGBA;
+		else
+			mode = GL_BGRA;
+	}
+	// no alpha channel
+	else if (surface->format->BytesPerPixel == 3) {
+		if (surface->format->Rmask == 0x000000ff)
+			mode = GL_RGB;
+		else
+			mode = GL_BGR;
+	} else {
+		DEBUG_ERROR("No matching pixel format!");
+		SDL_FreeSurface(surface);
+		glDeleteTextures(1, &textureID);
+		return -1;
+	}
 
 	// load in the texture
 	glTexImage2D(GL_TEXTURE_2D, 0, mode, surface->w, surface->h, 0, mode, GL_UNSIGNED_BYTE, surface->pixels);

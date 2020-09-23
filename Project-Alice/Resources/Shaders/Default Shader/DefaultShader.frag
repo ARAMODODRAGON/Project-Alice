@@ -11,6 +11,11 @@ layout (binding = 0) uniform sampler2D image;
 
 void main() {
 
-    _fragColor = texture(image, passUVCoord) * color;
-    //_fragColor = color;
+    vec4 texColor = texture(image, passUVCoord);
+
+    // this checks if the color is completely trasparent
+    if(texColor.a < 0.1) discard;
+
+    // set frag color
+    _fragColor = texColor * color;
 }

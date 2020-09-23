@@ -66,7 +66,6 @@ bool Window::Initialize(const string& windowTitle_, const uvec2& screenSize_) {
 	// set an attribute
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 32);
 
-
 	// check if it was created
 	GLenum error = glewInit();
 	if (error != GLEW_OK) {
@@ -75,8 +74,8 @@ bool Window::Initialize(const string& windowTitle_, const uvec2& screenSize_) {
 	}
 
 	// enable this shit
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
 	glEnable(GL_DEPTH_TEST | GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// print graphics card and opengl version
 	DEBUG_LOG("Graphics card: " + string(reinterpret_cast<const char*>(glGetString(GL_RENDERER))));
