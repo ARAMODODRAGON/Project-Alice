@@ -1,6 +1,8 @@
 {
 	"type": "BattleLevel",
 	"data": {
-		
+		"objects": [
+			{ "type": "OWPlayer" }
+		]
 	}
 }

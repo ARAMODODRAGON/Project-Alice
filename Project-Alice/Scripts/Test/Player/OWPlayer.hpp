@@ -13,6 +13,7 @@ class OWPlayer : public Object {
 
 	Sprite* sprite;
 	Camera* cam;
+	CircleCollider* coll;
 	float colorMix;
 	bool increaseMix;
 	unsigned int animTimer;
@@ -31,6 +32,8 @@ public:
 	void Start() override;
 	void Update() override;
 	void LateUpdate() override;
+	void OnCollisionEnter(const CollisionData& data) override;
+	void OnCollisionExit(const CollisionData& data) override;
 
 	RTTR_ENABLE(Object) RTTR_REGISTRATION_FRIEND
 };

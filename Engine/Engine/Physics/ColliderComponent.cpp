@@ -9,6 +9,6 @@ ColliderComponent::ColliderComponent() { }
 
 ColliderComponent::~ColliderComponent() { }
 
-void ColliderComponent::Start() { }
+void ColliderComponent::Start() { PhysicsScene::AddComponent(this); }
 
-void ColliderComponent::OnDestroy() { }
+void ColliderComponent::OnDestroy() { PhysicsScene::RemoveComponent(this); }

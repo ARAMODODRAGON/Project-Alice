@@ -24,16 +24,18 @@ OWPlayer::~OWPlayer() { }
 
 void OWPlayer::Start() {
 
+	SetPosition(vec2(1.0f, 0.0f));
+
 	// add components
 	sprite = AddComponent<Sprite>();
-	sprite->SetPivot(vec2(4.5f, 14.5f)); // center pivot
-	//sprite->SetColor(vec4(1.0f, 0.0f, 0.0f, 1.0f));
-	//sprite->LoadTexture("Test 0");
-	sprite->LoadTexture("Test Character");
-	sprite->SetTilingSize(vec2(17.0f, 29.0f));
-	sprite->SetTilingOffset(vec2(4.0f, 7.0f));
-	sprite->SetTilingMargin(vec2(7.0f, 7.0f));
-	sprite->SetLayer(-2);
+	sprite->SetPivot(vec2(8.0f, 8.0f)); // center pivot
+	coll = AddComponent<CircleCollider>();
+
+	// create another object
+	Object* o = Make();
+	Sprite* s = o->AddComponent<Sprite>();
+	s->SetPivot(vec2(8.0f, 8.0f)); // center pivot
+	CircleCollider* c = o->AddComponent<CircleCollider>();
 
 	// create a camera
 	cam = Make<Object>()->AddComponent<Camera>();
@@ -118,37 +120,45 @@ void OWPlayer::Update() {
 }
 
 void OWPlayer::LateUpdate() {
-	vec2 velocity = GetVelocity();
+	//vec2 velocity = GetVelocity();
+	//
+	//if (velocity.x == 0.0f && velocity.y == 0.0f) {
+	//	switch (facing) {
+	//		case OWPlayer::Facing::Right:
+	//			sprite->SetTilingIndex(7);
+	//			break;
+	//		case OWPlayer::Facing::Up:
+	//			sprite->SetTilingIndex(10);
+	//			break;
+	//		case OWPlayer::Facing::Down:
+	//			sprite->SetTilingIndex(1);
+	//			break;
+	//		case OWPlayer::Facing::Left:
+	//			sprite->SetTilingIndex(4);
+	//			break;
+	//		default: break;
+	//	}
+	//	animTimer = 0;
+	//} else {
+	//	animTimer++;
+	//	#define FRAME_TIMER (animTimer / 8)
+	//	if (velocity.x < 0.0f) {
+	//		sprite->SetTilingIndex(FRAME_TIMER % 3 + 3);
+	//	} else if (velocity.x > 0.0f) {
+	//		sprite->SetTilingIndex(FRAME_TIMER % 3 + 6);
+	//	} else if (velocity.y > 0.0f) {
+	//		sprite->SetTilingIndex(FRAME_TIMER % 3 + 9);
+	//	} else if (velocity.y < 0.0f) {
+	//		sprite->SetTilingIndex(FRAME_TIMER % 3);
+	//	}
+	//}
+}
 
-	if (velocity.x == 0.0f && velocity.y == 0.0f) {
-		switch (facing) {
-			case OWPlayer::Facing::Right:
-				sprite->SetTilingIndex(7);
-				break;
-			case OWPlayer::Facing::Up:
-				sprite->SetTilingIndex(10);
-				break;
-			case OWPlayer::Facing::Down:
-				sprite->SetTilingIndex(1);
-				break;
-			case OWPlayer::Facing::Left:
-				sprite->SetTilingIndex(4);
-				break;
-			default: break;
-		}
-		animTimer = 0;
-	} else {
-		animTimer++;
-		#define FRAME_TIMER (animTimer / 8)
-		if (velocity.x < 0.0f) {
-			sprite->SetTilingIndex(FRAME_TIMER % 3 + 3);
-		} else if (velocity.x > 0.0f) {
-			sprite->SetTilingIndex(FRAME_TIMER % 3 + 6);
-		} else if (velocity.y > 0.0f) {
-			sprite->SetTilingIndex(FRAME_TIMER % 3 + 9);
-		} else if (velocity.y < 0.0f) {
-			sprite->SetTilingIndex(FRAME_TIMER % 3);
-		}
-	}
+void OWPlayer::OnCollisionEnter(const CollisionData& data) {
+	DEBUG_LOG("Collision Enter Called!");
+}
+
+void OWPlayer::OnCollisionExit(const CollisionData& data) {
+	DEBUG_LOG("Collision Exit Called!");
 }
 

@@ -29,12 +29,11 @@ void PhysicsScene::RemoveComponent(ColliderComponent* colliderComponent) {
 	auto* obj = colliderComponent->GetObject();
 	// check if object is already in the scene and iterate by one if it is
 	auto& objects = Get()->objects;
-	auto last = objects.begin();
-	for (auto it = objects.begin(); it != objects.end(); last = it++) {
+	for (auto it = objects.begin(); it != objects.end(); ++it) {
 		if (it->first == obj) {
 			it->second--;
 			if (it->second == 0) {
-				objects.erase_after(last);
+				it = objects.erase(it);
 			}
 			return;
 		}
@@ -96,6 +95,7 @@ void PhysicsScene::Step() {
 
 				// if true then there was a collision
 				if (result) {
+
 					// first get the collision data from the list and update it (TODO)
 					auto it0 = FindCollision(c0->collisions, c0, c1);
 					auto it1 = FindCollision(c1->collisions, c0, c1);
@@ -117,7 +117,7 @@ void PhysicsScene::Step() {
 						d.thisCollider = c1;
 						d.otherCollider = c0;
 						c1->collisions.push_back(pair<CollisionData, unsigned int>(d, 2));
-					} 
+					}
 					// special case where the collision data doesnt match
 					else if (it0 == c0->collisions.end() || it1 == c1->collisions.end()) {
 						if (it0 == c0->collisions.end()) {
@@ -162,10 +162,12 @@ void PhysicsScene::Step() {
 			}
 		}
 		// exit callback
-		for (auto it =  c->collisions.begin(); it != c->collisions.end(); ++it) {
+		for (auto it = c->collisions.begin(); it != c->collisions.end(); ++it) {
 			if (it->second == 0) {
-				o->OnCollisionStay(it->first);
+				o->OnCollisionExit(it->first);
 				it = c->collisions.erase(it);
+				// double check
+				if (it == c->collisions.end()) break;
 			}
 		}
 	}
@@ -192,9 +194,18 @@ PhysicsScene::CollDataPairIter PhysicsScene::FindCollision(
 }
 
 bool PhysicsScene::DoCollision(ColliderComponent* c0, Collider* c1) {
-	return false;
+	return false; // everything else false
 }
 
 bool PhysicsScene::DoOverlap(ColliderComponent* c0, Collider* c1) {
-	return false;
+	switch (c0->GetColType()) {
+		case ColType::Circle:
+			switch (c1->GetColType()) {
+				case ColType::Circle:
+					// circles only do overlaps
+					return true;
+				default: return false; // everything else false
+			}
+		default: return false; // everything else false
+	}
 }

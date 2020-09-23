@@ -11,5 +11,6 @@
 #include "Input/Keyboard.hpp"
 #include "Input/Mouse.hpp"
 #include "Game.hpp"
+#include "Physics/CircleCollider.hpp"
 
 #endif // !_COMMON_HPP

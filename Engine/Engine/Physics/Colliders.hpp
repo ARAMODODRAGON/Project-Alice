@@ -123,7 +123,7 @@ class Collider {
 
 public:
 
-	Collider() : position(0.0f) { }
+	Collider() : position(0.0f), collisionMask(~0), triggerMask(~0) { /* The ~0 sets all layers to true */ }
 	virtual ~Collider() = 0 { } // abstract
 
 	// getters and setters

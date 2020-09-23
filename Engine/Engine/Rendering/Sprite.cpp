@@ -10,8 +10,9 @@ void Sprite::Start() {
 	// add to render scene
 	RenderScene::AddRenderer(this);
 
-	// try to load a default shader
+	// try to load a default shader and texture
 	LoadShader("default");
+	LoadTexture("default");
 }
 
 void Sprite::OnDestroy() {

@@ -9,8 +9,8 @@ class PhysicsScene {
 	using CollDataPairIter = list<pair<CollisionData, unsigned int>>::iterator;
 	using ObjectPairType = pair<Object*, unsigned int>;
 
-	forward_list<ObjectPairType> objects;
-	forward_list<ColliderComponent*> colliderComponents;
+	list<ObjectPairType> objects;
+	list<ColliderComponent*> colliderComponents;
 	//forward_list<TilemapCollider*> tilemapColliders;
 
 	PhysicsScene();

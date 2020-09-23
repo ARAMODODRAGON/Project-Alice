@@ -46,6 +46,7 @@
     <ClInclude Include="Engine\Physics\CircleCollider.hpp" />
     <ClInclude Include="Engine\Physics\ColliderComponent.hpp" />
     <ClInclude Include="Engine\Physics\Colliders.hpp" />
+    <ClInclude Include="Engine\Physics\CollisionLogic.hpp" />
     <ClInclude Include="Engine\Physics\ColType.hpp" />
     <ClInclude Include="Engine\Physics\PhysicsScene.hpp" />
     <ClInclude Include="Engine\Rendering\Camera.hpp" />
@@ -80,6 +81,7 @@
     <ClCompile Include="Engine\Physics\CircleCollider.cpp" />
     <ClCompile Include="Engine\Physics\ColliderComponent.cpp" />
     <ClCompile Include="Engine\Physics\Colliders.cpp" />
+    <ClCompile Include="Engine\Physics\CollisionLogic.cpp" />
     <ClCompile Include="Engine\Physics\ColType.cpp" />
     <ClCompile Include="Engine\Physics\PhysicsScene.cpp" />
     <ClCompile Include="Engine\Rendering\Camera.cpp" />

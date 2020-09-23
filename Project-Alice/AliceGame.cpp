@@ -1,6 +1,7 @@
 #include "AliceGame.hpp"
 #include <Engine/Input/Keyboard.hpp>
 #include <Engine/Battle/BattleLevel.hpp>
+#include <Engine/Physics/PhysicsScene.hpp>
 
 AliceGame::AliceGame()
 	: Game()
@@ -16,7 +17,8 @@ bool AliceGame::Init() {
 	ContentHandler::Init("Resources/Textures", "Resources/Shaders");
 	RenderScene::Init();
 	ObjectFactory::Init("Resources/Objects");
-	LevelManager::Init("Resources/Levels", "battle_test_0");
+	PhysicsScene::Init();
+	LevelManager::Init("Resources/Levels", "collision_test");
 
 	return true;
 }
@@ -35,6 +37,9 @@ void AliceGame::Update() {
 	// update 
 	LevelManager::Update();
 	ObjectFactory::Update();
+
+	// do physics
+	PhysicsScene::Step();
 
 }
 
@@ -65,6 +70,7 @@ bool AliceGame::Exit() {
 	// Exit the singletons
 	LevelManager::Exit();
 	ObjectFactory::Exit();
+	PhysicsScene::Exit();
 	RenderScene::Exit();
 	ContentHandler::Exit();
 
