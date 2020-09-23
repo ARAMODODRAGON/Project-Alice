@@ -23,7 +23,7 @@ void TestEnemy::SeekAndArrive(bool isMoving_)
 	int screenX = 95;
 	int screenY = 50;
 
-	//pick x 
+	//Generate a random x and y coord within the window
 	if (randomNumberX == 1) {
 		tmpX = rand() % screenX;
 	}
@@ -39,9 +39,9 @@ void TestEnemy::SeekAndArrive(bool isMoving_)
 		destination_ = vec2(tmpX, tmpY);
 		vec2 tempVel;
 		tempVel = destination_ - GetPosition();
-		tempVel = normalize(tempVel);
-		tempVel *= GetMovementSpeed();
-		SetVelocity(tempVel);
+		//tempVel = normalize(tempVel);
+		//tempVel *= GetMovementSpeed();
+		SetVelocity((normalize(tempVel)) * GetMovementSpeed());
 		isMoving = true;
 		SetDestination(destination_);
 	}
@@ -50,12 +50,14 @@ void TestEnemy::SeekAndArrive(bool isMoving_)
 
 		vec2 tmpPosition = ceil(GetPosition());
 
+		//Enemy arrived at the destination 
 		if (tmpPosition == GetDestination()) {
 			DEBUG_LOG("Enemy Position is equal with Destination");
 			isMoving = false;
 			SetVelocity(vec2());
 		}
-
+		
+		// if Enemy Passes the destination stop moving 
 		else if (tmpPosition.x >= GetDestination().x && tmpPosition.y >= GetDestination().y) {
 			DEBUG_LOG("Enemy Position is Greater than the destination ");
 			isMoving = false;
@@ -63,9 +65,6 @@ void TestEnemy::SeekAndArrive(bool isMoving_)
 
 		}
 	}
-	cout << "Enemy Position" <<"("<<ceil(GetPosition()).x << "," << ceil(GetPosition()).y << ")" <<endl;
-	cout << "Destination" <<"("<<GetDestination().x << "," << GetDestination().y << ")" <<endl;
-	
 }
 
 void TestEnemy::Start()
