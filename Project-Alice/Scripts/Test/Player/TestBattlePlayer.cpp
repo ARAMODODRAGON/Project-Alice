@@ -12,15 +12,8 @@ TestBattlePlayer::TestBattlePlayer() { }
 TestBattlePlayer::~TestBattlePlayer() { }
 
 void TestBattlePlayer::Start() {
-	SetMoveSpeed(300.0f);
+	SetMoveSpeed(100.0f);
 	SetMaxHitpoints(20, true);
-	SetSprite("");
-}
-
-void TestBattlePlayer::Update() {
-
-}
-
-void TestBattlePlayer::LateUpdate() {
-
+	SetSprite("", vec2(8.0f, 8.0f), 2);
+	SetCollider(8.0f);
 }

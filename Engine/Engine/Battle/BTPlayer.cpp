@@ -1,4 +1,5 @@
 #include "BTPlayer.hpp"
+#include <iostream>
 
 RTTR_REGISTRATION{
 	registration::class_<BTPlayer>("BTPlayer")
@@ -16,6 +17,7 @@ BTPlayer::BTPlayer() {
 	hitpoints = 0;
 
 	sprite = nullptr;
+	collider = nullptr;
 }
 
 BTPlayer::~BTPlayer() {
@@ -34,8 +36,14 @@ void BTPlayer::Update() {
 	const Button keyDown = Keyboard::GetKey(KeyCode::ArrowDown);
 
 	// Set player velodity based on the current input
-	vec2 inputDirection = normalize(vec2((keyRight.IsHeld() - keyLeft.IsHeld(), keyUp.IsHeld() - keyDown.IsHeld())));
+	vec2 inputDirection = vec2(float(keyRight.IsHeld()) - float(keyLeft.IsHeld()), float(keyUp.IsHeld()) - float(keyDown.IsHeld()));
+	if (inputDirection.x != 0.0f && inputDirection.y != 0.0f) { // Don't normalize the vector if it's set to (0.0, 0.0)
+		inputDirection = glm::normalize(inputDirection);
+	}
 	SetVelocity(inputDirection * moveSpeed);
+	
+	vec2 velocity = GetVelocity();
+	std::cout << velocity.x << ", " << velocity.y << std::endl;
 }
 
 void BTPlayer::LateUpdate() {
@@ -70,6 +78,10 @@ Sprite* BTPlayer::GetSprite() {
 	return sprite;
 }
 
+CircleCollider* BTPlayer::GetCollider() {
+	return collider;
+}
+
 void BTPlayer::SetMoveSpeed(float _moveSpeed) {
 	moveSpeed = _moveSpeed;
 }
@@ -85,7 +97,16 @@ void BTPlayer::SetMaxHitpoints(int _maxHitpoints, bool _updateCurHP) {
 	}
 }
 
-void BTPlayer::SetSprite(std::string _filepath) {
+void BTPlayer::SetSprite(std::string _texture, vec2 _pivot, int _layer) {
 	sprite = AddComponent<Sprite>();
-	sprite->SetPivot(vec2(8.0f, 8.0f));
+	if (_texture != "") { // Only load a texture if one is specified
+		sprite->LoadTexture(_texture);
+	}
+	sprite->SetPivot(_pivot);
+	sprite->SetLayer(_layer);
+}
+
+void BTPlayer::SetCollider(float _radius) {
+	collider = AddComponent<CircleCollider>();
+	collider->SetRadius(4.0f);
 }

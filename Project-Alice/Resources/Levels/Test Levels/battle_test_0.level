@@ -3,7 +3,7 @@
     "data": {
         "objects": [ 
             { "type": "BattleCamera" },
-            { "type": "TestBattlePlayer" }, 
+            { "type": "TestBattlePlayer" },
             { "type": "TestEnemy" }
         ]
     }

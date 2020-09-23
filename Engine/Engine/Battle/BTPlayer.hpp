@@ -5,14 +5,13 @@
 #include "../Common.hpp"
 
 class BTPlayer : public Object {
-	const float delta = 1.0f / 60.0f;
 	float moveSpeed;
 
 	int hitpoints;
 	int maxHitpoints;
 
+	CircleCollider* collider;
 	Sprite* sprite;
-
 public:
 	BTPlayer();
 	virtual ~BTPlayer() = 0;
@@ -28,11 +27,13 @@ public:
 	int GetHitpoints();
 	int GetMaxHitpoints();
 	Sprite* GetSprite();
+	CircleCollider* GetCollider();
 
 	void SetMoveSpeed(float _moveSpeed);
 	void SetHitpoints(int _hitpoints);
 	void SetMaxHitpoints(int _maxHitpoints, bool _updateCurHP);
-	void SetSprite(std::string _filepath);
+	void SetSprite(std::string _texture, vec2 _pivot, int _layer);
+	void SetCollider(float _radius);
 
 	RTTR_ENABLE(Object) RTTR_REGISTRATION_FRIEND
 };
