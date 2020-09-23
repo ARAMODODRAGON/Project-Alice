@@ -18,7 +18,7 @@ bool AliceGame::Init() {
 	RenderScene::Init();
 	ObjectFactory::Init("Resources/Objects");
 	PhysicsScene::Init();
-	LevelManager::Init("Resources/Levels", "battle_test_0");
+	LevelManager::Init("Resources/Levels", "collision_test");
 
 	return true;
 }

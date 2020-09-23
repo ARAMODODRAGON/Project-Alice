@@ -22,7 +22,7 @@ unsigned int LoadTexture(const string& path, uvec2& outSize) {
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
 	// check the pixel format of the image
-	DEBUG_LOG("bytes per pixel: " + VTOS(surface->format->BytesPerPixel));
+	//DEBUG_LOG("bytes per pixel: " + VTOS(surface->format->BytesPerPixel));
 	int mode = GL_RGBA;
 	// contains an alpha channel
 	if (surface->format->BytesPerPixel == 4) {

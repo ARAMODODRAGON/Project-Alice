@@ -50,7 +50,7 @@ void OWPlayer::Update() {
 	vec2 direction = vec2(0.0f);
 	const static float delta = (1.0f / 60.0f);
 	const static float move_delta = delta * 7.0f;
-	const static float speed = 10.0f;
+	const static float speed = 300.0f;
 	//const float slow_value = (Keyboard::GetKey(KeyCode::LeftShift) ? 0.4f : 1.0f);
 
 	const Button UP = Keyboard::GetKey(KeyCode::ArrowUp);
