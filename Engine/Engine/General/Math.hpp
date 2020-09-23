@@ -43,4 +43,44 @@ struct Rect {
 
 };
 
+bool NearlyZero(const float& v, const float& percision = 0.0001f) {
+	return (abs(v) < percision);
+}
+bool NearlyEqual(const float& v0, const float& v1, const float& percision = 0.0001f) {
+	return (abs(v0 - v1) < percision);
+}
+
+bool NearlyZero(const vec2& v, const float& percision = 0.0001f) {
+	return (abs(v.x) < percision) 
+		&& (abs(v.y) < percision);
+}
+bool NearlyEqual(const vec2& v0, const vec2& v1, const float& percision = 0.0001f) {
+	return (abs(v0.x - v1.x) < percision) 
+		&& (abs(v0.y - v1.y) < percision);
+}
+
+bool NearlyZero(const vec3& v, const float& percision = 0.0001f) {
+	return (abs(v.x) < percision) 
+		&& (abs(v.y) < percision) 
+		&& (abs(v.z) < percision);
+}
+bool NearlyEqual(const vec3& v0, const vec3& v1, const float& percision = 0.0001f) {
+	return (abs(v0.x - v1.x) < percision) 
+		&& (abs(v0.y - v1.y) < percision) 
+		&& (abs(v0.z - v1.z) < percision);
+}
+
+bool NearlyZero(const vec4& v, const float& percision = 0.0001f) {
+	return (abs(v.x) < percision) 
+		&& (abs(v.y) < percision) 
+		&& (abs(v.z) < percision) 
+		&& (abs(v.w) < percision);
+}
+bool NearlyEqual(const vec4& v0, const vec4& v1, const float& percision = 0.0001f) {
+	return (abs(v0.x - v1.x) < percision) 
+		&& (abs(v0.y - v1.y) < percision) 
+		&& (abs(v0.z - v1.z) < percision) 
+		&& (abs(v0.w - v1.w) < percision);
+}
+
 #endif // !_MATH_HPP
