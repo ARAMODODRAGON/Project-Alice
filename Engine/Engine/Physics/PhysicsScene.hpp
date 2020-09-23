@@ -18,7 +18,9 @@ class PhysicsScene {
 
 public:
 
-	// adding/removing colliders
+	// adding/removing colliders/objects
+	static void AddObject(Object* obj);
+	static void RemoveObject(Object* obj);
 	static void AddComponent(ColliderComponent* colliderComponent);
 	static void RemoveComponent(ColliderComponent* colliderComponent);
 
