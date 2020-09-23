@@ -32,6 +32,8 @@ void ContentHandler::Clean() {
 			GLuint id = it->second;
 			glDeleteTextures(1, &id);
 			it = textures.erase(it);
+			// special case
+			if (it == textures.end()) break;
 		}
 	}
 

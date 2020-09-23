@@ -1,5 +1,6 @@
 {
     "default": "default_texture.png",
+    "circle 128": "circle.png",
     "Test 0": "TestSprite-1.png",
     "Flashing Grey Orb": "Grey Orb Flashing.png",
     "Test Character": "Other Test Chara.png"

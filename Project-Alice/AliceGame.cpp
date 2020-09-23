@@ -51,7 +51,7 @@ void AliceGame::Draw() {
 
 
 	// draw 
-	GetWindow()->ClearScreen(vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	GetWindow()->ClearScreen(vec4(0.0f, 0.0f, 0.0f, 1.0f));
 	RenderScene::Draw();
 
 	// cleanup

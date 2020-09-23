@@ -24,12 +24,6 @@ void ObjectFactory::Update() {
 		it->first->Update();
 	}
 
-	// temporary loop to update position
-	for (auto it = objects.begin(); it != objects.end(); ++it) {
-		if (it->second || !it->first->GetIsActive()) continue;
-		Object* o = it->first;
-		o->SetPosition(o->GetPosition() + o->GetVelocity());
-	}
 }
 void ObjectFactory::LateUpdate() {
 	// get reference
@@ -44,6 +38,14 @@ void ObjectFactory::LateUpdate() {
 void ObjectFactory::Cleanup() {
 	// get reference
 	auto& objects = Get()->objects;
+	auto& newObjects = Get()->newObjects;
+
+	// add all new objects
+	objects.reserve(objects.size() + newObjects.size());
+	for (Object* no : newObjects) {
+		objects.push_back(PairType(no, false));
+	}
+	newObjects.clear();
 
 	// look for destroyable objects
 	for (auto it = objects.begin(); it != objects.end(); ++it) {
@@ -62,6 +64,7 @@ void ObjectFactory::Exit() { Get()->DestroyAll(); }
 void ObjectFactory::Clear() { 
 	// get ref
 	auto& objects = Get()->objects;
+	auto& newObjects = Get()->newObjects;
 
 	// delete all objects
 	for (PairType& ec : objects) {
@@ -69,6 +72,10 @@ void ObjectFactory::Clear() {
 		delete ec.first;
 	}
 	objects.clear();
+	for (Object* no : newObjects) {
+		delete no;
+	}
+	newObjects.clear();
 }
 
 Object* ObjectFactory::Make(const type typ) {
@@ -175,7 +182,7 @@ void ObjectFactory::Add(Object* e) {
 		DEBUG_ERROR("Failed to initialize the entity and add it! It doesnt exist!");
 		return;
 	}
-	objects.push_back(PairType(e, false));
+	newObjects.push_back(e);
 
 	// call start
 	e->Start();

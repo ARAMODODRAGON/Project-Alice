@@ -17,6 +17,7 @@ class ObjectFactory {
 	using PairType = pair<Object*, bool>;
 	// all the entities
 	vector<PairType> objects; // TODO: seperate array for new objects, these then get pushed into this array during cleanup
+	list<Object*> newObjects;
 
 	// an object index & level
 	FileIndex* index;
