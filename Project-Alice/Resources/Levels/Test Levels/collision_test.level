@@ -6,7 +6,7 @@
 				"type": "OWPlayer",
 				"data": {
 					"shootDestroyTimer": 200,
-					"shootSpeed": 0.3
+					"shootSpeed": 40.0
 				}
 			}
 		]

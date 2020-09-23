@@ -19,7 +19,7 @@ void TestEnemy::SeekAndArrive(bool isMoving_)
 	vec2 destination_;
 
 	if (!isMoving_) {
-		destination_ = vec2(rand() % 8 | rand() % 8 * -1, rand() % 8 | rand() % 8 * -1);
+		destination_ = vec2(rand() % 80 | rand() % 80 * -1, rand() % 80 | rand() % 80 * -1);
 		vec2 tempVel;
 		tempVel = destination_ - this->GetPosition();
 		normalize(tempVel);

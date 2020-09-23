@@ -24,19 +24,23 @@ OWPlayer::~OWPlayer() { }
 
 void OWPlayer::Start() {
 
-	SetPosition(vec2(1.0f, 0.0f));
+	SetPosition(vec2(16.0f, 0.0f));
 
 	// add components
 	sprite = AddComponent<Sprite>();
-	sprite->SetPivot(vec2(8.0f, 8.0f)); // center pivot
-	sprite->SetScale(vec2(0.4f));
+	sprite->LoadTexture("circle 128");
+	sprite->SetPivot(vec2(128.0f / 2.0f, 128.0f / 2.0f)); // center pivot
+	sprite->SetScale(vec2(1.0f / 11.0f));
+	sprite->SetLayer(-1);
 	coll = AddComponent<CircleCollider>();
 	coll->SetRadius(4.0f);
 
 	// create another object
 	Object* o = Make();
 	Sprite* s = o->AddComponent<Sprite>();
-	s->SetPivot(vec2(8.0f, 8.0f)); // center pivot
+	s->LoadTexture("circle 128");
+	s->SetPivot(vec2(128.0f / 2.0f, 128.0f / 2.0f)); // center pivot
+	s->SetScale(vec2(1.0f / 11.0f));
 	CircleCollider* c = o->AddComponent<CircleCollider>();
 	c->SetRadius(8.0f);
 
@@ -123,49 +127,17 @@ void OWPlayer::Update() {
 	}
 }
 
-void OWPlayer::LateUpdate() {
-	// rotate sprite
-	sprite->SetRotation(sprite->GetRotation() + 0.2f);
-
-	//vec2 velocity = GetVelocity();
-	//
-	//if (velocity.x == 0.0f && velocity.y == 0.0f) {
-	//	switch (facing) {
-	//		case OWPlayer::Facing::Right:
-	//			sprite->SetTilingIndex(7);
-	//			break;
-	//		case OWPlayer::Facing::Up:
-	//			sprite->SetTilingIndex(10);
-	//			break;
-	//		case OWPlayer::Facing::Down:
-	//			sprite->SetTilingIndex(1);
-	//			break;
-	//		case OWPlayer::Facing::Left:
-	//			sprite->SetTilingIndex(4);
-	//			break;
-	//		default: break;
-	//	}
-	//	animTimer = 0;
-	//} else {
-	//	animTimer++;
-	//	#define FRAME_TIMER (animTimer / 8)
-	//	if (velocity.x < 0.0f) {
-	//		sprite->SetTilingIndex(FRAME_TIMER % 3 + 3);
-	//	} else if (velocity.x > 0.0f) {
-	//		sprite->SetTilingIndex(FRAME_TIMER % 3 + 6);
-	//	} else if (velocity.y > 0.0f) {
-	//		sprite->SetTilingIndex(FRAME_TIMER % 3 + 9);
-	//	} else if (velocity.y < 0.0f) {
-	//		sprite->SetTilingIndex(FRAME_TIMER % 3);
-	//	}
-	//}
-}
+void OWPlayer::LateUpdate() { }
 
 void OWPlayer::OnCollisionEnter(const CollisionData& data) {
 	DEBUG_LOG("Collision Enter Called!");
+	// set red
+	sprite->SetColor(vec4(1.0f, 0.0f, 0.0f, 1.0f));
 }
 
 void OWPlayer::OnCollisionExit(const CollisionData& data) {
 	DEBUG_LOG("Collision Exit Called!");
+	// set white
+	sprite->SetColor(vec4(1.0f));
 }
 
