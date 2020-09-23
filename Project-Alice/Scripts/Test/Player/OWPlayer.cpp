@@ -29,24 +29,28 @@ void OWPlayer::Start() {
 	// add components
 	sprite = AddComponent<Sprite>();
 	sprite->SetPivot(vec2(8.0f, 8.0f)); // center pivot
+	sprite->SetScale(vec2(0.4f));
 	coll = AddComponent<CircleCollider>();
+	coll->SetRadius(4.0f);
 
 	// create another object
 	Object* o = Make();
 	Sprite* s = o->AddComponent<Sprite>();
 	s->SetPivot(vec2(8.0f, 8.0f)); // center pivot
 	CircleCollider* c = o->AddComponent<CircleCollider>();
+	c->SetRadius(8.0f);
 
 	// create a camera
 	cam = Make<Object>()->AddComponent<Camera>();
-	vec2 size = Game::Get()->GetWindow()->GetScreenSize() / 65.0f;
+	vec2 size = Game::Get()->GetWindow()->GetScreenSize() / 6.5f;
 	cam->SetCameraSize(size);
 }
 
 void OWPlayer::Update() {
-	vec2 velocity = vec2(0.0f);
+	vec2 direction = vec2(0.0f);
 	const static float delta = (1.0f / 60.0f);
 	const static float move_delta = delta * 7.0f;
+	const static float speed = 10.0f;
 	//const float slow_value = (Keyboard::GetKey(KeyCode::LeftShift) ? 0.4f : 1.0f);
 
 	const Button UP = Keyboard::GetKey(KeyCode::ArrowUp);
@@ -57,28 +61,28 @@ void OWPlayer::Update() {
 	if (UP != DOWN) {
 		if (UP) {
 			facing = Facing::Up;
-			velocity.y += 1.0f;
+			direction.y += 1.0f;
 		}
 		if (DOWN) {
 			facing = Facing::Down;
-			velocity.y -= 1.0f;
+			direction.y -= 1.0f;
 		}
 	}
 	if (LEFT != RIGHT) {
 		if (RIGHT) {
 			facing = Facing::Right;
-			velocity.x += 1.0f;
+			direction.x += 1.0f;
 		}
 		if (LEFT) {
 			facing = Facing::Left;
-			velocity.x -= 1.0f;
+			direction.x -= 1.0f;
 		}
 	}
 
-	if (velocity.x == 0.0f && velocity.y == 0.0f)
+	if (direction.x == 0.0f && direction.y == 0.0f)
 		SetVelocity(vec2(0.0f));
 	else
-		SetVelocity(glm::normalize(velocity) * move_delta);
+		SetVelocity(glm::normalize(direction) * speed * move_delta);
 
 	if (Keyboard::GetKey(KeyCode::KeyW)) {
 		vec2 size = cam->GetCameraSize();
@@ -120,6 +124,9 @@ void OWPlayer::Update() {
 }
 
 void OWPlayer::LateUpdate() {
+	// rotate sprite
+	sprite->SetRotation(sprite->GetRotation() + 0.2f);
+
 	//vec2 velocity = GetVelocity();
 	//
 	//if (velocity.x == 0.0f && velocity.y == 0.0f) {

@@ -1,4 +1,5 @@
 #include "BattleCamera.hpp"
+#define SIZE_FACTOR (1.0f / 6.5f);
 
 RTTR_REGISTRATION {
 	registration::class_<BattleCamera>("BattleCamera")
@@ -18,13 +19,13 @@ void BattleCamera::Start() {
 		SetIsActive(false); // disable so the camera is 
 		return; // quit early
 	}
-	vec2 size = Game::Get()->GetWindow()->GetScreenSize() / 65.0f;
+	vec2 size = Game::Get()->GetWindow()->GetScreenSize() * SIZE_FACTOR;
 	cam->SetCameraSize(size);
 }
 
 void BattleCamera::LateUpdate() {
 	// update the camera size according to the window size
-	vec2 screenSize = Game::Get()->GetWindow()->GetScreenSize() / 65.0f;
+	vec2 screenSize = Game::Get()->GetWindow()->GetScreenSize() * SIZE_FACTOR;
 	if (cam->GetCameraSize() != screenSize) {
 		cam->SetCameraSize(screenSize);
 	}

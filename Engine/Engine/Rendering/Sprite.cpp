@@ -104,14 +104,14 @@ void Sprite::UpdateVertexArray() {
 	rect.min.y = (tilingIndex / columns) * dist.y + tilingOffset.y; // / returns the row
 	rect.max = rect.min + tilingSize;
 
-	// normalize rect
+	// normalize the rect
 	vec2 size = texture.GetSize();
-	if (size.x != 0.0f && size.y != 0.0f) {
-		rect.min /= size;
-		rect.max /= size;
-	} else {
+	if (size.x == 0.0f || size.y == 0.0f) {
 		rect.min = vec2(0.0f);
 		rect.max = vec2(1.0f);
+	} else {
+		rect.min /= size;
+		rect.max /= size;
 	}
 
 	// update the vertex array. the rect must be flipped vertically since the texture 0,0 is the top left
@@ -134,15 +134,15 @@ void Sprite::Draw(const Camera& camera) {
 
 	// create the model matrix
 	mat4 model;
-	// pivot
-	model = glm::translate(model, -vec3(pivot / tilingSize, 0.0f));
-	// scale
-	model = glm::scale(model, vec3(scale * glm::normalize(tilingSize), 1.0f));
-	// rotation
-	model = glm::rotate(model, rotation, vec3(0.0f, 0.0f, 1.0f));
 	// position
 	vec3 position = vec3(GetObject()->GetPosition() + offset, layer);
 	model = glm::translate(model, position);
+	// rotation
+	model = glm::rotate(model, rotation, vec3(0.0f, 0.0f, 1.0f));
+	// scale
+	model = glm::scale(model, vec3(scale * tilingSize, 1.0f));
+	// pivot
+	model = glm::translate(model, -vec3(pivot / tilingSize, 0.0f));
 
 	// bind vertex array, shader, and texture
 	glBindVertexArray(VAO);
