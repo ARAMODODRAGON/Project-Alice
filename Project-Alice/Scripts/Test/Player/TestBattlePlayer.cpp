@@ -1,4 +1,4 @@
-#include "TestBattlePlayer.h"
+#include "TestBattlePlayer.hpp"
 
 #include <iostream>
 
