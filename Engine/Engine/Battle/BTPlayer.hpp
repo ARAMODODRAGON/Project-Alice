@@ -5,6 +5,8 @@
 #include "../Common.hpp"
 
 class BTPlayer : public Object {
+	const float delta = 1.0f / 60.0f;
+	float moveSpeed;
 
 	int hitpoints;
 	int maxHitpoints;
@@ -22,11 +24,15 @@ public:
 	void UpdateHitpoints(int _modifier);
 
 	// Getters and Setters
-	int GetHitpoints() { return hitpoints; }
-	int GetMaxHitpoints() { return maxHitpoints; }
+	float GetMoveSpeed();
+	int GetHitpoints();
+	int GetMaxHitpoints();
+	Sprite* GetSprite();
 
-	void SetHitpoints(int _hitpoints) { hitpoints = _hitpoints; }
-	void SetMaxHitpoints(int _maxHitpoints) { maxHitpoints = _maxHitpoints; }
+	void SetMoveSpeed(float _moveSpeed);
+	void SetHitpoints(int _hitpoints);
+	void SetMaxHitpoints(int _maxHitpoints, bool _updateCurHP);
+	void SetSprite(std::string _filepath);
 
 	RTTR_ENABLE(Object) RTTR_REGISTRATION_FRIEND
 };

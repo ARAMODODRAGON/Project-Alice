@@ -12,8 +12,9 @@ TestBattlePlayer::TestBattlePlayer() { }
 TestBattlePlayer::~TestBattlePlayer() { }
 
 void TestBattlePlayer::Start() {
-	SetMaxHitpoints(20);
-	SetHitpoints(20);
+	SetMoveSpeed(300.0f);
+	SetMaxHitpoints(20, true);
+	SetSprite("");
 }
 
 void TestBattlePlayer::Update() {
