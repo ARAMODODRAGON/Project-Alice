@@ -2,10 +2,10 @@
 
 RTTR_REGISTRATION{
 	registration::class_<BTEnemy>("BTEnemy")
-		.property("movmentSpeed",&BTEnemy::movmentSpeed);
+		.property("movmentSpeed",&BTEnemy::movementSpeed);
 }
 
-BTEnemy::BTEnemy() : movmentSpeed(.05f) { BattleManager::AddEnemy(this); }
+BTEnemy::BTEnemy() : movementSpeed(NULL) { BattleManager::AddEnemy(this); }
 
 BTEnemy::~BTEnemy() { BattleManager::RemoveEnemy(this); }
 

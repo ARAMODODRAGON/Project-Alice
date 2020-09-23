@@ -8,8 +8,9 @@
 using namespace std;
 class BTEnemy : public Object
 {
+	float movementSpeed;
 public:
-	float movmentSpeed;
+	
 
 	BTEnemy();
 	virtual ~BTEnemy();
@@ -18,6 +19,8 @@ public:
 	void Update() override;
 	void LateUpdate() override;
 	void OnDestroy() override;
+	float GetMovementSpeed() { return movementSpeed; }
+	void SetMovementSpeed(float movementSpeed_) { movementSpeed = movementSpeed_; }
 
 
 	RTTR_ENABLE(Object) RTTR_REGISTRATION_FRIEND
