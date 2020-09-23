@@ -1,7 +1,7 @@
 #ifndef TEST_BTPLAYER_H
 #define TEST_BTPLAYER_H
 
-#include "BTPlayer.h"
+#include "Engine/Battle/BTPlayer.hpp"
 
 class TestBattlePlayer : public BTPlayer {
 

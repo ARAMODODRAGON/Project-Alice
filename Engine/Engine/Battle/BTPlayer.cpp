@@ -1,4 +1,4 @@
-#include "BTPlayer.h"
+#include "BTPlayer.hpp"
 
 RTTR_REGISTRATION{
 	registration::class_<BTPlayer>("BTPlayer")
@@ -20,7 +20,7 @@ BTPlayer::~BTPlayer() {
 }
 
 void BTPlayer::Start() {
-
+	
 }
 
 void BTPlayer::Update() {
