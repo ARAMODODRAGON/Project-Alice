@@ -1,5 +1,6 @@
 #include "Object.hpp"
 #include "../Core/Level.hpp"
+#include "../Physics/PhysicsScene.hpp"
 
 RTTR_REGISTRATION {
 	registration::class_<Object>("Object")
@@ -19,6 +20,7 @@ Object::Object()
 	, name("Object")
 	, rotation(0.0f) {
 	level = LevelManager::GetLevel();
+	PhysicsScene::AddObject(this);
 }
 
 Object::~Object() {
@@ -28,6 +30,7 @@ Object::~Object() {
 		delete c;
 	}
 	components.clear();
+	PhysicsScene::RemoveObject(this);
 }
 
 Object* Object::Make() {

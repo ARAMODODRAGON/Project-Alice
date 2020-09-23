@@ -5,41 +5,22 @@ PhysicsScene::PhysicsScene() { }
 
 PhysicsScene::~PhysicsScene() { }
 
+void PhysicsScene::AddObject(Object* obj) { 
+	Get()->objects.push_back(ObjectPairType(obj, 1u));
+}
+
+void PhysicsScene::RemoveObject(Object* obj) { 
+	Get()->objects.remove_if([obj] (ObjectPairType& p) {
+		return obj == p.first;
+	});
+}
+
 void PhysicsScene::AddComponent(ColliderComponent* colliderComponent) {
 	Get()->colliderComponents.push_front(colliderComponent);
-
-	auto* obj = colliderComponent->GetObject();
-	// check if object is already in the scene and iterate by one if it is
-	auto& objects = Get()->objects;
-	for (ObjectPairType& pair : objects) {
-		if (pair.first == obj) {
-			pair.second++;
-			return;
-		}
-	}
-
-	// if it isnt then insert
-	objects.push_front(ObjectPairType(obj, 1u));
 }
 
 void PhysicsScene::RemoveComponent(ColliderComponent* colliderComponent) {
 	Get()->colliderComponents.remove(colliderComponent);
-
-	// find and subtrack 1
-	auto* obj = colliderComponent->GetObject();
-	// check if object is already in the scene and iterate by one if it is
-	auto& objects = Get()->objects;
-	for (auto it = objects.begin(); it != objects.end(); ++it) {
-		if (it->first == obj) {
-			it->second--;
-			if (it->second == 0) {
-				it = objects.erase(it);
-			}
-			return;
-		}
-	}
-
-	DEBUG_ERROR("Could not remove object from physics scene. It was not found!");
 }
 
 void PhysicsScene::Init() { }
