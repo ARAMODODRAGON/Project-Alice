@@ -57,6 +57,7 @@
     <ClInclude Include="Engine\Rendering\Rect.hpp" />
     <ClInclude Include="Engine\Rendering\RenderScene.hpp" />
     <ClInclude Include="Engine\Rendering\Sprite.hpp" />
+    <ClInclude Include="Engine\Rendering\UIRenderer.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Battle\BattleLevel.cpp" />
@@ -90,6 +91,7 @@
     <ClCompile Include="Engine\Rendering\IRenderer.cpp" />
     <ClCompile Include="Engine\Rendering\RenderScene.cpp" />
     <ClCompile Include="Engine\Rendering\Sprite.cpp" />
+    <ClCompile Include="Engine\Rendering\UIRenderer.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

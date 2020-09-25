@@ -10,7 +10,6 @@ RenderScene::~RenderScene() { Clear(); }
 void RenderScene::AddRenderer(IRenderer* renderer) {
 	Get()->renderers.push_back(renderer);
 }
-
 void RenderScene::RemoveRenderer(IRenderer* renderer) {
 	// get reference
 	auto& renderers = Get()->renderers;
@@ -24,11 +23,9 @@ void RenderScene::RemoveRenderer(IRenderer* renderer) {
 
 	DEBUG_ERROR("Could not find the renderer");
 }
-
 void RenderScene::AddCamera(Camera* camera) {
 	Get()->cameras.push_back(camera);
 }
-
 void RenderScene::RemoveCamera(Camera* camera) {
 	// get reference
 	auto& cameras = Get()->cameras;
@@ -41,6 +38,22 @@ void RenderScene::RemoveCamera(Camera* camera) {
 	}
 
 	DEBUG_ERROR("Could not find the camera");
+}
+void RenderScene::AddCanvasRenderer(ICanvasRenderer* cavrenderer) {
+	Get()->canvasRenderers.push_back(cavrenderer);
+}
+void RenderScene::RemoveCanvasRenderer(ICanvasRenderer* cavrenderer) {
+	// get reference
+	auto& canvasRenderers = Get()->canvasRenderers;
+
+	for (auto it = canvasRenderers.begin(); it != canvasRenderers.end(); ++it) {
+		if ((*it) == cavrenderer) {
+			canvasRenderers.erase(it);
+			return;
+		}
+	}
+
+	DEBUG_ERROR("Could not find the canvas renderer");
 }
 
 

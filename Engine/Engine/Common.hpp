@@ -8,6 +8,7 @@
 #include "Objects/Object.hpp"
 #include "Rendering/Camera.hpp"
 #include "Rendering/Sprite.hpp"
+#include "Rendering/UIRenderer.hpp"
 #include "Input/Keyboard.hpp"
 #include "Input/Mouse.hpp"
 #include "Game.hpp"

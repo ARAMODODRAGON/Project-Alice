@@ -12,6 +12,7 @@ class RenderScene {
 
 	vector<IRenderer*> renderers;
 	vector<Camera*> cameras;
+	vector<ICanvasRenderer*> canvasRenderers;
 
 public:
 
@@ -23,6 +24,8 @@ public:
 	static void RemoveRenderer(IRenderer* renderer);
 	static void AddCamera(Camera* camera);
 	static void RemoveCamera(Camera* camera);
+	static void AddCanvasRenderer(ICanvasRenderer* cavrenderer);
+	static void RemoveCanvasRenderer(ICanvasRenderer* cavrenderer);
 
 	// events
 	static void Init();
