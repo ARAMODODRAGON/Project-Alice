@@ -31,7 +31,7 @@ void OWPlayer::Start() {
 	sprite->LoadTexture("circle 128");
 	sprite->SetPivot(vec2(128.0f / 2.0f, 128.0f / 2.0f)); // center pivot
 	sprite->SetScale(vec2(1.0f / 11.0f));
-	sprite->SetLayer(-1);
+	sprite->SetLayer(2);
 	coll = AddComponent<CircleCollider>();
 	coll->SetRadius(4.0f);
 

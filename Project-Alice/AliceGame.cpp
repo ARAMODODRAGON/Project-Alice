@@ -18,7 +18,7 @@ bool AliceGame::Init() {
 	RenderScene::Init();
 	ObjectFactory::Init("Resources/Objects");
 	PhysicsScene::Init();
-	LevelManager::Init("Resources/Levels", "battle_test_0");
+	LevelManager::Init("Resources/Levels", "collision_test");
 
 	return true;
 }
@@ -112,7 +112,7 @@ void LoadObjects(const json& data) {
 				o = ObjectFactory::Make(typ, objData["data"]);
 
 			// construct without instance data
-			else  o = ObjectFactory::Make(typ);
+			else o = ObjectFactory::Make(typ);
 
 			// check
 			if (o == nullptr) DEBUG_ERROR("Could not make object of type " + typName);
@@ -126,7 +126,7 @@ void LoadObjects(const json& data) {
 	}
 }
 
-void AliceGame::LevelLoad(Level* level, const json& data) { 
+void AliceGame::LevelLoad(Level* level, const json& data) {
 	// destroy all objects
 	ObjectFactory::Clear();
 

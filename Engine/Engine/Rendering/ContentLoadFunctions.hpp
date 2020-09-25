@@ -10,5 +10,6 @@ using glm::uvec2;
 unsigned int LoadTexture(const string& path, uvec2& outSize);
 unsigned int LoadShader(const string& path);
 unsigned int LoadShaderProgram(const vector<string>& shaderPaths);
+unsigned int LoadFont(const string& path);
 
 #endif // !_RENDERING_CONTENT_LOAD_FUNCTIONS_HPP

@@ -75,6 +75,7 @@ bool Window::Initialize(const string& windowTitle_, const uvec2& screenSize_) {
 
 	// enable this shit
 	glEnable(GL_DEPTH_TEST | GL_BLEND);
+	glDepthFunc(GL_GREATER);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// print graphics card and opengl version

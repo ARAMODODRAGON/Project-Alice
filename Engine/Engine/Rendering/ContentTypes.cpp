@@ -2,38 +2,32 @@
 
 ////////////////////////// Texture /////////////////////////
 
-Texture::Texture() : data(nullptr) { }
-
-Texture::Texture(unsigned int id_, const vec2& size_) : data(nullptr) {
+Texture::Texture(unsigned int id_, const vec2& size_, const string& name_) : data(nullptr) {
 	data = new Data();
 	data->id = id_;
 	data->size = size_;
 	data->refcount = 1;
+	data->name = name_;
 }
 
 Texture::Texture(const Texture& other) : data(other.data) {
 	data->refcount++;
 }
-
 Texture& Texture::operator=(const Texture& other) {
 	FreeThis();
 	data = other.data;
 	if (data) data->refcount++;
 	return *this;
 }
-
 Texture::Texture(Texture&& other) : data(other.data) {
 	other.data = nullptr;
 }
-
 Texture& Texture::operator=(Texture&& other) {
 	FreeThis();
 	data = other.data;
 	other.data = nullptr;
 	return *this;
 }
-
-Texture::~Texture() { FreeThis(); }
 
 void Texture::FreeThis() {
 	if (data) {
@@ -47,8 +41,6 @@ void Texture::FreeThis() {
 
 ////////////////////////// Shader //////////////////////////
 
-Shader::Shader() : data(nullptr) { }
-
 Shader::Shader(unsigned int id_) : data(nullptr) {
 	data = new Data();
 	data->id = id_;
@@ -58,18 +50,15 @@ Shader::Shader(unsigned int id_) : data(nullptr) {
 Shader::Shader(const Shader& other) : data(other.data) {
 	data->refcount++;
 }
-
 Shader& Shader::operator=(const Shader& other) {
 	FreeThis();
 	data = other.data;
 	if (data) data->refcount++;
 	return *this;
 }
-
 Shader::Shader(Shader&& other) : data(other.data) {
 	other.data = nullptr;
 }
-
 Shader& Shader::operator=(Shader&& other) {
 	FreeThis();
 	data = other.data;
@@ -77,9 +66,38 @@ Shader& Shader::operator=(Shader&& other) {
 	return *this;
 }
 
-Shader::~Shader() { FreeThis(); }
-
 void Shader::FreeThis() {
+	if (data) {
+		data->refcount--;
+		if (data->refcount == 0) {
+			delete data;
+			data = nullptr;
+		}
+	}
+}
+
+////////////////////////// Font //////////////////////////
+
+Font::Font(const Font& other) : data(other.data) {
+	data->refcount++;
+}
+Font& Font::operator=(const Font& other) {
+	FreeThis();
+	data = other.data;
+	data->refcount++;
+	return *this;
+}
+Font::Font(Font&& other) : data(other.data) { 
+	other.data = nullptr;
+}
+Font& Font::operator=(Font&& other) {
+	FreeThis();
+	data = other.data;
+	other.data = nullptr;
+	return *this;
+}
+
+void Font::FreeThis() {
 	if (data) {
 		data->refcount--;
 		if (data->refcount == 0) {

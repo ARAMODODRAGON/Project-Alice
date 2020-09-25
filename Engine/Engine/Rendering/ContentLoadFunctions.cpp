@@ -198,3 +198,8 @@ unsigned int LoadShaderProgram(const vector<string>& shaderPaths) {
 	// return 
 	return shaderProgram;
 }
+
+unsigned int LoadFont(const string& path) {
+	DEBUG_ERROR("Loading fonts are not currently supported");
+	return -1;
+}

@@ -106,7 +106,7 @@ void Sprite::UpdateVertexArray() {
 
 	// normalize the rect
 	vec2 size = texture.GetSize();
-	if (size.x == 0.0f || size.y == 0.0f) {
+	if (NearlyZero(size)) {
 		rect.min = vec2(0.0f);
 		rect.max = vec2(1.0f);
 	} else {

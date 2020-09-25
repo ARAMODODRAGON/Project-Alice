@@ -26,6 +26,9 @@ void ContentHandler::Clean() {
 	}
 
 	auto& textures = Get()->textures;
+	auto& shaders = Get()->shaders;
+	auto& fonts = Get()->fonts;
+
 	// delete textures
 	for (auto it = textures.begin(); it != textures.end(); ++it) {
 		if (it->second.GetRefCount() == 1) {
@@ -37,12 +40,19 @@ void ContentHandler::Clean() {
 		}
 	}
 
-	auto& shaders = Get()->shaders;
 	// delete shaders
 	for (auto it = shaders.begin(); it != shaders.end(); ++it) {
 		if (it->second.GetRefCount() == 1) {
 			glDeleteProgram(it->second);
 			it = shaders.erase(it);
+		}
+	}
+
+	// delete fonts
+	for (auto it = fonts.begin(); it != fonts.end(); ++it) {
+		if (it->second.GetRefCount() == 1) {
+			DEBUG_ERROR("Cant clean up fonts!");
+			it = fonts.erase(it);
 		}
 	}
 }
@@ -54,18 +64,26 @@ void ContentHandler::Exit() {
 	}
 
 	auto& textures = Get()->textures;
+	auto& shaders = Get()->shaders;
+	auto& fonts = Get()->fonts;
+
 	// delete textures
-	for (TexturePairType& tp : textures) {
+	for (auto& tp : textures) {
 		GLuint id = tp.second;
 		glDeleteTextures(1, &id);
 	}
 	textures.clear();
 
-	auto& shaders = Get()->shaders;
 	// delete shaders
-	for (ShaderPairType& sp : shaders)
+	for (auto& sp : shaders)
 		glDeleteProgram(sp.second);
 	shaders.clear();
+
+	// delete fonts
+	for (auto& fp : fonts)
+		DEBUG_ERROR("Cant delete font!");
+	fonts.clear();
+
 }
 
 Texture ContentHandler::LoadTexture(const string& textureName) {
@@ -91,7 +109,7 @@ Texture ContentHandler::LoadTexture(const string& textureName) {
 	if (textureID == -1) return Texture();
 
 	// create texture and return
-	Texture texture(textureID, size);
+	Texture texture(textureID, size, textureName);
 	textures.insert(TexturePairType(textureName, texture));
 	return texture;
 }
@@ -136,4 +154,9 @@ Shader ContentHandler::LoadShader(const string& shaderName) {
 	Shader shader(shaderID);
 	shaders.insert(ShaderPairType(shaderName, shader));
 	return shader;
+}
+
+Font ContentHandler::LoadFont(const string& fontName) {
+	DEBUG_ERROR("Cannot load font!");
+	return Font();
 }
