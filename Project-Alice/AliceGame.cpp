@@ -134,12 +134,3 @@ void AliceGame::LevelLoad(Level* level, const json& data) {
 	if (data.contains("objects"))
 		LoadObjects(data["objects"]);
 }
-
-int main(int argc, char* argv[]) {
-
-	Game* game = new AliceGame();
-	game->Run();
-	delete game;
-
-	return 0;
-}
