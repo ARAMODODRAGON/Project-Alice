@@ -4,6 +4,7 @@
 #include "../General/Types.hpp"
 #include "../Core/Debugger.hpp"
 #include "../Rendering/Rect.hpp"
+#include "../Objects/FileIndex.hpp"
 
 // forward declare
 class BTPlayer;
@@ -16,10 +17,18 @@ class BattleManager {
 	vector<BTEnemy*> enemies;
 	Rect battleArea;
 
+	FileIndex* phaseIndex;
+
 	BattleManager();
 	~BattleManager();
 
 public:
+
+	// events
+	static void Init(const string& phaseFilePath);
+
+	// loading phases
+	static json LoadPhaseFile(const string& phaseFile);
 
 	// adders & removers
 	static void AddPlayer(BTPlayer* player);
