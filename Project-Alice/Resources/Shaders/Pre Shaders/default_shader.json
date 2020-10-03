@@ -1,0 +1,6 @@
+{
+    "shaders": [
+        "Resources/Shaders/Pre Shaders/DefaultShader.vert",
+        "Resources/Shaders/Pre Shaders/DefaultShader.frag"
+    ]
+}

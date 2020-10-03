@@ -19,9 +19,6 @@
     <ClCompile Include="Engine\Input\Mouse.cpp" />
     <ClCompile Include="Engine\Rendering\Camera.cpp" />
     <ClCompile Include="Engine\Rendering\ContentHandler.cpp" />
-    <ClCompile Include="Engine\Rendering\ContentLoadFunctions.cpp" />
-    <ClCompile Include="Engine\Rendering\ContentTypes.cpp" />
-    <ClCompile Include="Engine\Rendering\IRenderer.cpp" />
     <ClCompile Include="Engine\Rendering\RenderScene.cpp" />
     <ClCompile Include="Engine\Rendering\Sprite.cpp" />
     <ClCompile Include="Engine\Battle\BTEnemy.cpp" />
@@ -33,6 +30,10 @@
     <ClCompile Include="Engine\Physics\PhysicsScene.cpp" />
     <ClCompile Include="Engine\Physics\CollisionLogic.cpp" />
     <ClCompile Include="Engine\Rendering\UIRenderer.cpp" />
+    <ClCompile Include="Engine\Rendering\Tools\ContentLoadFunctions.cpp" />
+    <ClCompile Include="Engine\Rendering\Tools\ContentTypes.cpp" />
+    <ClCompile Include="Engine\Rendering\Tools\IRenderer.cpp" />
+    <ClCompile Include="Engine\Rendering\Tools\RenderingLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Battle\BTEnemy.hpp" />
@@ -61,9 +62,6 @@
     <ClInclude Include="Engine\Physics\PhysicsScene.hpp" />
     <ClInclude Include="Engine\Rendering\Camera.hpp" />
     <ClInclude Include="Engine\Rendering\ContentHandler.hpp" />
-    <ClInclude Include="Engine\Rendering\ContentLoadFunctions.hpp" />
-    <ClInclude Include="Engine\Rendering\ContentTypes.hpp" />
-    <ClInclude Include="Engine\Rendering\IRenderer.hpp" />
     <ClInclude Include="Engine\Rendering\Rect.hpp" />
     <ClInclude Include="Engine\Rendering\RenderScene.hpp" />
     <ClInclude Include="Engine\Rendering\Sprite.hpp" />
@@ -74,6 +72,10 @@
     <ClInclude Include="Engine\Physics\CollisionLogic.hpp" />
     <ClInclude Include="Engine\Battle\BTPlayer.hpp" />
     <ClInclude Include="Engine\Rendering\UIRenderer.hpp" />
+    <ClInclude Include="Engine\Rendering\Tools\ContentLoadFunctions.hpp" />
+    <ClInclude Include="Engine\Rendering\Tools\ContentTypes.hpp" />
+    <ClInclude Include="Engine\Rendering\Tools\IRenderer.hpp" />
+    <ClInclude Include="Engine\Rendering\Tools\RenderingLayer.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Core\Debugger.cpp">

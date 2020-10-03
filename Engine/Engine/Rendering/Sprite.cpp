@@ -7,28 +7,20 @@
 #include "ContentHandler.hpp"
 
 void Sprite::Start() {
-	// add to render scene
-	RenderScene::AddRenderer(this);
-
-	// try to load a default shader and texture
-	LoadShader("default");
+	// try to load a default texture
 	LoadTexture("default");
 }
 
-void Sprite::OnDestroy() {
-	// remove from render scene
-	RenderScene::RemoveRenderer(this);
-}
+void Sprite::OnDestroy() { }
 
 Sprite::Sprite()
-	: viewLoc(-1), projLoc(-1), modelLoc(-1), colorLoc(-1)
+	: modelLoc(-1), colorLoc(-1)
 	, VAO(-1), VBO(-1), EBO(-1)
 	, pivot(0.0f)
 	, scale(1.0f)
 	, offset(0.0f)
 	, color(1.0f) // initialize to {1, 1, 1, 1} (white)
-	, rotation(0.0f)
-	, layer(0.0f) {
+	, rotation(0.0f) {
 
 	// setup the vertex & indicies arrays
 	verticies[0] = Vertex(vec2(0.0f, 0.0f), vec2(0.0f, 0.0f)); // bottom left
@@ -80,16 +72,6 @@ void Sprite::LoadTexture(const string& textureName) {
 	tilingIndex = 0;
 	UpdateVertexArray();
 }
-void Sprite::LoadShader(const string& shaderName) {
-	shader = ContentHandler::LoadShader(shaderName);
-
-	// get uniforms
-	viewLoc = glGetUniformLocation(shader, "viewMat");
-	projLoc = glGetUniformLocation(shader, "projMat");
-	modelLoc = glGetUniformLocation(shader, "modelMat");
-	colorLoc = glGetUniformLocation(shader, "color");
-	//DEBUG_LOG("View Location is: " + VTOS(viewLoc));
-}
 
 void Sprite::UpdateVertexArray() {
 	// first calculate the new rect
@@ -128,14 +110,19 @@ void Sprite::UpdateVertexArray() {
 	glBindVertexArray(0);
 }
 
-void Sprite::Draw(const Camera& camera) {
+void Sprite::UpdateUniforms(Shader shader) {
+	modelLoc = glGetUniformLocation(shader, "modelMat");
+	colorLoc = glGetUniformLocation(shader, "color");
+}
+
+void Sprite::Draw() {
 	// quit
 	if (!GetIsActive() || color.a == 0.0f) return;
 
 	// create the model matrix
 	mat4 model;
 	// position
-	vec3 position = vec3(GetObject()->GetPosition() + offset, layer);
+	vec3 position = vec3(GetObject()->GetPosition() + offset, 0.0f);
 	model = glm::translate(model, position);
 	// rotation
 	model = glm::rotate(model, rotation, vec3(0.0f, 0.0f, 1.0f));
@@ -148,13 +135,10 @@ void Sprite::Draw(const Camera& camera) {
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
-	glUseProgram(shader);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
 	// set uniforms
-	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera.GetViewMat()));
-	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(camera.GetProjMat()));
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 	glUniform4f(colorLoc, color.r, color.g, color.b, color.a);
 

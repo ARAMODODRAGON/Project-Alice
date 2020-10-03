@@ -1,6 +1,6 @@
 #include "ContentLoadFunctions.hpp"
 #include <fstream>
-#include "../Core/Debugger.hpp"
+#include "../../Core/Debugger.hpp"
 #include <glew.h>
 #include <SDL_image.h>
 

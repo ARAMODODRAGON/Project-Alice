@@ -25,7 +25,7 @@ BTPlayer::~BTPlayer() {
 }
 
 void BTPlayer::Start() {
-	
+	sprite = AddComponent<Sprite>();
 }
 
 void BTPlayer::Update() {
@@ -95,15 +95,6 @@ void BTPlayer::SetMaxHitpoints(int _maxHitpoints, bool _updateCurHP) {
 	if (_updateCurHP) { // Optionally, the current HP can be maxed out
 		hitpoints = _maxHitpoints;
 	}
-}
-
-void BTPlayer::SetSprite(std::string _texture, vec2 _pivot, int _layer) {
-	sprite = AddComponent<Sprite>();
-	if (_texture != "") { // Only load a texture if one is specified
-		sprite->LoadTexture(_texture);
-	}
-	sprite->SetPivot(_pivot);
-	sprite->SetLayer(_layer);
 }
 
 void BTPlayer::SetCollider(float _radius) {

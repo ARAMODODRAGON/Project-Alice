@@ -1,8 +1,7 @@
 #ifndef _RENDERING_SPRITE_HPP
 #define _RENDERING_SPRITE_HPP
 #include "../Objects/Object.hpp"
-#include "ContentTypes.hpp"
-#include "IRenderer.hpp"
+#include "Tools/IRenderer.hpp"
 #include "Rect.hpp"
 
 class RenderScene;
@@ -19,9 +18,7 @@ class Sprite : public Component, public IRenderer {
 
 	// texture, shader & uniforms
 	Texture texture;
-	Shader shader;
-	unsigned int viewLoc, projLoc, modelLoc;
-	unsigned int colorLoc;
+	unsigned int modelLoc, colorLoc;
 
 	// vertex buffer object
 	array<Vertex, 4> verticies;
@@ -34,7 +31,6 @@ class Sprite : public Component, public IRenderer {
 	vec2 offset; // places the sprite at this offset from the object
 	vec4 color;
 	float rotation; // relative to object rotation
-	float layer;
 
 	// sprite tiling
 	vec2 tilingSize;
@@ -53,7 +49,6 @@ public:
 
 	// loading
 	void LoadTexture(const string& textureName);
-	void LoadShader(const string& shaderName);
 
 	// getters & setters
 	vec2 GetPivot() const { return pivot; }
@@ -67,9 +62,6 @@ public:
 
 	float GetRotation() const { return rotation; }
 	void SetRotation(const float& rotation_) { rotation = rotation_; }
-
-	int GetLayer() const { return int(layer); }
-	void SetLayer(const int& layer_) { layer = float(layer_); }
 
 	vec4 GetColor() const { return color; }
 	void SetColor(const vec4& color_) { color = color_; }
@@ -89,7 +81,8 @@ public:
 private:
 
 	void UpdateVertexArray();
-	void Draw(const Camera& camera) override;
+	void Draw() override;
+	virtual void UpdateUniforms(Shader shader) override;
 
 	RTTR_ENABLE(Component, IRenderer)
 };

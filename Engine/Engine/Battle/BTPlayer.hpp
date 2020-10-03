@@ -32,7 +32,6 @@ public:
 	void SetMoveSpeed(float _moveSpeed);
 	void SetHitpoints(int _hitpoints);
 	void SetMaxHitpoints(int _maxHitpoints, bool _updateCurHP);
-	void SetSprite(std::string _texture, vec2 _pivot, int _layer);
 	void SetCollider(float _radius);
 
 	RTTR_ENABLE(Object) RTTR_REGISTRATION_FRIEND

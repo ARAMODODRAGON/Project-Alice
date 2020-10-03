@@ -1,5 +1,6 @@
 #version 450 core
-out vec4 _fragColor;
+// location = 0 because we need to render to the correct framebuffer
+layout (location = 0) out vec4 _fragColor;
 
 // recive from vert shader
 in vec2 passUVCoord;

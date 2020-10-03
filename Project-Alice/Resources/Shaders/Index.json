@@ -1,3 +1,4 @@
 {
-    "default": "Default Shader/default_shader.json"
+    "pre-default": "Pre Shaders/default_shader.json",
+    "post-default": "Post Shaders/default_post_proc_shader.json"
 }

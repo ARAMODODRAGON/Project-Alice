@@ -16,7 +16,7 @@ bool AliceGame::Init() {
 
 	// initialize the singletons
 	ContentHandler::Init("Resources/Textures", "Resources/Shaders");
-	RenderScene::Init();
+	RenderScene::Init("Resources/Rendering.lrs");
 	ObjectFactory::Init("Resources/Objects");
 	PhysicsScene::Init();
 	LevelManager::Init("Resources/Levels", "collision_test");

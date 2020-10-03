@@ -1,7 +1,7 @@
 #include "ContentHandler.hpp"
 #include <SDL_image.h>
 #include <glew.h>
-#include "ContentLoadFunctions.hpp"
+#include "Tools/ContentLoadFunctions.hpp"
 #include "../Core/Debugger.hpp"
 
 ContentHandler::ContentHandler()

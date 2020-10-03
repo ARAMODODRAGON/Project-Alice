@@ -74,8 +74,7 @@ bool Window::Initialize(const string& windowTitle_, const uvec2& screenSize_) {
 	}
 
 	// enable this shit
-	glEnable(GL_DEPTH_TEST | GL_BLEND);
-	glDepthFunc(GL_GREATER);
+	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// print graphics card and opengl version
@@ -91,7 +90,7 @@ bool Window::Initialize(const string& windowTitle_, const uvec2& screenSize_) {
 void Window::ClearScreen(const vec4& color) {
 	// clear screen
 	glClearColor(color.r, color.g, color.b, color.a);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void Window::SwapBuffers() {

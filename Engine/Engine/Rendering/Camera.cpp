@@ -4,12 +4,19 @@
 #include "../Game.hpp"
 
 void Camera::Start() {
-	RenderScene::AddCamera(this);
+	auto* rlayer = RenderScene::AddCamera(this, "");
+	if (rlayer != nullptr) {
+		layer = rlayer->GetLayerName();
+	}
+
 	SetCameraSize(Game::Get()->GetWindow()->GetScreenSize());
 }
 
 void Camera::OnDestroy() {
-	RenderScene::RemoveCamera(this);
+	if (layer != "") {
+		RenderScene::RemoveCamera(this, "");
+	}
+	//RenderScene::RemoveCamera(this);
 }
 
 Camera::Camera() { }
@@ -24,4 +31,14 @@ void Camera::UpdateView() {
 	vec2 halfsize = size * 0.5f;
 	proj = glm::ortho(-halfsize.x, halfsize.x, -halfsize.y, halfsize.y, 10.0f, -10.0f);
 
+}
+
+void Camera::SetLayer(string layer) {
+	if (layer != "") {
+		RenderScene::RemoveCamera(this, "");
+	}
+	auto* rlayer = RenderScene::AddCamera(this, "");
+	if (rlayer != nullptr) {
+		layer = rlayer->GetLayerName();
+	}
 }

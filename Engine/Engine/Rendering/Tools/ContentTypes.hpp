@@ -1,6 +1,6 @@
 #ifndef _RENDERING_CONTENT_TYPES_HPP
 #define _RENDERING_CONTENT_TYPES_HPP
-#include "../General/Types.hpp"
+#include "../../General/Types.hpp"
 
 class Texture {
 

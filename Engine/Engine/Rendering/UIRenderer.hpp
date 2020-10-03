@@ -1,7 +1,7 @@
 #ifndef _RENDERING_UI_RENDERER_HPP
 #define _RENDERING_UI_RENDERER_HPP
 #include "../Objects/Object.hpp"
-#include "IRenderer.hpp"
+#include "Tools/IRenderer.hpp"
 
 class UIRenderer : public Component, public ICanvasRenderer {
 
@@ -18,7 +18,8 @@ public:
 
 private:
 
-	void Draw(const vec2& screenSize) override;
+	virtual void UpdateUniforms(Shader shader) override;
+	void Draw() override;
 
 	RTTR_ENABLE(Component, ICanvasRenderer) RTTR_REGISTRATION_FRIEND
 };

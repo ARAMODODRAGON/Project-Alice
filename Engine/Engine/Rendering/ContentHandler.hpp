@@ -2,7 +2,7 @@
 #define _RENDERING_CONTENT_HANDLER_HPP
 #include "../General/Types.hpp"
 #include "../General/Macros.hpp"
-#include "ContentTypes.hpp"
+#include "Tools/ContentTypes.hpp"
 #include "../Objects/FileIndex.hpp"
 
 class ContentHandler {

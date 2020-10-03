@@ -10,16 +10,10 @@ UIRenderer::UIRenderer() { }
 
 UIRenderer::~UIRenderer() { }
 
-void UIRenderer::Start() {
-	// add
-	RenderScene::AddCanvasRenderer(this);
-}
+void UIRenderer::Start() { }
 
-void UIRenderer::OnDestroy() {
-	// remove
-	RenderScene::RemoveCanvasRenderer(this);
-}
+void UIRenderer::OnDestroy() { }
 
-void UIRenderer::Draw(const vec2& screenSize) {
+void UIRenderer::UpdateUniforms(Shader shader) { }
 
-}
+void UIRenderer::Draw() { }

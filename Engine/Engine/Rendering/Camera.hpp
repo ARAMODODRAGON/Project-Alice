@@ -11,6 +11,7 @@ class Camera : public Component {
 	/// cameras properties
 	vec2 size;
 	mat4 view, proj;
+	string layer;
 
 	void Start() override;
 	void OnDestroy() override;
@@ -28,6 +29,10 @@ public:
 	const mat4& GetViewMat() const { return view; }
 	const mat4& GetProjMat() const { return proj; }
 	void SetCameraSize(const vec2& size_) { size = size_; }
+	void SetLayer(string layer);
+	string GetLayer() const { return layer; }
+
+	void __RemoveLayer() { layer = ""; }
 
 	RTTR_ENABLE(Component)
 };

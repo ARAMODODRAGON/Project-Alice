@@ -1,0 +1,6 @@
+{
+	"shaders": [
+		"Resources/Shaders/Post Shaders/default_postproc.vert",
+		"Resources/Shaders/Post Shaders/default_postproc.frag"
+	]
+}

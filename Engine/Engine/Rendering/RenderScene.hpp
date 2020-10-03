@@ -3,35 +3,33 @@
 #include "ContentHandler.hpp"
 #include "../General/Types.hpp"
 #include "../General/Macros.hpp"
-#include "IRenderer.hpp"
+#include "Tools/RenderingLayer.hpp"
 
 class Camera;
 
 class RenderScene {
 	PRIVATE_SINGLETON(RenderScene);
 
-	vector<IRenderer*> renderers;
-	vector<Camera*> cameras;
-	vector<ICanvasRenderer*> canvasRenderers;
-
-public:
+	vector<RenderingLayer*> renderingLayers;
+	//vector<CanvasLayer*> canvasLayers;
 
 	RenderScene();
 	~RenderScene();
 
-	// functions
-	static void AddRenderer(IRenderer* renderer);
-	static void RemoveRenderer(IRenderer* renderer);
-	static void AddCamera(Camera* camera);
-	static void RemoveCamera(Camera* camera);
-	static void AddCanvasRenderer(ICanvasRenderer* cavrenderer);
-	static void RemoveCanvasRenderer(ICanvasRenderer* cavrenderer);
+public:
 
 	// events
-	static void Init();
+	static void Init(const string& layersFile);
 	static void Exit();
 	static void Draw();
-	static void Clear();
+
+	// adding & removing
+	static RenderingLayer* AddRenderer(IRenderer* renderer, const string& layer);
+	static RenderingLayer* RemoveRenderer(IRenderer* renderer, const string& layer);
+	static RenderingLayer* AddCamera(Camera* camera, const string& layer);
+	static RenderingLayer* RemoveCamera(Camera* camera, const string& layer);
+	static RenderingLayer* AddCanvasRenderer(ICanvasRenderer* renderer, const string& layer);
+	static RenderingLayer* RemoveCanvasRenderer(ICanvasRenderer* renderer, const string& layer);
 
 };
 
