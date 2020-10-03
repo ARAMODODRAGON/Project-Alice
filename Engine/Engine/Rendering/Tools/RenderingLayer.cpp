@@ -5,7 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "../Camera.hpp"
 
-RenderingLayer::RenderingLayer(const json& data) 
+RenderingLayer::RenderingLayer(const json& data)
 	: viewLoc(-1), projLoc(-1), activeCamera(nullptr), layername(""), clearcolor(0.0f) {
 
 	// get the window size
@@ -64,11 +64,18 @@ RenderingLayer::RenderingLayer(const json& data)
 	#pragma region now make the VAO to render with
 
 	// verticies & indicies
-	vec2 verticies[8] = {
-		vec2(-1.0f, -1.0f), vec2(0.0f, 1.0f),	// bottom left
-		vec2(-1.0f, 1.0f),	vec2(0.0f, 0.0f),	// top left
-		vec2(1.0f, -1.0f),	vec2(1.0f, 0.0f),	// bottom right
-		vec2(1.0f, 1.0f),	vec2(1.0f, 1.0f)	// top right
+	struct Vertex {
+		vec2 pos;
+		vec2 uvCoord;
+		Vertex();
+		Vertex(const vec2& pos_, const vec2& uvCoord_)
+			: pos(pos_), uvCoord(uvCoord_) { }
+	};
+	Vertex verticies[4] = {
+		Vertex(vec2(-1.0f, -1.0f),	vec2(0.0f, 1.0f)),	// bottom left
+		Vertex(vec2(-1.0f, 1.0f),	vec2(0.0f, 0.0f)),	// top left
+		Vertex(vec2(1.0f, -1.0f),	vec2(1.0f, 0.0f)),	// bottom right
+		Vertex(vec2(1.0f, 1.0f),	vec2(1.0f, 1.0f))	// top right
 	};
 	ivec3 indicies[2] = {
 		ivec3(0, 1, 2),
@@ -87,14 +94,14 @@ RenderingLayer::RenderingLayer(const json& data)
 
 	// load verticies
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * 8, verticies, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * 4, verticies, GL_STATIC_DRAW);
 
 	// load positions
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vec2) * 2, (GLvoid*)0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
 	// load uvCoords
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vec2) * 2, (GLvoid*)sizeof(vec2));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, uvCoord));
 
 	// unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -129,23 +136,23 @@ void RenderingLayer::Draw() {
 
 	// bind the frame buffer that we will render to
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-	//glViewport(0, 0, size.x, size.y);
-	//glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glViewport(0, 0, size.x, size.y);
+	//glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClearColor(clearcolor.x, clearcolor.y, clearcolor.z, clearcolor.w);
-	glClear(GL_COLOR_BUFFER_BIT); 
+	glClear(GL_COLOR_BUFFER_BIT);
 
-	//// bind shader and uniforms
-	//glUseProgram(objectShader);
-	//glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(activeCamera->GetViewMat()));
-	//glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(activeCamera->GetProjMat()));
-	//
-	//// render all renderers
-	//for (IRenderer* rend : renderers) {
-	//	rend->Draw();
-	//}
+	// bind shader and uniforms
+	glUseProgram(objectShader);
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(activeCamera->GetViewMat()));
+	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(activeCamera->GetProjMat()));
+	
+	// render all renderers
+	for (IRenderer* rend : renderers) {
+		rend->Draw();
+	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	//glViewport(0, 0, windowsize.x, windowsize.y);
+	glViewport(0, 0, windowsize.x, windowsize.y);
 
 	// now draw the framebuffer to screen
 	glBindVertexArray(VAO);
@@ -178,7 +185,7 @@ void RenderingLayer::RemoveRenderer(IRenderer* renderer_) {
 	renderers.remove(renderer_);
 }
 
-void RenderingLayer::SetActiveCamera(Camera* activeCamera_) { 
+void RenderingLayer::SetActiveCamera(Camera* activeCamera_) {
 	// remove the prexisting camera
 	if (activeCamera) {
 		activeCamera->__RemoveLayer();
@@ -187,7 +194,7 @@ void RenderingLayer::SetActiveCamera(Camera* activeCamera_) {
 	activeCamera = activeCamera_;
 }
 
-void RenderingLayer::UnsetActiveCamera(Camera* activeCamera_) { 
+void RenderingLayer::UnsetActiveCamera(Camera* activeCamera_) {
 	if (activeCamera == activeCamera_) {
 		activeCamera = nullptr;
 	}
