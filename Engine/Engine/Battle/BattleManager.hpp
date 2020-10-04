@@ -5,6 +5,7 @@
 #include "../Core/Debugger.hpp"
 #include "../Rendering/Rect.hpp"
 
+
 // forward declare
 class BTPlayer;
 class BTEnemy;

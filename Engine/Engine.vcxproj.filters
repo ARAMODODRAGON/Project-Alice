@@ -33,6 +33,8 @@
     <ClCompile Include="Engine\Physics\PhysicsScene.cpp" />
     <ClCompile Include="Engine\Physics\CollisionLogic.cpp" />
     <ClCompile Include="Engine\Rendering\UIRenderer.cpp" />
+    <ClCompile Include="Engine\Battle\BTPhase.cpp" />
+    <ClCompile Include="Engine\Battle\BattleAlogrithm.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Battle\BTEnemy.hpp" />
@@ -74,6 +76,8 @@
     <ClInclude Include="Engine\Physics\CollisionLogic.hpp" />
     <ClInclude Include="Engine\Battle\BTPlayer.hpp" />
     <ClInclude Include="Engine\Rendering\UIRenderer.hpp" />
+    <ClInclude Include="Engine\Battle\BTPhase.hpp" />
+    <ClInclude Include="Engine\Battle\BattleAlogrithm.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Core\Debugger.cpp">
