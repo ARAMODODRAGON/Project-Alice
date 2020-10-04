@@ -23,6 +23,9 @@ Debugger::Debugger() {
 Debugger::~Debugger() { }
 
 void Debugger::Log(const string& msg, const string& file, size_t line) {
+	// prevent multiple overlapping calls
+	Get()->lock.lock();
+
 	// open file at the end
 	std::ofstream filestream;
 	filestream.open(Get()->logFilepath, std::ios::app);
@@ -35,9 +38,13 @@ void Debugger::Log(const string& msg, const string& file, size_t line) {
 
 	// close
 	filestream.close();
+	Get()->lock.unlock();
 }
 
 void Debugger::Trace(const string& msg, const string& file, size_t line) {
+	// prevent multiple overlapping calls
+	Get()->lock.lock();
+
 	// open file at the end
 	std::ofstream filestream;
 	filestream.open(Get()->logFilepath, std::ios::app);
@@ -50,9 +57,13 @@ void Debugger::Trace(const string& msg, const string& file, size_t line) {
 
 	// close
 	filestream.close();
+	Get()->lock.unlock();
 }
 
 void Debugger::Warning(const string& msg, const string& file, size_t line) {
+	// prevent multiple overlapping calls
+	Get()->lock.lock();
+
 	// open file at the end
 	std::ofstream filestream;
 	filestream.open(Get()->logFilepath, std::ios::app);
@@ -65,9 +76,13 @@ void Debugger::Warning(const string& msg, const string& file, size_t line) {
 
 	// close
 	filestream.close();
+	Get()->lock.unlock();
 }
 
 void Debugger::Error(const string& msg, const string& file, size_t line) {
+	// prevent multiple overlapping calls
+	Get()->lock.lock();
+
 	// open file at the end
 	std::ofstream filestream;
 	filestream.open(Get()->logFilepath, std::ios::app);
@@ -80,9 +95,13 @@ void Debugger::Error(const string& msg, const string& file, size_t line) {
 
 	// close
 	filestream.close();
+	Get()->lock.unlock();
 }
 
 void Debugger::FatalError(const string& msg, const string& file, size_t line) {
+	// prevent multiple overlapping calls
+	Get()->lock.lock();
+
 	// open file at the end
 	std::ofstream filestream;
 	filestream.open(Get()->logFilepath, std::ios::app);
@@ -95,4 +114,5 @@ void Debugger::FatalError(const string& msg, const string& file, size_t line) {
 
 	// close
 	filestream.close();
+	Get()->lock.unlock();
 }

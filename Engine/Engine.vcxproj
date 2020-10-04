@@ -28,6 +28,8 @@
     <ClInclude Include="Engine\Core\Debugger.hpp" />
     <ClInclude Include="Engine\Core\Level.hpp" />
     <ClInclude Include="Engine\Core\LevelManager.hpp" />
+    <ClInclude Include="Engine\Networking\NetworkingManager.hpp" />
+    <ClInclude Include="Engine\Networking\NetworkObjects.hpp" />
     <ClInclude Include="Engine\Objects\Component.hpp" />
     <ClInclude Include="Engine\Objects\ObjectFactory.hpp" />
     <ClInclude Include="Engine\Objects\JsonToObjectLoader.hpp" />
