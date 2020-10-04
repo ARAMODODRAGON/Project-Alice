@@ -108,7 +108,7 @@ inline T* Object::GetComponent() {
 			return rttr_cast<T*>(c);
 		}
 	}
-	DEBUG_WARNING("No component was found with type " + c->get_type().get_name());
+	DEBUG_WARNING("No component was found with type " + type::get<T>().get_name());
 	return nullptr;
 }
 

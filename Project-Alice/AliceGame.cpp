@@ -1,6 +1,7 @@
 #include "AliceGame.hpp"
 #include <Engine/Input/Keyboard.hpp>
 #include <Engine/Battle/BattleLevel.hpp>
+#include <Engine/Battle/BattleManager.hpp>
 #include <Engine/Physics/PhysicsScene.hpp>
 
 AliceGame::AliceGame()
@@ -19,6 +20,8 @@ bool AliceGame::Init() {
 	ObjectFactory::Init("Resources/Objects");
 	PhysicsScene::Init();
 	LevelManager::Init("Resources/Levels", "battle_test_0");
+
+	BattleManager::Init("Resources/EnemyPhases");
 
 	return true;
 }

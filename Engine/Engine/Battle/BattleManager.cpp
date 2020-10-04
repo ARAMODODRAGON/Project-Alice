@@ -1,6 +1,6 @@
 #include "BattleManager.hpp"
 
-BattleManager::BattleManager() {
+BattleManager::BattleManager() : phaseIndex(nullptr) {
 	// just some initial values
 	players.reserve(2);
 	enemies.reserve(5);
@@ -13,6 +13,38 @@ BattleManager::~BattleManager() {
 	if (enemies.size() > 0)
 		DEBUG_ERROR("The enemy list in the BattleManager was not empty. There were " + VTOS(enemies.size()) + " enemies left!");
 	//enemies.clear();
+
+	if (phaseIndex) delete phaseIndex;
+	phaseIndex = nullptr;
+
+}
+
+void BattleManager::Init(const string& phaseFilePath) {
+	if (!Get()->phaseIndex) {
+		Get()->phaseIndex = new FileIndex(phaseFilePath);
+	} else {
+		DEBUG_ERROR("Init has already been called!");
+	}
+}
+
+json BattleManager::LoadPhaseFile(const string& phaseFile) {
+	// get ptr
+	auto* phaseIndex = Get()->phaseIndex;
+
+	// check if phase index exist
+	if (!phaseIndex) {
+		DEBUG_ERROR("No phase index set!");
+		return json();
+	}
+	// check if that phase file exist
+	if (!phaseIndex->Contains(phaseFile)) {
+		DEBUG_ERROR("No phase file \"" + phaseFile + "\" found!");
+		return json();
+	}
+
+	json j;
+	phaseIndex->GetJSON(&j, phaseFile);
+	return j;
 }
 
 #pragma region Adders & Removers
@@ -95,7 +127,7 @@ Rect BattleManager::GetBattleArea() {
 	return Get()->battleArea;
 }
 
-void BattleManager::SetBattleArea(const Rect& battleArea_) { 
+void BattleManager::SetBattleArea(const Rect& battleArea_) {
 	Get()->battleArea = battleArea_;
 }
 
