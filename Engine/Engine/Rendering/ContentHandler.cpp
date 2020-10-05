@@ -175,7 +175,7 @@ Font ContentHandler::LoadFont(const string& fontName) {
 	map<char, Character> characters;
 	for (unsigned int i = 0; i < 128; i++) {
 		if (FT_Load_Char(face, i, FT_LOAD_RENDER)) {
-			string message = "Failed to load glyph contained at index " + i;
+			string message = "Failed to load current glyph.";
 			DEBUG_ERROR(message);
 			continue; // Move onto the next available glyph
 		}
