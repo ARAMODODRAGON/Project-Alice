@@ -15,7 +15,7 @@ bool AliceGame::Init() {
 	if (!Game::Init()) return false;
 
 	// initialize the singletons
-	ContentHandler::Init("Resources/Textures", "Resources/Shaders");
+	ContentHandler::Init("Resources/Textures", "Resources/Shaders", "Resources/Fonts");
 	RenderScene::Init();
 	ObjectFactory::Init("Resources/Objects");
 	PhysicsScene::Init();

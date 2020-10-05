@@ -3,6 +3,8 @@
 #include <glew.h>
 #include "ContentLoadFunctions.hpp"
 #include "../Core/Debugger.hpp"
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 ContentHandler::ContentHandler()
 	: textureIndex(nullptr), shaderIndex(nullptr) { }
@@ -14,9 +16,10 @@ ContentHandler::~ContentHandler() {
 	shaderIndex = nullptr;
 }
 
-void ContentHandler::Init(const string& textureIndexPath_, const string& shaderIndexPath_) {
+void ContentHandler::Init(const string& textureIndexPath_, const string& shaderIndexPath_, const string& fontIndexPath_) {
 	Get()->textureIndex = new FileIndex(textureIndexPath_);
 	Get()->shaderIndex = new FileIndex(shaderIndexPath_);
+	Get()->fontIndex = new FileIndex(fontIndexPath_);
 }
 
 void ContentHandler::Clean() {
@@ -51,7 +54,7 @@ void ContentHandler::Clean() {
 	// delete fonts
 	for (auto it = fonts.begin(); it != fonts.end(); ++it) {
 		if (it->second.GetRefCount() == 1) {
-			DEBUG_ERROR("Cant clean up fonts!");
+			//DEBUG_ERROR("Cant clean up fonts!");
 			it = fonts.erase(it);
 		}
 	}
@@ -80,10 +83,10 @@ void ContentHandler::Exit() {
 	shaders.clear();
 
 	// delete fonts
-	for (auto& fp : fonts)
+	/*for (auto& fp : fonts) {
 		DEBUG_ERROR("Cant delete font!");
+	}*/
 	fonts.clear();
-
 }
 
 Texture ContentHandler::LoadTexture(const string& textureName) {
@@ -157,6 +160,50 @@ Shader ContentHandler::LoadShader(const string& shaderName) {
 }
 
 Font ContentHandler::LoadFont(const string& fontName) {
-	DEBUG_ERROR("Cannot load font!");
-	return Font();
+	auto& fonts = Get()->fonts;
+	auto* fontIndex = Get()->fontIndex;
+
+	// Check if the font has already been loaded; return if it has been
+	if (fonts.find(fontName) != fonts.end()) {
+		return fonts[fontName];
+	}
+
+	string path = Get()->fontIndex->GetPath(fontName);
+	FT_Face face = ::LoadFont(path, 0, 12);
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	map<char, Character> characters;
+	for (unsigned int i = 0; i < 128; i++) {
+		if (FT_Load_Char(face, i, FT_LOAD_RENDER)) {
+			string message = "Failed to load glyph contained at index " + i;
+			DEBUG_ERROR(message);
+			continue; // Move onto the next available glyph
+		}
+		// Generate a texture for the glyph
+		unsigned int texture;
+		glGenTextures(1, &texture);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, face->glyph->bitmap.width, face->glyph->bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
+		// Set texture's options
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		// Now store the character in the font map
+		Character character = {
+			texture,
+			face->glyph->advance.x,
+			ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+			ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top)
+		};
+		characters.insert(pair<char, Character>(i, character));
+	}
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 0);
+	FT_Done_Face(face);
+
+	// Create the font, store it, and return the data
+	Font font(characters);
+	fonts.insert(FontPairType(fontName, font));
+	return font;
 }

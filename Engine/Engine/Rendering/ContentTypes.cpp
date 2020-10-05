@@ -78,6 +78,12 @@ void Shader::FreeThis() {
 
 ////////////////////////// Font //////////////////////////
 
+Font::Font(map<char, Character> _characters) {
+	data = new Data();
+	data->characters = _characters;
+	data->refcount = 1;
+}
+
 Font::Font(const Font& other) : data(other.data) {
 	data->refcount++;
 }

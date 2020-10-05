@@ -199,7 +199,12 @@ unsigned int LoadShaderProgram(const vector<string>& shaderPaths) {
 	return shaderProgram;
 }
 
-unsigned int LoadFont(const string& path) {
-	DEBUG_ERROR("Loading fonts are not currently supported");
-	return -1;
+FT_Face LoadFont(const string& path, const int width, const int height) {
+	FT_Face face; // Attempt to store the face data for the specified font
+	if (FT_New_Face(Game::Get()->GetFontLibrary(), path.c_str(), 0, &face)) {
+		DEBUG_ERROR("Failed to load in the required font.");
+		return NULL;
+	}
+	FT_Set_Pixel_Sizes(face, width, height);
+	return face;
 }

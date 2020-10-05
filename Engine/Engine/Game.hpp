@@ -9,6 +9,9 @@
 #include "Rendering/ContentHandler.hpp"
 #include "Objects/Object.hpp"
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 class Game {
 
 	// the main instance of the game
@@ -16,6 +19,7 @@ class Game {
 
 	Window* window;
 	Timer* timer;
+	FT_Library fontLib;
 
 	bool isRunning;
 	bool shouldQuit;
@@ -34,7 +38,7 @@ public:
 	// getters
 	Window* GetWindow() const { return window; }
 	Timer* GetTimer() const { return timer; }
-
+	FT_Library GetFontLibrary() const { return fontLib; }
 protected:
 
 	// events
