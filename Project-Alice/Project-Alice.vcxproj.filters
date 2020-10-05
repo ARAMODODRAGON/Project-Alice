@@ -54,4 +54,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\Fonts\Index.json" />
+  </ItemGroup>
 </Project>

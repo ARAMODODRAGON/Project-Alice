@@ -71,6 +71,11 @@ bool Game::Init() {
 
 	timer = new Timer();
 
+	if (FT_Init_FreeType(&fontLib)) {
+		DEBUG_ERROR("Font library was unable to be initialized.");
+		return false;
+	}
+
 	// initialize system events
 	SystemEvents::Init(this);
 
@@ -90,6 +95,8 @@ bool Game::Exit() {
 
 	if (window) delete window;
 	window = nullptr;
+
+	FT_Done_FreeType(fontLib);
 
 	return true;
 }

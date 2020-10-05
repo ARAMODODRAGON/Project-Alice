@@ -98,18 +98,25 @@ private:
 
 };
 
+struct Character {
+	unsigned int textureID;	// ID handle of this glyph's texture
+	unsigned int advance;	// Spacing between each this and the next glyph
+	ivec2 size;				// The size of the glyph
+	ivec2 bearing;			// Offset from the baseline to the left/top of glyph
+};
+
 class Font {
 
 	struct Data {
 		unsigned int refcount;
-		// member variables go in here
+		map<char, Character> characters;
 	} *data;
 
 public:
 
 	// constructors
 	Font() : data(nullptr) { }
-	// Font(arguments go here);
+	Font(map<char, Character> _characters);
 
 	// copy and move constructors/operators
 	Font(const Font& other);
@@ -125,6 +132,10 @@ public:
 	unsigned int GetRefCount() const {
 		if (data)	return data->refcount;
 		else		return -1;
+	}
+	Character* GetCharacter(char value) const {
+		if (data)	return &data->characters[value];
+		else		return nullptr;
 	}
 
 private:

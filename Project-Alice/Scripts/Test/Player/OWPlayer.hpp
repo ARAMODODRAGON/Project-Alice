@@ -1,6 +1,7 @@
 #ifndef PLAYER_OWPLAYER_HPP
 #define PLAYER_OWPLAYER_HPP
 #include <Engine/Common.hpp>
+#include <Engine/Rendering/UIRenderer.hpp>
 
 class OWPlayer : public Object {
 
@@ -14,6 +15,8 @@ class OWPlayer : public Object {
 	Sprite* sprite;
 	Camera* cam;
 	CircleCollider* coll;
+	UIRenderer* ui;
+
 	float colorMix;
 	bool increaseMix;
 	unsigned int animTimer;

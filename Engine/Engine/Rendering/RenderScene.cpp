@@ -1,6 +1,7 @@
 #include "RenderScene.hpp"
 #include "../Core/Debugger.hpp"
 #include "Camera.hpp"
+#include "../Game.hpp"
 
 RenderScene::RenderScene() { }
 
@@ -65,6 +66,7 @@ void RenderScene::Draw() {
 	// get references
 	auto& cameras = Get()->cameras;
 	auto& renderers = Get()->renderers;
+	auto& canvasRenderers = Get()->canvasRenderers;
 
 	for (Camera* cam : cameras) {
 		cam->UpdateView();
@@ -72,6 +74,12 @@ void RenderScene::Draw() {
 			rend->Draw(*cam); // call draw on all, let each one handle their own code
 		}
 	}
+
+	vec2 windowSize = Game::Get()->GetWindow()->GetScreenSize();
+	for (ICanvasRenderer* cvrend : canvasRenderers) {
+		cvrend->Draw(windowSize);
+	}
+
 }
 
 void RenderScene::Clear() {
