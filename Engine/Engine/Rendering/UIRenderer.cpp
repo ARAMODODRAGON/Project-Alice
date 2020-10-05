@@ -7,31 +7,40 @@ RTTR_REGISTRATION {
 		.public_object_constructor;
 }
 
-UIRenderer::UIRenderer() { 
-	fontShader = NULL;
-	VAO = -1;
-	VBO = -1;
-}
-
-UIRenderer::~UIRenderer() { }
-
-void UIRenderer::Start() {
+UIRenderer::UIRenderer() : VAO(-1), VBO(-1) {
 	RenderScene::AddCanvasRenderer(this);
+
 	// Load the font file
 	fontUI = ContentHandler::LoadFont("TestFont");
+
 	// Fetch the shader used for rendering text to the screen
 	fontShader = ContentHandler::LoadShader("font");
 	uniformColor = glGetUniformLocation(fontShader.GetID(), "textColor");
+
 	// Then, create the VAO and VBO used for the fonts
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	glBindVertexArray(VAO);
+	
+	// vertex data is loaded dynamically for each and every character drawn to screen
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 4, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+}
+
+UIRenderer::~UIRenderer() { 
+	RenderScene::RemoveCanvasRenderer(this);
+
+	// delete vertex buffer
+	glDeleteBuffers(1, &VBO);
+	glDeleteVertexArrays(1, &VAO);
+}
+
+void UIRenderer::Start() {
+
 }
 
 void UIRenderer::OnDestroy() {

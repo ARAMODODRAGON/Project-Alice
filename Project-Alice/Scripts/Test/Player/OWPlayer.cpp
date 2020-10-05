@@ -34,6 +34,7 @@ void OWPlayer::Start() {
 	sprite->SetLayer(2);
 	coll = AddComponent<CircleCollider>();
 	coll->SetRadius(4.0f);
+	ui = AddComponent<UIRenderer>();
 
 	// create another object
 	Object* o = Make();
