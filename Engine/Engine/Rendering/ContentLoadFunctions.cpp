@@ -200,9 +200,10 @@ unsigned int LoadShaderProgram(const vector<string>& shaderPaths) {
 }
 
 FT_Face LoadFont(const string& path, const int width, const int height) {
+	const char* fontPath = path.c_str();
 	FT_Face face; // Attempt to store the face data for the specified font
-	if (FT_New_Face(Game::Get()->GetFontLibrary(), path.c_str(), 0, &face)) {
-		DEBUG_ERROR("Failed to load in the required font.");
+	if (FT_New_Face(Game::Get()->GetFontLibrary(), fontPath, 0, &face)) {
+		DEBUG_ERROR("Failed to load the font at path " + path);
 		return NULL;
 	}
 	FT_Set_Pixel_Sizes(face, width, height);
