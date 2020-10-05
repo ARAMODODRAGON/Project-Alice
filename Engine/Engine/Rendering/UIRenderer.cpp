@@ -15,13 +15,14 @@ UIRenderer::UIRenderer() : VAO(-1), VBO(-1) {
 
 	// Fetch the shader used for rendering text to the screen
 	fontShader = ContentHandler::LoadShader("font");
-	uniformColor = glGetUniformLocation(fontShader.GetID(), "textColor");
+	uniformColor = glGetUniformLocation(fontShader, "textColor");
+	uniformScreenSize = glGetUniformLocation(fontShader, "screensize");
 
 	// Then, create the VAO and VBO used for the fonts
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	glBindVertexArray(VAO);
-	
+
 	// vertex data is loaded dynamically for each and every character drawn to screen
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
@@ -31,7 +32,7 @@ UIRenderer::UIRenderer() : VAO(-1), VBO(-1) {
 	glBindVertexArray(0);
 }
 
-UIRenderer::~UIRenderer() { 
+UIRenderer::~UIRenderer() {
 	RenderScene::RemoveCanvasRenderer(this);
 
 	// delete vertex buffer
@@ -39,22 +40,16 @@ UIRenderer::~UIRenderer() {
 	glDeleteVertexArrays(1, &VAO);
 }
 
-void UIRenderer::Start() {
+void UIRenderer::Start() { }
 
-}
-
-void UIRenderer::OnDestroy() {
-	// remove
-	RenderScene::RemoveCanvasRenderer(this);
-}
+void UIRenderer::OnDestroy() { }
 
 void UIRenderer::DrawText(string text, float x, float y, float scale, vec3 color) {
-	glUseProgram(fontShader);
+
 	glUniform3f(uniformColor, color.x, color.y, color.z);
-	glActiveTexture(GL_TEXTURE0);
-	glBindVertexArray(VAO);
 
 	float xPos, yPos, width, height;
+
 	// Iterate through every character
 	string::const_iterator c;
 	for (c = text.begin(); c != text.end(); c++) {
@@ -87,11 +82,19 @@ void UIRenderer::DrawText(string text, float x, float y, float scale, vec3 color
 		// Now advance cursors for the next glyph (Note that the advance is the number of 1/64 pixels)
 		x += (chr->advance >> 6) * scale;
 	}
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindVertexArray(0);
-	glUseProgram(0);
 }
 
 void UIRenderer::Draw(const vec2& screenSize) {
-	
+	glUseProgram(fontShader);
+	glActiveTexture(GL_TEXTURE0);
+	glBindVertexArray(VAO);
+
+	glUniform2f(uniformScreenSize, screenSize.x, screenSize.y);
+
+	// TODO: move all the drawing code and have DrawText just add the info into a queue
+	DrawText("Test", -screenSize.x, 0.0f, 10.0f, vec3(1.0f));
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindVertexArray(0);
+	glUseProgram(0);
 }

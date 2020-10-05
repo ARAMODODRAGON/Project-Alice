@@ -7,7 +7,7 @@
 class UIRenderer : public Component, public ICanvasRenderer {
 	Font fontUI;
 	Shader fontShader;
-	unsigned int uniformColor;
+	unsigned int uniformColor, uniformScreenSize;
 	unsigned int VAO, VBO;
 public:
 

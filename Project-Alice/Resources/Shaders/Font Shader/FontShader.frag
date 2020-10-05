@@ -6,6 +6,5 @@ uniform sampler2D text;
 uniform vec3 textColor;
 
 void main(){
-	vec4 sampleCol = vec4(1.0, 1.0, 1.0, texture(text, TexCoords).r);
-	color = vec4(textColor, 1.0) * sampleCol;
+	color = vec4(textColor * texture(text, TexCoords).r, 1.0);
 }
