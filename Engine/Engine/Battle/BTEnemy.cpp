@@ -33,7 +33,8 @@ void BTEnemy::OnDestroy()
 
 void BTEnemy::SeekAndArrive(glm::vec2 destination_, bool isMoving_)
 {
-	SetVelocity(bta::MoveTo(GetPosition(), destination_, maxAcceleration, maxSpeed));	
+	// I changed the function so this was causing errors, this function isnt really needed anymore since the algorithm is now outside
+	//SetVelocity(bta::MoveTo(GetPosition(), destination_, maxAcceleration, maxSpeed));	
 }
 
 
