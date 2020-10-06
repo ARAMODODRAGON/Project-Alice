@@ -24,11 +24,6 @@ public:
 	void LateUpdate() override;
 	void OnDestroy() override;
 
-	//TODO:
-	//needs to be moved to BT ENENMY
-	//void SeekAndArrive(bool isMoving_);
-	//vec2 GetDestination() { return destination; }
-	//void SetDestination(vec2 destination_) { destination = destination_; }
 
 	RTTR_ENABLE(BTEnemy) RTTR_REGISTRATION_FRIEND
 };

@@ -1,7 +1,9 @@
 #ifndef BATTLE_ALOGRITHM_HPP
 #define BATTLE_ALOGRITHM_HPP
+
 #include <glm/glm.hpp>
 #include <iostream>
+#include "../General/Math.hpp"
 
 namespace bta {
 

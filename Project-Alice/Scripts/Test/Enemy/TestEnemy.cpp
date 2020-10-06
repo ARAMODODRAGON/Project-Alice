@@ -22,15 +22,17 @@ void TestEnemy::Start()
 	sprite->SetTilingSize(vec2(16.0f));
 	sprite->SetPivot(vec2(8.0f));
 	sprite->SetLayer(2);
-	srand(time(NULL));
-	SetMaxSpeed(1.0f);
-	destination = glm::vec2(25, -25);
+	//srand(time(NULL));
+	SetMaxSpeed(100.0f);
+	SetMaxAcceleration(100.0f);
+	SetDestination (glm::vec2(25, -25));
+	
 	
 }
 
 void TestEnemy::Update()
 {
-	SeekAndArrive(destination, isMoving);
+	SeekAndArrive(GetDestination(), GetIsMoving());
 }
 
 void TestEnemy::LateUpdate()

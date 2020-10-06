@@ -9,7 +9,7 @@ RTTR_REGISTRATION{
 		.property("maxAcceleration",&BTEnemy::maxAcceleration);
 }
 
-BTEnemy::BTEnemy() : maxSpeed(NULL),destination(vec2()),isMoving(false) { BattleManager::AddEnemy(this); }
+BTEnemy::BTEnemy() : maxSpeed(NULL),destination(vec2()),isMoving(false),maxAcceleration(NULL) { BattleManager::AddEnemy(this); }
 
 BTEnemy::~BTEnemy() { BattleManager::RemoveEnemy(this); }
 
@@ -33,23 +33,7 @@ void BTEnemy::OnDestroy()
 
 void BTEnemy::SeekAndArrive(glm::vec2 destination_, bool isMoving_)
 {
-	
-	if (!isMoving_) {
-
-		SetVelocity(bta::MoveTo(GetPosition(), destination_, 10 ,maxSpeed));
-		isMoving = true;
-	}
-	
-	else if(isMoving_) {
-		glm::vec2 tempPosition = glm::round(GetPosition());
-
-		if (NearlyEqual(GetPosition(), destination_,3.0f)) {
-			isMoving = false;
-		}
-	}
-
-
-
+	SetVelocity(bta::MoveTo(GetPosition(), destination_, maxAcceleration, maxSpeed));	
 }
 
 

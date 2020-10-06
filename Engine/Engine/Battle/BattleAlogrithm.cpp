@@ -1,21 +1,66 @@
 #include "BattleAlogrithm.hpp"
 
+
 glm::vec2 bta::MoveTo(glm::vec2 ObjStartPos_, glm::vec2 destination_, float maxAcceleration_,float maxSpeed_)
 {
     glm::vec2 direction;
-    float acceleration;
+    glm::vec2 targetVelocity;
+    glm::vec2 velocity;
+
+    float distance = 0;
+    float slowRadius = 4.0f;
+    float targetRadius = 1.0f;
+    float timeToTarget = 0.1f;
+    float targetSpeed;
+
 
     direction = destination_ - ObjStartPos_;
-    direction = glm::normalize(direction);
-    direction *= maxAcceleration_;
 
-    std::cout << direction.length() << std::endl;
+    distance = glm::length(direction);
+    velocity = glm::normalize(direction);
+ 
+    velocity *= maxAcceleration_;
+ 
 
-    if (direction.length() > maxSpeed_) {
-        direction = glm::normalize(direction);
-        direction *= maxSpeed_;
-        std::cout << "This Happened" << std::endl;
+    if (distance < targetRadius) {
+        distance = 0;
+        maxAcceleration_ = 0.0f;
+
     }
 
-    return direction;
+    if (distance > slowRadius) {
+        targetSpeed = maxSpeed_;
+        /*targetVelocity = direction;
+        targetVelocity = glm::normalize(targetVelocity);
+        targetVelocity *= targetSpeed;
+
+        velocity = targetVelocity - direction;
+        velocity /= timeToTarget;*/
+    }
+
+    else {
+        targetSpeed = maxSpeed_ * (distance / slowRadius);
+        targetVelocity = direction;
+        targetVelocity = glm::normalize(targetVelocity);
+        targetVelocity *= targetSpeed;
+
+        velocity = targetVelocity - direction;
+        velocity /= timeToTarget;
+    }
+
+    
+
+   
+
+    if (glm::length(velocity) > maxAcceleration_) {
+        velocity = glm::normalize(velocity);
+        velocity *= maxAcceleration_;
+
+    }
+
+
+    
+    return velocity;
+
 }
+
