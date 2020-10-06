@@ -3,6 +3,8 @@
 #include <Engine/Battle/BattleLevel.hpp>
 #include <Engine/Battle/BattleManager.hpp>
 #include <Engine/Physics/PhysicsScene.hpp>
+#include <random>
+#include <chrono>
 
 AliceGame::AliceGame()
 	: Game()
@@ -139,6 +141,9 @@ void AliceGame::LevelLoad(Level* level, const json& data) {
 }
 
 int main(int argc, char* argv[]) {
+
+	// set random value using chrono
+	srand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 
 	Game* game = new AliceGame();
 	game->Run();

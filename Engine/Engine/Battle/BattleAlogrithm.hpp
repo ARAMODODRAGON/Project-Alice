@@ -4,10 +4,18 @@
 #include <glm/glm.hpp>
 #include <iostream>
 #include "../General/Math.hpp"
+#include "../Core/Debugger.hpp"
+
+enum class BTAResult {
+	Success,
+	Error,
+	Moving,
+	Arrived
+};
 
 namespace bta {
 
-	glm::vec2 MoveTo(glm::vec2 startPos_, glm::vec2 destination_, float maxAcceleration_,float maxSpeed_);
+	BTAResult MoveTo(vec2* velocity, const vec2& startPos_, const vec2& destination_, float maxAcceleration_, float maxSpeed_);
 
 }
 

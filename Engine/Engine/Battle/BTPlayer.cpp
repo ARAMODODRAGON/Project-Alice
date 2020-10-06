@@ -43,7 +43,8 @@ void BTPlayer::Update() {
 	SetVelocity(inputDirection * moveSpeed);
 	
 	vec2 velocity = GetVelocity();
-	std::cout << velocity.x << ", " << velocity.y << std::endl;
+	//std::cout << velocity.x << ", " << velocity.y << std::endl;
+	// dont do ^this^, at the very least use DEBUG_LOG so I can track where this is
 }
 
 void BTPlayer::LateUpdate() {
