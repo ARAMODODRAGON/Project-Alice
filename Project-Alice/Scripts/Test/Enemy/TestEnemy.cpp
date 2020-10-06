@@ -23,8 +23,8 @@ void TestEnemy::Start()
 	sprite->SetPivot(vec2(8.0f));
 	sprite->SetLayer(2);
 	//srand(time(NULL));
-	SetMaxSpeed(100.0f);
-	SetMaxAcceleration(100.0f);
+	SetMaxSpeed(50.0f);
+	SetMaxAcceleration(50.0f);
 	SetDestination (glm::vec2(25, -25));
 	
 	

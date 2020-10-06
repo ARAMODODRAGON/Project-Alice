@@ -30,7 +30,7 @@ public:
 	virtual void UpdatePhase() = 0;		//updates the phase logic 
 	virtual bool isComplete() = 0;		//checks if the phase is complete 
 
-	inline void MoveTo(glm::vec2 destination_);
+	 void MoveTo(glm::vec2 destination_);
 
 #pragma region Getters
 	inline std::string GetNextPhase() { return nextPhase; }
