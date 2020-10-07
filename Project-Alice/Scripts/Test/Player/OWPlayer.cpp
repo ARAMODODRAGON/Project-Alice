@@ -129,7 +129,7 @@ void OWPlayer::Update() {
 }
 
 void OWPlayer::LateUpdate() {
-	ui->DrawText("THIS IS A TEST", -500.0f, -0.5f, 1.0f, vec3(0.0f, 0.5f, 0.0f));
+	//ui->DrawText("THIS IS A TEST", -500.0f, -0.5f, 1.0f, vec3(0.0f, 0.5f, 0.0f));
 }
 
 void OWPlayer::OnCollisionEnter(const CollisionData& data) {

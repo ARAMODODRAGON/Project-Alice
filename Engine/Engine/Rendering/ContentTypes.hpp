@@ -99,16 +99,24 @@ private:
 };
 
 struct Character {
-	unsigned int textureID;	// ID handle of this glyph's texture
+	float ax, ay;	// The character's advance values
+	float bw, bh;	// The character's bitmap dimensions
+	float bl, bt;	// The top-left coordinates for the character
+	float tx;		// The x offset of the glyph in texture coordinates
+
+	/*unsigned int textureID;	// ID handle of this glyph's texture
 	unsigned int advance;	// Spacing between each this and the next glyph
 	ivec2 size;				// The size of the glyph
-	ivec2 bearing;			// Offset from the baseline to the left/top of glyph
+	ivec2 bearing;			// Offset from the baseline to the left/top of glyph*/
 };
 
 class Font {
 
 	struct Data {
 		unsigned int refcount;
+		unsigned int atlasID;
+		float atlasWidth;
+		float atlasHeight;
 		map<char, Character> characters;
 	} *data;
 
@@ -116,7 +124,7 @@ public:
 
 	// constructors
 	Font() : data(nullptr) { }
-	Font(map<char, Character> _characters);
+	Font(map<char, Character> _characters, unsigned int _textureID, float _atlasWidth, float _atlasHeight);
 
 	// copy and move constructors/operators
 	Font(const Font& other);
@@ -136,6 +144,18 @@ public:
 	Character* GetCharacter(char value) const {
 		if (data)	return &data->characters[value];
 		else		return nullptr;
+	}
+	unsigned int GetAtlasID() const {
+		if (data)	return data->atlasID;
+		else		return -1;
+	}
+	float GetAtlasWidth() const {
+		if (data)	return data->atlasWidth;
+		else		return -1;
+	}
+	float GetAtlasHeight() const {
+		if (data)	return data->atlasHeight;
+		else		return -1;
 	}
 
 private:
