@@ -10,8 +10,11 @@ RTTR_REGISTRATION {
 UIRenderer::UIRenderer() : VAO(-1), VBO(-1) {
 	RenderScene::AddCanvasRenderer(this);
 
+	// Reserve some memory for elements that are queued to draw to the screen
+	drawQueue.reserve(10);
+
 	// Load the font file
-	fontUI = ContentHandler::LoadFont("TestFont");
+	fontUI = ContentHandler::LoadFont("TestFont", 80);
 
 	// Fetch the shader used for rendering text to the screen
 	fontShader = ContentHandler::LoadShader("font");
@@ -45,19 +48,42 @@ void UIRenderer::Start() { }
 void UIRenderer::OnDestroy() { }
 
 void UIRenderer::DrawText(string text, float x, float y, float scale, vec3 color) {
+	DrawElement element{};
+	element.color = color;
+	element.text = text;
+	element.x = x;
+	element.y = y;
+	element.scale = scale;
+	element.type = Element::Text;
+	drawQueue.push_back(element);
+}
 
+void UIRenderer::DrawRect(float x, float y, float width, float height, vec3 color) {
+	DrawElement element{};
+	element.color = color;
+	element.x = x;
+	element.y = y;
+	element.width = width;
+	element.height = height;
+	element.type = Element::Rect;
+	drawQueue.push_back(element);
+}
+
+void UIRenderer::RenderText(DrawElement* element) {
+	float scale = element->scale;
+	vec3 color = element->color;
 	glUniform3f(uniformColor, color.x, color.y, color.z);
 
+	float xOffset = 0, yOffset = 0;
 	float xPos, yPos, width, height;
-
 	// Iterate through every character
 	string::const_iterator c;
-	for (c = text.begin(); c != text.end(); c++) {
+	for (c = element->text.begin(); c != element->text.end(); c++) {
 		Character* chr = fontUI.GetCharacter(*c);
 
 		// Get the x and y position for the current glyph
-		xPos = x + chr->bearing.x * scale;
-		yPos = y - (chr->size.y - chr->bearing.y) * scale;
+		xPos = element->x + xOffset + chr->bearing.x * scale;
+		yPos = element->y + yOffset - (chr->size.y - chr->bearing.y) * scale;
 		// Stores the size of the glyph on the screen
 		width = chr->size.x * scale;
 		height = chr->size.y * scale;
@@ -80,21 +106,37 @@ void UIRenderer::DrawText(string text, float x, float y, float scale, vec3 color
 		// Render the quad to the screen
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		// Now advance cursors for the next glyph (Note that the advance is the number of 1/64 pixels)
-		x += (chr->advance >> 6) * scale;
+		xOffset += (chr->advance >> 6) * scale;
 	}
 }
 
+void UIRenderer::RenderRect(DrawElement* element) {
+	
+}
+
 void UIRenderer::Draw(const vec2& screenSize) {
+	glEnable(GL_BLEND);
 	glUseProgram(fontShader);
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(VAO);
 
 	glUniform2f(uniformScreenSize, screenSize.x, screenSize.y);
 
-	// TODO: move all the drawing code and have DrawText just add the info into a queue
-	DrawText("Test", -screenSize.x, 0.0f, 10.0f, vec3(1.0f));
+	for (auto element : drawQueue) {
+		switch (element.type) {
+			case Element::Text:
+				RenderText(&element);
+				break;
+			case Element::Rect:
+				RenderRect(&element);
+				break;
+		}
+	}
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
 	glUseProgram(0);
+
+	// Finally, clear the draw queue for the next frame
+	drawQueue.clear();
 }

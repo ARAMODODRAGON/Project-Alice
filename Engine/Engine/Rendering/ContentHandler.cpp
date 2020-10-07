@@ -54,7 +54,9 @@ void ContentHandler::Clean() {
 	// delete fonts
 	for (auto it = fonts.begin(); it != fonts.end(); ++it) {
 		if (it->second.GetRefCount() == 1) {
-			//DEBUG_ERROR("Cant clean up fonts!");
+			for (unsigned int i = 0; i < 128; i++) { // Delete all the textures for each font
+				glDeleteTextures(1, &it->second.GetCharacter(i)->textureID);
+			}
 			it = fonts.erase(it);
 		}
 	}
@@ -159,7 +161,7 @@ Shader ContentHandler::LoadShader(const string& shaderName) {
 	return shader;
 }
 
-Font ContentHandler::LoadFont(const string& fontName) {
+Font ContentHandler::LoadFont(const string& fontName, int fontSize) {
 	auto& fonts = Get()->fonts;
 	auto* fontIndex = Get()->fontIndex;
 
@@ -169,7 +171,7 @@ Font ContentHandler::LoadFont(const string& fontName) {
 	}
 
 	string path = Get()->fontIndex->GetPath(fontName);
-	FT_Face face = ::LoadFont(path, 0, 12);
+	FT_Face face = ::LoadFont(path, 0, fontSize);
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	map<char, Character> characters;

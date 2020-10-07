@@ -8,6 +8,7 @@
 #endif
 // defined by windows for some reason...
 #undef GetObject
+#undef DrawText
 
 class Timer {
 
