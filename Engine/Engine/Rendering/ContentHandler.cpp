@@ -83,9 +83,10 @@ void ContentHandler::Exit() {
 	shaders.clear();
 
 	// delete fonts
-	/*for (auto& fp : fonts) {
-		DEBUG_ERROR("Cant delete font!");
-	}*/
+	for (auto& fp : fonts) {
+		GLuint id = fp.second.GetAtlasID();
+		glDeleteTextures(1, &id);
+	}
 	fonts.clear();
 }
 
