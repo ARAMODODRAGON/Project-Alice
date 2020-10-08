@@ -183,7 +183,7 @@ void ObjectFactory::Add(Object* e) {
 		return;
 	}
 	newObjects.push_back(e);
-
+	
 	// call start
 	e->Start();
 }

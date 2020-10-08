@@ -7,6 +7,7 @@
 #include <glm/glm.hpp>
 
 
+
 class BTEnemy;
 class BattleManager;
 
@@ -17,8 +18,11 @@ class BTPhase
 	std::string nextPhase;
 	std::string phaseName;
 
-	int startingHealth;		//enemy starting health
+	int currentHealth;		//enemy starting health
+
 	float startingTime;
+	float enemyAcceleration;
+	float enemyMaxSpeed;
 
 	BTEnemy* enemy;
 	
@@ -27,15 +31,14 @@ public:
 	BTPhase();
 	virtual ~BTPhase() = 0;
 
+	virtual void StartPhase() = 0;       // init all starting values 
 	virtual void UpdatePhase() = 0;		//updates the phase logic 
 	virtual bool isComplete() = 0;		//checks if the phase is complete 
-
-	 void MoveTo(glm::vec2 destination_);
 
 #pragma region Getters
 	inline std::string GetNextPhase() { return nextPhase; }
 	inline std::string GetPhaseName() { return phaseName; }
-	inline int GetStartingHealth() { return startingHealth; }
+	inline int GetCurrentHealth() { return currentHealth; }
 	inline float GetstartingTime() { return startingTime; }
 	inline BTEnemy* GetEnemy() { return enemy; }
 #pragma endregion
@@ -47,7 +50,7 @@ protected:
 
 #pragma region Setters
 	inline void SetNextPhase(std::string nextPhase_) { nextPhase = nextPhase_; }
-	inline void SetStartingHealth(int startingHealth_) { startingHealth = startingHealth_; }
+	inline void SetCurrentHealth(int startingHealth_) { currentHealth = startingHealth_; }
 	inline void SetStartingTime(float startingTime_) { startingTime = startingTime_; }
 	inline void SetPhaseName(std::string phaseName_) { phaseName = phaseName_; }
 #pragma endregion

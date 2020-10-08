@@ -35,7 +35,7 @@ void TestEnemy::Update()
 
 	BTAResult result = bta::MoveTo(&velocity, GetPosition(), GetDestination(), GetMaxSpeed(), 1.0f);
 	if (result == BTAResult::Arrived) {
-		
+
 		vec2 newdest;
 		newdest.x = (rand() % 400) * 0.1f - 5.0f;
 		newdest.y = (rand() % 400) * 0.1f - 5.0f;
