@@ -10,11 +10,8 @@ RTTR_REGISTRATION {
 UIRenderer::UIRenderer() {
 	RenderScene::AddCanvasRenderer(this);
 
-	// Reserve some memory for elements that are queued to draw to the screen
-	drawQueue.reserve(5);
-
 	// Load the font file
-	fontUI = ContentHandler::LoadFont("TestFont", 42);
+	//fontUI = ContentHandler::LoadFont("TestFont", 42);
 
 	// Store the shader used for rendering UI elements into a local variable
 	UIShader = ContentHandler::LoadShader("font");
@@ -33,6 +30,15 @@ UIRenderer::UIRenderer() {
 	// Finally create an attribute pointer that will contain the position and texture coordinates of each fragment
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 4, (GLvoid*)0);
+
+	// Initialize the currently active font key to ""
+	currentFont = "";
+	// Initialize the draw queue variables
+	drawQueue.reserve(5);
+	lastTexture = -1;
+
+	AddFont("TestFont", 40);
+	AddFont("TestFont2", 40);
 }
 
 UIRenderer::~UIRenderer() {
@@ -43,22 +49,50 @@ void UIRenderer::Start() { }
 
 void UIRenderer::OnDestroy() { }
 
+void UIRenderer::AddFont(string fontName, float fontSize) {
+	Font newFont = ContentHandler::LoadFont(fontName, fontSize);
+	fontUI.insert(pair<string, Font>(fontName, newFont));
+	if (currentFont == "") { // By default, set the current font to the first added font
+		currentFont = fontName;
+	}
+}
+
+void UIRenderer::DrawSetFont(string fontName) {
+	if (fontUI.find(fontName) != fontUI.end()) { // Make sure the font they've specified actually exists
+		currentFont = fontName;
+	} else { // Reset the currently used font back to "" if no valid font is found
+		currentFont = "";
+	}
+}
+
 void UIRenderer::DrawText(string text, float x, float y, float sx, float sy, vec3 color) {
 	UIElement element{};
+	element.id = fontUI[currentFont].GetAtlasID();
+	element.name = currentFont;
 	element.text = text;
 	element.color = color;
 	element.x = x;
 	element.y = y;
 	element.sx = sx;
 	element.sy = sy;
+	element.type = Element::Text;
 	drawQueue.push_back(element);
 }
 
 void UIRenderer::RenderText(UIElement* element) {
+	// Don't draw any text if no font is currently active
+	if (currentFont == "") { return; }
+	Font curFont = fontUI[element->name];
+	// Before rendering anything, check if the current texture ID is equal to the current font's texture ID
+	if (lastTexture != curFont.GetAtlasID() || lastTexture == -1) {
+		glBindTexture(GL_TEXTURE_2D, curFont.GetAtlasID());
+	}
+
+	// Loop through each character in the string and determine their position on the screen/texture coordinates
 	float xOffset = 0, yOffset = 0;
 	vector<vec4> coords;
 	for (const char* p = element->text.c_str(); *p; p++) {
-		Character* c = fontUI.GetCharacter(*p);
+		Character* c = curFont.GetCharacter(*p);
 		float x2 = element->x + xOffset + c->bl * element->sx;
 		float y2 = -element->y - yOffset - c->bt * element->sy;
 		float w = c->bw * element->sx;
@@ -73,8 +107,8 @@ void UIRenderer::RenderText(UIElement* element) {
 			continue;
 		}
 
-		float width = fontUI.GetAtlasWidth();
-		float height = fontUI.GetAtlasHeight();
+		float width = curFont.GetAtlasWidth();
+		float height = curFont.GetAtlasHeight();
 		coords.push_back(vec4(x2, -y2, c->tx, 0.0f));
 		coords.push_back(vec4(x2 + w, -y2, c->tx + (c->bw / width), 0.0f));
 		coords.push_back(vec4(x2, -y2 - h, c->tx, c->bh / height));
@@ -83,10 +117,26 @@ void UIRenderer::RenderText(UIElement* element) {
 		coords.push_back(vec4(x2 + w, -y2 - h, c->tx + (c->bw / width), c->bh / height));
 	}
 
+	// Finally, set the color used within the shader and draw all the coordinated
 	vec3 color = element->color;
 	glUniform3f(uniformColor, color.x, color.y, color.z);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vec4) * coords.size(), coords.data(), GL_DYNAMIC_DRAW);
 	glDrawArrays(GL_TRIANGLES, 0, coords.size());
+}
+
+void UIRenderer::DrawSprite(string textureName, float x, float y, float sx, float sy) {
+	UIElement element{};
+	element.id = ContentHandler::LoadTexture(textureName);
+	element.x = x;
+	element.y = y;
+	element.sx = sx;
+	element.sy = sy;
+	element.type = Element::Quad;
+	drawQueue.push_back(element);
+}
+
+void UIRenderer::RenderSprite(UIElement* element) {
+	DEBUG_LOG("SPRITE IS BEING DRAWN");
 }
 
 void UIRenderer::Draw(const vec2& screenSize) {
@@ -96,15 +146,30 @@ void UIRenderer::Draw(const vec2& screenSize) {
 
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBindTexture(GL_TEXTURE_2D, fontUI.GetAtlasID());
 	glActiveTexture(GL_TEXTURE0);
 
-	DrawText("!\"#$%&'+-*().,0123456789?@`{}|`", -screenSize.x, 0.0, 1.0, 1.0, vec3(0.5, 0.5, 0.5));
-	DrawText("the quick brown fox jumps over the lazy dog.", -screenSize.x, 100.0, 1.0, 1.0, vec3(1.0));
-	DrawText("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG!", -screenSize.x, 200.0, 1.0, 1.0, vec3(0.0, 0.0, 1.0));
+	DrawSetFont("TestFont2");
+	DrawText("The quick brown fox jumps over the lazy dog", -screenSize.x, 100.0, 1.0, 1.0, vec3(1.0));
+	DrawSetFont("TestFont");
+	DrawText("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG", -screenSize.x, 200.0, 1.0, 1.0, vec3(0.0, 0.0, 1.0));
 
+	DrawSprite("default", 0.0, 0.0, 1.0, 1.0);
+
+	// Loop through every element on the draw queue and draw them in order
 	for (auto element : drawQueue) {
-		RenderText(&element);
+		switch (element.type) {
+			case Element::Text: // Draws the element as text to the screen
+				RenderText(&element);
+				break;
+			case Element::Quad: // Draws the element as a single quad with a texture applied to it
+				RenderSprite(&element);
+				break;
+			default: // Throw an error message for broken elements
+				DEBUG_WARNING("Element doesn't have a valid type!");
+				break;
+		}
+
+		lastTexture = element.id;
 	}
 
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -113,6 +178,7 @@ void UIRenderer::Draw(const vec2& screenSize) {
 
 	glUseProgram(0);
 
-	// Empty the vector for the next frame
+	// Empty the vector and reset the previously used texture ID for the next frame
 	drawQueue.clear();
+	lastTexture = -1;
 }
