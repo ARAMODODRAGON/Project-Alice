@@ -32,7 +32,7 @@ class UIRenderer : public Component, public ICanvasRenderer {
 	// Stores the ID for the shader used for rendering GUI elements. Below that is the uniforms used within
 	// the shader itself, and the VAO and VBO that contain vertice data for the GPU to utilize.
 	Shader UIShader;
-	unsigned int uniformColor, uniformScreenSize;
+	unsigned int uniformTextureType, uniformColor, uniformScreenSize;
 	unsigned int VAO, VBO;
 
 	// The vector to store the elements that will be drawn to the screen, which can be text, sprites, etc.

@@ -14,11 +14,12 @@ UIRenderer::UIRenderer() {
 	//fontUI = ContentHandler::LoadFont("TestFont", 42);
 
 	// Store the shader used for rendering UI elements into a local variable
-	UIShader = ContentHandler::LoadShader("font");
+	UIShader = ContentHandler::LoadShader("ui");
 	// Getting the vertex uniforms; storing them in local variables
 	uniformScreenSize = glGetUniformLocation(UIShader, "screenSize");
 	// Getting the fragment uniforms; storing them in local variables
-	uniformColor = glGetUniformLocation(UIShader, "textColor");
+	uniformColor = glGetUniformLocation(UIShader, "texColor");
+	uniformTextureType = glGetUniformLocation(UIShader, "textureType");
 
 	// Gerenating the VAO and VBO that will be used for rendering text and primitives to the screen (Ex. Rectangles)
 	glGenVertexArrays(1, &VAO);
@@ -122,6 +123,7 @@ void UIRenderer::RenderText(UIElement* element) {
 	// Finally, set the color used within the shader and draw all the coordinated
 	vec3 color = element->color;
 	glUniform3f(uniformColor, color.x, color.y, color.z);
+	glUniform1i(uniformTextureType, 0); // 0 = Texture is a font
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vec4) * coords.size(), coords.data(), GL_DYNAMIC_DRAW);
 	glDrawArrays(GL_TRIANGLES, 0, coords.size());
 }
@@ -159,6 +161,7 @@ void UIRenderer::RenderSprite(UIElement* element) {
 	coords[4] = vec4(element->x,			-element->y - size.y,		0.0f, 1.0f);
 	coords[5] = vec4(element->x + size.x,	-element->y - size.y,		1.0f, 1.0f);
 
+	glUniform1i(uniformTextureType, 1); // 1 = texture is a sprite
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vec4) * 6, coords, GL_DYNAMIC_DRAW);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }

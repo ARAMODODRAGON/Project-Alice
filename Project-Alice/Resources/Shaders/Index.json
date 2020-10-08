@@ -1,4 +1,4 @@
 {
   "default": "Default Shader/default_shader.json",
-  "font" : "Font Shader/font_shader.json"
+  "ui" : "UI Shader/ui_shader.json"
 }

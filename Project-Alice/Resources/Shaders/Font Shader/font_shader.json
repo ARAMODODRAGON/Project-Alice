@@ -1,6 +1,0 @@
-{
-  "shaders": [
-    "Resources/Shaders/Font Shader/FontShader.frag",
-    "Resources/Shaders/Font Shader/FontShader.vert"
-  ]
-}
