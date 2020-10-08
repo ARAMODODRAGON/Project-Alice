@@ -6,8 +6,16 @@
 
 class UIRenderer : public Component, public ICanvasRenderer {
 
+	struct UIElement {
+		string text;	// String data for text
+		vec3 color;		// Color (r, g, b)
+		float x, y;		// Position Value
+		float sx, sy;	// Scale Value
+	};
+	vector<UIElement> drawQueue;
+
 	Font fontUI;
-	Shader fontShader;
+	Shader UIShader;
 	unsigned int uniformColor, uniformScreenSize;
 	unsigned int VAO, VBO;
 public:
@@ -21,6 +29,8 @@ public:
 
 	void DrawText(string text, float x, float y, float sx, float sy, vec3 color);
 private:
+
+	void RenderText(UIElement* element);
 
 	void Draw(const vec2& screenSize) override;
 
