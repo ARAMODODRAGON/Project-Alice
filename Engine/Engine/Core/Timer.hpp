@@ -27,6 +27,7 @@ public:
 	// getter & setter
 	unsigned int GetFPS() const { return fps; }
 	void SetFPS(unsigned int fps_) { fps = fps_; counts_per_frame.QuadPart = counts_per_second.QuadPart / fps; }
+	float GetDeltaTime() const;
 
 	// events
 	float RemainingTimeUntilNextFrame();
