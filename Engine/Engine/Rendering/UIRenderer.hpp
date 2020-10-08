@@ -6,18 +6,30 @@
 
 class UIRenderer : public Component, public ICanvasRenderer {
 
-	struct UIElement {
-		string text;	// String data for text
-		vec3 color;		// Color (r, g, b)
-		float x, y;		// Position Value
-		float sx, sy;	// Scale Value
+	enum class Element {
+		None,		// A null element that will be ignored in the draw queue
+		Text,		// A string being rendered using a specific font
+		Quad,		// A quad that can have a texture on it
 	};
-	vector<UIElement> drawQueue;
 
-	Font fontUI;
-	Shader UIShader;
+	struct UIElement {
+		unsigned int id;	// Stores the ID for thetexutre used by it
+		string name;		// Name for the texture being used
+		string text;		// String data for text
+		vec3 color;			// Color (r, g, b)
+		float x, y;			// Position Value
+		float sx, sy;		// Scale Value
+	};
+
+	map<string, Font> fontUI;
+	string currentFont;
+	
+	Shader fontShader;
 	unsigned int uniformColor, uniformScreenSize;
 	unsigned int VAO, VBO;
+
+	vector<UIElement> drawQueue;
+	unsigned int lastTexture;
 public:
 
 	UIRenderer();
@@ -27,6 +39,8 @@ public:
 	void Start() override;
 	void OnDestroy() override;
 
+	void AddFont(string fontName, float fontSize);
+	void DrawSetFont(string fontName);
 	void DrawText(string text, float x, float y, float sx, float sy, vec3 color);
 private:
 
