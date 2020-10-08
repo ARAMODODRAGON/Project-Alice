@@ -159,6 +159,7 @@
   <ItemGroup>
     <ClInclude Include="AliceGame.hpp" />
     <ClInclude Include="Scripts\Battle\BattleCamera.hpp" />
+    <ClInclude Include="Scripts\DebugMenu.hpp" />
     <ClInclude Include="Scripts\Test\Player\OWPlayer.hpp" />
     <ClInclude Include="Scripts\Test\Player\TestBattlePlayer.hpp" />
     <ClInclude Include="Scripts\Test\Projectile.hpp" />
@@ -167,6 +168,7 @@
   <ItemGroup>
     <ClCompile Include="AliceGame.cpp" />
     <ClCompile Include="Scripts\Battle\BattleCamera.cpp" />
+    <ClCompile Include="Scripts\DebugMenu.cpp" />
     <ClCompile Include="Scripts\Test\Player\OWPlayer.cpp" />
     <ClCompile Include="Scripts\Test\Player\TestBattlePlayer.cpp" />
     <ClCompile Include="Scripts\Test\Projectile.cpp" />

@@ -2,13 +2,8 @@
 	"type": "BattleLevel",
 	"data": {
 		"objects": [
-			{ 
-				"type": "OWPlayer",
-				"data": {
-					"shootDestroyTimer": 200,
-					"shootSpeed": 40.0
-				}
-			}
+			{ "type": "OWPlayer", "data": { "shootDestroyTimer": 200, "shootSpeed": 40.0 } },
+			{ "type": "DebugMenu" }
 		]
 	}
 }

@@ -14,11 +14,15 @@ Timer::Timer()
 
 Timer::~Timer() { }
 
+float Timer::GetDeltaTime() const {
+	return float(counts_per_second.QuadPart) / float(currentCounts.QuadPart - lastCounts.QuadPart);
+}
+
 float Timer::RemainingTimeUntilNextFrame() {
 	// get remaining time
 	LARGE_INTEGER curCount = { 0 };
 	QueryPerformanceCounter(&curCount);
-	return float(counts_per_second.QuadPart) / float(curCount.QuadPart - curCount.QuadPart);
+	return float(counts_per_second.QuadPart) / float(curCount.QuadPart - lastCounts.QuadPart);
 }
 
 void Timer::WaitForEndOfFrame() {

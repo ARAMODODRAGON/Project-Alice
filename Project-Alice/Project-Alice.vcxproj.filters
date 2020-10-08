@@ -33,6 +33,9 @@
     <ClInclude Include="Scripts\Test\Player\TestBattlePlayer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Scripts\DebugMenu.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AliceGame.cpp">
@@ -51,6 +54,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\Test\Player\TestBattlePlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\DebugMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
