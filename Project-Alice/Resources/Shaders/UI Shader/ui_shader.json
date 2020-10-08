@@ -1,0 +1,6 @@
+{
+  "shaders": [
+    "Resources/Shaders/UI Shader/UIShader.frag",
+    "Resources/Shaders/UI Shader/UIShader.vert"
+  ]
+}
