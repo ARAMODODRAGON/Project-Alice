@@ -14,11 +14,11 @@ UIRenderer::UIRenderer() {
 	//fontUI = ContentHandler::LoadFont("TestFont", 42);
 
 	// Store the shader used for rendering UI elements into a local variable
-	fontShader = ContentHandler::LoadShader("font");
+	UIShader = ContentHandler::LoadShader("font");
 	// Getting the vertex uniforms; storing them in local variables
-	uniformScreenSize = glGetUniformLocation(fontShader, "screenSize");
+	uniformScreenSize = glGetUniformLocation(UIShader, "screenSize");
 	// Getting the fragment uniforms; storing them in local variables
-	uniformColor = glGetUniformLocation(fontShader, "textColor");
+	uniformColor = glGetUniformLocation(UIShader, "textColor");
 
 	// Gerenating the VAO and VBO that will be used for rendering text and primitives to the screen (Ex. Rectangles)
 	glGenVertexArrays(1, &VAO);
@@ -75,6 +75,7 @@ void UIRenderer::DrawText(string text, float x, float y, float sx, float sy, vec
 	element.y = y;
 	element.sx = sx;
 	element.sy = sy;
+	element.type = Element::Text;
 	drawQueue.push_back(element);
 }
 
@@ -123,9 +124,24 @@ void UIRenderer::RenderText(UIElement* element) {
 	glDrawArrays(GL_TRIANGLES, 0, coords.size());
 }
 
+void UIRenderer::DrawSprite(string textureName, float x, float y, float sx, float sy) {
+	UIElement element{};
+	element.id = ContentHandler::LoadTexture(textureName);
+	element.x = x;
+	element.y = y;
+	element.sx = sx;
+	element.sy = sy;
+	element.type = Element::Quad;
+	drawQueue.push_back(element);
+}
+
+void UIRenderer::RenderSprite(UIElement* element) {
+	DEBUG_LOG("SPRITE IS BEING DRAWN");
+}
+
 void UIRenderer::Draw(const vec2& screenSize) {
 	glEnable(GL_BLEND);
-	glUseProgram(fontShader);
+	glUseProgram(UIShader);
 	glUniform2f(uniformScreenSize, screenSize.x, screenSize.y);
 
 	glBindVertexArray(VAO);
@@ -137,8 +153,21 @@ void UIRenderer::Draw(const vec2& screenSize) {
 	DrawSetFont("TestFont");
 	DrawText("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG", -screenSize.x, 200.0, 1.0, 1.0, vec3(0.0, 0.0, 1.0));
 
+	DrawSprite("default", 0.0, 0.0, 1.0, 1.0);
+
+	// Loop through every element on the draw queue and draw them in order
 	for (auto element : drawQueue) {
-		RenderText(&element);
+		switch (element.type) {
+			case Element::Text: // Draws the element as text to the screen
+				RenderText(&element);
+				break;
+			case Element::Quad: // Draws the element as a single quad with a texture applied to it
+				RenderSprite(&element);
+				break;
+			default: // Throw an error message for broken elements
+				DEBUG_WARNING("Element doesn't have a valid type!");
+				break;
+		}
 
 		lastTexture = element.id;
 	}

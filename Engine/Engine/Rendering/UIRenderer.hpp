@@ -19,33 +19,44 @@ class UIRenderer : public Component, public ICanvasRenderer {
 		vec3 color;			// Color (r, g, b)
 		float x, y;			// Position Value
 		float sx, sy;		// Scale Value
+		Element type;		// The element contained within this struct
 	};
 
+	// Map of available fonts to use when drawing text and the currently active one's key
 	map<string, Font> fontUI;
 	string currentFont;
 	
-	Shader fontShader;
+	// Stores the ID for the shader used for rendering GUI elements. Below that is the uniforms used within
+	// the shader itself, and the VAO and VBO that contain vertice data for the GPU to utilize.
+	Shader UIShader;
 	unsigned int uniformColor, uniformScreenSize;
 	unsigned int VAO, VBO;
 
+	// The vector to store the elements that will be drawn to the screen, which can be text, sprites, etc.
+	// Below that is the ID for the texture used by the previously drawn element.
 	vector<UIElement> drawQueue;
 	unsigned int lastTexture;
 public:
-
+	// Constructor/Destructor
 	UIRenderer();
 	~UIRenderer();
 
-	// events
+	// Events
 	void Start() override;
 	void OnDestroy() override;
 
+	// Font functions
 	void AddFont(string fontName, float fontSize);
 	void DrawSetFont(string fontName);
 	void DrawText(string text, float x, float y, float sx, float sy, vec3 color);
+	// Sprite/texture functions
+	void DrawSprite(string textureName, float x, float y, float sx, float sy);
 private:
-
+	// Functions that actually handle passing the vertices to the GPU
 	void RenderText(UIElement* element);
+	void RenderSprite(UIElement* element);
 
+	// Renders each GUI element in order to the screen
 	void Draw(const vec2& screenSize) override;
 
 	RTTR_ENABLE(Component, ICanvasRenderer) RTTR_REGISTRATION_FRIEND
