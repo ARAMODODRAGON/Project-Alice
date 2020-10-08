@@ -224,7 +224,7 @@ Font ContentHandler::LoadFont(const string& fontName, int fontSize) {
 	FT_Done_Face(face);
 
 	// Create the font, store it, and return the data
-	Font font(characters, texture, w, h);
+	Font font(characters, fontName, texture, w, h);
 	fonts.insert(FontPairType(fontName, font));
 	return font;
 }

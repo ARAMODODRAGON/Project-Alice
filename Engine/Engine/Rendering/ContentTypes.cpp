@@ -78,10 +78,11 @@ void Shader::FreeThis() {
 
 ////////////////////////// Font //////////////////////////
 
-Font::Font(map<char, Character> _characters, unsigned int _textureID, float _atlasWidth, float _atlasHeight) {
+Font::Font(map<char, Character> _characters, string _name, unsigned int _textureID, float _atlasWidth, float _atlasHeight) {
 	data = new Data();
 	data->characters = _characters;
 	data->atlasID = _textureID;
+	data->name = _name;
 	data->atlasWidth = _atlasWidth;
 	data->atlasHeight = _atlasHeight;
 	data->refcount = 1;

@@ -11,7 +11,7 @@ class BTPlayer : public Object {
 	int maxHitpoints;
 
 	CircleCollider* collider;
-	Sprite* sprite;
+	SpriteRenderer* sprite;
 public:
 	BTPlayer();
 	virtual ~BTPlayer() = 0;
@@ -26,7 +26,7 @@ public:
 	float GetMoveSpeed();
 	int GetHitpoints();
 	int GetMaxHitpoints();
-	Sprite* GetSprite();
+	SpriteRenderer* GetSprite();
 	CircleCollider* GetCollider();
 
 	void SetMoveSpeed(float _moveSpeed);
