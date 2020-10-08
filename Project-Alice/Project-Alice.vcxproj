@@ -164,6 +164,7 @@
     <ClInclude Include="Scripts\Test\Player\TestBattlePlayer.hpp" />
     <ClInclude Include="Scripts\Test\Projectile.hpp" />
     <ClInclude Include="Scripts\Test\Enemy\TestEnemy.hpp" />
+    <ClInclude Include="Scripts\Test\Phases\TestPhase.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AliceGame.cpp" />
@@ -173,6 +174,7 @@
     <ClCompile Include="Scripts\Test\Player\TestBattlePlayer.cpp" />
     <ClCompile Include="Scripts\Test\Projectile.cpp" />
     <ClCompile Include="Scripts\Test\Enemy\TestEnemy.cpp" />
+    <ClCompile Include="Scripts\Test\Phases\TestPhase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\Fonts\Index.json" />

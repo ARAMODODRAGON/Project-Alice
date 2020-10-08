@@ -4,6 +4,7 @@
 
 RTTR_REGISTRATION{
 	registration::class_<BTEnemy>("BTEnemy")
+		.public_object_constructor
 		.property("movmentSpeed",&BTEnemy::maxSpeed)
 		.property("destination",&BTEnemy::destination)
 		.property("maxAcceleration",&BTEnemy::maxAcceleration)
@@ -13,6 +14,7 @@ RTTR_REGISTRATION{
 
 BTEnemy::BTEnemy() : maxSpeed(NULL),destination(vec2()),maxAcceleration(NULL) { 
 	BattleManager::AddEnemy(this);
+	
 
 }
 
@@ -20,10 +22,22 @@ BTEnemy::~BTEnemy() { BattleManager::RemoveEnemy(this); }
 
 void BTEnemy::Start()
 {
+	
 }
 
 void BTEnemy::Update()
 {
+	if (phases[currentPhase]) {
+		if (!phases[currentPhase]->isComplete()) {
+			phases[currentPhase]->StartPhase();
+			phases[currentPhase]->UpdatePhase();
+		}
+
+		if (phases[currentPhase]->isComplete() && currentPhase < phases.size() - 1) {
+			currentPhase++;
+		}
+		else if(phases[currentPhase])
+	}
 }
 
 void BTEnemy::LateUpdate()

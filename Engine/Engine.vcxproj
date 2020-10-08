@@ -30,14 +30,9 @@
     <ClInclude Include="Engine\Core\Debugger.hpp" />
     <ClInclude Include="Engine\Core\Level.hpp" />
     <ClInclude Include="Engine\Core\LevelManager.hpp" />
-    <ClInclude Include="Engine\Objects\Component.hpp" />
-    <ClInclude Include="Engine\Objects\ObjectFactory.hpp" />
-    <ClInclude Include="Engine\Objects\JsonToObjectLoader.hpp" />
-    <ClInclude Include="Engine\Objects\FileIndex.hpp" />
     <ClInclude Include="Engine\Input\SystemEvents.hpp" />
     <ClInclude Include="Engine\Core\Timer.hpp" />
     <ClInclude Include="Engine\Core\Window.hpp" />
-    <ClInclude Include="Engine\Objects\Object.hpp" />
     <ClInclude Include="Engine\Game.hpp" />
     <ClInclude Include="Engine\General\Macros.hpp" />
     <ClInclude Include="Engine\General\Types.hpp" />
@@ -60,6 +55,11 @@
     <ClInclude Include="Engine\Rendering\RenderScene.hpp" />
     <ClInclude Include="Engine\Rendering\SpriteRenderer.hpp" />
     <ClInclude Include="Engine\Rendering\UIRenderer.hpp" />
+    <ClInclude Include="Engine\Objects\Component.hpp" />
+    <ClInclude Include="Engine\Objects\FileIndex.hpp" />
+    <ClInclude Include="Engine\Objects\JsonToObjectLoader.hpp" />
+    <ClInclude Include="Engine\Objects\Object.hpp" />
+    <ClInclude Include="Engine\Objects\ObjectFactory.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Battle\BattleAlogrithm.cpp" />
@@ -71,13 +71,9 @@
     <ClCompile Include="Engine\Core\Debugger.cpp" />
     <ClCompile Include="Engine\Core\Level.cpp" />
     <ClCompile Include="Engine\Core\LevelManager.cpp" />
-    <ClCompile Include="Engine\Objects\Component.cpp" />
-    <ClCompile Include="Engine\Objects\ObjectFactory.cpp" />
-    <ClCompile Include="Engine\Objects\FileIndex.cpp" />
     <ClCompile Include="Engine\Input\SystemEvents.cpp" />
     <ClCompile Include="Engine\Core\Timer.cpp" />
     <ClCompile Include="Engine\Core\Window.cpp" />
-    <ClCompile Include="Engine\Objects\Object.cpp" />
     <ClCompile Include="Engine\Game.cpp" />
     <ClCompile Include="Engine\General\Math.cpp" />
     <ClCompile Include="Engine\Input\Keyboard.cpp" />
@@ -96,6 +92,10 @@
     <ClCompile Include="Engine\Rendering\RenderScene.cpp" />
     <ClCompile Include="Engine\Rendering\SpriteRenderer.cpp" />
     <ClCompile Include="Engine\Rendering\UIRenderer.cpp" />
+    <ClCompile Include="Engine\Objects\Component.cpp" />
+    <ClCompile Include="Engine\Objects\FileIndex.cpp" />
+    <ClCompile Include="Engine\Objects\Object.cpp" />
+    <ClCompile Include="Engine\Objects\ObjectFactory.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

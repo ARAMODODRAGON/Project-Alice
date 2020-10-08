@@ -19,7 +19,6 @@ class BTPhase
 	std::string phaseName;
 
 	int currentHealth;		//enemy starting health
-
 	float startingTime;
 	float enemyAcceleration;
 	float enemyMaxSpeed;
@@ -40,7 +39,10 @@ public:
 	inline std::string GetPhaseName() { return phaseName; }
 	inline int GetCurrentHealth() { return currentHealth; }
 	inline float GetstartingTime() { return startingTime; }
+	inline float GetEnemyAcceleration() { return enemyAcceleration; }
+	inline float GetEnemyMaxSpeed() { return enemyMaxSpeed; }
 	inline BTEnemy* GetEnemy() { return enemy; }
+	
 #pragma endregion
 
 	//the poor left behind setter
@@ -49,6 +51,8 @@ public:
 protected:
 
 #pragma region Setters
+	inline void SetEnemyAcceleration(float accereration_) { enemyAcceleration = accereration_; }
+	inline void SetEnemyMaxSpeed(float maxSpeed_) { enemyMaxSpeed = maxSpeed_; }
 	inline void SetNextPhase(std::string nextPhase_) { nextPhase = nextPhase_; }
 	inline void SetCurrentHealth(int startingHealth_) { currentHealth = startingHealth_; }
 	inline void SetStartingTime(float startingTime_) { startingTime = startingTime_; }
