@@ -12,7 +12,7 @@ class OWPlayer : public Object {
 		Left
 	};
 
-	Sprite* sprite;
+	SpriteRenderer* sprite;
 	Camera* cam;
 	CircleCollider* coll;
 	UIRenderer* ui;

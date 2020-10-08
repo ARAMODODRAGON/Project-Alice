@@ -7,7 +7,7 @@
 
 class RenderScene;
 
-class Sprite : public Component, public IRenderer {
+class SpriteRenderer : public Component, public IRenderer {
 
 	struct Vertex {
 		vec2 position;
@@ -48,8 +48,8 @@ class Sprite : public Component, public IRenderer {
 
 public:
 
-	Sprite();
-	~Sprite();
+	SpriteRenderer();
+	~SpriteRenderer();
 
 	// loading
 	void LoadTexture(const string& textureName);

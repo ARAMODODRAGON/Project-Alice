@@ -1,4 +1,4 @@
-#include "Sprite.hpp"
+#include "SpriteRenderer.hpp"
 #include "../Core/Level.hpp"
 #include <glew.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -6,7 +6,7 @@
 #include "Camera.hpp"
 #include "ContentHandler.hpp"
 
-void Sprite::Start() {
+void SpriteRenderer::Start() {
 	// add to render scene
 	RenderScene::AddRenderer(this);
 
@@ -15,12 +15,12 @@ void Sprite::Start() {
 	LoadTexture("default");
 }
 
-void Sprite::OnDestroy() {
+void SpriteRenderer::OnDestroy() {
 	// remove from render scene
 	RenderScene::RemoveRenderer(this);
 }
 
-Sprite::Sprite()
+SpriteRenderer::SpriteRenderer()
 	: viewLoc(-1), projLoc(-1), modelLoc(-1), colorLoc(-1)
 	, VAO(-1), VBO(-1), EBO(-1)
 	, pivot(0.0f)
@@ -38,7 +38,7 @@ Sprite::Sprite()
 	indicies[0] = uvec3(0, 1, 2); // first tri
 	indicies[1] = uvec3(3, 2, 1); // second tri
 
-	// initialize Vertex Array Object
+								  // initialize Vertex Array Object
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 	// create buffers
@@ -65,14 +65,14 @@ Sprite::Sprite()
 	glBindVertexArray(0);
 }
 
-Sprite::~Sprite() {
+SpriteRenderer::~SpriteRenderer() {
 	// delete buffers and vertex object
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
 	glDeleteVertexArrays(1, &VAO);
 }
 
-void Sprite::LoadTexture(const string& textureName) {
+void SpriteRenderer::LoadTexture(const string& textureName) {
 	texture = ContentHandler::LoadTexture(textureName);
 	tilingSize = texture.GetSize();
 	tilingOffset = vec2(0.0f);
@@ -80,7 +80,7 @@ void Sprite::LoadTexture(const string& textureName) {
 	tilingIndex = 0;
 	UpdateVertexArray();
 }
-void Sprite::LoadShader(const string& shaderName) {
+void SpriteRenderer::LoadShader(const string& shaderName) {
 	shader = ContentHandler::LoadShader(shaderName);
 
 	// get uniforms
@@ -91,13 +91,13 @@ void Sprite::LoadShader(const string& shaderName) {
 	//DEBUG_LOG("View Location is: " + VTOS(viewLoc));
 }
 
-void Sprite::UpdateVertexArray() {
+void SpriteRenderer::UpdateVertexArray() {
 	// first calculate the new rect
 	Rect rect;
 	vec2 dist = tilingSize + tilingMargin; // dist between rects
 	int columns = static_cast<int>((texture.GetSize().x - tilingOffset.x) / dist.x); // number of columns
 
-	// special case where the texture doesnt load so it cant calculate any columns
+																					 // special case where the texture doesnt load so it cant calculate any columns
 	if (columns == 0) return;
 
 	rect.min.x = (tilingIndex % columns) * dist.x + tilingOffset.x; // % returns remainder. remainder == column position
@@ -120,7 +120,7 @@ void Sprite::UpdateVertexArray() {
 	verticies[2].uvCoord = rect.max;						// bottom right
 	verticies[3].uvCoord = vec2(rect.max.x, rect.min.y);	// top right
 
-	// update the VAO
+															// update the VAO
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * 4, &verticies);
@@ -128,7 +128,7 @@ void Sprite::UpdateVertexArray() {
 	glBindVertexArray(0);
 }
 
-void Sprite::Draw(const Camera& camera) {
+void SpriteRenderer::Draw(const Camera& camera) {
 	// quit
 	if (!GetIsActive() || color.a == 0.0f) return;
 

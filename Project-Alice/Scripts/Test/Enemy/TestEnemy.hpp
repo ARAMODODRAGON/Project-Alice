@@ -13,7 +13,7 @@ class TestEnemy : public BTEnemy
 	//vec2 destination;
 public:
 
-	Sprite* sprite;
+	SpriteRenderer* sprite;
 
 	TestEnemy();
 	~TestEnemy();

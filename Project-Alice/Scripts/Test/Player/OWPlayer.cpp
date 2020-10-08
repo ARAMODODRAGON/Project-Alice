@@ -27,7 +27,7 @@ void OWPlayer::Start() {
 	SetPosition(vec2(16.0f, 0.0f));
 
 	// add components
-	sprite = AddComponent<Sprite>();
+	sprite = AddComponent<SpriteRenderer>();
 	sprite->LoadTexture("circle 128");
 	sprite->SetPivot(vec2(128.0f / 2.0f, 128.0f / 2.0f)); // center pivot
 	sprite->SetScale(vec2(1.0f / 11.0f));
@@ -38,7 +38,7 @@ void OWPlayer::Start() {
 
 	// create another object
 	Object* o = Make();
-	Sprite* s = o->AddComponent<Sprite>();
+	SpriteRenderer* s = o->AddComponent<SpriteRenderer>();
 	s->LoadTexture("circle 128");
 	s->SetPivot(vec2(128.0f / 2.0f, 128.0f / 2.0f)); // center pivot
 	s->SetScale(vec2(1.0f / 11.0f));

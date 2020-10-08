@@ -5,7 +5,7 @@
 class Projectile : public Object {
 
 	unsigned int timer;
-	Sprite* sprite;
+	SpriteRenderer* sprite;
 	vec4 color;
 	unsigned int destroyTime;
 
@@ -18,7 +18,7 @@ public:
 	void LateUpdate() override;
 
 	void SetColor(const vec4& color_) { color = color_; }
-	Sprite* GetSprite() const { return sprite; }
+	SpriteRenderer* GetSprite() const { return sprite; }
 	void SetDestroyTime(unsigned int destroyTime_) { destroyTime = destroyTime_; }
 
 	RTTR_ENABLE(Object)
