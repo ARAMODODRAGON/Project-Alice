@@ -1,37 +1,36 @@
 #ifndef _CORE_TIMER_HPP
 #define _CORE_TIMER_HPP
 
-// runs on windows only
-#if defined(_WIN32)
-#include <Windows.h>
-#include <profileapi.h>
-#endif
-// defined by windows for some reason...
-#undef GetObject
-#undef DrawText
+#include <chrono>
 
 class Timer {
+	using steady_clock = std::chrono::steady_clock;
+	using duration = std::chrono::duration<double>;
+	using time_point = std::chrono::time_point<steady_clock, duration>;
 
-	LARGE_INTEGER counts_per_frame;
-	LARGE_INTEGER counts_per_second;
-	LARGE_INTEGER lastCounts;
-	LARGE_INTEGER currentCounts;
+	time_point lastTime;
+	time_point currentTime;
 
-	unsigned int fps;
+	unsigned int targetFPS;
+	double secondsPerFrame;
 
 public:
 
 	Timer();
 	~Timer();
 
-	// getter & setter
-	unsigned int GetFPS() const { return fps; }
-	void SetFPS(unsigned int fps_) { fps = fps_; counts_per_frame.QuadPart = counts_per_second.QuadPart / fps; }
-	float GetDeltaTime() const;
-
-	// events
-	float RemainingTimeUntilNextFrame();
+	// functions
 	void WaitForEndOfFrame();
+	bool CheckIfFrameComplete();
+
+	// getters and setters
+	unsigned int GetTargetFPS() const { return targetFPS; }
+	void SetTargetFPS(const unsigned int& targetFPS_) {
+		targetFPS = targetFPS_;
+		secondsPerFrame = 1.0 / static_cast<double>(targetFPS);
+	}
+	double GetFPS() const;
+	double GetDelta() const;
 
 };
 

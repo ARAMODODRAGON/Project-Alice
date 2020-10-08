@@ -180,7 +180,10 @@ Font ContentHandler::LoadFont(const string& fontName, int fontSize) {
 			continue;
 		}
 		w += g->bitmap.width;
-		h = max(h, g->bitmap.rows);
+		// I (dom) changed this because max is no longer a macro, I removed the header it was from
+		//h = max(h, g->bitmap.rows);
+		if (h < g->bitmap.rows)
+			h = g->bitmap.rows;
 	}
 
 	unsigned int texture = -1;
