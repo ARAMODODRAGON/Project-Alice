@@ -118,13 +118,14 @@ class Font {
 		float atlasWidth;
 		float atlasHeight;
 		map<char, Character> characters;
+		string name;
 	} *data;
 
 public:
 
 	// constructors
 	Font() : data(nullptr) { }
-	Font(map<char, Character> _characters, unsigned int _textureID, float _atlasWidth, float _atlasHeight);
+	Font(map<char, Character> _characters, string _name, unsigned int _textureID, float _atlasWidth, float _atlasHeight);
 
 	// copy and move constructors/operators
 	Font(const Font& other);
@@ -144,6 +145,10 @@ public:
 	Character* GetCharacter(char value) const {
 		if (data)	return &data->characters[value];
 		else		return nullptr;
+	}
+	string GetName() const {
+		if (data)	return data->name;
+		else		return "";
 	}
 	unsigned int GetAtlasID() const {
 		if (data)	return data->atlasID;

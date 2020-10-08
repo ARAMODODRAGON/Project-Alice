@@ -37,8 +37,10 @@ UIRenderer::UIRenderer() {
 	drawQueue.reserve(5);
 	lastTexture = -1;
 
-	AddFont("TestFont", 40);
+	AddFont("TestFont", 60);
 	AddFont("TestFont2", 40);
+
+	AddSprite("circle 128");
 }
 
 UIRenderer::~UIRenderer() {
@@ -84,8 +86,8 @@ void UIRenderer::RenderText(UIElement* element) {
 	if (currentFont == "") { return; }
 	Font curFont = fontUI[element->name];
 	// Before rendering anything, check if the current texture ID is equal to the current font's texture ID
-	if (lastTexture != curFont.GetAtlasID() || lastTexture == -1) {
-		glBindTexture(GL_TEXTURE_2D, curFont.GetAtlasID());
+	if (lastTexture != element->id || lastTexture == -1) {
+		glBindTexture(GL_TEXTURE_2D, element->id);
 	}
 
 	// Loop through each character in the string and determine their position on the screen/texture coordinates
@@ -109,12 +111,12 @@ void UIRenderer::RenderText(UIElement* element) {
 
 		float width = curFont.GetAtlasWidth();
 		float height = curFont.GetAtlasHeight();
-		coords.push_back(vec4(x2, -y2, c->tx, 0.0f));
-		coords.push_back(vec4(x2 + w, -y2, c->tx + (c->bw / width), 0.0f));
-		coords.push_back(vec4(x2, -y2 - h, c->tx, c->bh / height));
-		coords.push_back(vec4(x2 + w, -y2, c->tx + (c->bw / width), 0.0f));
-		coords.push_back(vec4(x2, -y2 - h, c->tx, c->bh / height));
-		coords.push_back(vec4(x2 + w, -y2 - h, c->tx + (c->bw / width), c->bh / height));
+		coords.push_back(vec4(x2,		-y2,		c->tx,						0.0f));
+		coords.push_back(vec4(x2 + w,	-y2,		c->tx + (c->bw / width),	0.0f));
+		coords.push_back(vec4(x2,		-y2 - h,	c->tx,						c->bh / height));
+		coords.push_back(vec4(x2 + w,	-y2,		c->tx + (c->bw / width),	0.0f));
+		coords.push_back(vec4(x2,		-y2 - h,	c->tx,						c->bh / height));
+		coords.push_back(vec4(x2 + w,	-y2 - h,	c->tx + (c->bw / width),	c->bh / height));
 	}
 
 	// Finally, set the color used within the shader and draw all the coordinated
@@ -124,9 +126,15 @@ void UIRenderer::RenderText(UIElement* element) {
 	glDrawArrays(GL_TRIANGLES, 0, coords.size());
 }
 
+void UIRenderer::AddSprite(string textureName) {
+	Texture newTexture = ContentHandler::LoadTexture(textureName);
+	spriteUI.insert(pair<string, Texture>(textureName, newTexture));
+}
+
 void UIRenderer::DrawSprite(string textureName, float x, float y, float sx, float sy) {
 	UIElement element{};
-	element.id = ContentHandler::LoadTexture(textureName);
+	element.id = spriteUI[textureName].GetID();
+	element.name = textureName;
 	element.x = x;
 	element.y = y;
 	element.sx = sx;
@@ -136,7 +144,23 @@ void UIRenderer::DrawSprite(string textureName, float x, float y, float sx, floa
 }
 
 void UIRenderer::RenderSprite(UIElement* element) {
-	DEBUG_LOG("SPRITE IS BEING DRAWN");
+	// Before rendering anything, check if the current texture ID is equal to the current sprite's texture ID
+	if (lastTexture != element->id) {
+		glBindTexture(GL_TEXTURE_2D, element->id);
+	}
+	Texture curTexture = spriteUI[element->name];
+	vec2 size = curTexture.GetSize() * vec2(element->sx, element->sy);
+
+	vec4 coords[6];
+	coords[0] = vec4(element->x,			-element->y,				0.0f, 0.0f);
+	coords[1] = vec4(element->x + size.x,	-element->y,				1.0f, 0.0f);
+	coords[2] = vec4(element->x,			-element->y - size.y,		0.0f, 1.0f);
+	coords[3] = vec4(element->x + size.x,	-element->y,				1.0f, 0.0f);
+	coords[4] = vec4(element->x,			-element->y - size.y,		0.0f, 1.0f);
+	coords[5] = vec4(element->x + size.x,	-element->y - size.y,		1.0f, 1.0f);
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vec4) * 6, coords, GL_DYNAMIC_DRAW);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
 void UIRenderer::Draw(const vec2& screenSize) {
@@ -153,7 +177,7 @@ void UIRenderer::Draw(const vec2& screenSize) {
 	DrawSetFont("TestFont");
 	DrawText("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG", -screenSize.x, 200.0, 1.0, 1.0, vec3(0.0, 0.0, 1.0));
 
-	DrawSprite("default", 0.0, 0.0, 1.0, 1.0);
+	DrawSprite("circle 128", 0.0, 0.0, 2.5, 2.5);
 
 	// Loop through every element on the draw queue and draw them in order
 	for (auto element : drawQueue) {
@@ -168,7 +192,6 @@ void UIRenderer::Draw(const vec2& screenSize) {
 				DEBUG_WARNING("Element doesn't have a valid type!");
 				break;
 		}
-
 		lastTexture = element.id;
 	}
 

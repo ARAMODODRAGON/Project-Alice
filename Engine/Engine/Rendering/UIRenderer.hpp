@@ -26,6 +26,9 @@ class UIRenderer : public Component, public ICanvasRenderer {
 	map<string, Font> fontUI;
 	string currentFont;
 	
+	// Map of available textures that have been added to the UI renderer
+	map<string, Texture> spriteUI;
+	
 	// Stores the ID for the shader used for rendering GUI elements. Below that is the uniforms used within
 	// the shader itself, and the VAO and VBO that contain vertice data for the GPU to utilize.
 	Shader UIShader;
@@ -50,6 +53,7 @@ public:
 	void DrawSetFont(string fontName);
 	void DrawText(string text, float x, float y, float sx, float sy, vec3 color);
 	// Sprite/texture functions
+	void AddSprite(string textureName);
 	void DrawSprite(string textureName, float x, float y, float sx, float sy);
 private:
 	// Functions that actually handle passing the vertices to the GPU
