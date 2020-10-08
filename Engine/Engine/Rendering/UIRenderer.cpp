@@ -7,94 +7,178 @@ RTTR_REGISTRATION {
 		.public_object_constructor;
 }
 
-UIRenderer::UIRenderer() : VAO(-1), VBO(-1) {
+UIRenderer::UIRenderer() {
 	RenderScene::AddCanvasRenderer(this);
 
 	// Load the font file
-	fontUI = ContentHandler::LoadFont("TestFont");
+	//fontUI = ContentHandler::LoadFont("TestFont", 42);
 
-	// Fetch the shader used for rendering text to the screen
-	fontShader = ContentHandler::LoadShader("font");
-	uniformColor = glGetUniformLocation(fontShader, "textColor");
-	uniformScreenSize = glGetUniformLocation(fontShader, "screensize");
+	// Store the shader used for rendering UI elements into a local variable
+	UIShader = ContentHandler::LoadShader("font");
+	// Getting the vertex uniforms; storing them in local variables
+	uniformScreenSize = glGetUniformLocation(UIShader, "screenSize");
+	// Getting the fragment uniforms; storing them in local variables
+	uniformColor = glGetUniformLocation(UIShader, "textColor");
 
-	// Then, create the VAO and VBO used for the fonts
+	// Gerenating the VAO and VBO that will be used for rendering text and primitives to the screen (Ex. Rectangles)
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
+	// Bind the VBO to the VAO and fill it with nothing
 	glBindVertexArray(VAO);
-
-	// vertex data is loaded dynamically for each and every character drawn to screen
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 0, 0, GL_DYNAMIC_DRAW);
+	// Finally create an attribute pointer that will contain the position and texture coordinates of each fragment
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 4, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 4, (GLvoid*)0);
+
+	// Initialize the currently active font key to ""
+	currentFont = "";
+	// Initialize the draw queue variables
+	drawQueue.reserve(5);
+	lastTexture = -1;
+
+	AddFont("TestFont", 40);
+	AddFont("TestFont2", 40);
 }
 
 UIRenderer::~UIRenderer() {
 	RenderScene::RemoveCanvasRenderer(this);
-
-	// delete vertex buffer
-	glDeleteBuffers(1, &VBO);
-	glDeleteVertexArrays(1, &VAO);
 }
 
 void UIRenderer::Start() { }
 
 void UIRenderer::OnDestroy() { }
 
-void UIRenderer::DrawText(string text, float x, float y, float scale, vec3 color) {
-
-	glUniform3f(uniformColor, color.x, color.y, color.z);
-
-	float xPos, yPos, width, height;
-
-	// Iterate through every character
-	string::const_iterator c;
-	for (c = text.begin(); c != text.end(); c++) {
-		Character* chr = fontUI.GetCharacter(*c);
-
-		// Get the x and y position for the current glyph
-		xPos = x + chr->bearing.x * scale;
-		yPos = y - (chr->size.y - chr->bearing.y) * scale;
-		// Stores the size of the glyph on the screen
-		width = chr->size.x * scale;
-		height = chr->size.y * scale;
-		// Update the VBO for each character
-		float vertices[6][4] = {
-			{ xPos,			yPos + height,	0.0f, 0.0f },
-			{ xPos,			yPos,			0.0f, 1.0f },
-			{ xPos + width, yPos,			1.0f, 1.0f },
-
-			{ xPos,			yPos + height,	0.0f, 0.0f },
-			{ xPos + width, yPos,			1.0f, 1.0f },
-			{ xPos + width, yPos + height,	1.0f, 0.0f },
-		};
-		// Render glyph texture over the quad
-		glBindTexture(GL_TEXTURE_2D, chr->textureID);
-		// Update content of the VBO memory
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		// Render the quad to the screen
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-		// Now advance cursors for the next glyph (Note that the advance is the number of 1/64 pixels)
-		x += (chr->advance >> 6) * scale;
+void UIRenderer::AddFont(string fontName, float fontSize) {
+	Font newFont = ContentHandler::LoadFont(fontName, fontSize);
+	fontUI.insert(pair<string, Font>(fontName, newFont));
+	if (currentFont == "") { // By default, set the current font to the first added font
+		currentFont = fontName;
 	}
 }
 
-void UIRenderer::Draw(const vec2& screenSize) {
-	glUseProgram(fontShader);
-	glActiveTexture(GL_TEXTURE0);
-	glBindVertexArray(VAO);
+void UIRenderer::DrawSetFont(string fontName) {
+	if (fontUI.find(fontName) != fontUI.end()) { // Make sure the font they've specified actually exists
+		currentFont = fontName;
+	} else { // Reset the currently used font back to "" if no valid font is found
+		currentFont = "";
+	}
+}
 
+void UIRenderer::DrawText(string text, float x, float y, float sx, float sy, vec3 color) {
+	UIElement element{};
+	element.id = fontUI[currentFont].GetAtlasID();
+	element.name = currentFont;
+	element.text = text;
+	element.color = color;
+	element.x = x;
+	element.y = y;
+	element.sx = sx;
+	element.sy = sy;
+	element.type = Element::Text;
+	drawQueue.push_back(element);
+}
+
+void UIRenderer::RenderText(UIElement* element) {
+	// Don't draw any text if no font is currently active
+	if (currentFont == "") { return; }
+	Font curFont = fontUI[element->name];
+	// Before rendering anything, check if the current texture ID is equal to the current font's texture ID
+	if (lastTexture != curFont.GetAtlasID() || lastTexture == -1) {
+		glBindTexture(GL_TEXTURE_2D, curFont.GetAtlasID());
+	}
+
+	// Loop through each character in the string and determine their position on the screen/texture coordinates
+	float xOffset = 0, yOffset = 0;
+	vector<vec4> coords;
+	for (const char* p = element->text.c_str(); *p; p++) {
+		Character* c = curFont.GetCharacter(*p);
+		float x2 = element->x + xOffset + c->bl * element->sx;
+		float y2 = -element->y - yOffset - c->bt * element->sy;
+		float w = c->bw * element->sx;
+		float h = c->bh * element->sy;
+
+		// Advance the cursor to the start of the next character
+		xOffset += c->ax * element->sx;
+		yOffset += c->ay * element->sy;
+
+		// Skip glyphs that don't contain any pixels
+		if (!w || !h) {
+			continue;
+		}
+
+		float width = curFont.GetAtlasWidth();
+		float height = curFont.GetAtlasHeight();
+		coords.push_back(vec4(x2, -y2, c->tx, 0.0f));
+		coords.push_back(vec4(x2 + w, -y2, c->tx + (c->bw / width), 0.0f));
+		coords.push_back(vec4(x2, -y2 - h, c->tx, c->bh / height));
+		coords.push_back(vec4(x2 + w, -y2, c->tx + (c->bw / width), 0.0f));
+		coords.push_back(vec4(x2, -y2 - h, c->tx, c->bh / height));
+		coords.push_back(vec4(x2 + w, -y2 - h, c->tx + (c->bw / width), c->bh / height));
+	}
+
+	// Finally, set the color used within the shader and draw all the coordinated
+	vec3 color = element->color;
+	glUniform3f(uniformColor, color.x, color.y, color.z);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vec4) * coords.size(), coords.data(), GL_DYNAMIC_DRAW);
+	glDrawArrays(GL_TRIANGLES, 0, coords.size());
+}
+
+void UIRenderer::DrawSprite(string textureName, float x, float y, float sx, float sy) {
+	UIElement element{};
+	element.id = ContentHandler::LoadTexture(textureName);
+	element.x = x;
+	element.y = y;
+	element.sx = sx;
+	element.sy = sy;
+	element.type = Element::Quad;
+	drawQueue.push_back(element);
+}
+
+void UIRenderer::RenderSprite(UIElement* element) {
+	DEBUG_LOG("SPRITE IS BEING DRAWN");
+}
+
+void UIRenderer::Draw(const vec2& screenSize) {
+	glEnable(GL_BLEND);
+	glUseProgram(UIShader);
 	glUniform2f(uniformScreenSize, screenSize.x, screenSize.y);
 
-	// TODO: move all the drawing code and have DrawText just add the info into a queue
-	DrawText("Test", -screenSize.x, 0.0f, 10.0f, vec3(1.0f));
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glActiveTexture(GL_TEXTURE0);
+
+	DrawSetFont("TestFont2");
+	DrawText("The quick brown fox jumps over the lazy dog", -screenSize.x, 100.0, 1.0, 1.0, vec3(1.0));
+	DrawSetFont("TestFont");
+	DrawText("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG", -screenSize.x, 200.0, 1.0, 1.0, vec3(0.0, 0.0, 1.0));
+
+	DrawSprite("default", 0.0, 0.0, 1.0, 1.0);
+
+	// Loop through every element on the draw queue and draw them in order
+	for (auto element : drawQueue) {
+		switch (element.type) {
+			case Element::Text: // Draws the element as text to the screen
+				RenderText(&element);
+				break;
+			case Element::Quad: // Draws the element as a single quad with a texture applied to it
+				RenderSprite(&element);
+				break;
+			default: // Throw an error message for broken elements
+				DEBUG_WARNING("Element doesn't have a valid type!");
+				break;
+		}
+
+		lastTexture = element.id;
+	}
 
 	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+
 	glUseProgram(0);
+
+	// Empty the vector and reset the previously used texture ID for the next frame
+	drawQueue.clear();
+	lastTexture = -1;
 }

@@ -33,7 +33,7 @@ public:
 	// functions
 	static Texture LoadTexture(const string& textureName);
 	static Shader LoadShader(const string& shaderName);
-	static Font LoadFont(const string& fontName);
+	static Font LoadFont(const string& fontName, int fontSize);
 
 };
 

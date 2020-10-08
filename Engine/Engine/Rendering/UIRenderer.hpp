@@ -5,22 +5,58 @@
 #include "ContentTypes.hpp"
 
 class UIRenderer : public Component, public ICanvasRenderer {
-	Font fontUI;
-	Shader fontShader;
+
+	enum class Element {
+		None,		// A null element that will be ignored in the draw queue
+		Text,		// A string being rendered using a specific font
+		Quad,		// A quad that can have a texture on it
+	};
+
+	struct UIElement {
+		unsigned int id;	// Stores the ID for thetexutre used by it
+		string name;		// Name for the texture being used
+		string text;		// String data for text
+		vec3 color;			// Color (r, g, b)
+		float x, y;			// Position Value
+		float sx, sy;		// Scale Value
+		Element type;		// The element contained within this struct
+	};
+
+	// Map of available fonts to use when drawing text and the currently active one's key
+	map<string, Font> fontUI;
+	string currentFont;
+	
+	// Stores the ID for the shader used for rendering GUI elements. Below that is the uniforms used within
+	// the shader itself, and the VAO and VBO that contain vertice data for the GPU to utilize.
+	Shader UIShader;
 	unsigned int uniformColor, uniformScreenSize;
 	unsigned int VAO, VBO;
-public:
 
+	// The vector to store the elements that will be drawn to the screen, which can be text, sprites, etc.
+	// Below that is the ID for the texture used by the previously drawn element.
+	vector<UIElement> drawQueue;
+	unsigned int lastTexture;
+public:
+	// Constructor/Destructor
 	UIRenderer();
 	~UIRenderer();
 
-	// events
+	// Events
 	void Start() override;
 	void OnDestroy() override;
 
-	void DrawText(string text, float x, float y, float scale, vec3 color);
+	// Font functions
+	void AddFont(string fontName, float fontSize);
+	void DrawSetFont(string fontName);
+	void DrawText(string text, float x, float y, float sx, float sy, vec3 color);
+	// Sprite/texture functions
+	void DrawSprite(string textureName, float x, float y, float sx, float sy);
 private:
+	// Functions that actually handle passing the vertices to the GPU
+	void RenderText(UIElement* element);
+	void RenderSprite(UIElement* element);
 
+	// Renders each GUI element in order to the screen
 	void Draw(const vec2& screenSize) override;
 
 	RTTR_ENABLE(Component, ICanvasRenderer) RTTR_REGISTRATION_FRIEND
