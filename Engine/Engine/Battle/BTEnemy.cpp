@@ -36,7 +36,9 @@ void BTEnemy::Update()
 		if (phases[currentPhase]->isComplete() && currentPhase < phases.size() - 1) {
 			currentPhase++;
 		}
-		else if(phases[currentPhase])
+		else if (phases[currentPhase]) {
+
+		}
 	}
 }
 
