@@ -22,6 +22,7 @@ void TestEnemy::Start()
 	sprite->SetTilingSize(vec2(16.0f));
 	sprite->SetPivot(vec2(8.0f));
 	sprite->SetLayer(2);
+	//sprite->SetIsActive(true);
 	//srand(time(NULL));
 	SetMaxSpeed(50.0f);
 	SetMaxAcceleration(50.0f);
