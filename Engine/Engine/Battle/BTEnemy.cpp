@@ -37,6 +37,9 @@ void BTEnemy::Update()
 			currentPhase++;
 		}
 		//else if(phases[currentPhase])
+		else if (phases[currentPhase]) {
+
+		}
 	}
 }
 
