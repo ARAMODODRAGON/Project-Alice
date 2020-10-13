@@ -3,11 +3,11 @@
 RTTR_REGISTRATION{
 	registration::class_<TestEnemy>("TestEnemy")
 		.public_object_constructor;
-		//.property("destination",&TestEnemy::destination);
+//.property("destination",&TestEnemy::destination);
 }
 
 
-TestEnemy::TestEnemy() : sprite(nullptr) {}
+TestEnemy::TestEnemy() : sprite(nullptr), moveFromMiddle() {}
 
 TestEnemy::~TestEnemy()
 {
@@ -22,31 +22,23 @@ void TestEnemy::Start()
 	sprite->SetTilingSize(vec2(16.0f));
 	sprite->SetPivot(vec2(8.0f));
 	sprite->SetLayer(2);
-	//sprite->SetIsActive(true);
 	//srand(time(NULL));
+	moveFromMiddle = new TestPhase;
 	SetMaxSpeed(50.0f);
 	SetMaxAcceleration(50.0f);
-	SetDestination (glm::vec2(25, -25));
+	SetDestination(glm::vec2(25, -25));
+	//moveFromMiddle->SetEnemy(this);
+	AddPhase(moveFromMiddle->get_type());
+
 	
+	
+
+
 }
 
 void TestEnemy::Update()
 {
-	vec2 velocity = GetVelocity();
-
-	BTAResult result = bta::MoveTo(&velocity, GetPosition(), GetDestination(), GetMaxSpeed(), 1.0f);
-	if (result == BTAResult::Arrived) {
-
-		vec2 newdest;
-		newdest.x = (rand() % 400) * 0.1f - 5.0f;
-		newdest.y = (rand() % 400) * 0.1f - 5.0f;
-		SetDestination(newdest);
-
-		DEBUG_LOG("Changed destination to: " + VTOS(newdest));
-	}
-
-	SetVelocity(velocity);
-
+	BTEnemy::Update();
 }
 
 void TestEnemy::LateUpdate()
@@ -56,4 +48,9 @@ void TestEnemy::LateUpdate()
 
 void TestEnemy::OnDestroy()
 {
+	//delete sprite;
+	//sprite = nullptr;
+
+	//delete moveFromMiddle;
+	//moveFromMiddle = nullptr;
 }

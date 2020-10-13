@@ -90,6 +90,7 @@ void SpriteRenderer::LoadShader(const string& shaderName) {
 	modelLoc = glGetUniformLocation(shader, "modelMat");
 	colorLoc = glGetUniformLocation(shader, "color");
 	//DEBUG_LOG("View Location is: " + VTOS(viewLoc));
+
 }
 
 void SpriteRenderer::UpdateVertexArray() {

@@ -70,6 +70,75 @@ namespace bta {
 		return BTAResult::Moving;
 	}
 
+	BTAResult FleeFrom(vec2* velocity, const vec2& startPos_, const vec2& destination_, float maxAcceleration_, float maxSpeed_)
+	{
+		// check 
+		if (velocity == nullptr) {
+			DEBUG_ERROR("Velocity was nullptr, could not calculate new velocity");
+			return BTAResult::Arrived;
+		}
+		// points from the current position to the destination
+		glm::vec2 direction;
+		glm::vec2 targetVelocity;
+
+		float distance = 0;
+		float slowRadius = 4.0f;
+		float targetRadius = 1.0f;
+		float timeToTarget = 0.1f;
+		float targetSpeed;
+
+
+		direction = startPos_ - destination_;
+
+		distance = glm::length(direction);
+		*velocity = glm::normalize(direction);
+
+		*velocity *= maxAcceleration_;
+
+
+		if (NearlyZero(distance, targetRadius)) {
+			distance = 0;
+			maxAcceleration_ = 0.0f;
+			*velocity = vec2(0.0f);
+			return BTAResult::Arrived;
+		}
+
+		else if (distance > slowRadius) {
+			targetSpeed = maxSpeed_;
+			/*targetVelocity = direction;
+			targetVelocity = glm::normalize(targetVelocity);
+			targetVelocity *= targetSpeed;
+
+			velocity = targetVelocity - direction;
+			velocity /= timeToTarget;*/
+		}
+
+		else {
+			targetSpeed = maxSpeed_ * (distance / slowRadius);
+			targetVelocity = direction;
+			targetVelocity = glm::normalize(targetVelocity);
+			targetVelocity *= targetSpeed;
+
+			*velocity = targetVelocity - direction;
+			*velocity /= timeToTarget;
+
+		}
+
+
+		if (glm::length(*velocity) > maxAcceleration_) {
+			*velocity = glm::normalize(*velocity);
+			*velocity *= maxAcceleration_;
+
+		}
+
+		// this makes sure we dont overshoot by checking if our velocity is more than the remaining distance
+		if (glm::length(*velocity) > distance) {
+			*velocity = glm::normalize(direction) * distance;
+		}
+
+		return BTAResult::Moving;
+	}
+
 }
 
 //// check 

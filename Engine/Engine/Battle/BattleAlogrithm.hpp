@@ -16,6 +16,7 @@ enum class BTAResult {
 namespace bta {
 
 	BTAResult MoveTo(vec2* velocity, const vec2& startPos_, const vec2& destination_, float maxAcceleration_, float maxSpeed_);
+	BTAResult FleeFrom(vec2* velocity, const vec2& startPos_, const vec2& destination_, float maxAcceleration_, float maxSpeed_);
 
 }
 

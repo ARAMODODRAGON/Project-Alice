@@ -12,21 +12,26 @@ RTTR_REGISTRATION{
 		.property("currentPhase",&BTEnemy::currentPhase);
 }
 
-BTEnemy::BTEnemy() : maxSpeed(NULL),destination(vec2()),maxAcceleration(NULL) { 
+BTEnemy::BTEnemy() : maxSpeed(NULL), destination(vec2()), maxAcceleration(NULL) {
 	BattleManager::AddEnemy(this);
-	
+
 
 }
 
-BTEnemy::~BTEnemy() { BattleManager::RemoveEnemy(this); }
+BTEnemy::~BTEnemy() {
+	OnDestroy();
+	BattleManager::RemoveEnemy(this);
+}
 
 void BTEnemy::Start()
 {
-	
+
 }
 
 void BTEnemy::Update()
 {
+	//right now only goes through the phases 0,1,2 etc....
+	//when current phase is greater than the size go back to the begining of the vector 
 	if (phases[currentPhase]) {
 		if (!phases[currentPhase]->isComplete()) {
 			phases[currentPhase]->StartPhase();
@@ -34,13 +39,16 @@ void BTEnemy::Update()
 		}
 
 		if (phases[currentPhase]->isComplete() && currentPhase < phases.size() - 1) {
-			currentPhase++;
+			currentPhase += 1;
 		}
-		//else if(phases[currentPhase])
-		else if (phases[currentPhase]) {
 
+		else if (phases[currentPhase]->isComplete() && currentPhase >= phases.size() - 1) {
+			currentPhase = 0;
 		}
+
+
 	}
+
 }
 
 void BTEnemy::LateUpdate()
@@ -49,7 +57,10 @@ void BTEnemy::LateUpdate()
 
 void BTEnemy::OnDestroy()
 {
-	
+	for (auto phase : phases) {
+		phase = nullptr;
+	}
+	phases.clear();
 
 }
 
@@ -73,6 +84,7 @@ BTPhase* BTEnemy::AddPhase(const type type_)
 	}
 
 	phases.push_back(phase_);
+	phase_->SetEnemy(this);
 	return phase_;
 
 }
@@ -80,7 +92,7 @@ BTPhase* BTEnemy::AddPhase(const type type_)
 BTPhase* BTEnemy::GetPhase(const string& phaseName_)
 {
 	for (BTPhase* phase : phases) {
-		
+
 		if (phase->GetPhaseName() == phaseName_) {
 			return phase;
 		}
@@ -89,6 +101,7 @@ BTPhase* BTEnemy::GetPhase(const string& phaseName_)
 	DEBUG_ERROR("No phase found with name " + phaseName_);
 	return nullptr;
 }
+
 
 
 

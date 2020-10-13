@@ -6,8 +6,9 @@
 void Camera::Start() {
 	RenderScene::AddCamera(this);
 	SetCameraSize(Game::Get()->GetWindow()->GetScreenSize());
-}
 
+}
+				 
 void Camera::OnDestroy() {
 	RenderScene::RemoveCamera(this);
 }
