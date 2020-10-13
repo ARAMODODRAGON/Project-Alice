@@ -6,6 +6,7 @@
 #include "../Rendering/Rect.hpp"
 #include "../Objects/FileIndex.hpp"
 
+
 // forward declare
 class BTPlayer;
 class BTEnemy;

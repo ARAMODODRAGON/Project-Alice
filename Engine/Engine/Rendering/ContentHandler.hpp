@@ -18,6 +18,7 @@ class ContentHandler {
 	map<string, Font> fonts;
 	FileIndex* textureIndex;
 	FileIndex* shaderIndex;
+	FileIndex* fontIndex;
 
 	ContentHandler();
 	~ContentHandler();
@@ -25,14 +26,14 @@ class ContentHandler {
 public:
 
 	// events
-	static void Init(const string& textureIndexPath_, const string& shaderIndexPath_);
+	static void Init(const string& textureIndexPath_, const string& shaderIndexPath_, const string& fontIndexPath_);
 	static void Clean();
 	static void Exit();
 
 	// functions
 	static Texture LoadTexture(const string& textureName);
 	static Shader LoadShader(const string& shaderName);
-	static Font LoadFont(const string& fontName);
+	static Font LoadFont(const string& fontName, int fontSize);
 
 };
 

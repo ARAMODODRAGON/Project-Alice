@@ -43,7 +43,8 @@ void BTPlayer::Update() {
 	SetVelocity(inputDirection * moveSpeed);
 	
 	vec2 velocity = GetVelocity();
-	std::cout << velocity.x << ", " << velocity.y << std::endl;
+	//std::cout << velocity.x << ", " << velocity.y << std::endl;
+	// dont do ^this^, at the very least use DEBUG_LOG so I can track where this is
 }
 
 void BTPlayer::LateUpdate() {
@@ -74,7 +75,7 @@ int BTPlayer::GetMaxHitpoints() {
 	return maxHitpoints;
 }
 
-Sprite* BTPlayer::GetSprite() {
+SpriteRenderer* BTPlayer::GetSprite() {
 	return sprite;
 }
 
@@ -98,7 +99,7 @@ void BTPlayer::SetMaxHitpoints(int _maxHitpoints, bool _updateCurHP) {
 }
 
 void BTPlayer::SetSprite(std::string _texture, vec2 _pivot, int _layer) {
-	sprite = AddComponent<Sprite>();
+	sprite = AddComponent<SpriteRenderer>();
 	if (_texture != "") { // Only load a texture if one is specified
 		sprite->LoadTexture(_texture);
 	}

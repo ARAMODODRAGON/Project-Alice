@@ -7,27 +7,23 @@
 #include <time.h>
 
 
-using namespace std;
-using namespace glm;
+
 class TestEnemy : public BTEnemy
 {
-	vec2 destination;
-	bool isMoving;
+	//vec2 destination;
 public:
 
-	Sprite* sprite;
+	SpriteRenderer* sprite;
 
 	TestEnemy();
 	~TestEnemy();
 
-	void SeekAndArrive(bool isMoving_);
+
 	void Start() override;
 	void Update() override;
 	void LateUpdate() override;
 	void OnDestroy() override;
 
-	vec2 GetDestination() { return destination; }
-	void SetDestination(vec2 destination_) { destination = destination_; }
 
 	RTTR_ENABLE(BTEnemy) RTTR_REGISTRATION_FRIEND
 };

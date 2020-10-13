@@ -3,6 +3,8 @@
 #include <Engine/Battle/BattleLevel.hpp>
 #include <Engine/Battle/BattleManager.hpp>
 #include <Engine/Physics/PhysicsScene.hpp>
+#include <random>
+#include <chrono>
 
 AliceGame::AliceGame()
 	: Game()
@@ -15,11 +17,12 @@ bool AliceGame::Init() {
 	if (!Game::Init()) return false;
 
 	// initialize the singletons
-	ContentHandler::Init("Resources/Textures", "Resources/Shaders");
+	ContentHandler::Init("Resources/Textures", "Resources/Shaders", "Resources/Fonts");
 	RenderScene::Init();
 	ObjectFactory::Init("Resources/Objects");
 	PhysicsScene::Init();
 	LevelManager::Init("Resources/Levels", "collision_test");
+
 	BattleManager::Init("Resources/EnemyPhases");
 
 	return true;
@@ -135,4 +138,16 @@ void AliceGame::LevelLoad(Level* level, const json& data) {
 	// load the level data
 	if (data.contains("objects"))
 		LoadObjects(data["objects"]);
+}
+
+int main(int argc, char* argv[]) {
+
+	// set random value using chrono
+	srand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+
+	Game* game = new AliceGame();
+	game->Run();
+	delete game;
+
+	return 0;
 }

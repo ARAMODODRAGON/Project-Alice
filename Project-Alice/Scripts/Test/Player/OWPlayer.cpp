@@ -27,17 +27,18 @@ void OWPlayer::Start() {
 	SetPosition(vec2(16.0f, 0.0f));
 
 	// add components
-	sprite = AddComponent<Sprite>();
+	sprite = AddComponent<SpriteRenderer>();
 	sprite->LoadTexture("circle 128");
 	sprite->SetPivot(vec2(128.0f / 2.0f, 128.0f / 2.0f)); // center pivot
 	sprite->SetScale(vec2(1.0f / 11.0f));
 	sprite->SetLayer(2);
 	coll = AddComponent<CircleCollider>();
 	coll->SetRadius(4.0f);
+	ui = AddComponent<UIRenderer>();
 
 	// create another object
 	Object* o = Make();
-	Sprite* s = o->AddComponent<Sprite>();
+	SpriteRenderer* s = o->AddComponent<SpriteRenderer>();
 	s->LoadTexture("circle 128");
 	s->SetPivot(vec2(128.0f / 2.0f, 128.0f / 2.0f)); // center pivot
 	s->SetScale(vec2(1.0f / 11.0f));
@@ -127,7 +128,9 @@ void OWPlayer::Update() {
 	}
 }
 
-void OWPlayer::LateUpdate() { }
+void OWPlayer::LateUpdate() {
+	//ui->DrawText("THIS IS A TEST", -500.0f, -0.5f, 1.0f, vec3(0.0f, 0.5f, 0.0f));
+}
 
 void OWPlayer::OnCollisionEnter(const CollisionData& data) {
 	DEBUG_LOG("Collision Enter Called!");

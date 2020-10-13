@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Battle\BattleAlogrithm.hpp" />
+    <ClInclude Include="Engine\Battle\BTPhase.hpp" />
     <ClInclude Include="Engine\Battle\BattleLevel.hpp" />
     <ClInclude Include="Engine\Battle\BTEnemy.hpp" />
     <ClInclude Include="Engine\Battle\BTPlayer.hpp" />
@@ -28,14 +30,9 @@
     <ClInclude Include="Engine\Core\Debugger.hpp" />
     <ClInclude Include="Engine\Core\Level.hpp" />
     <ClInclude Include="Engine\Core\LevelManager.hpp" />
-    <ClInclude Include="Engine\Objects\Component.hpp" />
-    <ClInclude Include="Engine\Objects\ObjectFactory.hpp" />
-    <ClInclude Include="Engine\Objects\JsonToObjectLoader.hpp" />
-    <ClInclude Include="Engine\Objects\FileIndex.hpp" />
     <ClInclude Include="Engine\Input\SystemEvents.hpp" />
     <ClInclude Include="Engine\Core\Timer.hpp" />
     <ClInclude Include="Engine\Core\Window.hpp" />
-    <ClInclude Include="Engine\Objects\Object.hpp" />
     <ClInclude Include="Engine\Game.hpp" />
     <ClInclude Include="Engine\General\Macros.hpp" />
     <ClInclude Include="Engine\General\Types.hpp" />
@@ -56,10 +53,18 @@
     <ClInclude Include="Engine\Rendering\IRenderer.hpp" />
     <ClInclude Include="Engine\Rendering\Rect.hpp" />
     <ClInclude Include="Engine\Rendering\RenderScene.hpp" />
-    <ClInclude Include="Engine\Rendering\Sprite.hpp" />
+    <ClInclude Include="Engine\Rendering\SpriteRenderer.hpp" />
     <ClInclude Include="Engine\Rendering\UIRenderer.hpp" />
+    <ClInclude Include="Engine\Objects\Component.hpp" />
+    <ClInclude Include="Engine\Objects\FileIndex.hpp" />
+    <ClInclude Include="Engine\Objects\JsonToObjectLoader.hpp" />
+    <ClInclude Include="Engine\Objects\Object.hpp" />
+    <ClInclude Include="Engine\Objects\ObjectFactory.hpp" />
+    <ClInclude Include="Engine\Battle\ShootComponent.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Battle\BattleAlogrithm.cpp" />
+    <ClCompile Include="Engine\Battle\BTPhase.cpp" />
     <ClCompile Include="Engine\Battle\BattleLevel.cpp" />
     <ClCompile Include="Engine\Battle\BTEnemy.cpp" />
     <ClCompile Include="Engine\Battle\BTPlayer.cpp" />
@@ -67,13 +72,9 @@
     <ClCompile Include="Engine\Core\Debugger.cpp" />
     <ClCompile Include="Engine\Core\Level.cpp" />
     <ClCompile Include="Engine\Core\LevelManager.cpp" />
-    <ClCompile Include="Engine\Objects\Component.cpp" />
-    <ClCompile Include="Engine\Objects\ObjectFactory.cpp" />
-    <ClCompile Include="Engine\Objects\FileIndex.cpp" />
     <ClCompile Include="Engine\Input\SystemEvents.cpp" />
     <ClCompile Include="Engine\Core\Timer.cpp" />
     <ClCompile Include="Engine\Core\Window.cpp" />
-    <ClCompile Include="Engine\Objects\Object.cpp" />
     <ClCompile Include="Engine\Game.cpp" />
     <ClCompile Include="Engine\General\Math.cpp" />
     <ClCompile Include="Engine\Input\Keyboard.cpp" />
@@ -90,8 +91,13 @@
     <ClCompile Include="Engine\Rendering\ContentTypes.cpp" />
     <ClCompile Include="Engine\Rendering\IRenderer.cpp" />
     <ClCompile Include="Engine\Rendering\RenderScene.cpp" />
-    <ClCompile Include="Engine\Rendering\Sprite.cpp" />
+    <ClCompile Include="Engine\Rendering\SpriteRenderer.cpp" />
     <ClCompile Include="Engine\Rendering\UIRenderer.cpp" />
+    <ClCompile Include="Engine\Objects\Component.cpp" />
+    <ClCompile Include="Engine\Objects\FileIndex.cpp" />
+    <ClCompile Include="Engine\Objects\Object.cpp" />
+    <ClCompile Include="Engine\Objects\ObjectFactory.cpp" />
+    <ClCompile Include="Engine\Battle\ShootComponent.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -147,8 +153,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\GameDev\SDL\include;C:\GameDev\OpenGL\include;C:\GameDev\glm-0.9.9.6;C:\GameDev\nlohmann-json\include;C:\GameDev\RTTR\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\GameDev\RTTR\Libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\GameDev\SDL\include;C:\GameDev\OpenGL\include;C:\GameDev\glm-0.9.9.6;C:\GameDev\nlohmann-json\include;C:\GameDev\RTTR\Include;C:\GameDev\FreeType\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\GameDev\FreeType\win32;C:\GameDev\RTTR\Libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -157,8 +163,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\GameDev\SDL\include;C:\GameDev\OpenGL\include;C:\GameDev\glm-0.9.9.6;C:\GameDev\nlohmann-json\include;C:\GameDev\RTTR\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\GameDev\RTTR\Libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\GameDev\SDL\include;C:\GameDev\OpenGL\include;C:\GameDev\glm-0.9.9.6;C:\GameDev\nlohmann-json\include;C:\GameDev\RTTR\Include;C:\GameDev\FreeType\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\GameDev\FreeType\win32;C:\GameDev\RTTR\Libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
