@@ -15,6 +15,8 @@ ContentHandler::~ContentHandler() {
 	textureIndex = nullptr; 
 	if (shaderIndex) delete shaderIndex;
 	shaderIndex = nullptr;
+	if (fontIndex) delete fontIndex;
+	fontIndex = nullptr;
 }
 
 void ContentHandler::Init(const string& textureIndexPath_, const string& shaderIndexPath_, const string& fontIndexPath_) {
@@ -199,7 +201,7 @@ Font ContentHandler::LoadFont(const string& fontName, int fontSize) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	map<char, Character> characters;
-	float x = 0;
+	int x = 0;
 	for (int i = 32; i < 128; i++) {
 		if (FT_Load_Char(face, i, FT_LOAD_RENDER)) { // Skip over the elements that aren't properly loaded
 			continue;
@@ -213,7 +215,7 @@ Font ContentHandler::LoadFont(const string& fontName, int fontSize) {
 		character.bh = g->bitmap.rows;
 		character.bl = g->bitmap_left;
 		character.bt = g->bitmap_top;
-		character.tx = x / w;
+		character.tx = (float)x / w;
 
 		characters.insert(pair<char, Character>(i, character));
 		x += g->bitmap.width;
