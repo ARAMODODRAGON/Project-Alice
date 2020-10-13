@@ -6,19 +6,17 @@
 #include "ColType.hpp"
 #include <functional>
 
-typedef unsigned int uint;
-
 struct LayerMask {
 
 	// constructors / operators
 	LayerMask() : mask(0) { }
-	LayerMask(const uint mask_) : mask(mask_) { }
-	LayerMask& operator=(const uint mask_) { mask = mask_; }
+	LayerMask(const uint32 mask_) : mask(mask_) { }
+	LayerMask& operator=(const uint32 mask_) { mask = mask_; }
 
 	// operators
 
 	// cast to unsigned int
-	explicit operator uint() const { return mask; }
+	explicit operator uint32() const { return mask; }
 
 	// checks if the masks match exactly
 	bool operator==(const LayerMask& other) const { return mask == other.mask; }
@@ -50,20 +48,20 @@ struct LayerMask {
 	LayerMask operator~() const { return LayerMask(~mask); }
 
 	// function to set/unset layers
-	void SetLayer(const uint layer, bool value) {
+	void SetLayer(const uint32 layer, bool value) {
 		if (value)	mask |= (1 << layer);  // set true
 		else		mask &= ~(1 << layer); // set false
 	}
 
 	// function to get layer
-	bool GetLayer(const uint layer) const {
+	bool GetLayer(const uint32 layer) const {
 		return mask & (1 << layer);
 	}
 
 private:
 
 	// 32 layers of bools essentially
-	uint mask;
+	uint32 mask;
 
 };
 

@@ -2,6 +2,7 @@
 #define _CORE_TIMER_HPP
 
 #include <chrono>
+#include "../General/Types.hpp"
 
 class Timer {
 	using steady_clock = std::chrono::steady_clock;
@@ -11,7 +12,7 @@ class Timer {
 	time_point lastTime;
 	time_point currentTime;
 
-	unsigned int targetFPS;
+	uint32 targetFPS;
 	double secondsPerFrame;
 
 public:
@@ -24,8 +25,8 @@ public:
 	bool CheckIfFrameComplete();
 
 	// getters and setters
-	unsigned int GetTargetFPS() const { return targetFPS; }
-	void SetTargetFPS(const unsigned int& targetFPS_) {
+	uint32 GetTargetFPS() const { return targetFPS; }
+	void SetTargetFPS(const uint32& targetFPS_) {
 		targetFPS = targetFPS_;
 		secondsPerFrame = 1.0 / static_cast<double>(targetFPS);
 	}
