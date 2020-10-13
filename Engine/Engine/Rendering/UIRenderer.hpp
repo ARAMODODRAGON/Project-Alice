@@ -6,7 +6,7 @@
 
 class UIRenderer : public Component, public ICanvasRenderer {
 
-	enum class Element {
+	enum class Element : int {
 		None,		// A null element that will be ignored in the draw queue
 		Text,		// A string being rendered using a specific font
 		Quad,		// A quad that can have a texture on it

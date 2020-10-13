@@ -35,6 +35,7 @@
     <ClCompile Include="Engine\Objects\FileIndex.cpp" />
     <ClCompile Include="Engine\Objects\Object.cpp" />
     <ClCompile Include="Engine\Objects\ObjectFactory.cpp" />
+    <ClCompile Include="Engine\Battle\ShootComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Battle\BTEnemy.hpp" />
@@ -78,6 +79,7 @@
     <ClInclude Include="Engine\Objects\JsonToObjectLoader.hpp" />
     <ClInclude Include="Engine\Objects\Object.hpp" />
     <ClInclude Include="Engine\Objects\ObjectFactory.hpp" />
+    <ClInclude Include="Engine\Battle\ShootComponent.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Core\Debugger.cpp">
