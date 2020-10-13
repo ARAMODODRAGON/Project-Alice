@@ -42,7 +42,7 @@ void TestPhase::UpdatePhase()
 
 bool TestPhase::isComplete()
 {
-	if
+	
 
 	return false;
 }
