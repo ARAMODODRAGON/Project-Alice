@@ -18,6 +18,8 @@ Object::Object()
 	: level(nullptr)
 	, isActive(true)
 	, name("Object")
+	, position(0.0f)
+	, velocity(0.0f)
 	, rotation(0.0f) {
 	level = LevelManager::GetLevel();
 	PhysicsScene::AddObject(this);

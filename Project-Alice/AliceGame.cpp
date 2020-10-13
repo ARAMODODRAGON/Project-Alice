@@ -144,7 +144,7 @@ int main(int argc, char* argv[]) {
 
 	// set random value using chrono
 	srand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
-
+	
 	Game* game = new AliceGame();
 	game->Run();
 	delete game;
