@@ -30,9 +30,13 @@ void BTEnemy::Start()
 
 void BTEnemy::Update()
 {
+
+	if (phases.empty()) {
+		DEBUG_ERROR("There are no phases in the phases Vector");
+	}
 	//right now only goes through the phases 0,1,2 etc....
 	//when current phase is greater than the size go back to the begining of the vector 
-	if (phases[currentPhase]) {
+	else if (phases[currentPhase]) {
 		if (!phases[currentPhase]->isComplete()) {
 			phases[currentPhase]->StartPhase();
 			phases[currentPhase]->UpdatePhase();
@@ -48,6 +52,7 @@ void BTEnemy::Update()
 
 
 	}
+	
 
 }
 

@@ -5,7 +5,8 @@ RTTR_REGISTRATION{
 	.public_object_constructor;
 }
 
-TestPhase::TestPhase() {}
+TestPhase::TestPhase() {
+}
 
 TestPhase::~TestPhase()
 {
@@ -28,21 +29,20 @@ void TestPhase::StartPhase()
 void TestPhase::UpdatePhase()
 {
 
-	vec2 velocity = GetEnemy()->GetVelocity();
+	//vec2 velocity = GetEnemy()->GetVelocity();
 
-	BTAResult result = bta::FleeFrom(&velocity, GetEnemyPosition(), GetPhaseDestination(), GetEnemyAcceleration(), GetEnemyMaxSpeed());
-	if (result == BTAResult::Arrived) {
-		DEBUG_LOG("Enemy phase : " + GetPhaseName() + "is Complete ");
+	//BTAResult result = bta::FleeFrom(&velocity, GetEnemyPosition(), GetPhaseDestination(), GetEnemyAcceleration(), GetEnemyMaxSpeed());
+	//if (result == BTAResult::Arrived) {
+	//	DEBUG_LOG("Enemy phase : " + GetPhaseName() + "is Complete ");
 
-	}
+	//}
 
-	GetEnemy()->SetVelocity(velocity);
-	DEBUG_LOG("Updating Test Phase");
+	//GetEnemy()->SetVelocity(velocity);
+	//DEBUG_LOG("Updating Test Phase");
+	DEBUG_LOG("Enemy Current Pos : " + VTOS(GetEnemyPosition()));
 }
 
 bool TestPhase::isComplete()
 {
-	if
-
 	return false;
 }
