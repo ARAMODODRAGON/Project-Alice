@@ -4,10 +4,10 @@
 
 class Projectile : public Object {
 
-	unsigned int timer;
+	uint32 timer;
 	SpriteRenderer* sprite;
 	vec4 color;
-	unsigned int destroyTime;
+	uint32 destroyTime;
 
 public:
 
@@ -19,7 +19,7 @@ public:
 
 	void SetColor(const vec4& color_) { color = color_; }
 	SpriteRenderer* GetSprite() const { return sprite; }
-	void SetDestroyTime(unsigned int destroyTime_) { destroyTime = destroyTime_; }
+	void SetDestroyTime(uint32 destroyTime_) { destroyTime = destroyTime_; }
 
 	RTTR_ENABLE(Object)
 };

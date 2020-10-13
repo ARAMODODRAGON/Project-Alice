@@ -10,7 +10,7 @@ class DebugMenu : public Object {
 	UIRenderer* ui;
 
 	array<double, DEBUG_MENU_FPS_AVERAGE_FRAME_COUNT> multiFrameFPS;
-	unsigned int frameIndex;
+	uint32 frameIndex;
 
 public:
 
