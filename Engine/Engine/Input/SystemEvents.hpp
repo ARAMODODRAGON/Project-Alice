@@ -1,7 +1,7 @@
 #ifndef __EVENTS_SYSTEM_EVENTS_HPP
 #define __EVENTS_SYSTEM_EVENTS_HPP
 #include "../General/Macros.hpp"
-#include "../General/Math.hpp"
+#include "../General/Types.hpp"
 
 class Game;
 
@@ -10,7 +10,7 @@ class SystemEvents {
 
 	Game* game;
 	ivec2 mousepos;
-	unsigned int mouseState;
+	int32 mouseState;
 
 	SystemEvents();
 	~SystemEvents();

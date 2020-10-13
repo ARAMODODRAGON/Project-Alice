@@ -19,13 +19,13 @@ class OWPlayer : public Object {
 
 	float colorMix;
 	bool increaseMix;
-	unsigned int animTimer;
+	uint32 animTimer;
 	Facing facing;
 
 	// projectile settings
 	vec4 shootColor;
 	float shootSpeed;
-	unsigned int shootDestroyTimer;
+	uint32 shootDestroyTimer;
 
 public:
 

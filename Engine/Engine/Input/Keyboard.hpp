@@ -4,7 +4,7 @@
 #include "../General/Types.hpp"
 #include "Button.hpp"
 
-enum class KeyCode : unsigned int {
+enum class KeyCode : int32 {
 	KeyA,
 	KeyB,
 	KeyC,

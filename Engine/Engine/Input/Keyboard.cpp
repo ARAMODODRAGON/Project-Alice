@@ -3,7 +3,7 @@
 array<Keyboard::KeyValue, ENUM_SIZE(KeyCode)> Keyboard::keyValues;
 
 // returns a uint index for accessing keys in the array
-#define KEY_INDEX(key) static_cast<unsigned int>(key)
+#define KEY_INDEX(key) static_cast<int32>(key)
 
 Button Keyboard::GetKey(KeyCode key) {
 	// get the key
