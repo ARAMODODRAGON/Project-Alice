@@ -2,15 +2,11 @@
 #define _CORE_DEBUGGER_HPP
 #include "../General/Macros.hpp"
 #include "../General/Types.hpp"
-#include <mutex>
 
 class Debugger {
 	PRIVATE_SINGLETON(Debugger);
 
 	string logFilepath;
-	
-	// multithreading safe
-	std::mutex lock;
 
 	Debugger();
 	~Debugger();
