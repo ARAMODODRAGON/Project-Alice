@@ -29,9 +29,9 @@ void Debugger::Log(const string& msg, const string& file, size_t line) {
 
 	// add msg
 	filestream << "[Log(ln:" << line << ")]: " << msg << std::endl << "\t[file: " << file << "]" << std::endl;
-	#if _DEBUG
+	//#if _DEBUG
 	std::cout << "[Log]: " << msg << std::endl;
-	#endif
+	//#endif
 
 	// close
 	filestream.close();
@@ -44,9 +44,9 @@ void Debugger::Trace(const string& msg, const string& file, size_t line) {
 
 	// add msg
 	filestream << "[Trace(ln:" << line << ")]: " << msg << std::endl << "\t[file: " << file << "]" << std::endl;
-	#if _DEBUG
+	//#if _DEBUG
 	std::cout << "[Trace]: " << msg << std::endl;
-	#endif
+	//#endif
 
 	// close
 	filestream.close();
@@ -59,9 +59,9 @@ void Debugger::Warning(const string& msg, const string& file, size_t line) {
 
 	// add msg
 	filestream << "[Warning(ln:" << line << ")]: " << msg << std::endl << "\t[file: " << file << "]" << std::endl;
-	#if _DEBUG
+	//#if _DEBUG
 	std::cout << "[Warning]: " << msg << std::endl;
-	#endif
+	//#endif
 
 	// close
 	filestream.close();
@@ -74,9 +74,9 @@ void Debugger::Error(const string& msg, const string& file, size_t line) {
 
 	// add msg
 	filestream << "[Error(ln:" << line << ")]: " << msg << std::endl << "\t[file: " << file << "]" << std::endl;
-	#if _DEBUG
+	//#if _DEBUG
 	std::cout << "[Error]: " << msg << std::endl;
-	#endif
+	//#endif
 
 	// close
 	filestream.close();
@@ -89,9 +89,9 @@ void Debugger::FatalError(const string& msg, const string& file, size_t line) {
 
 	// add msg
 	filestream << "[FatalError(ln:" << line << ")]: " << msg << std::endl << "\t[file: " << file << "]" << std::endl;
-	#if _DEBUG
+	//#if _DEBUG
 	std::cout << "[FatalError]: " << msg << std::endl;
-	#endif
+	//#endif
 
 	// close
 	filestream.close();

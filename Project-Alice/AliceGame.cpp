@@ -21,7 +21,7 @@ bool AliceGame::Init() {
 	RenderScene::Init();
 	ObjectFactory::Init("Resources/Objects");
 	PhysicsScene::Init();
-	LevelManager::Init("Resources/Levels", "battle_test_0");
+	LevelManager::Init("Resources/Levels", "collision_test");
 
 	BattleManager::Init("Resources/EnemyPhases");
 
@@ -144,7 +144,7 @@ int main(int argc, char* argv[]) {
 
 	// set random value using chrono
 	srand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
-
+	
 	Game* game = new AliceGame();
 	game->Run();
 	delete game;
