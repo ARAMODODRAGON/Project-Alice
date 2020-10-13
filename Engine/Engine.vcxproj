@@ -40,6 +40,7 @@
     <ClInclude Include="Engine\Input\Keyboard.hpp" />
     <ClInclude Include="Engine\Input\Mouse.hpp" />
     <ClInclude Include="Engine\General\Serialization.hpp" />
+    <ClInclude Include="Engine\Network\NetworkManager.hpp" />
     <ClInclude Include="Engine\Physics\CircleCollider.hpp" />
     <ClInclude Include="Engine\Physics\ColliderComponent.hpp" />
     <ClInclude Include="Engine\Physics\Colliders.hpp" />
@@ -79,6 +80,7 @@
     <ClCompile Include="Engine\General\Math.cpp" />
     <ClCompile Include="Engine\Input\Keyboard.cpp" />
     <ClCompile Include="Engine\Input\Mouse.cpp" />
+    <ClCompile Include="Engine\Network\NetworkManager.cpp" />
     <ClCompile Include="Engine\Physics\CircleCollider.cpp" />
     <ClCompile Include="Engine\Physics\ColliderComponent.cpp" />
     <ClCompile Include="Engine\Physics\Colliders.cpp" />

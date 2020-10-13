@@ -36,6 +36,7 @@
     <ClCompile Include="Engine\Objects\Object.cpp" />
     <ClCompile Include="Engine\Objects\ObjectFactory.cpp" />
     <ClCompile Include="Engine\Battle\ShootComponent.cpp" />
+    <ClCompile Include="Engine\Network\NetworkManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Battle\BTEnemy.hpp" />
@@ -80,6 +81,7 @@
     <ClInclude Include="Engine\Objects\Object.hpp" />
     <ClInclude Include="Engine\Objects\ObjectFactory.hpp" />
     <ClInclude Include="Engine\Battle\ShootComponent.hpp" />
+    <ClInclude Include="Engine\Network\NetworkManager.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Core\Debugger.cpp">
