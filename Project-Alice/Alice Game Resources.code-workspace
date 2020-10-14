@@ -13,7 +13,8 @@
 		"files.associations": {
 			"*.object": "json",
 			"*.level": "json",
-			"*.eps": "json"
+			"*.eps": "json",
+			"*.index": "json" 
 		},
 		"workbench.tree.indent": 18,
 		"workbench.tree.renderIndentGuides": "always",

@@ -3,7 +3,7 @@
 #include "../General/Types.hpp"
 #include "../General/Macros.hpp"
 #include "../General/Serialization.hpp"
-#include "FileIndex.hpp"
+#include "../General/FileIndex.hpp"
 #include "../Core/Debugger.hpp"
 #include "JsonToObjectLoader.hpp"
 
@@ -67,10 +67,11 @@ inline T* ObjectFactory::Make(const string& objectName) {
 		DEBUG_ERROR("No index available to search through");
 		return nullptr;
 	}
+	auto* index = Get()->index;
 	// load the data in and confirm that the name matches a type
-	json j;
 	// if it fails return null
-	if (!Get()->index->GetJSON(&j, objectName)) return nullptr;
+	if (!index->Contains(objectName)) return nullptr;
+	json j = index->GetJSON(objectName);
 	string name = j["type"].get<string>();
 	auto objectTy = type::get_by_name(name.c_str());
 	if (!objectTy.is_valid()) {

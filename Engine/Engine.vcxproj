@@ -56,7 +56,7 @@
     <ClInclude Include="Engine\Rendering\SpriteRenderer.hpp" />
     <ClInclude Include="Engine\Rendering\UIRenderer.hpp" />
     <ClInclude Include="Engine\Objects\Component.hpp" />
-    <ClInclude Include="Engine\Objects\FileIndex.hpp" />
+    <ClInclude Include="Engine\General\FileIndex.hpp" />
     <ClInclude Include="Engine\Objects\JsonToObjectLoader.hpp" />
     <ClInclude Include="Engine\Objects\Object.hpp" />
     <ClInclude Include="Engine\Objects\ObjectFactory.hpp" />
@@ -94,7 +94,7 @@
     <ClCompile Include="Engine\Rendering\SpriteRenderer.cpp" />
     <ClCompile Include="Engine\Rendering\UIRenderer.cpp" />
     <ClCompile Include="Engine\Objects\Component.cpp" />
-    <ClCompile Include="Engine\Objects\FileIndex.cpp" />
+    <ClCompile Include="Engine\General\FileIndex.cpp" />
     <ClCompile Include="Engine\Objects\Object.cpp" />
     <ClCompile Include="Engine\Objects\ObjectFactory.cpp" />
     <ClCompile Include="Engine\Battle\ShootComponent.cpp" />

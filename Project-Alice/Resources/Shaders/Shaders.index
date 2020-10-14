@@ -1,0 +1,10 @@
+{
+	"default": [
+		"Resources/Shaders/Default Shader/DefaultShader.vert",
+		"Resources/Shaders/Default Shader/DefaultShader.frag"
+	],
+	"ui": [
+		"Resources/Shaders/UI Shader/UIShader.frag",
+		"Resources/Shaders/UI Shader/UIShader.vert"
+	]
+}

@@ -42,9 +42,7 @@ json BattleManager::LoadPhaseFile(const string& phaseFile) {
 		return json();
 	}
 
-	json j;
-	phaseIndex->GetJSON(&j, phaseFile);
-	return j;
+	return phaseIndex->GetJSON(phaseFile);
 }
 
 #pragma region Adders & Removers

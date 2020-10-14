@@ -8,11 +8,11 @@
 #include FT_FREETYPE_H
 
 ContentHandler::ContentHandler()
-	: textureIndex(nullptr), shaderIndex(nullptr) { }
+	: textureIndex(nullptr), shaderIndex(nullptr), fontIndex(nullptr) { }
 
-ContentHandler::~ContentHandler() { 
+ContentHandler::~ContentHandler() {
 	if (textureIndex) delete textureIndex;
-	textureIndex = nullptr; 
+	textureIndex = nullptr;
 	if (shaderIndex) delete shaderIndex;
 	shaderIndex = nullptr;
 	if (fontIndex) delete fontIndex;
@@ -20,6 +20,10 @@ ContentHandler::~ContentHandler() {
 }
 
 void ContentHandler::Init(const string& textureIndexPath_, const string& shaderIndexPath_, const string& fontIndexPath_) {
+	if (Get()->textureIndex && Get()->shaderIndex && Get()->fontIndex) {
+		DEBUG_ERROR("ContentHandler has already been initialized");
+		return;
+	}
 	Get()->textureIndex = new FileIndex(textureIndexPath_);
 	Get()->shaderIndex = new FileIndex(shaderIndexPath_);
 	Get()->fontIndex = new FileIndex(fontIndexPath_);
@@ -45,7 +49,7 @@ void ContentHandler::Init(const string& textureIndexPath_, const string& shaderI
 }
 
 void ContentHandler::Clean() {
-	if (Get()->textureIndex == Get()->shaderIndex) {
+	if (!Get()->textureIndex || !Get()->shaderIndex || !Get()->fontIndex) {
 		DEBUG_ERROR("ContentHandler has not been initialized");
 		return;
 	}
@@ -82,7 +86,7 @@ void ContentHandler::Clean() {
 }
 
 void ContentHandler::Exit() {
-	if (Get()->textureIndex == Get()->shaderIndex) {
+	if (!Get()->textureIndex || !Get()->shaderIndex || !Get()->fontIndex) {
 		DEBUG_ERROR("ContentHandler has not been initialized");
 		return;
 	}
@@ -112,7 +116,7 @@ void ContentHandler::Exit() {
 }
 
 Texture ContentHandler::LoadTexture(const string& textureName) {
-	if (Get()->textureIndex == Get()->shaderIndex) {
+	if (!Get()->textureIndex || !Get()->shaderIndex || !Get()->fontIndex) {
 		DEBUG_ERROR("ContentHandler has not been initialized");
 		return Texture();
 	}
@@ -124,7 +128,7 @@ Texture ContentHandler::LoadTexture(const string& textureName) {
 		return textures[textureName];
 
 	// get the path
-	string path = textureIndex->GetPath(textureName);
+	string path = textureIndex->GetJSONPath(textureName);
 
 	// load the texture
 	uvec2 size;
@@ -140,7 +144,7 @@ Texture ContentHandler::LoadTexture(const string& textureName) {
 }
 
 Shader ContentHandler::LoadShader(const string& shaderName) {
-	if (Get()->textureIndex == Get()->shaderIndex) {
+	if (!Get()->textureIndex || !Get()->shaderIndex || !Get()->fontIndex) {
 		DEBUG_ERROR("ContentHandler has not been initialized");
 		return Shader();
 	}
@@ -154,9 +158,22 @@ Shader ContentHandler::LoadShader(const string& shaderName) {
 	GLuint shaderID = -1;
 
 	// get all shader paths
-	json j;
-	shaderIndex->GetJSON(&j, shaderName);
-	if (j.contains("shaders")) {
+	if (!shaderIndex->Contains(shaderName)) return Shader();
+	json j = shaderIndex->GetJSON(shaderName);
+
+	if (j.is_array()) {
+
+		vector<string> shaderPaths;
+		shaderPaths.reserve(4);
+		for (size_t i = 0; i < j.size(); ++i) {
+			if (j[i].is_string()) {
+				shaderPaths.push_back(j[i].get<string>());
+			}
+		}
+
+		shaderID = ::LoadShaderProgram(shaderPaths);
+	}
+	else if (j.contains("shaders")) {
 		json& arr = j["shaders"];
 		if (arr.is_array()) {
 
@@ -190,7 +207,8 @@ Font ContentHandler::LoadFont(const string& fontName, int fontSize) {
 		return fonts[fontName];
 	}
 
-	string path = Get()->fontIndex->GetPath(fontName);
+	if (!Get()->fontIndex->Contains(fontName)) return Font();
+	string path = Get()->fontIndex->GetJSONPath(fontName);
 	FT_Face face = ::LoadFont(path, 0, fontSize);
 	FT_GlyphSlot g = face->glyph;
 
@@ -201,8 +219,6 @@ Font ContentHandler::LoadFont(const string& fontName, int fontSize) {
 			continue;
 		}
 		w += g->bitmap.width;
-		// I (dom) changed this because max is no longer a macro, I removed the header it was from
-		//h = max(h, g->bitmap.rows);
 		if (h < g->bitmap.rows)
 			h = g->bitmap.rows;
 	}
@@ -227,7 +243,7 @@ Font ContentHandler::LoadFont(const string& fontName, int fontSize) {
 		}
 		glTexSubImage2D(GL_TEXTURE_2D, 0, x, 0, g->bitmap.width, g->bitmap.rows, GL_RED, GL_UNSIGNED_BYTE, g->bitmap.buffer);
 
-		Character character{};
+		Character character {};
 		character.ax = g->advance.x >> 6;
 		character.ay = g->advance.y >> 6;
 		character.bw = g->bitmap.width;

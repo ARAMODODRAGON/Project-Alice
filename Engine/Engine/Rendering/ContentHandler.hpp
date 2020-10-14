@@ -3,7 +3,7 @@
 #include "../General/Types.hpp"
 #include "../General/Macros.hpp"
 #include "ContentTypes.hpp"
-#include "../Objects/FileIndex.hpp"
+#include "../General/FileIndex.hpp"
 
 class ContentHandler {
 	PRIVATE_SINGLETON(ContentHandler);

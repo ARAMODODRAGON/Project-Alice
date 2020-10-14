@@ -32,10 +32,10 @@
     <ClCompile Include="Engine\Battle\BattleAlogrithm.cpp" />
     <ClCompile Include="Engine\Rendering\SpriteRenderer.cpp" />
     <ClCompile Include="Engine\Objects\Component.cpp" />
-    <ClCompile Include="Engine\Objects\FileIndex.cpp" />
     <ClCompile Include="Engine\Objects\Object.cpp" />
     <ClCompile Include="Engine\Objects\ObjectFactory.cpp" />
     <ClCompile Include="Engine\Battle\ShootComponent.cpp" />
+    <ClCompile Include="Engine\General\FileIndex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Battle\BTEnemy.hpp" />
@@ -75,11 +75,11 @@
     <ClInclude Include="Engine\Battle\BattleAlogrithm.hpp" />
     <ClInclude Include="Engine\Rendering\SpriteRenderer.hpp" />
     <ClInclude Include="Engine\Objects\Component.hpp" />
-    <ClInclude Include="Engine\Objects\FileIndex.hpp" />
     <ClInclude Include="Engine\Objects\JsonToObjectLoader.hpp" />
     <ClInclude Include="Engine\Objects\Object.hpp" />
     <ClInclude Include="Engine\Objects\ObjectFactory.hpp" />
     <ClInclude Include="Engine\Battle\ShootComponent.hpp" />
+    <ClInclude Include="Engine\General\FileIndex.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Core\Debugger.cpp">
