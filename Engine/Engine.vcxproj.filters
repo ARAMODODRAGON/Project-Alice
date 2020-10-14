@@ -36,6 +36,8 @@
     <ClCompile Include="Engine\Objects\ObjectFactory.cpp" />
     <ClCompile Include="Engine\Battle\ShootComponent.cpp" />
     <ClCompile Include="Engine\General\FileIndex.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\Attack\BTAttackSpell.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\Defence\BTDefenceSpell.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Battle\BTEnemy.hpp" />
@@ -80,6 +82,9 @@
     <ClInclude Include="Engine\Objects\ObjectFactory.hpp" />
     <ClInclude Include="Engine\Battle\ShootComponent.hpp" />
     <ClInclude Include="Engine\General\FileIndex.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\BTSpell.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\Attack\BTAttackSpell.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\Defence\BTDefenceSpell.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Core\Debugger.cpp">
