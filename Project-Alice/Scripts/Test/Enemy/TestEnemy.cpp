@@ -23,24 +23,20 @@ void TestEnemy::Start()
 	sprite->SetPivot(vec2(8.0f));
 	sprite->SetLayer(2);
 	//srand(time(NULL));
-	//moveFromMiddle = new TestPhase;
+	moveFromMiddle = new TestPhase;
 	SetMaxSpeed(50.0f);
 	SetMaxAcceleration(50.0f);
 	//SetDestination(glm::vec2(25, -25));
-	//moveFromMiddle->SetEnemy(this);
-	//AddPhase(moveFromMiddle->get_type());
-	DEBUG_LOG("Enemy Current Pos : " + VTOS(GetPosition()));
-
+	moveFromMiddle->SetEnemy(this);
+   AddPhase(moveFromMiddle->get_type());
 	
-	
-
 
 }
 
 void TestEnemy::Update()
 {
 	BTEnemy::Update();
-	DEBUG_LOG("Enemy Current Pos : " + VTOS(GetPosition()));
+
 }
 
 void TestEnemy::LateUpdate()

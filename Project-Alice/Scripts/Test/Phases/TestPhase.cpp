@@ -18,7 +18,7 @@ void TestPhase::StartPhase()
 	//set phase varaiables to the enemy 
 	SetPhaseName("Move From Middle");
 	SetPosition(GetEnemy()->GetPosition());
-	SetPhaseDestination(glm::vec2(0.0f, 0.0f));
+	//SetPhaseDestination(glm::vec2(10.0f, 10.0f));
 	SetCurrentHealth(GetEnemy()->GetCurrentHealth());
 	SetAcceleration(GetEnemy()->GetMaxAcceleration());
 	SetMaxSpeed(GetEnemy()->GetMaxSpeed());
@@ -28,17 +28,20 @@ void TestPhase::StartPhase()
 
 void TestPhase::UpdatePhase()
 {
+	vec2 velocity = GetEnemy()->GetVelocity();
 
-	//vec2 velocity = GetEnemy()->GetVelocity();
+	BTAResult result = bta::MoveTo(&velocity, GetEnemyPosition(), GetPhaseDestination(), GetEnemyMaxSpeed(), 1.0f);
+	if (result == BTAResult::Arrived) {
 
-	//BTAResult result = bta::FleeFrom(&velocity, GetEnemyPosition(), GetPhaseDestination(), GetEnemyAcceleration(), GetEnemyMaxSpeed());
-	//if (result == BTAResult::Arrived) {
-	//	DEBUG_LOG("Enemy phase : " + GetPhaseName() + "is Complete ");
+		vec2 newdest;
+		newdest.x = (rand() % 400) * 0.1f - 5.0f;
+		newdest.y = (rand() % 400) * 0.1f - 5.0f;
+		SetPhaseDestination(newdest);
 
-	//}
+		DEBUG_LOG("Changed destination to: " + VTOS(newdest));
+	}
 
-	//GetEnemy()->SetVelocity(velocity);
-	//DEBUG_LOG("Updating Test Phase");
+	GetEnemy()->SetVelocity(velocity);
 	DEBUG_LOG("Enemy Current Pos : " + VTOS(GetEnemyPosition()));
 }
 

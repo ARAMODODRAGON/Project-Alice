@@ -6,15 +6,15 @@ RTTR_REGISTRATION{
 	registration::class_<BTEnemy>("BTEnemy")
 		.public_object_constructor
 		.property("movmentSpeed",&BTEnemy::maxSpeed)
-		.property("destination",&BTEnemy::destination)
+		//.property("destination",&BTEnemy::destination)
 		.property("maxAcceleration",&BTEnemy::maxAcceleration)
 		.property("phases",&BTEnemy::phases)
-		.property("currentPhase",&BTEnemy::currentPhase);
+		.property("currentPhase",&BTEnemy::currentPhase)
+		.property("maxHealth",&BTEnemy::maxHealth);
 }
 
-BTEnemy::BTEnemy() : maxSpeed(NULL), destination(vec2()), maxAcceleration(NULL) {
+BTEnemy::BTEnemy() : maxSpeed(0.0f), /*destination(0.0f),*/ maxAcceleration(0.0f),currentHealth(0.0f),currentPhase(0),maxHealth(0.0f) {
 	BattleManager::AddEnemy(this);
-
 
 }
 
@@ -51,9 +51,8 @@ void BTEnemy::Update()
 		}
 
 
-	}
+	}		 
 	
-
 }
 
 void BTEnemy::LateUpdate()

@@ -31,7 +31,7 @@ void PhysicsScene::Exit() {
 }
 
 void PhysicsScene::Step() {
-	const uint32 fps = Game::Get()->GetTimer()->GetFPS();
+	const uint32 fps = Game::Get()->GetTimer()->GetTargetFPS();
 	const float delta = float(1.0 / double(fps));
 	// get pointer
 	auto* inst = Get();

@@ -20,7 +20,7 @@ public:
 	TestPhase* moveFromMiddle;
 
 	TestEnemy();
-	~TestEnemy();
+	virtual ~TestEnemy();
 
 
 	void Start() override;
