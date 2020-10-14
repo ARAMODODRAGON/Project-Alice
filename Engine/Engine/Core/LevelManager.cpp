@@ -203,8 +203,7 @@ void LevelManager::MakeLevel() {
 	}
 
 	// get data
-	json j;
-	index->GetJSON(&j, levelToLoad);
+	json j = index->GetJSON(levelToLoad);
 
 	if (!j.contains("type")) {
 		DEBUG_ERROR("Invalid level file. No type specified");

@@ -5,6 +5,7 @@
 #include <Engine/Physics/PhysicsScene.hpp>
 #include <random>
 #include <chrono>
+#include <iostream>
 
 AliceGame::AliceGame()
 	: Game()
@@ -14,16 +15,20 @@ AliceGame::AliceGame()
 AliceGame::~AliceGame() { }
 
 bool AliceGame::Init() {
+	// read the level
+	string levelToLoad;
+	std::cout << "Enter level that you would like to load:" << std::endl;
+	std::getline(std::cin, levelToLoad);
+
 	if (!Game::Init()) return false;
 
 	// initialize the singletons
-	ContentHandler::Init("Resources/Textures", "Resources/Shaders", "Resources/Fonts");
+	ContentHandler::Init("Resources/Textures/Textures.index", "Resources/Shaders/Shaders.index", "Resources/Fonts/Fonts.index");
 	RenderScene::Init();
-	ObjectFactory::Init("Resources/Objects");
+	ObjectFactory::Init("Resources/Objects/Objects.index");
 	PhysicsScene::Init();
-	LevelManager::Init("Resources/Levels", "battle_test_0");
-
-	BattleManager::Init("Resources/EnemyPhases");
+	BattleManager::Init("Resources/EnemyPhases/EnemyPhases.index");
+	LevelManager::Init("Resources/Levels/Levels.index", levelToLoad);
 
 	return true;
 }
