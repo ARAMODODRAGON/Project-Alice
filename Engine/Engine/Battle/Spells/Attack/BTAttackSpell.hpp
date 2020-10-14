@@ -16,7 +16,7 @@ public:
 	void Update();
 
 	ShootComponent* GetShootComponent();
-	void SetShootComponent(ShootComponent* _component;
+	void SetShootComponent(ShootComponent* _component);
 
 	RTTR_ENABLE(BTSpell) RTTR_REGISTRATION_FRIEND
 };
