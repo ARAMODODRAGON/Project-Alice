@@ -23,6 +23,25 @@ void ContentHandler::Init(const string& textureIndexPath_, const string& shaderI
 	Get()->textureIndex = new FileIndex(textureIndexPath_);
 	Get()->shaderIndex = new FileIndex(shaderIndexPath_);
 	Get()->fontIndex = new FileIndex(fontIndexPath_);
+
+	// preload all textures
+	auto& textureIndex = *(Get()->textureIndex);
+	for (auto& txpair : textureIndex) {
+		LoadTexture(txpair.first);
+	}
+
+	// preload all the shaders
+	auto& shaderIndex = *(Get()->shaderIndex);
+	for (auto& shpair : shaderIndex) {
+		LoadShader(shpair.first);
+	}
+
+	// dont preload all fonts because they can have different sizes
+	//auto& fontIndex = *(Get()->fontIndex);
+	//for (auto& fopair : fontIndex) {
+	//	LoadFont(fopair.first);
+	//}
+
 }
 
 void ContentHandler::Clean() {
@@ -35,24 +54,24 @@ void ContentHandler::Clean() {
 	auto& shaders = Get()->shaders;
 	auto& fonts = Get()->fonts;
 
-	// delete textures
-	for (auto it = textures.begin(); it != textures.end(); ++it) {
-		if (it->second.GetRefCount() == 1) {
-			GLuint id = it->second;
-			glDeleteTextures(1, &id);
-			it = textures.erase(it);
-			// special case
-			if (it == textures.end()) break;
-		}
-	}
+	// dont delete textures until program is done
+	//for (auto it = textures.begin(); it != textures.end(); ++it) {
+	//	if (it->second.GetRefCount() == 1) {
+	//		GLuint id = it->second;
+	//		glDeleteTextures(1, &id);
+	//		it = textures.erase(it);
+	//		// special case
+	//		if (it == textures.end()) break;
+	//	}
+	//}
 
-	// delete shaders
-	for (auto it = shaders.begin(); it != shaders.end(); ++it) {
-		if (it->second.GetRefCount() == 1) {
-			glDeleteProgram(it->second);
-			it = shaders.erase(it);
-		}
-	}
+	// dont delete shaders until program is done
+	//for (auto it = shaders.begin(); it != shaders.end(); ++it) {
+	//	if (it->second.GetRefCount() == 1) {
+	//		glDeleteProgram(it->second);
+	//		it = shaders.erase(it);
+	//	}
+	//}
 
 	// delete fonts
 	for (auto it = fonts.begin(); it != fonts.end(); ++it) {
@@ -79,7 +98,7 @@ void ContentHandler::Exit() {
 	}
 	textures.clear();
 
-	// delete shaders
+	// delete all shaders
 	for (auto& sp : shaders)
 		glDeleteProgram(sp.second);
 	shaders.clear();

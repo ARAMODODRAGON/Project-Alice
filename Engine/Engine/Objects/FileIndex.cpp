@@ -86,3 +86,11 @@ string FileIndex::GetRelativePath(const string& name) {
 		return index[name];
 	return string();
 }
+
+FileIndex::iterator FileIndex::begin() {
+	return index.begin();
+}
+
+FileIndex::iterator FileIndex::end() {
+	return index.end();
+}

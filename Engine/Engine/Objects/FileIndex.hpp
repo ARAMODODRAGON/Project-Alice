@@ -11,6 +11,8 @@ class FileIndex {
 
 public:
 
+	using iterator = map<string, string>::iterator;
+
 	// the folder must contain a file titled "Index.json" that contains all of the objects
 	FileIndex(const string& folder_);
 	~FileIndex();
@@ -21,6 +23,10 @@ public:
 	bool Contains(const string& name);
 	string GetPath(const string& name);
 	string GetRelativePath(const string& name);
+
+	// iteration
+	iterator begin();
+	iterator end();
 
 };
 
