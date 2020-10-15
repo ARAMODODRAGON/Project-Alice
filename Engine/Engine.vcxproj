@@ -19,6 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Battle\Spells\Defence\BTDefenceSpell.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\Attack\BTAttackSpell.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\BTSpell.hpp" />
     <ClInclude Include="Engine\Battle\BattleAlogrithm.hpp" />
     <ClInclude Include="Engine\Battle\BTPhase.hpp" />
     <ClInclude Include="Engine\Battle\BattleLevel.hpp" />
@@ -63,6 +66,8 @@
     <ClInclude Include="Engine\Battle\ShootComponent.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Battle\Spells\Defence\BTDefenceSpell.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\Attack\BTAttackSpell.cpp" />
     <ClCompile Include="Engine\Battle\BattleAlogrithm.cpp" />
     <ClCompile Include="Engine\Battle\BTPhase.cpp" />
     <ClCompile Include="Engine\Battle\BattleLevel.cpp" />
