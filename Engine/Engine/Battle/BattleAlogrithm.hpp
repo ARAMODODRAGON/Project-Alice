@@ -5,6 +5,7 @@
 #include <iostream>
 #include "../General/Math.hpp"
 #include "../Core/Debugger.hpp"
+#include <time.h>
 
 enum class BTAResult {
 	Success,

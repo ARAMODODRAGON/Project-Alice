@@ -8,7 +8,7 @@ class BTSpell {
 
 public:
 	BTSpell() : player(nullptr) {};
-	virtual ~BTSpell() = 0;
+	virtual ~BTSpell() = 0 ;
 
 	BTPlayer* GetPlayer() { return player; }
 	void SetPlayer(BTPlayer* _player) { player = _player; }

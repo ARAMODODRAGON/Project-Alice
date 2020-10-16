@@ -22,13 +22,13 @@ void TestEnemy::Start()
 	sprite->SetTilingSize(vec2(16.0f));
 	sprite->SetPivot(vec2(8.0f));
 	sprite->SetLayer(2);
-	//srand(time(NULL));
+	srand(time(NULL));
 	moveFromMiddle = new TestPhase;
+	moveToMiddle = new TestPhase1;
 	SetMaxSpeed(50.0f);
 	SetMaxAcceleration(50.0f);
-	//SetDestination(glm::vec2(25, -25));
-	moveFromMiddle->SetEnemy(this);
-   AddPhase(moveFromMiddle->get_type());
+    AddPhase(moveFromMiddle->get_type()); 
+    AddPhase(moveToMiddle->get_type());
 	
 
 }
@@ -49,6 +49,6 @@ void TestEnemy::OnDestroy()
 	//delete sprite;
 	//sprite = nullptr;
 
-	delete moveFromMiddle;
-	moveFromMiddle = nullptr;
+	//delete moveFromMiddle;
+	//srmoveFromMiddle = nullptr;
 }

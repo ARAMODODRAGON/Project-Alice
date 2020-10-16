@@ -13,7 +13,7 @@ RTTR_REGISTRATION{
 		.property("maxHealth",&BTEnemy::maxHealth);
 }
 
-BTEnemy::BTEnemy() : maxSpeed(0.0f), /*destination(0.0f),*/ maxAcceleration(0.0f),currentHealth(0.0f),currentPhase(0),maxHealth(0.0f) {
+BTEnemy::BTEnemy() : maxSpeed(0.0f), /*destination(0.0f),*/ maxAcceleration(0.0f),currentHealth(0.0f),currentPhase(-1),maxHealth(0.0f) {
 	BattleManager::AddEnemy(this);
 
 }
@@ -34,25 +34,34 @@ void BTEnemy::Update()
 	if (phases.empty()) {
 		DEBUG_ERROR("There are no phases in the phases Vector");
 	}
+
 	//right now only goes through the phases 0,1,2 etc....
 	//when current phase is greater than the size go back to the begining of the vector 
-	else if (phases[currentPhase]) {
-		if (!phases[currentPhase]->isComplete()) {
+
+	else{
+
+		if (currentPhase == -1) {
+			currentPhase = 0;
 			phases[currentPhase]->StartPhase();
+		}
+
+		if (!phases[currentPhase]->isComplete()) {
+			
 			phases[currentPhase]->UpdatePhase();
 		}
 
-		if (phases[currentPhase]->isComplete() && currentPhase < phases.size() - 1) {
+		if (phases[currentPhase]->isComplete()) {
 			currentPhase += 1;
+
+			if (currentPhase > phases.size() - 1) {
+				currentPhase = 0;
+				phases[currentPhase]->StartPhase();
+				return;
+			}
+
+			phases[currentPhase]->StartPhase();
 		}
-
-		else if (phases[currentPhase]->isComplete() && currentPhase >= phases.size() - 1) {
-			currentPhase = 0;
-		}
-
-
 	}		 
-	
 }
 
 void BTEnemy::LateUpdate()
