@@ -14,7 +14,7 @@ namespace bta {
 
 		float distance = 0;
 		float slowRadius = 4.0f;
-		float targetRadius = 1.5f;
+		float targetRadius = 1.0f;
 		float timeToTarget = 0.1f;
 		float targetSpeed;
 
@@ -66,7 +66,7 @@ namespace bta {
 		if (glm::length(*velocity) > distance) {
 			*velocity = glm::normalize(direction) * distance;
 		}
-		DEBUG_ERROR("distance is: " + VTOS(distance));
+		//DEBUG_ERROR("distance is: " + VTOS(distance));
 		return BTAResult::Moving;
 	}
 
@@ -83,15 +83,15 @@ namespace bta {
 		glm::vec2 offset;
 		direction = startPos_ - destination_;
 
-		float targetRadius = 1.5f;
+		float targetRadius = 1.0f;
 
 		if (NearlyZero(direction,targetRadius)) {
 			//DEBUG_LOG("Checked");
-			srand(time(NULL));
+			 
 			//Get offset of	value from -0.4 to 0.5
 			offset.x = (std::rand() % 10 + 1) * 0.1 - 0.5;
 			offset.y = (std::rand() % 10 + 1) * 0.1 - 0.5;
-			DEBUG_LOG("Offset is: " + VTOS(offset));
+			//DEBUG_LOG("Offset is: " + VTOS(offset));
 			
 			//inital offset to get object moving 
 			*velocity += offset;
