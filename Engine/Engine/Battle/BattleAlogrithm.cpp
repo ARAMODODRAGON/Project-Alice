@@ -89,8 +89,9 @@ namespace bta {
 			//DEBUG_LOG("Checked");
 			 
 			//Get offset of	value from -0.4 to 0.5
-			offset.x = (std::rand() % 10 + 1) * 0.1 - 0.5;
-			offset.y = (std::rand() % 10 + 1) * 0.1 - 0.5;
+			//maybe a bug if both x,y = 0
+			offset.x = glm::linearRand(-0.5f, 0.5f); 
+			offset.y = glm::linearRand(-0.5f, 0.5f);
 			//DEBUG_LOG("Offset is: " + VTOS(offset));
 			
 			//inital offset to get object moving 

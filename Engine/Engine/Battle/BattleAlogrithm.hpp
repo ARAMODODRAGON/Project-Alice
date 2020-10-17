@@ -6,6 +6,7 @@
 #include "../General/Math.hpp"
 #include "../Core/Debugger.hpp"
 #include <time.h>
+#include <glm/gtc/random.hpp>
 
 enum class BTAResult {
 	Success,
