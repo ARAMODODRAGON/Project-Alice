@@ -19,6 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Battle\Spells\Defence\BTDefenceSpell.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\Attack\BTAttackSpell.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\BTSpell.hpp" />
     <ClInclude Include="Engine\Battle\BattleAlogrithm.hpp" />
     <ClInclude Include="Engine\Battle\BTPhase.hpp" />
     <ClInclude Include="Engine\Battle\BattleLevel.hpp" />
@@ -57,13 +60,16 @@
     <ClInclude Include="Engine\Rendering\SpriteRenderer.hpp" />
     <ClInclude Include="Engine\Rendering\UIRenderer.hpp" />
     <ClInclude Include="Engine\Objects\Component.hpp" />
-    <ClInclude Include="Engine\Objects\FileIndex.hpp" />
+    <ClInclude Include="Engine\General\FileIndex.hpp" />
     <ClInclude Include="Engine\Objects\JsonToObjectLoader.hpp" />
     <ClInclude Include="Engine\Objects\Object.hpp" />
     <ClInclude Include="Engine\Objects\ObjectFactory.hpp" />
     <ClInclude Include="Engine\Battle\ShootComponent.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Battle\Spells\BTSpell.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\Defence\BTDefenceSpell.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\Attack\BTAttackSpell.cpp" />
     <ClCompile Include="Engine\Battle\BattleAlogrithm.cpp" />
     <ClCompile Include="Engine\Battle\BTPhase.cpp" />
     <ClCompile Include="Engine\Battle\BattleLevel.cpp" />
@@ -96,7 +102,7 @@
     <ClCompile Include="Engine\Rendering\SpriteRenderer.cpp" />
     <ClCompile Include="Engine\Rendering\UIRenderer.cpp" />
     <ClCompile Include="Engine\Objects\Component.cpp" />
-    <ClCompile Include="Engine\Objects\FileIndex.cpp" />
+    <ClCompile Include="Engine\General\FileIndex.cpp" />
     <ClCompile Include="Engine\Objects\Object.cpp" />
     <ClCompile Include="Engine\Objects\ObjectFactory.cpp" />
     <ClCompile Include="Engine\Battle\ShootComponent.cpp" />
@@ -155,7 +161,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\GameDev\SDL\include;C:\GameDev\OpenGL\include;C:\GameDev\glm-0.9.9.6;C:\GameDev\nlohmann-json\include;C:\GameDev\RTTR\Include;C:\GameDev\FreeType\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\GameDev\SDL\include;C:\GameDev\OpenGL\include;C:\GameDev\nlohmann-json\include;C:\GameDev\RTTR\Include;C:\GameDev\FreeType\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\GameDev\FreeType\win32;C:\GameDev\RTTR\Libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -165,7 +171,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\GameDev\SDL\include;C:\GameDev\OpenGL\include;C:\GameDev\glm-0.9.9.6;C:\GameDev\nlohmann-json\include;C:\GameDev\RTTR\Include;C:\GameDev\FreeType\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\GameDev\SDL\include;C:\GameDev\OpenGL\include;C:\GameDev\nlohmann-json\include;C:\GameDev\RTTR\Include;C:\GameDev\FreeType\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\GameDev\FreeType\win32;C:\GameDev\RTTR\Libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -181,7 +187,8 @@
       <ConformanceMode>false</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <UseFullPaths>false</UseFullPaths>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

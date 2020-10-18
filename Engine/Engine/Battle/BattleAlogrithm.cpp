@@ -9,8 +9,8 @@ namespace bta {
 			return BTAResult::Arrived;
 		}
 		// points from the current position to the destination
-		glm::vec2 direction;
-		glm::vec2 targetVelocity;
+		glm::vec2 direction(0.0f);
+		glm::vec2 targetVelocity(0.0f);
 
 		float distance = 0;
 		float slowRadius = 4.0f;
@@ -32,7 +32,7 @@ namespace bta {
 			maxAcceleration_ = 0.0f;
 			*velocity = vec2(0.0f);
 			return BTAResult::Arrived;
-		}
+		}	   
 
 		else if (distance > slowRadius) {
 			targetSpeed = maxSpeed_;
@@ -66,7 +66,49 @@ namespace bta {
 		if (glm::length(*velocity) > distance) {
 			*velocity = glm::normalize(direction) * distance;
 		}
+		//DEBUG_ERROR("distance is: " + VTOS(distance));
+		return BTAResult::Moving;
+	}
 
+	BTAResult FleeFrom(vec2* velocity, const vec2& startPos_, const vec2& destination_, float maxAcceleration_, float maxSpeed_)
+	{
+		// check 
+		if (velocity == nullptr) {
+			DEBUG_ERROR("Velocity was nullptr, could not calculate new velocity");
+			return BTAResult::Arrived;
+		}
+
+		// points from the current position to the destination
+		glm::vec2 direction;
+		glm::vec2 offset;
+		direction = startPos_ - destination_;
+
+		float targetRadius = 1.0f;
+
+		if (NearlyZero(direction,targetRadius)) {
+			//DEBUG_LOG("Checked");
+			 
+			//Get offset of	value from -0.4 to 0.5
+			//maybe a bug if both x,y = 0
+			offset.x = glm::linearRand(-0.5f, 0.5f); 
+			offset.y = glm::linearRand(-0.5f, 0.5f);
+			//DEBUG_LOG("Offset is: " + VTOS(offset));
+			
+			//inital offset to get object moving 
+			*velocity += offset;
+		}
+
+		else {
+			*velocity = glm::normalize(direction); // only normalize direction if its greater than 0
+		}
+
+		*velocity *= maxAcceleration_;
+
+		if (glm::length(*velocity) > maxAcceleration_) {
+			*velocity = glm::normalize(*velocity);
+			*velocity *= maxAcceleration_;
+
+		}
 		return BTAResult::Moving;
 	}
 

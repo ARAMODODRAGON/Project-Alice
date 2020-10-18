@@ -28,7 +28,8 @@ SpriteRenderer::SpriteRenderer()
 	, offset(0.0f)
 	, color(1.0f) // initialize to {1, 1, 1, 1} (white)
 	, rotation(0.0f)
-	, layer(0.0f) {
+	, layer(0.0f)
+	,tilingIndex(0){
 
 	// setup the vertex & indicies arrays
 	verticies[0] = Vertex(vec2(0.0f, 0.0f), vec2(0.0f, 0.0f)); // bottom left
@@ -89,6 +90,7 @@ void SpriteRenderer::LoadShader(const string& shaderName) {
 	modelLoc = glGetUniformLocation(shader, "modelMat");
 	colorLoc = glGetUniformLocation(shader, "color");
 	//DEBUG_LOG("View Location is: " + VTOS(viewLoc));
+
 }
 
 void SpriteRenderer::UpdateVertexArray() {

@@ -105,9 +105,9 @@ Object* ObjectFactory::Make(const string& objectName, const json& instanceData) 
 		return nullptr;
 	}
 	// load the data in and confirm that the name matches a type
-	json j;
 	// if it fails return null
-	if (!Get()->index->GetJSON(&j, objectName)) return nullptr;
+	if (!Get()->index->Contains(objectName)) return nullptr;
+	json j = Get()->index->GetJSON(objectName);
 	string name = j["type"].get<string>();
 	type instTy = type::get_by_name(name.c_str());
 	if (!instTy.is_valid()) {

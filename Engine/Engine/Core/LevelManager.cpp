@@ -203,8 +203,7 @@ void LevelManager::MakeLevel() {
 	}
 
 	// get data
-	json j;
-	index->GetJSON(&j, levelToLoad);
+	json j = index->GetJSON(levelToLoad);
 
 	if (!j.contains("type")) {
 		DEBUG_ERROR("Invalid level file. No type specified");
@@ -228,6 +227,9 @@ void LevelManager::MakeLevel() {
 		return;
 	}
 
+	// set the level
+	currentLevel = level;
+
 	// if everything is successful then load the level data
 	if (j.contains("data")) {
 		Game::Get()->LevelLoad(level, j["data"]);
@@ -235,8 +237,7 @@ void LevelManager::MakeLevel() {
 		DEBUG_WARNING("No data in level file");
 	}
 
-	// finally init and set
-	currentLevel = level;
+	// finally init 
 	currentLevel->Init();
 	DEBUG_LOG("Loaded level \"" + levelToLoad + "\" successfully!");
 }

@@ -5,6 +5,7 @@
             { "type": "BattleCamera" },
             { "type": "TestBattlePlayer" },
             { "type": "TestEnemy" }
+        
         ]
     }
 }

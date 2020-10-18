@@ -4,7 +4,7 @@
 #include "../General/Types.hpp"
 #include "../Core/Debugger.hpp"
 #include "../Rendering/Rect.hpp"
-#include "../Objects/FileIndex.hpp"
+#include "../General/FileIndex.hpp"
 
 
 // forward declare

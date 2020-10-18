@@ -1,6 +1,6 @@
 #ifndef _CORE_LEVEL_MANAGER_HPP
 #define _CORE_LEVEL_MANAGER_HPP
-#include "../Objects/FileIndex.hpp"
+#include "../General/FileIndex.hpp"
 #include "../Rendering/ContentHandler.hpp"
 #include "../General/Macros.hpp"
 
