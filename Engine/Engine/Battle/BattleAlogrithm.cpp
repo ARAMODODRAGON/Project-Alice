@@ -9,8 +9,8 @@ namespace bta {
 			return BTAResult::Arrived;
 		}
 		// points from the current position to the destination
-		glm::vec2 direction;
-		glm::vec2 targetVelocity;
+		glm::vec2 direction(0.0f);
+		glm::vec2 targetVelocity(0.0f);
 
 		float distance = 0;
 		float slowRadius = 4.0f;
@@ -32,7 +32,7 @@ namespace bta {
 			maxAcceleration_ = 0.0f;
 			*velocity = vec2(0.0f);
 			return BTAResult::Arrived;
-		}
+		}	   
 
 		else if (distance > slowRadius) {
 			targetSpeed = maxSpeed_;
@@ -66,7 +66,7 @@ namespace bta {
 		if (glm::length(*velocity) > distance) {
 			*velocity = glm::normalize(direction) * distance;
 		}
-
+		//DEBUG_ERROR("distance is: " + VTOS(distance));
 		return BTAResult::Moving;
 	}
 
@@ -77,65 +77,38 @@ namespace bta {
 			DEBUG_ERROR("Velocity was nullptr, could not calculate new velocity");
 			return BTAResult::Arrived;
 		}
+
 		// points from the current position to the destination
 		glm::vec2 direction;
-		glm::vec2 targetVelocity;
-
-		float distance = 0;
-		float slowRadius = 4.0f;
-		float targetRadius = 1.0f;
-		float timeToTarget = 0.1f;
-		float targetSpeed;
-
-
+		glm::vec2 offset;
 		direction = startPos_ - destination_;
 
-		distance = glm::length(direction);
-		*velocity = glm::normalize(direction);
+		float targetRadius = 1.0f;
 
-		*velocity *= maxAcceleration_;
-
-
-		if (NearlyZero(distance, targetRadius)) {
-			distance = 0;
-			maxAcceleration_ = 0.0f;
-			*velocity = vec2(0.0f);
-			return BTAResult::Arrived;
-		}
-
-		else if (distance > slowRadius) {
-			targetSpeed = maxSpeed_;
-			/*targetVelocity = direction;
-			targetVelocity = glm::normalize(targetVelocity);
-			targetVelocity *= targetSpeed;
-
-			velocity = targetVelocity - direction;
-			velocity /= timeToTarget;*/
+		if (NearlyZero(direction,targetRadius)) {
+			//DEBUG_LOG("Checked");
+			 
+			//Get offset of	value from -0.4 to 0.5
+			//maybe a bug if both x,y = 0
+			offset.x = glm::linearRand(-0.5f, 0.5f); 
+			offset.y = glm::linearRand(-0.5f, 0.5f);
+			//DEBUG_LOG("Offset is: " + VTOS(offset));
+			
+			//inital offset to get object moving 
+			*velocity += offset;
 		}
 
 		else {
-			targetSpeed = maxSpeed_ * (distance / slowRadius);
-			targetVelocity = direction;
-			targetVelocity = glm::normalize(targetVelocity);
-			targetVelocity *= targetSpeed;
-
-			*velocity = targetVelocity - direction;
-			*velocity /= timeToTarget;
-
+			*velocity = glm::normalize(direction); // only normalize direction if its greater than 0
 		}
 
+		*velocity *= maxAcceleration_;
 
 		if (glm::length(*velocity) > maxAcceleration_) {
 			*velocity = glm::normalize(*velocity);
 			*velocity *= maxAcceleration_;
 
 		}
-
-		// this makes sure we dont overshoot by checking if our velocity is more than the remaining distance
-		if (glm::length(*velocity) > distance) {
-			*velocity = glm::normalize(direction) * distance;
-		}
-
 		return BTAResult::Moving;
 	}
 

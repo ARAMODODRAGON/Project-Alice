@@ -5,6 +5,9 @@
 
 class TestPhase : public BTPhase
 {
+	int32 timer;
+	int32 timerEnd;
+	BTAResult result;
 public:
 	TestPhase();
 	virtual ~TestPhase();

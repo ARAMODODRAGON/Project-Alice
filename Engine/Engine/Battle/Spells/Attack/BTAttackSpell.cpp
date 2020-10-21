@@ -14,7 +14,7 @@ BTAttackSpell::BTAttackSpell(rttr::type _type, int _count)
 
 BTAttackSpell::~BTAttackSpell() {
 	shootComponent->OnDestroy();
-	delete shootComponent, shootComponent = nullptr;
+	//delete shootComponent, shootComponent = nullptr;
 }
 
 void BTAttackSpell::Update() {

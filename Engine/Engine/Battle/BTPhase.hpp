@@ -6,6 +6,7 @@
 #include <string>
 #include <glm/glm.hpp>
 #include "BTEnemy.hpp"
+#include <chrono>
 
 
 
@@ -30,9 +31,10 @@ class BTPhase
 	glm::vec2 position;
 
 	BTEnemy* enemy;
+	
+	
 
 public:
-
 	BTPhase();
 	virtual ~BTPhase() = 0;
 

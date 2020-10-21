@@ -11,7 +11,7 @@ class BTAttackSpell : public BTSpell {
 	ShootComponent* shootComponent;
 public:
 	BTAttackSpell(rttr::type _type, int _count);
-	~BTAttackSpell() override;
+	virtual ~BTAttackSpell() ;
 
 	void Update();
 

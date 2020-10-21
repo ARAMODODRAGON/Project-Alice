@@ -16,4 +16,5 @@ void TestBattlePlayer::Start() {
 	SetMaxHitpoints(20, true);
 	SetSprite("", vec2(8.0f, 8.0f), 2);
 	SetCollider(8.0f);
+	DEBUG_LOG("Player Pos is : " + VTOS(GetPosition()));
 }

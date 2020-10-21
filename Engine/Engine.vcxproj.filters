@@ -38,6 +38,7 @@
     <ClCompile Include="Engine\General\FileIndex.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Attack\BTAttackSpell.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Defence\BTDefenceSpell.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\BTSpell.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Battle\BTEnemy.hpp" />

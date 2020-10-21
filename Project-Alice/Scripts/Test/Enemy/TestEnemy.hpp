@@ -3,6 +3,7 @@
 
 #include "Engine/Battle/BTEnemy.hpp"
 #include "../Phases/TestPhase.hpp"
+#include "../Phases/TestPhase1.hpp"
 #include "Engine/Common.hpp"
 #include <iostream>
 #include <cstdlib>
@@ -18,9 +19,10 @@ public:
 
 	SpriteRenderer* sprite;
 	TestPhase* moveFromMiddle;
+	TestPhase1* moveToMiddle;
 
 	TestEnemy();
-	~TestEnemy();
+	virtual ~TestEnemy();
 
 
 	void Start() override;
