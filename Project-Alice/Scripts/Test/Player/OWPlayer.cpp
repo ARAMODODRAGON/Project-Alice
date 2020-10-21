@@ -36,6 +36,10 @@ void OWPlayer::Start() {
 	coll->SetRadius(4.0f);
 	ui = AddComponent<UIRenderer>();
 
+	bangBang = AddComponent<ShootComponent>();
+	bangBang->Allocate(type::get<BTBullet>(), 8);
+	bangBang->Allocate(type::get<BTBullet>(), 8);
+
 	// create another object
 	Object* o = Make();
 	SpriteRenderer* s = o->AddComponent<SpriteRenderer>();

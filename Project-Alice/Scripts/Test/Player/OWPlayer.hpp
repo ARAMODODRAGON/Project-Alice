@@ -2,6 +2,7 @@
 #define PLAYER_OWPLAYER_HPP
 #include <Engine/Common.hpp>
 #include <Engine/Rendering/UIRenderer.hpp>
+#include <Engine/Battle/ShootComponent.hpp>
 
 class OWPlayer : public Object {
 
@@ -13,6 +14,7 @@ class OWPlayer : public Object {
 	};
 
 	SpriteRenderer* sprite;
+	ShootComponent* bangBang;
 	Camera* cam;
 	CircleCollider* coll;
 	UIRenderer* ui;

@@ -30,11 +30,12 @@ void ShootComponent::Allocate(rttr::type _object, int _total) {
 	}
 
 	// Instantiate all the required bullets and deactivate them
-	vector<BTBullet*> bullets;
+	vector<BTBullet*> bullets(_total);
 	for (int i = 0; i < _total; i++) {
 		bullets[i] = new BTBullet();
 		bullets[i]->SetIsActive(false);
 	}
+	DEBUG_LOG(VTOS(_total) + " bullets of type BTBullet have been allocated.");
 
 	// Finally, add the set of bullets to the main bullet set and return true
 	BulletSet newSet(bullets, _object);
