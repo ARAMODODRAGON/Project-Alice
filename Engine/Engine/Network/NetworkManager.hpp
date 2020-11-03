@@ -2,35 +2,46 @@
 #define NETWORK_NETWORK_MANAGER_HPP
 #include "../General/Macros.hpp"
 #include "../General/Types.hpp"
-//#include <Windows.h>
-#include <WinSock2.h>
-#include <WS2tcpip.h>
+#include <future>
 
-// is this a client / server 
-enum class NSystemType : uint8 {
-	None,
-	Client,
-	Server
+struct LobbyData {
+	// if this currently running program is the owner of the lobby
+	bool thisIsOwner;
+	// the lobby ID
+	uint32 ID;
+};
+
+enum class NetStatus : uint8 {
+	Failed,
+	Connected,
+	Disconnected,
+	Loading
 };
 
 class NetworkManager {
-	PRIVATE_SINGLETON(NetworkManager);
-
-	NetworkManager();
-	~NetworkManager();
-
-	// server will listen to this port
-	// client will try to connect to this port
-	string targetPort;
-
 public:
 
-	// initializes the network manager
-	static void Init(const string& targetPort_);
+	// initializes 
+	static void Init();
 
-	// deinits the manager
+	// cleans up
 	static void Exit();
 
+	// starts a lobby
+	static void CreateLobby();
+
+	// joins a lobby with a given code
+	static void JoinLobby(const uint32 lobbyID);
+
+	// exits the lobby
+	// closes it if this is the owner
+	static void ExitLobby();
+
+	// gets the given status of of the network manager
+	static NetStatus GetStatus();
+
+	// gets the lobby data if connected to a lobby
+	static const LobbyData* GetLobby();
 
 };
 
