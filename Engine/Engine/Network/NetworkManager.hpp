@@ -2,7 +2,6 @@
 #define NETWORK_NETWORK_MANAGER_HPP
 #include "../General/Macros.hpp"
 #include "../General/Types.hpp"
-#include <future>
 
 struct LobbyData {
 	// if this currently running program is the owner of the lobby
@@ -15,7 +14,9 @@ enum class NetStatus : uint8 {
 	Failed,
 	Connected,
 	Disconnected,
-	Loading
+	Loading,
+	CreatingLobby,
+	JoiningLobby
 };
 
 class NetworkManager {
