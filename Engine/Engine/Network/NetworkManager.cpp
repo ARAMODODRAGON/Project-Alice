@@ -7,6 +7,7 @@
 #include <atomic>
 #include "../General/Serialization.hpp"
 
+// prevents linkage
 namespace {
 
 	// contains data about this WSA instance
@@ -14,6 +15,7 @@ namespace {
 
 	std::atomic<NetStatus> status = NetStatus::Disconnected;
 	LobbyData* lobby;
+	uint32 userID;
 
 	// socket connection to server 
 	SOCKET connectSocket = INVALID_SOCKET;
@@ -103,7 +105,7 @@ void ConnectToServer(const uint32 lobbyID = -1) {
 		json j = { { "type", "create lobby" } };
 
 		// get as string to send to server
-		string s = j.get<string>();
+		string s = j.dump(-1);
 
 		// try to send data over
 		if (send(connectSocket, s.c_str(), s.size() + 1, 0) == SOCKET_ERROR) {
@@ -114,9 +116,11 @@ void ConnectToServer(const uint32 lobbyID = -1) {
 		}
 
 		// wait for server response
-		uint32 bytesrecv = recv(connectSocket, buffer, bufferLen, 0);
+		int32 bytesrecv = recv(connectSocket, buffer, bufferLen, 0);
 		if (bytesrecv == SOCKET_ERROR) {
 			DEBUG_ERROR("Failed to receive data from server!");
+			closesocket(connectSocket);
+			status = NetStatus::Failed;
 			return;
 		}
 
@@ -125,27 +129,24 @@ void ConnectToServer(const uint32 lobbyID = -1) {
 
 		// read data about the created lobby
 
-		// should be structured:
-		/*
-		"type": "lobby created",
-		"lobbydat": {
-			"ID": some number
-		}
-		*/
+		// should look like
+		/* "type": "lobby created", "ID": number, "userID": number */
 
-		if (j["type"].is_string() || j["type"].get<string>() != "lobby created") {
+		if (!j["type"].is_string() || j["type"].get<string>() != "lobby created") {
 			DEBUG_LOG("Got incorrect response from server? response: " + j.get<string>());
+			closesocket(connectSocket);
+			status = NetStatus::Failed;
 			return;
 		}
 
+		// store the userID
+		userID = j["userID"];
+
 		// create and store the lobby data
 		LobbyData* data = new LobbyData();
-		data->ID = j["lobbydat"]["ID"].get<uint32>();
+		data->ID = j["ID"];
 		data->thisIsOwner = true;
 		lobby = data;
-		
-		// update status
-		status = NetStatus::Connected;
 
 	}
 	// try to join a lobby with the given ID
@@ -153,8 +154,74 @@ void ConnectToServer(const uint32 lobbyID = -1) {
 
 		status = NetStatus::JoiningLobby;
 
+		// create request to join lobby with given ID
+		json j = { 
+			{ "type", "join lobby" }, 
+			{ "ID", lobbyID } 
+		};
+		string s = j.dump(-1); 
+
+		// send to server
+		if (send(connectSocket, s.c_str(), s.size() + 1, 0) == SOCKET_ERROR) {
+			DEBUG_ERROR("Failed to create lobby");
+			closesocket(connectSocket);
+			status = NetStatus::Failed;
+			return;
+		}
+
+		// wait for server response
+		int32 bytesrecv = recv(connectSocket, buffer, bufferLen, 0);
+		if (bytesrecv == SOCKET_ERROR) {
+			DEBUG_ERROR("Failed to receive data from server!");
+			closesocket(connectSocket);
+			status = NetStatus::Failed;
+			return;
+		}
+
+		// read back into json object
+		j = buffer;
+
+		// should look like
+		/* "type": "joined lobby", "ID": number, "userID": number */
+		// or
+		/* "type": "failed to join lobby", "info": message */
+
+		if (!j["type"].is_string()) {
+			DEBUG_LOG("Got incorrect response from server? response: " + j.get<string>());
+			closesocket(connectSocket);
+			status = NetStatus::Failed;
+			return;
+		}
+
+		s = j["type"].get<string>();
+
+		// joined lobby
+		if (s == "joined lobby") {
+			// store lobby data
+			LobbyData* data = new LobbyData();
+			data->ID = j["ID"].get<uint32>();
+			data->thisIsOwner = false;
+			lobby = data;
+
+			// store the userID
+			userID = j["userID"];
+		}
+		// failed to join
+		else if (s == "failed to join lobby") {
+			DEBUG_LOG("Cannot connect to lobby with given ID");
+			closesocket(connectSocket);
+			status = NetStatus::Disconnected;
+			return;
+		}
+
 	}
 
+	// clean up
+	closesocket(connectSocket);
+	connectSocket = INVALID_SOCKET;
+
+	// we are connnected if the function didnt exit early
+	status = NetStatus::Connected;
 }
 
 void NetworkManager::CreateLobby() {
@@ -178,7 +245,7 @@ void NetworkManager::JoinLobby(const uint32 lobbyID) {
 }
 
 void NetworkManager::ExitLobby() {
-
+	DEBUG_ERROR("Implement ExitLobby");
 }
 
 NetStatus NetworkManager::GetStatus() {
@@ -186,5 +253,5 @@ NetStatus NetworkManager::GetStatus() {
 }
 
 const LobbyData* NetworkManager::GetLobby() {
-	return nullptr;
+	return lobby;
 }
