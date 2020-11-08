@@ -70,6 +70,7 @@
     <ClInclude Include="Engine\Battle\Spells\Attack\WindSlash.hpp" />
     <ClInclude Include="Engine\Battle\Spells\Attack\HomingLasers.hpp" />
     <ClInclude Include="Engine\Battle\Spells\Defence\Healing.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\SpellList.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Battle\Spells\Defence\AbsoluteReflection.cpp" />
@@ -116,6 +117,7 @@
     <ClCompile Include="Engine\Battle\Spells\Attack\WindSlash.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Attack\HomingLasers.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Defence\Healing.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\SpellList.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

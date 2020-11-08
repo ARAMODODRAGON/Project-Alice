@@ -2,7 +2,6 @@
 #define SPELL_LIST_HPP
 
 class SpellList {
-
 public:
 	
 };

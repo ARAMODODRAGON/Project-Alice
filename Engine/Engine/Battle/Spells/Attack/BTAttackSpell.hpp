@@ -3,6 +3,7 @@
 
 #include "../BTSpell.hpp"
 #include "../../ShootComponent.hpp"
+#include "../../../Input/Button.hpp"
 
 class BTAttackSpell : public BTSpell {
 	rttr::type attackType;
@@ -11,9 +12,9 @@ class BTAttackSpell : public BTSpell {
 	ShootComponent* shootComponent;
 public:
 	BTAttackSpell(rttr::type _type, int _count);
-	virtual ~BTAttackSpell();
+	virtual ~BTAttackSpell() { shootComponent->OnDestroy(); }
 
-	void Update();
+	virtual void Update(Button _shootButton) = 0;
 
 	ShootComponent* GetShootComponent();
 	void SetShootComponent(ShootComponent* _component);

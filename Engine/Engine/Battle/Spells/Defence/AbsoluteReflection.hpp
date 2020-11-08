@@ -4,6 +4,8 @@
 #include "BTDefenceSpell.hpp"
 
 class AbsoluteReflection : public BTDefenceSpell {
+public:
+	void Use() override;
 };
 
 #endif

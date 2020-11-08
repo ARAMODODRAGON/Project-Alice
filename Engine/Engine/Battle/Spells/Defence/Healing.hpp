@@ -4,6 +4,8 @@
 #include "BTDefenceSpell.hpp"
 
 class Healing : public BTDefenceSpell {
+public:
+	void Use() override;
 };
 
 #endif

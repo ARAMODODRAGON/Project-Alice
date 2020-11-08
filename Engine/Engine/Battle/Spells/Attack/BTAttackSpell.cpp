@@ -12,15 +12,6 @@ BTAttackSpell::BTAttackSpell(rttr::type _type, int _count)
 	, shootComponent(nullptr)
 {}
 
-BTAttackSpell::~BTAttackSpell() {
-	shootComponent->OnDestroy();
-	//delete shootComponent, shootComponent = nullptr;
-}
-
-void BTAttackSpell::Update() {
-	// TODO -- Add shooty shooty bang bang here
-}
-
 ShootComponent* BTAttackSpell::GetShootComponent() {
 	return shootComponent;
 }

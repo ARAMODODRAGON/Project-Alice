@@ -4,6 +4,8 @@
 #include "BTAttackSpell.hpp"
 
 class WindSlash : public BTAttackSpell {
+public:
+	void Update(Button _shootButton) override;
 };
 
 #endif

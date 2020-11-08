@@ -45,6 +45,7 @@
     <ClCompile Include="Engine\Battle\Spells\Defence\AbsoluteBarrier.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Defence\AbsoluteReflection.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Defence\Healing.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\SpellList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Battle\BTEnemy.hpp" />
@@ -98,6 +99,7 @@
     <ClInclude Include="Engine\Battle\Spells\Defence\AbsoluteBarrier.hpp" />
     <ClInclude Include="Engine\Battle\Spells\Defence\AbsoluteReflection.hpp" />
     <ClInclude Include="Engine\Battle\Spells\Defence\Healing.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\SpellList.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Core\Debugger.cpp">
