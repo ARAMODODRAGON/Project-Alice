@@ -39,6 +39,12 @@
     <ClCompile Include="Engine\Battle\Spells\Attack\BTAttackSpell.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Defence\BTDefenceSpell.cpp" />
     <ClCompile Include="Engine\Battle\Spells\BTSpell.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\Attack\Boomerang.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\Attack\WindSlash.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\Attack\HomingLasers.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\Defence\AbsoluteBarrier.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\Defence\AbsoluteReflection.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\Defence\Healing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Battle\BTEnemy.hpp" />
@@ -86,6 +92,12 @@
     <ClInclude Include="Engine\Battle\Spells\BTSpell.hpp" />
     <ClInclude Include="Engine\Battle\Spells\Attack\BTAttackSpell.hpp" />
     <ClInclude Include="Engine\Battle\Spells\Defence\BTDefenceSpell.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\Attack\Boomerang.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\Attack\WindSlash.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\Attack\HomingLasers.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\Defence\AbsoluteBarrier.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\Defence\AbsoluteReflection.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\Defence\Healing.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Core\Debugger.cpp">
