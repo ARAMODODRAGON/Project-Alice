@@ -17,4 +17,7 @@ void TestBattlePlayer::Start() {
 	SetSprite("", vec2(8.0f, 8.0f), 2);
 	SetCollider(8.0f);
 	DEBUG_LOG("Player Pos is : " + VTOS(GetPosition()));
+
+	// FOR TESTING //
+	SetBattleSpells({ HOMING_LASERS, BOOMERANG, WIND_SLASH }, HEALING);
 }

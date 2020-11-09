@@ -39,21 +39,21 @@ bool AliceGame::Init() {
 	SpellList::InitSpellData("Resources/Spells/Spells.json");
 	SpellInventory::InitData("");
 
-	SpellInventory::AddSpell("Boomerang");
-	SpellInventory::AddSpell("Wind Slash");
-	SpellInventory::AddSpell("Homing Lasers");
-	SpellInventory::AddSpell("Absolute Barrier");
-	SpellInventory::AddSpell("Absolute Reflection");
-	SpellInventory::AddSpell("Healing");
+	SpellInventory::AddSpell(BOOMERANG);
+	SpellInventory::AddSpell(WIND_SLASH);
+	SpellInventory::AddSpell(HOMING_LASERS);
+	SpellInventory::AddSpell(ABSOLUTE_BARRIER);
+	SpellInventory::AddSpell(ABSOLUTE_REFLECTION);
+	SpellInventory::AddSpell(HEALING);
 
 	DEBUG_LOG("No. of Attack Spells: " + VTOS(SpellInventory::GetSpellCount(SpellType::Attack)));
 	DEBUG_LOG("No. of Defence Spells: " + VTOS(SpellInventory::GetSpellCount(SpellType::Defence)));
 
-	SpellInventory::EquipAtkSpell("Boomerang", 0);
-	SpellInventory::EquipAtkSpell("Wind Slash", 1);
-	SpellInventory::EquipAtkSpell("Wind Slash", 2);
+	SpellInventory::EquipAtkSpell(BOOMERANG, 0);
+	SpellInventory::EquipAtkSpell(WIND_SLASH, 1);
+	SpellInventory::EquipAtkSpell(WIND_SLASH, 2);
 
-	SpellInventory::EquipDefSpell("Absolute Barrier");
+	SpellInventory::EquipDefSpell(ABSOLUTE_BARRIER);
 
 	for (uint32 i = 0; i < MAX_EQUIPPED_SPELLS; i++) {
 		DEBUG_LOG("Atk Skill Slot " + VTOS(i + 1) + ": " + VTOS(SpellInventory::GetEquippedAtkSpell(i)));

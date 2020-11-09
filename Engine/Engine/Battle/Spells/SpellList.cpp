@@ -15,8 +15,8 @@ void SpellList::InitSpellData(const string& _filePath) {
 	stream >> file;
 	stream.close();
 	// Loading in attack spell data
-	if (file.contains("Attack Spells") && file["Attack Spells"].is_array()) {
-		json& attacks = file["Attack Spells"];
+	if (file.contains(ATTACK_SPELLS) && file[ATTACK_SPELLS].is_array()) {
+		json& attacks = file[ATTACK_SPELLS];
 		for (uint32 i = 0; i < attacks.size(); i++) {
 			json& spell = attacks[i];
 			Spell spellData{};
@@ -28,8 +28,8 @@ void SpellList::InitSpellData(const string& _filePath) {
 		}
 	}
 	// Loading in defence spell data
-	if (file.contains("Defence Spells") && file["Defence Spells"].is_array()) {
-		json& defences = file["Defence Spells"];
+	if (file.contains(DEFENCE_SPELLS) && file[DEFENCE_SPELLS].is_array()) {
+		json& defences = file[DEFENCE_SPELLS];
 		for (uint32 i = 0; i < defences.size(); i++) {
 			json& spell = defences[i];
 			Spell spellData{};

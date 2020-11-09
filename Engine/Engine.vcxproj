@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Battle\Spells\SpellMacros.hpp" />
     <ClInclude Include="Engine\Cutscene\Actions\CMoveAction.hpp" />
     <ClInclude Include="Engine\Cutscene\CAction.hpp" />
     <ClInclude Include="Engine\Cutscene\CActor.hpp" />

@@ -2,11 +2,8 @@
 #define SPELL_LIST_HPP
 
 #include <fstream>
+#include "SpellMacros.hpp"
 #include "../../Common.hpp"
-
-#define MAX_EQUIPPED_SPELLS			3
-#define	NAME						"Name"
-#define INFO						"Info"
 
 enum SpellType {
 	NoSpell,

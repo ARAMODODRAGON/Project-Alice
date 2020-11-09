@@ -5,6 +5,9 @@
 
 class BTAbsoluteReflection : public BTDefenceSpell {
 public:
+	BTAbsoluteReflection();
+	~BTAbsoluteReflection();
+
 	void Use() override;
 
 	RTTR_ENABLE(BTDefenceSpell) RTTR_REGISTRATION_FRIEND

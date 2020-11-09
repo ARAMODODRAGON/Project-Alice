@@ -1,6 +1,7 @@
 #ifndef BATTLE_SPELL_HPP
 #define BATTLE_SPELL_HPP
 
+#include "SpellMacros.hpp"
 #include "../BTPlayer.hpp"
 
 class BTSpell {

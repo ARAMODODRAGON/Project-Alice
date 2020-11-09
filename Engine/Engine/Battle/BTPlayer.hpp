@@ -4,7 +4,8 @@
 #include "Spells/SpellList.hpp"
 #include "BattleManager.hpp"
 
-class BTSpell;
+class BTAttackSpell;
+class BTDefenceSpell;
 class BTPlayer : public Object {
 	float moveSpeed;
 
@@ -14,8 +15,9 @@ class BTPlayer : public Object {
 	CircleCollider* collider;
 	SpriteRenderer* sprite;
 
-	array<BTSpell*, MAX_EQUIPPED_SPELLS> spells;
-	uint32 curSpell;
+	BTDefenceSpell* defenceSpell;
+	array<BTAttackSpell*, MAX_EQUIPPED_SPELLS> atkSpells;
+	uint32 curAtkSpell;
 public:
 	BTPlayer();
 	virtual ~BTPlayer() = 0;
@@ -41,7 +43,7 @@ public:
 	void SetSprite(const string& _texture, vec2 _pivot, int _layer);
 	void SetCollider(float _radius);
 
-	void SetBattleSkills(array<string, MAX_EQUIPPED_SPELLS> _spells);
+	void SetBattleSpells(array<string, MAX_EQUIPPED_SPELLS> _atkSpells, const string& _defSpell);
 
 	RTTR_ENABLE(Object) RTTR_REGISTRATION_FRIEND
 };

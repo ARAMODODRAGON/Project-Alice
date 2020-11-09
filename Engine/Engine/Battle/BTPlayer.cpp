@@ -1,5 +1,6 @@
 #include "BTPlayer.hpp"
-#include "Spells/BTSpell.hpp"
+#include "Spells/Attack/BTAttackSpell.hpp"
+#include "Spells/Defence/BTDefenceSpell.hpp"
 #include <iostream>
 
 RTTR_REGISTRATION{
@@ -20,8 +21,9 @@ BTPlayer::BTPlayer() {
 	sprite = nullptr;
 	collider = nullptr;
 
-	spells = { nullptr, nullptr, nullptr };
-	curSpell = 0;
+	defenceSpell = nullptr;
+	atkSpells = { nullptr, nullptr, nullptr };
+	curAtkSpell = 0;
 }
 
 BTPlayer::~BTPlayer() {
@@ -38,8 +40,11 @@ void BTPlayer::Update() {
 	const Button keyLeft = Keyboard::GetKey(KeyCode::ArrowLeft);
 	const Button keyUp = Keyboard::GetKey(KeyCode::ArrowUp);
 	const Button keyDown = Keyboard::GetKey(KeyCode::ArrowDown);
+
 	const Button keyPrevSpell = Keyboard::GetKey(KeyCode::KeyZ);
 	const Button keyNextSpell = Keyboard::GetKey(KeyCode::KeyX);
+	const Button keyAtkSpell = Keyboard::GetKey(KeyCode::Space);
+	const Button keyDefSpell = Keyboard::GetKey(KeyCode::KeyV);
 
 	// Set player velodity based on the current input
 	vec2 inputDirection = vec2(float(keyRight.IsHeld()) - float(keyLeft.IsHeld()), float(keyUp.IsHeld()) - float(keyDown.IsHeld()));
@@ -49,20 +54,27 @@ void BTPlayer::Update() {
 	SetVelocity(inputDirection * moveSpeed);
 	
 	// Swapping to the next/previous spell
-	if (keyPrevSpell) {
-		curSpell--;
-		if (curSpell < 0) {
-			curSpell = MAX_EQUIPPED_SPELLS - 1;
+	if (keyPrevSpell.Pressed()) {
+		curAtkSpell--;
+		if (curAtkSpell < 0) {
+			curAtkSpell = MAX_EQUIPPED_SPELLS - 1;
 		}
 	}
-	else if (keyNextSpell) {
-		curSpell++;
-		if (curSpell > MAX_EQUIPPED_SPELLS - 1) {
-			curSpell = 0;
+	else if (keyNextSpell.Pressed()) {
+		curAtkSpell++;
+		if (curAtkSpell > MAX_EQUIPPED_SPELLS - 1) {
+			curAtkSpell = 0;
 		}
 	}
 
 	// Using the current Attacking Spell
+	if (atkSpells[curAtkSpell] != nullptr) {
+		atkSpells[curAtkSpell]->Update(keyAtkSpell);
+	}
+
+	if (keyDefSpell.Pressed() && defenceSpell != nullptr) {
+		defenceSpell->Use();
+	}
 }
 
 void BTPlayer::LateUpdate() {
@@ -130,6 +142,23 @@ void BTPlayer::SetCollider(float _radius) {
 	collider->SetRadius(4.0f);
 }
 
-void BTPlayer::SetBattleSkills(array<string, MAX_EQUIPPED_SPELLS> _spells) {
-
+void BTPlayer::SetBattleSpells(array<string, MAX_EQUIPPED_SPELLS> _atkSpells, const string& _defSpell) {
+	// Add the three equipped attack spells
+	for (uint32 i = 0; i < MAX_EQUIPPED_SPELLS; i++) {
+		type t = type::get_by_name(_atkSpells[i].c_str());
+		variant spell = t.create();
+		if (!spell) { // The spell couldn't be created; throw an error.
+			DEBUG_ERROR("Spell " + _atkSpells[i] + " couldn't be created!");
+			continue;
+		}
+		atkSpells[i] = spell.get_value<BTAttackSpell*>();
+	}
+	// Add the single equipped defence spell
+	type t = type::get_by_name(_defSpell.c_str());
+	variant spell = t.create();
+	if (!spell) { // The spell couldn't be created; throw an error.
+		DEBUG_ERROR("Spell " + _defSpell + " couldn't be created!");
+		return;
+	}
+	defenceSpell = spell.get_value<BTDefenceSpell*>();
 }
