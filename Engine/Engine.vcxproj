@@ -76,7 +76,6 @@
     <ClCompile Include="Engine\Battle\Spells\Defence\AbsoluteReflection.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Defence\AbsoluteBarrier.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Attack\Boomerang.cpp" />
-    <ClCompile Include="Engine\Battle\Spells\BTSpell.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Defence\BTDefenceSpell.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Attack\BTAttackSpell.cpp" />
     <ClCompile Include="Engine\Battle\BattleAlogrithm.cpp" />
