@@ -1,4 +1,5 @@
 #include "AliceGame.hpp"
+#include "Scripts/Overworld/SpellInventory.hpp"
 #include <Engine/Input/Keyboard.hpp>
 #include <Engine/Battle/BattleLevel.hpp>
 #include <Engine/Battle/BattleManager.hpp>
@@ -32,6 +33,34 @@ bool AliceGame::Init() {
 	LevelManager::Init("Resources/Levels/Levels.index", levelToLoad);
 	CutsceneManager::Init("Resources/Cutscenes/Cutscene.index");
 
+
+	// FOR TESTING SPELL INVENTORY //
+
+	SpellList::InitSpellData("Resources/Spells/Spells.json");
+	SpellInventory::InitData("");
+
+	SpellInventory::AddSpell("Boomerang");
+	SpellInventory::AddSpell("Wind Slash");
+	SpellInventory::AddSpell("Homing Lasers");
+	SpellInventory::AddSpell("Absolute Barrier");
+	SpellInventory::AddSpell("Absolute Reflection");
+	SpellInventory::AddSpell("Healing");
+
+	DEBUG_LOG("No. of Attack Spells: " + VTOS(SpellInventory::GetSpellCount(SpellType::Attack)));
+	DEBUG_LOG("No. of Defence Spells: " + VTOS(SpellInventory::GetSpellCount(SpellType::Defence)));
+
+	SpellInventory::EquipAtkSpell("Boomerang", 0);
+	SpellInventory::EquipAtkSpell("Wind Slash", 1);
+	SpellInventory::EquipAtkSpell("Wind Slash", 2);
+
+	SpellInventory::EquipDefSpell("Absolute Barrier");
+
+	for (uint32 i = 0; i < MAX_EQUIPPED_SKILLS; i++) {
+		DEBUG_LOG("Atk Skill Slot " + VTOS(i + 1) + ": " + VTOS(SpellInventory::GetEquippedAtkSpell(i)));
+	}
+	DEBUG_LOG("Def Skill: " + VTOS(SpellInventory::GetEquippedDefSpell()));
+
+	// FOR TESTING SPELL INVENTORY //
 
 	return true;
 }
