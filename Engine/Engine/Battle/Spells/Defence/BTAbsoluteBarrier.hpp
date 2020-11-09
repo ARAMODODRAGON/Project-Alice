@@ -3,9 +3,11 @@
 
 #include "BTDefenceSpell.hpp"
 
-class AbsoluteBarrier : public BTDefenceSpell {
+class BTAbsoluteBarrier : public BTDefenceSpell {
 public:
 	void Use() override;
+
+	RTTR_ENABLE(BTDefenceSpell) RTTR_REGISTRATION_FRIEND
 };
 
 #endif

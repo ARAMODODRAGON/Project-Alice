@@ -3,7 +3,7 @@
 static map<string, Spell> spells = map<string, Spell>();
 static uint32 totalSpells = 0;
 
-void SpellList::InitSpellData(string _filePath) {
+void SpellList::InitSpellData(const string& _filePath) {
 	// Attempt to load in the JSON file's raw data
 	ifstream stream;
 	stream.open(_filePath);
@@ -42,7 +42,7 @@ void SpellList::InitSpellData(string _filePath) {
 	}
 }
 
-Spell SpellList::GetSpell(string _spellName) {
+Spell SpellList::GetSpell(const string& _spellName) {
 	return spells.at(_spellName);
 }
 

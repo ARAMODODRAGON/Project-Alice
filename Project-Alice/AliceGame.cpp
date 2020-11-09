@@ -55,7 +55,7 @@ bool AliceGame::Init() {
 
 	SpellInventory::EquipDefSpell("Absolute Barrier");
 
-	for (uint32 i = 0; i < MAX_EQUIPPED_SKILLS; i++) {
+	for (uint32 i = 0; i < MAX_EQUIPPED_SPELLS; i++) {
 		DEBUG_LOG("Atk Skill Slot " + VTOS(i + 1) + ": " + VTOS(SpellInventory::GetEquippedAtkSpell(i)));
 	}
 	DEBUG_LOG("Def Skill: " + VTOS(SpellInventory::GetEquippedDefSpell()));

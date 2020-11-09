@@ -3,8 +3,6 @@
 
 #include <Engine/Battle/Spells/SpellList.hpp>
 
-#define MAX_EQUIPPED_SKILLS		3
-
 class SpellInventory {
 	NON_CONSTRUCTABLE(SpellInventory);
 public:

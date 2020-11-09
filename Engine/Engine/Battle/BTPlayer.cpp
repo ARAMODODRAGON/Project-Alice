@@ -1,4 +1,5 @@
 #include "BTPlayer.hpp"
+#include "Spells/BTSpell.hpp"
 #include <iostream>
 
 RTTR_REGISTRATION{
@@ -18,6 +19,9 @@ BTPlayer::BTPlayer() {
 
 	sprite = nullptr;
 	collider = nullptr;
+
+	spells = { nullptr, nullptr, nullptr };
+	curSpell = 0;
 }
 
 BTPlayer::~BTPlayer() {
@@ -34,6 +38,8 @@ void BTPlayer::Update() {
 	const Button keyLeft = Keyboard::GetKey(KeyCode::ArrowLeft);
 	const Button keyUp = Keyboard::GetKey(KeyCode::ArrowUp);
 	const Button keyDown = Keyboard::GetKey(KeyCode::ArrowDown);
+	const Button keyPrevSpell = Keyboard::GetKey(KeyCode::KeyZ);
+	const Button keyNextSpell = Keyboard::GetKey(KeyCode::KeyX);
 
 	// Set player velodity based on the current input
 	vec2 inputDirection = vec2(float(keyRight.IsHeld()) - float(keyLeft.IsHeld()), float(keyUp.IsHeld()) - float(keyDown.IsHeld()));
@@ -42,10 +48,21 @@ void BTPlayer::Update() {
 	}
 	SetVelocity(inputDirection * moveSpeed);
 	
-	vec2 velocity = GetVelocity();
-	//std::cout << velocity.x << ", " << velocity.y << std::endl;
-	// dont do ^this^, at the very least use DEBUG_LOG so I can track where this is
-	
+	// Swapping to the next/previous spell
+	if (keyPrevSpell) {
+		curSpell--;
+		if (curSpell < 0) {
+			curSpell = MAX_EQUIPPED_SPELLS - 1;
+		}
+	}
+	else if (keyNextSpell) {
+		curSpell++;
+		if (curSpell > MAX_EQUIPPED_SPELLS - 1) {
+			curSpell = 0;
+		}
+	}
+
+	// Using the current Attacking Spell
 }
 
 void BTPlayer::LateUpdate() {
@@ -99,7 +116,7 @@ void BTPlayer::SetMaxHitpoints(int _maxHitpoints, bool _updateCurHP) {
 	}
 }
 
-void BTPlayer::SetSprite(std::string _texture, vec2 _pivot, int _layer) {
+void BTPlayer::SetSprite(const string& _texture, vec2 _pivot, int _layer) {
 	sprite = AddComponent<SpriteRenderer>();
 	if (_texture != "") { // Only load a texture if one is specified
 		sprite->LoadTexture(_texture);
@@ -111,4 +128,8 @@ void BTPlayer::SetSprite(std::string _texture, vec2 _pivot, int _layer) {
 void BTPlayer::SetCollider(float _radius) {
 	collider = AddComponent<CircleCollider>();
 	collider->SetRadius(4.0f);
+}
+
+void BTPlayer::SetBattleSkills(array<string, MAX_EQUIPPED_SPELLS> _spells) {
+
 }

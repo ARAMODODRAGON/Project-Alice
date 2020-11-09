@@ -3,9 +3,11 @@
 
 #include "BTDefenceSpell.hpp"
 
-class Healing : public BTDefenceSpell {
+class BTHealing : public BTDefenceSpell {
 public:
 	void Use() override;
+
+	RTTR_ENABLE(BTDefenceSpell) RTTR_REGISTRATION_FRIEND
 };
 
 #endif
