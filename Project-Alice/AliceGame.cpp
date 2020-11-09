@@ -17,6 +17,13 @@ AliceGame::AliceGame()
 AliceGame::~AliceGame() { }
 
 bool AliceGame::Init() {
+	// FOR TESTING SPELL INVENTORY //
+
+	SpellList::InitSpellData("Resources/Spells/Spells.json");
+	SpellInventory::InitData("Resources/Spells/Inventory.json");
+
+	// FOR TESTING SPELL INVENTORY //
+
 	// read the level
 	string levelToLoad;
 	std::cout << "Enter level that you would like to load:" << std::endl;
@@ -32,35 +39,6 @@ bool AliceGame::Init() {
 	BattleManager::Init("Resources/EnemyPhases/EnemyPhases.index");
 	LevelManager::Init("Resources/Levels/Levels.index", levelToLoad);
 	CutsceneManager::Init("Resources/Cutscenes/Cutscene.index");
-
-
-	// FOR TESTING SPELL INVENTORY //
-
-	SpellList::InitSpellData("Resources/Spells/Spells.json");
-	SpellInventory::InitData("");
-
-	SpellInventory::AddSpell(BOOMERANG);
-	SpellInventory::AddSpell(WIND_SLASH);
-	SpellInventory::AddSpell(HOMING_LASERS);
-	SpellInventory::AddSpell(ABSOLUTE_BARRIER);
-	SpellInventory::AddSpell(ABSOLUTE_REFLECTION);
-	SpellInventory::AddSpell(HEALING);
-
-	DEBUG_LOG("No. of Attack Spells: " + VTOS(SpellInventory::GetSpellCount(SpellType::Attack)));
-	DEBUG_LOG("No. of Defence Spells: " + VTOS(SpellInventory::GetSpellCount(SpellType::Defence)));
-
-	SpellInventory::EquipAtkSpell(BOOMERANG, 0);
-	SpellInventory::EquipAtkSpell(WIND_SLASH, 1);
-	SpellInventory::EquipAtkSpell(WIND_SLASH, 2);
-
-	SpellInventory::EquipDefSpell(ABSOLUTE_BARRIER);
-
-	for (uint32 i = 0; i < MAX_EQUIPPED_SPELLS; i++) {
-		DEBUG_LOG("Atk Skill Slot " + VTOS(i + 1) + ": " + VTOS(SpellInventory::GetEquippedAtkSpell(i)));
-	}
-	DEBUG_LOG("Def Skill: " + VTOS(SpellInventory::GetEquippedDefSpell()));
-
-	// FOR TESTING SPELL INVENTORY //
 
 	return true;
 }

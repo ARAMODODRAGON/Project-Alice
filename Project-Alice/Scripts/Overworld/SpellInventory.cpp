@@ -5,7 +5,35 @@ static array<string, MAX_EQUIPPED_SPELLS> curAtkSpells;
 static string curDefSpell;
 
 void SpellInventory::InitData(const string& _filePath) {
-	// TODO -- Load in data from inventory.json here
+	// Attempt to load in the JSON file's raw data
+	ifstream stream;
+	stream.open(_filePath);
+	if (!stream.is_open()) {
+		DEBUG_ERROR("Couldn't load file contained in path: " + _filePath);
+		return;
+	}
+	json file;
+	stream >> file;
+	stream.close();
+	// Loading in the player's full inventory
+	if (file.contains(INVENTORY) && file[INVENTORY].is_array()) {
+		json& inventory = file[INVENTORY];
+		for (uint32 i = 0; i < inventory.size(); i++) {
+			AddSpell(inventory[i]); // Add in each spell to the inventory
+		}
+	}
+	// Loading in the player's equipped attack spells
+	if (file.contains(EQUIPPED_ATTACKS) && file[EQUIPPED_ATTACKS].is_array()) {
+		json& atkSpells = file[EQUIPPED_ATTACKS];
+		for (uint32 i = 0; i < atkSpells.size(); i++) {
+			EquipAtkSpell(atkSpells[i], i);
+		}
+	}
+	// Loading in the player's equipped defence spell
+	if (file.contains(EQUIPPED_DEFENCE)) {
+		json& defSpell = file[EQUIPPED_DEFENCE];
+		EquipDefSpell(defSpell);
+	}
 }
 
 void SpellInventory::AddSpell(const string& _spellName) {
@@ -85,6 +113,10 @@ int SpellInventory::GetSpellCount(SpellType _type) {
 		}
 	}
 	return totalSpells;
+}
+
+array<string, MAX_EQUIPPED_SPELLS> SpellInventory::GetEquippedAtkSpells() {
+	return curAtkSpells;
 }
 
 string SpellInventory::GetEquippedAtkSpell(int _index) {

@@ -82,7 +82,6 @@
     <ClCompile Include="Engine\Cutscene\CAction.cpp" />
     <ClCompile Include="Engine\Cutscene\CActor.cpp" />
     <ClCompile Include="Engine\Cutscene\CutsceneManager.cpp" />
-    <ClCompile Include="Engine\Battle\Spells\BTSpell.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Defence\BTAbsoluteReflection.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Defence\BTAbsoluteBarrier.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Attack\BTBoomerang.cpp" />

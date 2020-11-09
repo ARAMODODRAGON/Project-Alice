@@ -19,5 +19,5 @@ void TestBattlePlayer::Start() {
 	DEBUG_LOG("Player Pos is : " + VTOS(GetPosition()));
 
 	// FOR TESTING //
-	SetBattleSpells({ HOMING_LASERS, BOOMERANG, WIND_SLASH }, HEALING);
+	SetBattleSpells(SpellInventory::GetEquippedAtkSpells(), SpellInventory::GetEquippedDefSpell());
 }

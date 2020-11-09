@@ -19,6 +19,7 @@ public:
 	static Spell GetSpell(const string& _spellName);
 	static int GetSpellCount(SpellType _type);
 
+	static array<string, MAX_EQUIPPED_SPELLS> GetEquippedAtkSpells();
 	static string GetEquippedAtkSpell(int _index);
 	static string GetEquippedDefSpell();
 };

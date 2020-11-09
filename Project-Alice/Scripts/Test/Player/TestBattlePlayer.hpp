@@ -1,7 +1,8 @@
 #ifndef TEST_BTPLAYER_H
 #define TEST_BTPLAYER_H
 
-#include "Engine/Battle/BTPlayer.hpp"
+#include <Engine/Battle/BTPlayer.hpp>
+#include "../../Overworld/SpellInventory.hpp"
 
 class TestBattlePlayer : public BTPlayer {
 

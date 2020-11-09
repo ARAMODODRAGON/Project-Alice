@@ -5,6 +5,11 @@
 #define ATTACK_SPELLS				"Attack Spells"
 #define DEFENCE_SPELLS				"Defence Spells"
 
+// The Allocated Groups for the Player's Inventory JSON
+#define INVENTORY					"Inventory"
+#define EQUIPPED_ATTACKS			"Equipped Attacks"
+#define	EQUIPPED_DEFENCE			"Equipped Defence"
+
 // Maximum Number of Attack Spells That Can Be Equipped At Once
 #define MAX_EQUIPPED_SPELLS			3
 
