@@ -25,7 +25,6 @@ void TestPhase::StartPhase()
 	SetPhaseName("Move From Middle");
 	DEBUG_LOG("phase : " + GetPhaseName() + " has Started");
 	SetPhaseDestination(glm::vec2(0.0f, 0.0f));
-	srand(time(NULL));
 
 	timerEnd = 1;
 }
@@ -38,25 +37,24 @@ void TestPhase::UpdatePhase()
 
 	SetAcceleration(GetEnemy()->GetMaxAcceleration());
 	SetMaxSpeed(GetEnemy()->GetMaxSpeed());
+	vec2 velocity = GetEnemy()->GetVelocity();
 
 	if (timer < (timerEnd * 40)) {
 		//flee from the middle of window 
-		//DEBUG_LOG("Fleeing");
-		vec2 velocity = GetEnemy()->GetVelocity();
 		result = bta::FleeFrom(&velocity, GetEnemyPosition(), GetPhaseDestination(), GetEnemyAcceleration(), GetEnemyMaxSpeed());
-		GetEnemy()->SetVelocity(velocity);
 
 		if (timer >= (timerEnd * 39)) {
-			//DEBUG_LOG("Changed Destination should only be called once ");
+			//the last time if block is checked set destiation to enemyposition scaled by 2 for the move to function to work 
 			SetPhaseDestination(GetEnemy()->GetPosition() * 2.0f);
 		}
 	}
 
 	else {
-		vec2 velocity = GetEnemy()->GetVelocity();
+		// call move too on new destination when flee timer is up to slow down when arriving at the destination
 		result = bta::MoveTo(&velocity, GetEnemyPosition(), GetPhaseDestination(), GetEnemyAcceleration(), GetEnemyMaxSpeed());
-		GetEnemy()->SetVelocity(velocity);
 	}
+
+	GetEnemy()->SetVelocity(velocity);
 
 	timer++;
 }

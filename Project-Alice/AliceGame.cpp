@@ -3,6 +3,7 @@
 #include <Engine/Battle/BattleLevel.hpp>
 #include <Engine/Battle/BattleManager.hpp>
 #include <Engine/Physics/PhysicsScene.hpp>
+#include<Engine/Cutscene/CutsceneManager.hpp>
 #include <random>
 #include <chrono>
 #include <iostream>
@@ -29,6 +30,8 @@ bool AliceGame::Init() {
 	PhysicsScene::Init();
 	BattleManager::Init("Resources/EnemyPhases/EnemyPhases.index");
 	LevelManager::Init("Resources/Levels/Levels.index", levelToLoad);
+	CutsceneManager::Init("Resources/Cutscenes/Cutscene.index");
+
 
 	return true;
 }

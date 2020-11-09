@@ -28,8 +28,7 @@ void TestEnemy::Start()
 	SetMaxSpeed(50.0f);
 	SetMaxAcceleration(50.0f);
     AddPhase(moveFromMiddle->get_type()); 
-    AddPhase(moveToMiddle->get_type());
-	
+    AddPhase(moveToMiddle->get_type());	
 
 }
 
@@ -46,9 +45,5 @@ void TestEnemy::LateUpdate()
 
 void TestEnemy::OnDestroy()
 {
-	//delete sprite;
-	//sprite = nullptr;
 
-	//delete moveFromMiddle;
-	//srmoveFromMiddle = nullptr;
 }

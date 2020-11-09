@@ -17,7 +17,6 @@ class BattleManager {
 	vector<BTPlayer*> players;
 	vector<BTEnemy*> enemies;
 	Rect battleArea;
-
 	FileIndex* phaseIndex;
 
 	BattleManager();
