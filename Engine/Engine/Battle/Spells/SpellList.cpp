@@ -1,4 +1,5 @@
 #include "SpellList.hpp"
+#include <fstream>
 
 static map<string, Spell> spells = map<string, Spell>();
 static uint32 totalSpells = 0;

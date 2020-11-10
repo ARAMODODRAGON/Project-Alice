@@ -49,6 +49,7 @@
     <ClCompile Include="Engine\Battle\Spells\Attack\BTHomingLasers.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Defence\BTHealing.cpp" />
     <ClCompile Include="Engine\Battle\Spells\SpellList.cpp" />
+    <ClCompile Include="Engine\General\SaveSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Cutscene\Actions\CMoveAction.hpp" />
@@ -108,5 +109,6 @@
     <ClInclude Include="Engine\Battle\Spells\Defence\BTHealing.hpp" />
     <ClInclude Include="Engine\Battle\Spells\SpellList.hpp" />
     <ClInclude Include="Engine\Battle\Spells\SpellMacros.hpp" />
+    <ClInclude Include="Engine\General\SaveSystem.hpp" />
   </ItemGroup>
 </Project>

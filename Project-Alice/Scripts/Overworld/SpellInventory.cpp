@@ -1,4 +1,5 @@
 #include "SpellInventory.hpp"
+#include <fstream>
 
 static list<string> curSpells = list<string>();
 static array<string, MAX_EQUIPPED_SPELLS> curAtkSpells;

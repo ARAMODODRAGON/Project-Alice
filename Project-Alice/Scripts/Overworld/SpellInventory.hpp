@@ -3,6 +3,11 @@
 
 #include <Engine/Battle/Spells/SpellList.hpp>
 
+// The Allocated Groups for the Player's Inventory JSON
+#define INVENTORY					"Inventory"
+#define EQUIPPED_ATTACKS			"Equipped Attacks"
+#define	EQUIPPED_DEFENCE			"Equipped Defence"
+
 class SpellInventory {
 	NON_CONSTRUCTABLE(SpellInventory);
 public:

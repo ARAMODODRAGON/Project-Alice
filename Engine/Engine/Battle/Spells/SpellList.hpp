@@ -1,7 +1,6 @@
 #ifndef SPELL_LIST_HPP
 #define SPELL_LIST_HPP
 
-#include <fstream>
 #include "SpellMacros.hpp"
 #include "../../Common.hpp"
 
