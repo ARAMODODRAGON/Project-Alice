@@ -1,0 +1,13 @@
+{
+  "type": "BattleLevel",
+  "data": {
+    "objects": [
+      { "type": "BattleCamera" },
+
+      {
+        "type": "TimActor",
+        "data": { "actorName": "tim" }
+      }
+    ]
+  }
+}

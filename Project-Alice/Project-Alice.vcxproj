@@ -167,6 +167,7 @@
     <ClInclude Include="Scripts\Test\Phases\TestPhase.hpp" />
     <ClInclude Include="Scripts\Test\Phases\TestPhase1.hpp" />
     <ClInclude Include="Scripts\Overworld\SpellInventory.hpp" />
+    <ClInclude Include="Scripts\Test\Actor\TimActor.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AliceGame.cpp" />
@@ -179,6 +180,7 @@
     <ClCompile Include="Scripts\Test\Phases\TestPhase.cpp" />
     <ClCompile Include="Scripts\Test\Phases\TestPhase1.cpp" />
     <ClCompile Include="Scripts\Overworld\SpellInventory.cpp" />
+    <ClCompile Include="Scripts\Test\Actor\TimActor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\Fonts\Index.json" />

@@ -1,14 +1,20 @@
 #include "CActor.hpp"
 
-CActor::CActor(std::string actorName_):facingDir(FacingDirection::DEFAULT),curntAction(CurrentAction::NONE)
+RTTR_REGISTRATION{
+	registration::class_<CActor>("CActor");
+	
+
+}
+
+CActor::CActor(std::string actorName_) :facingDir(FacingDirection::DEFAULT), curntAction(CurrentAction::NONE), isControlled(false)
 {
 	actorName = actorName_;
-	CutsceneManager::AddActor(actorName_, this);
+	CutsceneManager::AddActor(actorName, this);
 }
 
 CActor::~CActor()
 {
-	CutsceneManager::RemoveActor(actorName,this);
+	CutsceneManager::RemoveActor(actorName);
 }
 
 FacingDirection CActor::ActorDirection(glm::vec2 actorVel_)
@@ -46,6 +52,8 @@ FacingDirection CActor::ActorDirection(glm::vec2 actorVel_)
 
 void CActor::Move(glm::vec2 velocity_)
 {
+
+	//check if the actor is currently controlled if its not 
 	if (!isControlled) {
 		SetVelocity(velocity_);
 		facingDir = ActorDirection(GetVelocity());

@@ -33,6 +33,9 @@ bool AliceGame::Init() {
 	LevelManager::Init("Resources/Levels/Levels.index", levelToLoad);
 	CutsceneManager::Init("Resources/Cutscenes/Cutscene.index");
 
+	CutsceneManager::loadCutscene("test_Cutscene");
+
+
 
 	// FOR TESTING SPELL INVENTORY //
 
@@ -115,6 +118,7 @@ bool AliceGame::Exit() {
 	PhysicsScene::Exit();
 	RenderScene::Exit();
 	ContentHandler::Exit();
+	//CutsceneManager::Exit();
 
 	return true;
 }

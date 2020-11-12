@@ -13,7 +13,7 @@ enum class FacingDirection : unsigned char {
 	WEST    = 'W'
 };
 
-enum class CurrentAction : unsigned int {
+enum class CurrentAction : size_t {
 	NONE     = 0,
 	MOVING   = 1,
 	SPEAKING = 2
@@ -30,6 +30,7 @@ class CActor : public Object
 
 protected:
 public:
+	//CActor();
 	CActor(std::string actorName_);
 	virtual ~CActor() = 0;
 
@@ -44,6 +45,8 @@ public:
 	void SetIsControlled(bool isControlled_) { isControlled = isControlled_; }
 	void SetCurrentAction(CurrentAction curntAction_) { curntAction = curntAction_; }
 
+	virtual void Start()  = 0;
+	virtual void Update() = 0;
 	
 	void Move(glm::vec2 velocity_);
 	void MoveAction(glm::vec2 position_);

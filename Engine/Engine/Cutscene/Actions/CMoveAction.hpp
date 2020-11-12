@@ -3,7 +3,7 @@
 
 #include "../CAction.hpp"
 
-class CMoveAction : CAction
+class CMoveAction : public CAction
 {
 
 	std::string name;

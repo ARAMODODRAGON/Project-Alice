@@ -1,11 +1,13 @@
 #include "CMoveAction.hpp"
 
-CMoveAction::CMoveAction()
+CMoveAction::CMoveAction() :actor(nullptr)
 {
 }
 
 CMoveAction::~CMoveAction()
 {
+	actor = nullptr;
+	delete actor;
 }
 
 void CMoveAction::Start()
@@ -29,6 +31,7 @@ bool CMoveAction::Update()
 			actor->SetCurrentAction(CurrentAction::NONE);
 		}
 	}
+
 	else {
 		return false;
 	}
