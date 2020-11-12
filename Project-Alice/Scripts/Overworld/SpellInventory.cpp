@@ -1,11 +1,40 @@
 #include "SpellInventory.hpp"
+#include <fstream>
 
 static list<string> curSpells = list<string>();
-static string curAtkSpells[MAX_EQUIPPED_SKILLS] = { "", "", "" };
-static string curDefSpell = "";
+static array<string, MAX_EQUIPPED_SPELLS> curAtkSpells;
+static string curDefSpell;
 
 void SpellInventory::InitData(const string& _filePath) {
-	// TODO -- Load in data from inventory.json here
+	// Attempt to load in the JSON file's raw data
+	ifstream stream;
+	stream.open(_filePath);
+	if (!stream.is_open()) {
+		DEBUG_ERROR("Couldn't load file contained in path: " + _filePath);
+		return;
+	}
+	json file;
+	stream >> file;
+	stream.close();
+	// Loading in the player's full inventory
+	if (file.contains(INVENTORY) && file[INVENTORY].is_array()) {
+		json& inventory = file[INVENTORY];
+		for (uint32 i = 0; i < inventory.size(); i++) {
+			AddSpell(inventory[i]); // Add in each spell to the inventory
+		}
+	}
+	// Loading in the player's equipped attack spells
+	if (file.contains(EQUIPPED_ATTACKS) && file[EQUIPPED_ATTACKS].is_array()) {
+		json& atkSpells = file[EQUIPPED_ATTACKS];
+		for (uint32 i = 0; i < atkSpells.size(); i++) {
+			EquipAtkSpell(atkSpells[i], i);
+		}
+	}
+	// Loading in the player's equipped defence spell
+	if (file.contains(EQUIPPED_DEFENCE)) {
+		json& defSpell = file[EQUIPPED_DEFENCE];
+		EquipDefSpell(defSpell);
+	}
 }
 
 void SpellInventory::AddSpell(const string& _spellName) {
@@ -29,14 +58,14 @@ void SpellInventory::EquipAtkSpell(const string& _spellName, int _index) {
 		return;
 	}
 	// Next, check to see if this skill has already been equipped, exit if it is already equipped
-	for (uint32 i = 0; i < MAX_EQUIPPED_SKILLS; i++) {
+	for (uint32 i = 0; i < MAX_EQUIPPED_SPELLS; i++) {
 		if (curAtkSpells[i] == _spellName) {
 			DEBUG_WARNING("Spell is already equipped!");
 			return;
 		}
 	}
 	// Only equip the skill if the index is within the valid range
-	if (_index >= 0 && _index < MAX_EQUIPPED_SKILLS) {
+	if (_index >= 0 && _index < MAX_EQUIPPED_SPELLS) {
 		curAtkSpells[_index] = _spellName;
 		return;
 	}
@@ -59,7 +88,7 @@ void SpellInventory::EquipDefSpell(const string& _spellName) {
 }
 
 void SpellInventory::UnequipAtkSpell(int _index) {
-	if (_index >= 0 && _index < MAX_EQUIPPED_SKILLS) {
+	if (_index >= 0 && _index < MAX_EQUIPPED_SPELLS) {
 		curAtkSpells[_index] = "";
 	}
 }
@@ -87,8 +116,12 @@ int SpellInventory::GetSpellCount(SpellType _type) {
 	return totalSpells;
 }
 
+array<string, MAX_EQUIPPED_SPELLS> SpellInventory::GetEquippedAtkSpells() {
+	return curAtkSpells;
+}
+
 string SpellInventory::GetEquippedAtkSpell(int _index) {
-	if (_index >= 0 && _index < MAX_EQUIPPED_SKILLS) {
+	if (_index >= 0 && _index < MAX_EQUIPPED_SPELLS) {
 		return curAtkSpells[_index];
 	}
 	return "ERROR";

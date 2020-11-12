@@ -1,11 +1,8 @@
 #ifndef SPELL_LIST_HPP
 #define SPELL_LIST_HPP
 
+#include "SpellMacros.hpp"
 #include "../../Common.hpp"
-#include <fstream>
-
-#define	NAME	"Name"
-#define INFO	"Info"
 
 enum SpellType {
 	NoSpell,
@@ -23,8 +20,8 @@ using namespace std;
 class SpellList {
 	NON_CONSTRUCTABLE(SpellList);
 public:
-	static void InitSpellData(string _filePath);
-	static Spell GetSpell(string _spellName);
+	static void InitSpellData(const string& _filePath);
+	static Spell GetSpell(const string& _spellName);
 	static uint32 GetTotalSpells();
 };
 

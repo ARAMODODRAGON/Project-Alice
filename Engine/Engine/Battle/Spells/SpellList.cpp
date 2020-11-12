@@ -1,9 +1,10 @@
 #include "SpellList.hpp"
+#include <fstream>
 
 static map<string, Spell> spells = map<string, Spell>();
 static uint32 totalSpells = 0;
 
-void SpellList::InitSpellData(string _filePath) {
+void SpellList::InitSpellData(const string& _filePath) {
 	// Attempt to load in the JSON file's raw data
 	ifstream stream;
 	stream.open(_filePath);
@@ -15,8 +16,8 @@ void SpellList::InitSpellData(string _filePath) {
 	stream >> file;
 	stream.close();
 	// Loading in attack spell data
-	if (file.contains("Attack Spells") && file["Attack Spells"].is_array()) {
-		json& attacks = file["Attack Spells"];
+	if (file.contains(ATTACK_SPELLS) && file[ATTACK_SPELLS].is_array()) {
+		json& attacks = file[ATTACK_SPELLS];
 		for (uint32 i = 0; i < attacks.size(); i++) {
 			json& spell = attacks[i];
 			Spell spellData{};
@@ -28,8 +29,8 @@ void SpellList::InitSpellData(string _filePath) {
 		}
 	}
 	// Loading in defence spell data
-	if (file.contains("Defence Spells") && file["Defence Spells"].is_array()) {
-		json& defences = file["Defence Spells"];
+	if (file.contains(DEFENCE_SPELLS) && file[DEFENCE_SPELLS].is_array()) {
+		json& defences = file[DEFENCE_SPELLS];
 		for (uint32 i = 0; i < defences.size(); i++) {
 			json& spell = defences[i];
 			Spell spellData{};
@@ -42,7 +43,7 @@ void SpellList::InitSpellData(string _filePath) {
 	}
 }
 
-Spell SpellList::GetSpell(string _spellName) {
+Spell SpellList::GetSpell(const string& _spellName) {
 	return spells.at(_spellName);
 }
 

@@ -7,7 +7,7 @@ class BTDefenceSpell : public BTSpell {
 
 public:
 	BTDefenceSpell();
-	virtual ~BTDefenceSpell() {};
+	~BTDefenceSpell();
 
 	virtual void Use() = 0;
 

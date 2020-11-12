@@ -3,7 +3,8 @@
 	"data": {
 		"objects": [
 			{ "type": "OWPlayer", "data": { "shootDestroyTimer": 200, "shootSpeed": 40.0 } },
-			{ "type": "DebugMenu" }
+			{ "type": "DebugMenu" },
+			{ "type": "TestBattlePlayer" }
 		]
 	}
 }

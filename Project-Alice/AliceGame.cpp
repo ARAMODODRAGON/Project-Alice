@@ -1,10 +1,11 @@
 #include "AliceGame.hpp"
 #include "Scripts/Overworld/SpellInventory.hpp"
+#include <Engine/General/SaveSystem.hpp>
 #include <Engine/Input/Keyboard.hpp>
 #include <Engine/Battle/BattleLevel.hpp>
 #include <Engine/Battle/BattleManager.hpp>
 #include <Engine/Physics/PhysicsScene.hpp>
-#include<Engine/Cutscene/CutsceneManager.hpp>
+#include <Engine/Cutscene/CutsceneManager.hpp>
 #include <random>
 #include <chrono>
 #include <iostream>
@@ -17,6 +18,18 @@ AliceGame::AliceGame()
 AliceGame::~AliceGame() { }
 
 bool AliceGame::Init() {
+	// FOR TESTING SPELL INVENTORY //
+
+	SpellList::InitSpellData("Resources/Spells/Spells.json");
+	SpellInventory::InitData("Resources/Spells/Inventory.json");
+
+	// FOR TESTING READING/WRITING DATA //
+
+	/*Test testData;
+	SaveSystem::Register("test", &testData);
+	SaveSystem::Register("testtwo", &testData);
+	SaveSystem::SaveData("Save");*/
+
 	// read the level
 	string levelToLoad;
 	std::cout << "Enter level that you would like to load:" << std::endl;

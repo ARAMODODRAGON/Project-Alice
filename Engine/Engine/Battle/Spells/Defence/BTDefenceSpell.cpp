@@ -5,3 +5,4 @@ RTTR_REGISTRATION{
 }
 
 BTDefenceSpell::BTDefenceSpell() {}
+BTDefenceSpell::~BTDefenceSpell() {}
