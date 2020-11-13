@@ -2,16 +2,14 @@
 #define SPELL_INVENTORY_HPP
 
 #include <Engine/Battle/Spells/SpellList.hpp>
+#include <Engine/General/SaveSystem.hpp>
 
-// The Allocated Groups for the Player's Inventory JSON
-#define INVENTORY					"Inventory"
-#define EQUIPPED_ATTACKS			"Equipped Attacks"
-#define	EQUIPPED_DEFENCE			"Equipped Defence"
-
-class SpellInventory {
-	NON_CONSTRUCTABLE(SpellInventory);
+class SpellInventory : public ISaveable {
+	PRIVATE_SINGLETON(SpellInventory);
 public:
-	static void InitData(const string& _filePath);
+	SpellInventory() {};
+	~SpellInventory() {};
+	static void InitData();
 
 	static void AddSpell(const string& _spellName);
 	static void RemoveSpell(const string& _spellName);
@@ -27,6 +25,9 @@ public:
 	static array<string, MAX_EQUIPPED_SPELLS> GetEquippedAtkSpells();
 	static string GetEquippedAtkSpell(int _index);
 	static string GetEquippedDefSpell();
+
+	void SaveData(json& _data) override;
+	void LoadData(json& _data) override;
 };
 
 #endif

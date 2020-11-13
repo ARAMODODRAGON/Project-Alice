@@ -3,6 +3,12 @@
 
 #include "../Common.hpp"
 
+// The Allocated Groups for the Player's Inventory Save Data
+#define INVENTORY					"Inventory"
+#define	CURRENT_SPELLS				"Current Spells"
+#define EQUIPPED_ATTACKS			"Equipped Attacks"
+#define	EQUIPPED_DEFENCE			"Equipped Defence"
+
 class ISaveable {
 public:
 	ISaveable() {};
@@ -10,19 +16,6 @@ public:
 
 	virtual void SaveData(json& _data) = 0;
 	virtual void LoadData(json& _data) = 0;
-};
-
-class Test : public ISaveable {
-	string data;
-public:
-	Test() { data = "This is a test"; };
-
-	void SaveData(json& _data) override {
-		_data.push_back(data);
-	}
-	void LoadData(json& _data) override {
-
-	}
 };
 
 using namespace std;

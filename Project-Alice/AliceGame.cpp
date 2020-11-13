@@ -21,14 +21,11 @@ bool AliceGame::Init() {
 	// FOR TESTING SPELL INVENTORY //
 
 	SpellList::InitSpellData("Resources/Spells/Spells.json");
-	SpellInventory::InitData("Resources/Spells/Inventory.json");
+	SpellInventory::InitData();
 
 	// FOR TESTING READING/WRITING DATA //
 
-	/*Test testData;
-	SaveSystem::Register("test", &testData);
-	SaveSystem::Register("testtwo", &testData);
-	SaveSystem::SaveData("Save");*/
+	SaveSystem::LoadData("Save");
 
 	// read the level
 	string levelToLoad;
