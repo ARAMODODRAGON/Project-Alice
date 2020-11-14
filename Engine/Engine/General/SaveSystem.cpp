@@ -1,4 +1,5 @@
 #include "SaveSystem.hpp"
+#include <sys/stat.h>
 #include <direct.h>
 #include <fstream>
 
@@ -24,18 +25,38 @@ bool SaveSystem::SaveData(const string& _fileName) {
 		stream.close();
 		return true; // Save successful; return true
 	}
-	DEBUG_ERROR("Could not save data for an unknown reason...");
+	DEBUG_ERROR("Could not save data to " + _fileName + ".json!");
 	return false; // Couldn't save for some reason; return false
 }
 
 bool SaveSystem::LoadData(const string& _fileName) {
-	return false;
+	json loadedfile;
+	const char* appdata = getenv("APPDATA");
+	string filePath(to_string(appdata) + "/Project-Alice");
+	struct stat info;
+	if (stat(filePath.c_str(), &info) != 0) { // The directory couldn't be accessed for whatever reason
+		DEBUG_ERROR("Cannot access directory: " + filePath + "\nNo data will be loaded from file.");
+		return false;
+	}
+	else if (info.st_mode & S_IFDIR) { // The directory exists and will be accessed for the save file
+		ifstream stream(filePath + "/" + _fileName + ".json");
+		if (stream.is_open()) { // Make sure the file exists before loading data from it
+			stream >> loadedfile;
+			for (uint32 i = 0; i < saveData.size(); i++) {
+				saveData[i].second->LoadData(loadedfile);
+			}
+			stream.close();
+			return true; // Load successful; return true
+		}
+	}
+	DEBUG_ERROR("Given directory was not valid; no data will be loaded from the file: " + _fileName + ".json");
+	return false; // Couldn't load for some reason; return false
 }
 
 void SaveSystem::Register(string _name, ISaveable* _ptr) {
 	for (uint32 i = 0; i < saveData.size(); i++) {
 		if (saveData[i].first == _name || saveData[i].second == _ptr) { // If the pair being added matches an existing pair OR there's a duplicate pointer, don't add it to the data
-			DEBUG_WARNING("This data has already been registered! It will not be registered again...");
+			DEBUG_WARNING("Data with an identical name OR the same pointer value has already been registered!");
 			return;
 		}
 	}

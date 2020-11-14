@@ -1,40 +1,11 @@
 #include "SpellInventory.hpp"
-#include <fstream>
 
 static list<string> curSpells = list<string>();
 static array<string, MAX_EQUIPPED_SPELLS> curAtkSpells;
 static string curDefSpell;
 
-void SpellInventory::InitData(const string& _filePath) {
-	// Attempt to load in the JSON file's raw data
-	ifstream stream;
-	stream.open(_filePath);
-	if (!stream.is_open()) {
-		DEBUG_ERROR("Couldn't load file contained in path: " + _filePath);
-		return;
-	}
-	json file;
-	stream >> file;
-	stream.close();
-	// Loading in the player's full inventory
-	if (file.contains(INVENTORY) && file[INVENTORY].is_array()) {
-		json& inventory = file[INVENTORY];
-		for (uint32 i = 0; i < inventory.size(); i++) {
-			AddSpell(inventory[i]); // Add in each spell to the inventory
-		}
-	}
-	// Loading in the player's equipped attack spells
-	if (file.contains(EQUIPPED_ATTACKS) && file[EQUIPPED_ATTACKS].is_array()) {
-		json& atkSpells = file[EQUIPPED_ATTACKS];
-		for (uint32 i = 0; i < atkSpells.size(); i++) {
-			EquipAtkSpell(atkSpells[i], i);
-		}
-	}
-	// Loading in the player's equipped defence spell
-	if (file.contains(EQUIPPED_DEFENCE)) {
-		json& defSpell = file[EQUIPPED_DEFENCE];
-		EquipDefSpell(defSpell);
-	}
+void SpellInventory::InitData() {
+	SaveSystem::Register(INVENTORY, Get());
 }
 
 void SpellInventory::AddSpell(const string& _spellName) {
@@ -129,4 +100,21 @@ string SpellInventory::GetEquippedAtkSpell(int _index) {
 
 string SpellInventory::GetEquippedDefSpell() {
 	return curDefSpell;
+}
+
+void SpellInventory::SaveData(json& _data) {
+	_data[CURRENT_SPELLS] = curSpells;
+	_data[EQUIPPED_ATTACKS] = curAtkSpells;
+	_data[EQUIPPED_DEFENCE] = curDefSpell;
+}
+
+void SpellInventory::LoadData(json& _data) {
+	if (_data.contains(INVENTORY) && _data[INVENTORY].is_object()) {
+		json inventory = _data[INVENTORY];
+		for (uint32 i = 0; i < inventory[CURRENT_SPELLS].size(); i++) {
+			curSpells.push_back(inventory[CURRENT_SPELLS][i]);
+		}
+		curAtkSpells = inventory[EQUIPPED_ATTACKS];
+		curDefSpell = inventory[EQUIPPED_DEFENCE];
+	}
 }
