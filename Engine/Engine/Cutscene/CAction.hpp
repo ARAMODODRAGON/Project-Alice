@@ -14,6 +14,7 @@ public:
 
 	virtual void Start() = 0;
 	virtual bool Update() = 0;
+	virtual bool isRunning() = 0;
 
 	RTTR_ENABLE()RTTR_REGISTRATION_FRIEND
 };

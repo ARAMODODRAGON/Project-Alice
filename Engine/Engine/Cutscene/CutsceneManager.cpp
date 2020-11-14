@@ -1,10 +1,10 @@
 #include "CutsceneManager.hpp"
-#include "CActor.hpp"
 
 
 
 
-CutsceneManager::CutsceneManager() : cutscenesIndex(nullptr), currentAction(0)
+
+CutsceneManager::CutsceneManager() : cutscenesIndex(nullptr), currentAction(-1),isComplete(false)
 {
 }
 
@@ -59,6 +59,7 @@ void CutsceneManager::Init(const string& cutsceneIndexPath_)
 void CutsceneManager::loadCutscene(const std::string& filePath_)
 {
 	auto* index = Get()->cutscenesIndex;
+	auto& activeActors_ = Get()->activeActors;
 
 	if (index->Contains(filePath_)) {
 		std::ifstream stream;
@@ -69,43 +70,71 @@ void CutsceneManager::loadCutscene(const std::string& filePath_)
 		if (!stream.is_open()) {
 			DEBUG_ERROR("stream could not open " + filePath_);
 		}
-
+																											
 		json file;
 		stream >> file;
 		stream.close();
 
 		if (file.contains("actors") && file["actors"].is_array()) {
 
-			json& actorsNames = file["actors"];
-			auto& activeActors_ = Get()->activeActors;
+			auto& actorsNames = file["actors"];
+			std::sort(actorsNames.begin(), actorsNames.end());
+			for (auto& actor = Get()->actors.begin(); actor != Get()->actors.end();) {
+				for (size_t i = 0; i < actorsNames.size(); ++i) {
+					json& tmp = actorsNames[i];
+					std::string name = tmp;
 
-			for (int i = 0; i != actorsNames.size(); ++i) {
+					if (actor->first == name) {
 
-				for (auto& actor : Get()->actors) {
-
-					if (actorsNames[i] == actor.first) {
-
-						if (actor.second) {
-
-							activeActors_.insert(std::pair<std::string, CActor*>(actor.first, actor.second));
-							actor.second->SetIsControlled(true);
-							DEBUG_LOG(actor.first + " was added to active actors and is set to controlled");
+						if (actor->second) {
+							activeActors_.insert(std::pair<std::string, CActor*>(actor->first, actor->second));
+							actor->second->SetIsControlled(true);
+							DEBUG_LOG(actor->first + " was added to active actors and is set to controlled");
+							++actor;
 						}
+
 						else {
 
-							DEBUG_ERROR("Actor " + (std::string)actorsNames[i] + "was nullptr");
+							DEBUG_ERROR("Actor " + name + "was nullptr");
 							return;
 						}
 					}
-
-					else {
-
-						DEBUG_ERROR("Actor : " + (std::string)actorsNames[i] + " Was not found or has not been created");
-						return;
-					}
-					
 				}
+			}
+		}
+		
+
+		if (file.contains("actions") && file["actions"].is_array()) {
+			json& actions = file["actions"];
+			auto& actions_ = Get()->actions;
+			json data;
+			
+			for (size_t i = 0; i < actions.size(); ++i) {
+				json& tmp = actions[i];
+
+				std::string& type = (std::string)tmp["type"];
+				std::string& actionName = (std::string)tmp["data"]["name"];
+				std::string& actorName = (std::string)tmp["data"]["actorName"];
+				glm::vec2 actionPosition((float)tmp["data"]["position"]["x"], (float)tmp["data"]["position"]["y"]);
 				
+				DEBUG_ERROR("action poition" + VTOS(actionPosition));
+
+				if (type == "CMoveAction") {
+
+					if (activeActors_.find(actorName) != activeActors_.end()) {
+						auto* moveAction = new CMoveAction();
+						moveAction->SetActorName(actorName);
+						moveAction->SetName(actionName);
+						moveAction->SetPosition(actionPosition);
+						actions_.push_back(moveAction);
+						DEBUG_LOG(actionName + " was added to the actions vector, good job");
+					}
+				}
+
+				else {
+					DEBUG_ERROR(type + "could not be found in the .cutscene file foo.");
+				}
+
 			}
 		}
 	}
@@ -113,28 +142,7 @@ void CutsceneManager::loadCutscene(const std::string& filePath_)
 	else { 
 		DEBUG_ERROR(filePath_ + " Not Found"); 
 		return;
-	}
-
-	size_t maxActions = 4;
-	auto& actions_ = Get()->actions;
-	size_t& currentAction_ = Get()->currentAction;
-
-	for (size_t i = 0; i < maxActions; ++i) {
-		auto* moveAction = new CMoveAction();
-
-		actions_.push_back(moveAction);
-	}
-
-
-	for (auto& actor : Get()->activeActors) {
-		static_cast<CMoveAction*>(actions_[currentAction_])->SetName(actor.first);
-		currentAction_++;
-	}
-	
-
-	
-	
-
+	} 
 }
 
 void CutsceneManager::AddActor(std::string actorName_, CActor* actor_)
@@ -172,30 +180,68 @@ void CutsceneManager::RemoveActor(std::string actorName_)
 
 void CutsceneManager::Update()
 {
-  
+	size_t& currentAction_ = Get()->currentAction;
+	auto& actions_ = Get()->actions;
+	bool& isComplete_ = Get()->isComplete;
+
+	if (!isComplete_) {
+
+		if (currentAction_ == -1) {
+			currentAction_ += 1;
+			actions_[currentAction_]->Start();
+		}
+
+		if (actions_[currentAction_]) {
+
+
+			if (actions_[currentAction_]->isRunning()) {
+
+				actions_[currentAction_]->Update();
+			}
+
+
+			else {
+				actions_[currentAction_] = nullptr;
+				actions_.erase(actions_.begin() + currentAction_);
+
+				if (actions_.empty()) {
+					DEBUG_LOG("cutscene has finished");
+					isComplete_ = true;
+				}
+				currentAction_ = -1;
+			}
+		}
+	}
+
 }
 
 
 
 CActor* CutsceneManager::GetActiveActor(std::string& actorName_)
-{
-	for (auto& activeActor : Get()->activeActors) {
-		if (activeActor.first == actorName_) { return activeActor.second; }
-		else { 
-			DEBUG_ERROR("Actor : " + activeActor.first + " is not an active actor");
-			return nullptr;
-		}
+{	
+	auto& activeActors_ = Get()->activeActors;
+	auto& itter = activeActors_.find(actorName_);
+
+	if (itter != activeActors_.end()) {
+		return itter->second;
+	}
+	else {
+		DEBUG_ERROR("Actor : " + itter->first + " is not an active actor");
+		return nullptr;
 	}
 }
 
 CActor* CutsceneManager::GetActor(std::string& actorName_)
 {
-	for (auto& actor : Get()->activeActors) {
-		if (actor.first == actorName_) { DEBUG_ERROR("Actor : " + actor.first + " is  an actor"); return actor.second; }
-		else {
-			DEBUG_ERROR("Actor : " + actor.first + " is not an actor");
-			return nullptr;
-		}
+	auto& actors_ = Get()->actors;
+	auto& itter = actors_.find(actorName_);
+
+	if (itter != actors_.end()) {
+		return itter->second;
+	}
+	else {
+		DEBUG_ERROR("Actor : " + itter->first + " is not an active actor");
+		return nullptr;
 	}
 }
 									  

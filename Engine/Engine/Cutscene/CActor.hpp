@@ -2,7 +2,7 @@
 #define C_ACTOR_HPP
 
 #include "../Common.hpp"
-#include "CutsceneManager.hpp"
+
 
 
 enum class FacingDirection : unsigned char {

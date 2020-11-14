@@ -1,4 +1,5 @@
 #include "CActor.hpp"
+#include "CutsceneManager.hpp"
 
 RTTR_REGISTRATION{
 	registration::class_<CActor>("CActor");
@@ -71,6 +72,7 @@ void CActor::MoveAction(glm::vec2 position_)
 
 bool CActor::isRuning()
 {
+
 	switch ((int)curntAction) {
 		case 0:
 			return false;

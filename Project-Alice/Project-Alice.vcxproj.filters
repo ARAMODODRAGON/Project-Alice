@@ -48,6 +48,9 @@
     <ClInclude Include="Scripts\Test\Actor\TimActor.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Scripts\Test\Actor\BobertActor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AliceGame.cpp">
@@ -81,6 +84,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\Test\Actor\TimActor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Test\Actor\BobertActor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

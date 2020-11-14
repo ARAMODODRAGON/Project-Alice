@@ -7,11 +7,7 @@
 #include <fstream>
 #include "CAction.hpp"
 #include "Actions/CMoveAction.hpp"
-
-
-
-class CActor;
-class CAction;
+#include "CActor.hpp"
 
 class CutsceneManager {
 
@@ -24,6 +20,8 @@ class CutsceneManager {
 	std::map <std::string,CActor*> actors;
 
 	FileIndex* cutscenesIndex;
+	
+	bool isComplete;
 	
 
 
@@ -39,6 +37,7 @@ public:
 
 	static void Update();
 	static void Exit();
+
 
 	//actor getters and setters 
 	static CActor* GetActiveActor(std::string& actorName_);

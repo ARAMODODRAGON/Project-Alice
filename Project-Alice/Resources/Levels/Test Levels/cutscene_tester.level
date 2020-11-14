@@ -7,6 +7,10 @@
       {
         "type": "TimActor",
         "data": { "actorName": "tim" }
+      },
+      {
+        "type": "BobertActor",
+        "data": {"actorName": "bobert"}
       }
     ]
   }

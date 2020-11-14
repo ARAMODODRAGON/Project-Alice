@@ -11,11 +11,7 @@ RTTR_REGISTRATION{
 
 TimActor::TimActor():CActor("tim")
 {	
-	sprite = AddComponent<SpriteRenderer>();
-	sprite->LoadTexture("Flashing Grey Orb");
-	sprite->SetTilingSize(vec2(16.0f));
-	sprite->SetPivot(vec2(8.0f));
-	sprite->SetLayer(2);
+	
 }
 
 TimActor::~TimActor() {
@@ -24,7 +20,11 @@ TimActor::~TimActor() {
 
 void TimActor::Start()
 {
-	
+	sprite = AddComponent<SpriteRenderer>();
+	sprite->LoadTexture("Flashing Grey Orb");
+	sprite->SetTilingSize(vec2(16.0f));
+	sprite->SetPivot(vec2(8.0f));
+	sprite->SetLayer(2);
 }
 
 void TimActor::Update()

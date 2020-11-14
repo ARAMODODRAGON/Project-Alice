@@ -158,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AliceGame.hpp" />
+    <ClInclude Include="Scripts\Test\Actor\BobertActor.hpp" />
     <ClInclude Include="Scripts\Battle\BattleCamera.hpp" />
     <ClInclude Include="Scripts\DebugMenu.hpp" />
     <ClInclude Include="Scripts\Test\Player\OWPlayer.hpp" />
@@ -171,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AliceGame.cpp" />
+    <ClCompile Include="Scripts\Test\Actor\BobertActor.cpp" />
     <ClCompile Include="Scripts\Battle\BattleCamera.cpp" />
     <ClCompile Include="Scripts\DebugMenu.cpp" />
     <ClCompile Include="Scripts\Test\Player\OWPlayer.cpp" />
