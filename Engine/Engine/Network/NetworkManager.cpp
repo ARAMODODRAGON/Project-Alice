@@ -155,11 +155,11 @@ void ConnectToServer(const uint32 lobbyID = -1) {
 		status = NetStatus::JoiningLobby;
 
 		// create request to join lobby with given ID
-		json j = { 
-			{ "type", "join lobby" }, 
-			{ "ID", lobbyID } 
+		json j = {
+			{ "type", "join lobby" },
+			{ "ID", lobbyID }
 		};
-		string s = j.dump(-1); 
+		string s = j.dump(-1);
 
 		// send to server
 		if (send(connectSocket, s.c_str(), s.size() + 1, 0) == SOCKET_ERROR) {

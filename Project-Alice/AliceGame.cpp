@@ -6,6 +6,7 @@
 #include <random>
 #include <chrono>
 #include <iostream>
+#include <Engine\Network\NetworkManager.hpp>
 
 AliceGame::AliceGame()
 	: Game()
@@ -147,12 +148,24 @@ void AliceGame::LevelLoad(Level* level, const json& data) {
 
 int main(int argc, char* argv[]) {
 
+	NetworkManager::Init();
 	// set random value using chrono
 	srand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 	
+	string msg;
+	std::getline(std::cin, msg);
+
+	if (msg == "create") NetworkManager::CreateLobby();
+	else if (msg == "join") {
+		uint32 id;
+		std::cin >> id;
+		NetworkManager::JoinLobby(id);
+	}
+
 	Game* game = new AliceGame();
 	game->Run();
 	delete game;
 
+	NetworkManager::Exit();
 	return 0;
 }

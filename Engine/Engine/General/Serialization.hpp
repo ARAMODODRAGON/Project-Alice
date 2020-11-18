@@ -40,4 +40,33 @@ using rttr::rttr_cast;
 #define protected_object_constructor constructor<>()  (rttr::detail::as_raw_pointer(), protected_access_)
 #define private_object_constructor constructor<>()  (rttr::detail::as_raw_pointer(), private_access_)
 
+/*
+
+template<typename... ARGS>
+constexpr size_t count_args(ARGS&&... args) {
+return sizeof...(ARGS);
+}
+#define ALFIRST(first, second) first
+#define ALENUM(valuetype, name, ...)												\
+class name {																		\
+valuetype value;																\
+public:																				\
+name() { }																		\
+name(const valuetype value_) : value(value_) { }								\
+operator valuetype() const { return value; }									\
+name& operator=(const valuetype value_) { value = value_; return *this; }		\
+static constexpr size_t count() {												\
+return count_args(__VA_ARGS__);												\
+}																				\
+static constexpr const char* type_name() { return #name; }						\
+enum : valuetype { __VA_ARGS__ };												\
+}
+
+#define ALENUM_U32(name, ...) ALENUM(uint32, name, __VA_ARGS__)
+#define ALENUM_U64(name, ...) ALENUM(uint64, name, __VA_ARGS__)
+
+ALENUM_U32(Test, test1, test2);
+
+*/
+
 #endif // !_SERIALIZATION_HPP
