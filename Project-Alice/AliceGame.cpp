@@ -2,6 +2,8 @@
 #include "Scripts/Overworld/SpellInventory.hpp"
 #include "Scripts/Test/Tiles/TestTile.hpp"
 #include <Engine/General/SaveSystem.hpp>				 
+#include <Engine/Content/SoundSystem.hpp>
+#include <Engine/General/SaveSystem.hpp>
 #include <Engine/Input/Keyboard.hpp>
 #include <Engine/Battle/BattleLevel.hpp>
 #include <Engine/Battle/BattleManager.hpp>
@@ -37,6 +39,14 @@ bool AliceGame::Init() {
 	std::getline(std::cin, levelToLoad);
 
 	if (!Game::Init()) return false;
+
+	// FOR TESTING SOUND SYSTEM //
+
+	SoundSystem::LoadMusic("Another Solo", "Test");
+	//SoundSystem::PlayMusic("Test");
+
+	SoundSystem::LoadSound("MeepMeep", "Test");
+	//SoundSystem::PlaySound("Test", -1);
 
 	// initialize the singletons
 	ContentHandler::Init("Resources/Textures/Textures.index", "Resources/Shaders/Shaders.index", "Resources/Fonts/Fonts.index");
@@ -94,7 +104,7 @@ void AliceGame::Update() {
 	// update 
 	LevelManager::Update();
 	ObjectFactory::Update();
-	CutsceneManager::Update();
+	//CutsceneManager::Update();
 
 	// do physics
 	PhysicsScene::Step();

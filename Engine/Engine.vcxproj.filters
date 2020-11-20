@@ -51,6 +51,8 @@
     <ClCompile Include="Engine\Battle\Spells\SpellList.cpp" />
     <ClCompile Include="Engine\General\SaveSystem.cpp" />
     <ClCompile Include="Engine\Battle\TileMap\TileMap.cpp" />
+    <ClCompile Include="Engine\Content\SoundSystem.cpp" />
+    <ClCompile Include="Engine\Content\AudioSourceComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Cutscene\Actions\CMoveAction.hpp" />
@@ -112,5 +114,7 @@
     <ClInclude Include="Engine\Battle\Spells\SpellMacros.hpp" />
     <ClInclude Include="Engine\General\SaveSystem.hpp" />
     <ClInclude Include="Engine\Battle\TileMap\TileMap.hpp" />
+    <ClInclude Include="Engine\Content\SoundSystem.hpp" />
+    <ClInclude Include="Engine\Content\AudioSourceComponent.hpp" />
   </ItemGroup>
 </Project>

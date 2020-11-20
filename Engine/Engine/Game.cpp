@@ -76,6 +76,11 @@ bool Game::Init() {
 		return false;
 	}
 
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 4, 4096) < 0) {
+		DEBUG_ERROR("Mixer failed to initialize. Error:\n" + VTOS(Mix_GetError()));
+		return false;
+	}
+
 	// initialize system events
 	SystemEvents::Init(this);
 
@@ -97,6 +102,7 @@ bool Game::Exit() {
 	window = nullptr;
 
 	FT_Done_FreeType(fontLib);
+	Mix_Quit();
 
 	return true;
 }

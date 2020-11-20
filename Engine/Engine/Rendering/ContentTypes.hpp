@@ -103,11 +103,6 @@ struct Character {
 	float bw, bh;	// The character's bitmap dimensions
 	float bl, bt;	// The top-left coordinates for the character
 	float tx;		// The x offset of the glyph in texture coordinates
-
-	/*unsigned int textureID;	// ID handle of this glyph's texture
-	unsigned int advance;	// Spacing between each this and the next glyph
-	ivec2 size;				// The size of the glyph
-	ivec2 bearing;			// Offset from the baseline to the left/top of glyph*/
 };
 
 class Font {
@@ -169,5 +164,42 @@ private:
 	void FreeThis();
 
 };
+
+/*class Sound {
+
+	struct Data {
+		unsigned int refcount;
+		Mix_Chunk* sound;
+	} *data;
+
+public:
+	// Constructors
+	Sound() : data(nullptr) { }
+	Sound(Mix_Chunk* _sound);
+
+	// copy and move constructors/operators
+	Sound(const Sound& other);
+	Sound& operator=(const Sound& other);
+	Sound(Sound&& other);
+	Sound& operator=(Sound&& other);
+
+	~Sound() { FreeThis(); }
+
+	// getters
+	bool IsValid() const { return data != nullptr; }
+	unsigned int GetRefCount() const {
+		if (data)	return data->refcount;
+		else		return -1;
+	}
+	Mix_Chunk* GetSound() {
+		if (data)	return data->sound;
+		else		return nullptr;
+	}
+
+private:
+
+	// helper function
+	void FreeThis();
+};*/
 
 #endif // !_RENDERING_CONTENT_TYPES_HPP

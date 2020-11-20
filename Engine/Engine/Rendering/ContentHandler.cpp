@@ -207,8 +207,8 @@ Font ContentHandler::LoadFont(const string& fontName, int fontSize) {
 		return fonts[fontName];
 	}
 
-	if (!Get()->fontIndex->Contains(fontName)) return Font();
-	string path = Get()->fontIndex->GetJSONPath(fontName);
+	if (!fontIndex->Contains(fontName)) return Font();
+	string path = fontIndex->GetJSONPath(fontName);
 	FT_Face face = ::LoadFont(path, 0, fontSize);
 	FT_GlyphSlot g = face->glyph;
 
@@ -265,3 +265,18 @@ Font ContentHandler::LoadFont(const string& fontName, int fontSize) {
 	fonts.insert(FontPairType(fontName, font));
 	return font;
 }
+
+/*Sound ContentHandler::LoadSound(const string& soundName) {
+	auto& sounds = Get()->sounds;
+	auto* soundIndex = Get()->soundIndex;
+
+	// Check if the sound has already been loaded; return if it has been
+	if (sounds.find(soundName) != sounds.end()) {
+		return sounds[soundName];
+	}
+
+	if (!soundIndex->Contains(soundName)) return Sound();
+
+	string path = soundIndex->GetJSONPath(soundName);
+	return Sound(::LoadSound(path));
+}*/

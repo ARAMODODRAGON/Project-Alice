@@ -9,6 +9,8 @@
 #include "Rendering/ContentHandler.hpp"
 #include "Objects/Object.hpp"
 
+#include <SDL_mixer.h>
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
