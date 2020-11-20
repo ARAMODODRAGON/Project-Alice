@@ -20,4 +20,8 @@ void TestBattlePlayer::Start() {
 
 	// FOR TESTING //
 	SetBattleSpells(SpellInventory::GetEquippedAtkSpells(), SpellInventory::GetEquippedDefSpell());
+
+	audioSource = AddComponent<AudioSourceComponent>();
+	audioSource->SetSound("Test");
+	audioSource->PlaySound(-1);
 }

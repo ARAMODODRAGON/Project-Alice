@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Engine\Content\AudioSource.hpp" />
+    <ClInclude Include="Engine\Content\AudioSourceComponent.hpp" />
     <ClInclude Include="Engine\Battle\Spells\SpellMacros.hpp" />
     <ClInclude Include="Engine\Cutscene\Actions\CMoveAction.hpp" />
     <ClInclude Include="Engine\Cutscene\CAction.hpp" />
@@ -81,7 +81,7 @@
     <ClInclude Include="Engine\Content\SoundSystem.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Engine\Content\AudioSource.cpp" />
+    <ClCompile Include="Engine\Content\AudioSourceComponent.cpp" />
     <ClCompile Include="Engine\Cutscene\Actions\CMoveAction.cpp" />
     <ClCompile Include="Engine\Cutscene\CAction.cpp" />
     <ClCompile Include="Engine\Cutscene\CActor.cpp" />

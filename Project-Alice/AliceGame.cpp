@@ -38,11 +38,11 @@ bool AliceGame::Init() {
 
 	// FOR TESTING SOUND SYSTEM //
 
-	SoundSystem::LoadSound("MeepMeep", "Test");
-	SoundSystem::PlaySound("Test", -1);
-
 	SoundSystem::LoadMusic("Another Solo", "Test");
-	SoundSystem::PlayMusic("Test");
+	//SoundSystem::PlayMusic("Test");
+
+	SoundSystem::LoadSound("MeepMeep", "Test");
+	//SoundSystem::PlaySound("Test", -1);
 
 	// initialize the singletons
 	ContentHandler::Init("Resources/Textures/Textures.index", "Resources/Shaders/Shaders.index", "Resources/Fonts/Fonts.index");
