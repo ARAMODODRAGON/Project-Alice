@@ -59,6 +59,8 @@ bool AliceGame::Init() {
 
 	CutsceneManager::loadCutscene("test_Cutscene");
 
+	
+
 	// FOR TESTING SPELL INVENTORY //
 
 	SpellList::InitSpellData("Resources/Spells/Spells.json");
@@ -87,6 +89,7 @@ bool AliceGame::Init() {
 
 	// FOR TESTING SPELL INVENTORY //
 
+	
 	return true;
 }
 
@@ -109,6 +112,11 @@ void AliceGame::Update() {
 	// do physics
 	PhysicsScene::Step();
 
+
+
+
+
+
 }
 
 void AliceGame::Draw() {
@@ -130,6 +138,8 @@ void AliceGame::Draw() {
 	// wait for end of frame
 	GetTimer()->WaitForEndOfFrame();
 	GetWindow()->SwapBuffers();
+
+
 }
 
 bool AliceGame::Exit() {
@@ -204,8 +214,9 @@ void AliceGame::LevelLoad(Level* level, const json& data) {
 		LoadObjects(data["objects"]);
 
 	TileMap::Init();
-	vec2 initPosition(vec2( -99.0f, 40.0f));
-	vec2 currntPosition(vec2(-99.0f, 40.0f));
+	float initPosX = -99.0f;
+	vec2 currntPosition(vec2(initPosX, 40.0f));
+	//int32 tmpArr[ROW][COL];
 
 
 	for (int r = 0; r < ROW; ++r) {
@@ -213,7 +224,9 @@ void AliceGame::LevelLoad(Level* level, const json& data) {
 
 			TestTile* tile = new TestTile();
 
-			if (TileMap::GetTileElement(r, c) == 1) {
+			tmpArr[r][c] = TileMap::GetTileElement(r, c);
+
+			if (tmpArr[r][c] == 0) {
 				tile->SetIsWalkable(true);
 			}
 			else {
@@ -224,14 +237,24 @@ void AliceGame::LevelLoad(Level* level, const json& data) {
 			tile->SetPosition(currntPosition);
 			TileMap::AddTile(tile);
 			currntPosition.x += tile->GetHeightAndWidth().x;
-	
+
 			if (currntPosition.x >= 96) {
-				currntPosition.x = initPosition.x;
+				currntPosition.x = initPosX;
 				currntPosition.y -= tile->GetHeightAndWidth().y;
 			}
 		}
 	}
-	bta::PathTo();
+
+	if (bta::PathTo(std::make_pair(0, 0), std::make_pair(3, COL - 1), tmpArr)) {
+		DEBUG_LOG("Path found ");
+
+
+	}
+	else {
+		DEBUG_LOG("No path found");
+	}
+
+
 }
 
 int main(int argc, char* argv[]) {
@@ -242,6 +265,8 @@ int main(int argc, char* argv[]) {
 	Game* game = new AliceGame();
 	game->Run();
 	delete game;
+
+
 
 	return 0;
 }

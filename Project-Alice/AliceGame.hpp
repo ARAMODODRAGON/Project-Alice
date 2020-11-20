@@ -9,6 +9,7 @@ class AliceGame : public Game {
 
 	int32 quitTimer;
 	const int32 max_quit_time;
+	int32 tmpArr[ROW][COL];
 
 
 public:
