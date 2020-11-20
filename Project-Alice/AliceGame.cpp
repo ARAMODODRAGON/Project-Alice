@@ -1,5 +1,6 @@
 #include "AliceGame.hpp"
 #include "Scripts/Overworld/SpellInventory.hpp"
+#include <Engine/Content/SoundSystem.hpp>
 #include <Engine/General/SaveSystem.hpp>
 #include <Engine/Input/Keyboard.hpp>
 #include <Engine/Battle/BattleLevel.hpp>
@@ -35,6 +36,14 @@ bool AliceGame::Init() {
 
 	if (!Game::Init()) return false;
 
+	// FOR TESTING SOUND SYSTEM //
+
+	SoundSystem::LoadSound("MeepMeep", "Test");
+	SoundSystem::PlaySound("Test", -1);
+
+	SoundSystem::LoadMusic("Another Solo", "Test");
+	SoundSystem::PlayMusic("Test");
+
 	// initialize the singletons
 	ContentHandler::Init("Resources/Textures/Textures.index", "Resources/Shaders/Shaders.index", "Resources/Fonts/Fonts.index");
 	RenderScene::Init();
@@ -42,39 +51,9 @@ bool AliceGame::Init() {
 	PhysicsScene::Init();
 	BattleManager::Init("Resources/EnemyPhases/EnemyPhases.index");
 	LevelManager::Init("Resources/Levels/Levels.index", levelToLoad);
-	CutsceneManager::Init("Resources/Cutscenes/Cutscene.index");
+	//CutsceneManager::Init("Resources/Cutscenes/Cutscene.index");
 
-	CutsceneManager::loadCutscene("test_Cutscene");
-
-
-
-	// FOR TESTING SPELL INVENTORY //
-
-	SpellList::InitSpellData("Resources/Spells/Spells.json");
-	SpellInventory::InitData("");
-
-	SpellInventory::AddSpell("Boomerang");
-	SpellInventory::AddSpell("Wind Slash");
-	SpellInventory::AddSpell("Homing Lasers");
-	SpellInventory::AddSpell("Absolute Barrier");
-	SpellInventory::AddSpell("Absolute Reflection");
-	SpellInventory::AddSpell("Healing");
-
-	DEBUG_LOG("No. of Attack Spells: " + VTOS(SpellInventory::GetSpellCount(SpellType::Attack)));
-	DEBUG_LOG("No. of Defence Spells: " + VTOS(SpellInventory::GetSpellCount(SpellType::Defence)));
-
-	SpellInventory::EquipAtkSpell("Boomerang", 0);
-	SpellInventory::EquipAtkSpell("Wind Slash", 1);
-	SpellInventory::EquipAtkSpell("Wind Slash", 2);
-
-	SpellInventory::EquipDefSpell("Absolute Barrier");
-
-	for (uint32 i = 0; i < MAX_EQUIPPED_SPELLS; i++) {
-		DEBUG_LOG("Atk Skill Slot " + VTOS(i + 1) + ": " + VTOS(SpellInventory::GetEquippedAtkSpell(i)));
-	}
-	DEBUG_LOG("Def Skill: " + VTOS(SpellInventory::GetEquippedDefSpell()));
-
-	// FOR TESTING SPELL INVENTORY //
+	//CutsceneManager::loadCutscene("test_Cutscene");
 
 	return true;
 }
@@ -93,7 +72,7 @@ void AliceGame::Update() {
 	// update 
 	LevelManager::Update();
 	ObjectFactory::Update();
-	CutsceneManager::Update();
+	//CutsceneManager::Update();
 
 	// do physics
 	PhysicsScene::Step();

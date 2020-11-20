@@ -116,3 +116,41 @@ void Font::FreeThis() {
 		}
 	}
 }
+
+
+////////////////////////// Sound /////////////////////////
+
+/*Sound::Sound(Mix_Chunk* _sound) {
+	data = new Data();
+	data->sound = _sound;
+	data->refcount = 1;
+}
+
+Sound::Sound(const Sound& other) : data(other.data) {
+	data->refcount++;
+}
+Sound& Sound::operator=(const Sound& other) {
+	FreeThis();
+	data = other.data;
+	data->refcount++;
+	return *this;
+}
+Sound::Sound(Sound&& other) : data(other.data) {
+	other.data = nullptr;
+}
+Sound& Sound::operator=(Sound&& other) {
+	FreeThis();
+	data = other.data;
+	other.data = nullptr;
+	return *this;
+}
+
+void Sound::FreeThis() {
+	if (data) {
+		data->refcount--;
+		if (data->refcount == 0) {
+			delete data;
+			data = nullptr;
+		}
+	}
+}*/

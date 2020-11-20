@@ -50,6 +50,8 @@
     <ClCompile Include="Engine\Battle\Spells\Defence\BTHealing.cpp" />
     <ClCompile Include="Engine\Battle\Spells\SpellList.cpp" />
     <ClCompile Include="Engine\General\SaveSystem.cpp" />
+    <ClCompile Include="Engine\Content\SoundSystem.cpp" />
+    <ClCompile Include="Engine\Content\AudioSource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Cutscene\Actions\CMoveAction.hpp" />
@@ -110,5 +112,7 @@
     <ClInclude Include="Engine\Battle\Spells\SpellList.hpp" />
     <ClInclude Include="Engine\Battle\Spells\SpellMacros.hpp" />
     <ClInclude Include="Engine\General\SaveSystem.hpp" />
+    <ClInclude Include="Engine\Content\SoundSystem.hpp" />
+    <ClInclude Include="Engine\Content\AudioSource.hpp" />
   </ItemGroup>
 </Project>

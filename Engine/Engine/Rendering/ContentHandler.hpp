@@ -12,7 +12,7 @@ class ContentHandler {
 	using ShaderPairType = pair<const string, Shader>;
 	using FontPairType = pair<const string, Font>;
 
-	// textures, shaders, and fonts with file index
+	// textures, shaders, fonts, and audio with file index
 	map<string, Texture> textures;
 	map<string, Shader> shaders;
 	map<string, Font> fonts;
