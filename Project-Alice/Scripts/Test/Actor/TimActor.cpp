@@ -21,7 +21,7 @@ TimActor::~TimActor() {
 void TimActor::Start()
 {
 	sprite = AddComponent<SpriteRenderer>();
-	sprite->LoadTexture("Flashing Grey Orb");
+	sprite->LoadTexture("Cant Walk");
 	sprite->SetTilingSize(vec2(16.0f));
 	sprite->SetPivot(vec2(8.0f));
 	sprite->SetLayer(2);

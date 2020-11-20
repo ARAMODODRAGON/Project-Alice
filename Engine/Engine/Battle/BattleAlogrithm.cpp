@@ -112,6 +112,22 @@ namespace bta {
 		return BTAResult::Moving;
 	}
 
+	void PathTo()
+	{
+	
+		std::queue<glm::vec2> tiles_;
+
+		auto& tileVector = TileMap::GetTileVector();
+
+		for (size_t i = 0; i < tileVector.size(); ++i) {
+			tiles_.push(tileVector[i]->GetPosition());
+		}
+
+
+	
+		
+	}
+
 }
 
 //// check 

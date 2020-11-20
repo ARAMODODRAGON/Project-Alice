@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <time.h>
 
+
 class AliceGame : public Game {
 
 	int32 quitTimer;

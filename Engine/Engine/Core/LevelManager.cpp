@@ -182,8 +182,11 @@ void LevelManager::DoLevelAction() {
 }
 
 void LevelManager::LoadLevel(const string& level) {
+
+
 	Get()->levelAction = LevelAction::Replace;
 	Get()->levelToLoad = level;
+	
 }
 
 void LevelManager::ResetActions() {

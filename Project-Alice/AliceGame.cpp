@@ -1,11 +1,14 @@
 #include "AliceGame.hpp"
 #include "Scripts/Overworld/SpellInventory.hpp"
-#include <Engine/General/SaveSystem.hpp>
+#include "Scripts/Test/Tiles/TestTile.hpp"
+#include <Engine/General/SaveSystem.hpp>				 
 #include <Engine/Input/Keyboard.hpp>
 #include <Engine/Battle/BattleLevel.hpp>
 #include <Engine/Battle/BattleManager.hpp>
 #include <Engine/Physics/PhysicsScene.hpp>
 #include <Engine/Cutscene/CutsceneManager.hpp>
+#include <Engine/Battle/TileMap/TileMap.hpp>
+
 //#include <Engine/Battle/Spells/SpellMacros.hpp>
 #include <random>
 #include <chrono>
@@ -46,12 +49,10 @@ bool AliceGame::Init() {
 
 	CutsceneManager::loadCutscene("test_Cutscene");
 
-
-
 	// FOR TESTING SPELL INVENTORY //
 
 	SpellList::InitSpellData("Resources/Spells/Spells.json");
-	SpellInventory::InitData("");
+	SpellInventory::InitData();
 
 	SpellInventory::AddSpell("Boomerang");
 	SpellInventory::AddSpell("Wind Slash");
@@ -191,6 +192,36 @@ void AliceGame::LevelLoad(Level* level, const json& data) {
 	// load the level data
 	if (data.contains("objects"))
 		LoadObjects(data["objects"]);
+
+	TileMap::Init();
+	vec2 initPosition(vec2( -99.0f, 40.0f));
+	vec2 currntPosition(vec2(-99.0f, 40.0f));
+
+
+	for (int r = 0; r < ROW; ++r) {
+		for (int c = 0; c < COL; ++c) {
+
+			TestTile* tile = new TestTile();
+
+			if (TileMap::GetTileElement(r, c) == 1) {
+				tile->SetIsWalkable(true);
+			}
+			else {
+				tile->SetIsWalkable(false);
+			}
+
+			tile->Start();
+			tile->SetPosition(currntPosition);
+			TileMap::AddTile(tile);
+			currntPosition.x += tile->GetHeightAndWidth().x;
+	
+			if (currntPosition.x >= 96) {
+				currntPosition.x = initPosition.x;
+				currntPosition.y -= tile->GetHeightAndWidth().y;
+			}
+		}
+	}
+	bta::PathTo();
 }
 
 int main(int argc, char* argv[]) {

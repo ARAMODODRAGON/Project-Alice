@@ -10,7 +10,7 @@ CutsceneManager::CutsceneManager() : cutscenesIndex(nullptr), currentAction(-1),
 
 CutsceneManager::~CutsceneManager()
 {
-
+	
 	if (cutscenesIndex) { delete cutscenesIndex; }
 	cutscenesIndex = nullptr;
 
@@ -180,36 +180,45 @@ void CutsceneManager::RemoveActor(std::string actorName_)
 
 void CutsceneManager::Update()
 {
-	size_t& currentAction_ = Get()->currentAction;
-	auto& actions_ = Get()->actions;
 	bool& isComplete_ = Get()->isComplete;
 
 	if (!isComplete_) {
+	   
+		size_t& currentAction_ = Get()->currentAction;
+		auto& actions_ = Get()->actions;
 
-		if (currentAction_ == -1) {
-			currentAction_ += 1;
-			actions_[currentAction_]->Start();
-		}
-
-		if (actions_[currentAction_]) {
-
-
-			if (actions_[currentAction_]->isRunning()) {
-
-				actions_[currentAction_]->Update();
+		if (!actions_.empty()) {
+			//start the current action only called once for each current action
+			if (currentAction_ == -1) {
+				currentAction_ += 1;
+				actions_[currentAction_]->Start();
 			}
 
+			if (actions_[currentAction_]) {
 
-			else {
-				actions_[currentAction_] = nullptr;
-				actions_.erase(actions_.begin() + currentAction_);
+				if (actions_[currentAction_]->isRunning()) {
 
-				if (actions_.empty()) {
-					DEBUG_LOG("cutscene has finished");
-					isComplete_ = true;
+					actions_[currentAction_]->Update();
 				}
-				currentAction_ = -1;
+
+
+				else {
+					//get rid of the action once its complete
+					actions_[currentAction_] = nullptr;
+					actions_.erase(actions_.begin() + currentAction_);
+
+					//no more actions in the vector cutscene is over 
+					if (actions_.empty()) {
+						DEBUG_LOG("cutscene has finished");
+						isComplete_ = true;
+					}
+					//action array is now set to -1 to call START() on the next action
+					currentAction_ = -1;
+				}
 			}
+		}
+		else {
+			//do nothing 
 		}
 	}
 
