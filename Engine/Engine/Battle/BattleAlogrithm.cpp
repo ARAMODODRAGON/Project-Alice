@@ -138,10 +138,10 @@ namespace bta {
 			}
 
 			for (size_t i = 0; i < 4; ++i) {
-				int32 a = reached.first + direction[i][0];
-				int32 b = reached.second + direction[i][1];
+				uint32 a = reached.first + direction[i][0];
+				uint32 b = reached.second + direction[i][1];
 
-				if (arr[a][b] != -1 && a >= 0 && b >= 0) {
+				if (a < ROW && b < COL && arr[a][b] != -1 && a >= 0 && b >= 0) {
 					tiles.push(std::make_pair(a, b));
 				}
 			}

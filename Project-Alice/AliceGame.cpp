@@ -112,11 +112,6 @@ void AliceGame::Update() {
 	// do physics
 	PhysicsScene::Step();
 
-
-
-
-
-
 }
 
 void AliceGame::Draw() {
@@ -156,7 +151,7 @@ bool AliceGame::Exit() {
 	return true;
 }
 
-void LoadObjects(const json& data) {
+static void LoadObjects(const json& data) {
 	for (auto it = data.begin(); it != data.end(); ++it) {
 		if (!it->is_object()) {
 			DEBUG_ERROR("Non object in object array! Skipped");
@@ -260,7 +255,7 @@ void AliceGame::LevelLoad(Level* level, const json& data) {
 int main(int argc, char* argv[]) {
 
 	// set random value using chrono
-	srand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+	srand(std::chrono::steady_clock::now().time_since_epoch().count());
 	
 	Game* game = new AliceGame();
 	game->Run();
