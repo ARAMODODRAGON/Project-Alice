@@ -11,7 +11,8 @@
 AliceGame::AliceGame()
 	: Game()
 	, quitTimer(0)
-	, max_quit_time(15) { }
+	, max_quit_time(15)
+	, connected(false) { }
 
 AliceGame::~AliceGame() { }
 
@@ -51,6 +52,12 @@ void AliceGame::Update() {
 
 	// do physics
 	PhysicsScene::Step();
+
+	if (!connected && NetworkManager::GetStatus() == NetStatus::Connected) {
+		connected = true;
+		const LobbyData* lod = NetworkManager::GetLobby();
+		DEBUG_LOG("Connected to server with lobby ID:{" + VTOS(lod->ID) + "}"); // + "} and userID:{" + "}"
+	}
 
 }
 
@@ -151,12 +158,14 @@ int main(int argc, char* argv[]) {
 	NetworkManager::Init();
 	// set random value using chrono
 	srand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
-	
+
+	std::cout << "<create|join>" << std::endl;
 	string msg;
 	std::getline(std::cin, msg);
 
 	if (msg == "create") NetworkManager::CreateLobby();
 	else if (msg == "join") {
+		std::cout << "ID = ";
 		uint32 id;
 		std::cin >> id;
 		NetworkManager::JoinLobby(id);

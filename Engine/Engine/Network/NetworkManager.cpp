@@ -6,6 +6,7 @@
 #include <future>
 #include <atomic>
 #include "../General/Serialization.hpp"
+#include <iostream>
 
 // prevents linkage
 namespace {
@@ -14,8 +15,8 @@ namespace {
 	WSADATA wsaData;
 
 	std::atomic<NetStatus> status = NetStatus::Disconnected;
-	LobbyData* lobby;
-	uint32 userID;
+	LobbyData* lobby = nullptr;
+	uint32 userID = -1;
 
 	// socket connection to server 
 	SOCKET connectSocket = INVALID_SOCKET;
@@ -107,6 +108,7 @@ void ConnectToServer(const uint32 lobbyID = -1) {
 		// get as string to send to server
 		string s = j.dump(-1);
 
+		std::cout << "test1" << std::endl;
 		// try to send data over
 		if (send(connectSocket, s.c_str(), s.size() + 1, 0) == SOCKET_ERROR) {
 			DEBUG_ERROR("Failed to create lobby");
@@ -115,6 +117,7 @@ void ConnectToServer(const uint32 lobbyID = -1) {
 			return;
 		}
 
+		std::cout << "test2" << std::endl;
 		// wait for server response
 		int32 bytesrecv = recv(connectSocket, buffer, bufferLen, 0);
 		if (bytesrecv == SOCKET_ERROR) {
@@ -132,7 +135,11 @@ void ConnectToServer(const uint32 lobbyID = -1) {
 		// should look like
 		/* "type": "lobby created", "ID": number, "userID": number */
 
-		if (!j["type"].is_string() || j["type"].get<string>() != "lobby created") {
+		s = j["type"];
+
+
+		std::cout << "test3" << std::endl;
+		if (s != "lobby created") {
 			DEBUG_LOG("Got incorrect response from server? response: " + j.get<string>());
 			closesocket(connectSocket);
 			status = NetStatus::Failed;
@@ -142,6 +149,7 @@ void ConnectToServer(const uint32 lobbyID = -1) {
 		// store the userID
 		userID = j["userID"];
 
+		std::cout << "test4" << std::endl;
 		// create and store the lobby data
 		LobbyData* data = new LobbyData();
 		data->ID = j["ID"];
@@ -193,7 +201,7 @@ void ConnectToServer(const uint32 lobbyID = -1) {
 			return;
 		}
 
-		s = j["type"].get<string>();
+		s = j["type"];
 
 		// joined lobby
 		if (s == "joined lobby") {
@@ -254,4 +262,8 @@ NetStatus NetworkManager::GetStatus() {
 
 const LobbyData* NetworkManager::GetLobby() {
 	return lobby;
+}
+
+uint32 NetworkManager::GetUserID() {
+	return userID;
 }

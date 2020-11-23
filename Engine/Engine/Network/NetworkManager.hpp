@@ -44,6 +44,8 @@ public:
 	// gets the lobby data if connected to a lobby
 	static const LobbyData* GetLobby();
 
+	static uint32 GetUserID();
+
 };
 
 #endif // !NETWORK_NETWORK_MANAGER_HPP

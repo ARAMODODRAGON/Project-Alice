@@ -8,7 +8,7 @@ class AliceGame : public Game {
 
 	int32 quitTimer;
 	const int32 max_quit_time;
-
+	bool connected;
 
 public:
 
