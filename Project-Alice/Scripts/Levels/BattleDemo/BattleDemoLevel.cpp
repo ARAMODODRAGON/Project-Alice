@@ -18,10 +18,11 @@ void BattleDemoLevel::Init() {
 
 	// setup the bounds of the level
 	Rect levelBounds;
-	constexpr float halfHeight = (288.0f / 2.0f) - 5.0f;
+	constexpr float halfHeight = (288.0f / 2.0f) - 15.0f;
+	constexpr float ratio = 0.88f;
 	levelBounds.top = halfHeight;
 	levelBounds.bottom = -halfHeight;
-	levelBounds.right = halfHeight * 0.88f;
+	levelBounds.right = halfHeight * ratio;
 	levelBounds.left = -levelBounds.right;
 	BattleManager::SetBattleArea(levelBounds);
 
