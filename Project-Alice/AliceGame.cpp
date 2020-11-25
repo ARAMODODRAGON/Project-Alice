@@ -15,6 +15,8 @@
 #include <chrono>
 #include <iostream>
 
+#define DEFAULT_LEVEL "battle_demo"
+
 AliceGame::AliceGame()
 	: Game()
 	, quitTimer(0)
@@ -30,8 +32,11 @@ bool AliceGame::Init() {
 
 	// read the level
 	string levelToLoad;
-	std::cout << "Enter level that you would like to load:" << std::endl;
+	std::cout << std::endl 
+		<< "Hit enter to go to the " DEFAULT_LEVEL " level or" << std::endl 
+		<< "enter the name of the level that you would like to load:" << std::endl;
 	std::getline(std::cin, levelToLoad);
+	if (levelToLoad == "") levelToLoad = DEFAULT_LEVEL;
 
 	if (!Game::Init()) return false;
 
