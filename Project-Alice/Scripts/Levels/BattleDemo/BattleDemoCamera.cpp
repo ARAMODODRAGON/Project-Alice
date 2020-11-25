@@ -34,41 +34,43 @@ void BattleDemoCamera::LateUpdate() {
 	vec2 ratio = Game::Get()->GetWindow()->GetScreenSize() / camera->GetCameraSize() * 2.0f;
 
 	// draw the level boundries
-	Rect left;
-	left.bottom = levelBounds.bottom;
-	left.top = levelBounds.top;
-	left.right = levelBounds.left;
-	left.left = left.right - width;
-	left.min *= ratio;
-	left.max *= ratio;
-	ui->DrawSprite("default", left.left, left.bottom, left.right - left.left, left.top - left.bottom);
+	Rect r;
 
-	Rect right;
-	right.bottom = levelBounds.bottom;
-	right.top = levelBounds.top;
-	right.left = levelBounds.right;
-	right.right = right.left + width;
-	right.min *= ratio;
-	right.max *= ratio;
-	ui->DrawSprite("default", right.left, right.bottom, right.right - right.left, right.top - right.bottom);
+	// left
+	r.bottom = levelBounds.bottom - width;
+	r.top = levelBounds.top + width;
+	r.right = levelBounds.left;
+	r.left = r.right - width;
+	r.min *= ratio;
+	r.max *= ratio;
+	ui->DrawSprite("default", r.left, r.bottom, r.right - r.left, r.top - r.bottom);
 
-	Rect top;
-	top.left = levelBounds.left;
-	top.right = levelBounds.right;
-	top.bottom = levelBounds.top;
-	top.top = top.bottom + width;
-	top.min *= ratio;
-	top.max *= ratio;
-	ui->DrawSprite("default", top.left, top.bottom, top.right - top.left, top.top - top.bottom);
+	// right
+	r.bottom = levelBounds.bottom - width;
+	r.top = levelBounds.top + width;
+	r.left = levelBounds.right;
+	r.right = r.left + width;
+	r.min *= ratio;
+	r.max *= ratio;
+	ui->DrawSprite("default", r.left, r.bottom, r.right - r.left, r.top - r.bottom);
 
-	Rect bottom;
-	bottom.left = levelBounds.left;
-	bottom.right = levelBounds.right;
-	bottom.top = levelBounds.bottom;
-	bottom.bottom = bottom.top - width;
-	bottom.min *= ratio;
-	bottom.max *= ratio;
-	ui->DrawSprite("default", bottom.left, bottom.bottom, bottom.right - bottom.left, bottom.top - bottom.bottom);
+	// top
+	r.left = levelBounds.left;
+	r.right = levelBounds.right;
+	r.bottom = levelBounds.top;
+	r.top = r.bottom + width;
+	r.min *= ratio;
+	r.max *= ratio;
+	ui->DrawSprite("default", r.left, r.bottom, r.right - r.left, r.top - r.bottom);
+
+	// bottom
+	r.left = levelBounds.left;
+	r.right = levelBounds.right;
+	r.top = levelBounds.bottom;
+	r.bottom = r.top - width;
+	r.min *= ratio;
+	r.max *= ratio;
+	ui->DrawSprite("default", r.left, r.bottom, r.right - r.left, r.top - r.bottom);
 
 }
 
