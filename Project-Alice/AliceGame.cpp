@@ -5,7 +5,6 @@
 #include <Engine/Content/SoundSystem.hpp>
 #include <Engine/General/SaveSystem.hpp>
 #include <Engine/Input/Keyboard.hpp>
-#include <Engine/Battle/BattleLevel.hpp>
 #include <Engine/Battle/BattleManager.hpp>
 #include <Engine/Physics/PhysicsScene.hpp>
 #include <Engine/Cutscene/CutsceneManager.hpp>
@@ -59,7 +58,7 @@ bool AliceGame::Init() {
 
 	CutsceneManager::loadCutscene("test_Cutscene");
 
-	
+
 
 	// FOR TESTING SPELL INVENTORY //
 
@@ -89,7 +88,7 @@ bool AliceGame::Init() {
 
 	// FOR TESTING SPELL INVENTORY //
 
-	
+
 	return true;
 }
 
@@ -105,6 +104,7 @@ void AliceGame::Update() {
 	}
 
 	// update 
+	BattleManager::Update(1.0f);
 	LevelManager::Update();
 	ObjectFactory::Update();
 	//CutsceneManager::Update();
@@ -208,47 +208,48 @@ void AliceGame::LevelLoad(Level* level, const json& data) {
 	if (data.contains("objects"))
 		LoadObjects(data["objects"]);
 
-	TileMap::Init();
-	float initPosX = -99.0f;
-	vec2 currntPosition(vec2(initPosX, 40.0f));
-	//int32 tmpArr[ROW][COL];
+	// TODO: remove this in the future
+	if (data.contains("HasPathfinding") && data["HasPathfinding"] == true) {
+
+		TileMap::Init();
+		float initPosX = -99.0f;
+		vec2 currntPosition(vec2(initPosX, 40.0f));
+		//int32 tmpArr[ROW][COL];
 
 
-	for (int r = 0; r < ROW; ++r) {
-		for (int c = 0; c < COL; ++c) {
+		for (int r = 0; r < ROW; ++r) {
+			for (int c = 0; c < COL; ++c) {
 
-			TestTile* tile = new TestTile();
+				TestTile* tile = new TestTile();
 
-			tmpArr[r][c] = TileMap::GetTileElement(r, c);
+				tmpArr[r][c] = TileMap::GetTileElement(r, c);
 
-			if (tmpArr[r][c] == 0) {
-				tile->SetIsWalkable(true);
-			}
-			else {
-				tile->SetIsWalkable(false);
-			}
+				if (tmpArr[r][c] == 0) {
+					tile->SetIsWalkable(true);
+				} else {
+					tile->SetIsWalkable(false);
+				}
 
-			tile->Start();
-			tile->SetPosition(currntPosition);
-			TileMap::AddTile(tile);
-			currntPosition.x += tile->GetHeightAndWidth().x;
+				tile->Start();
+				tile->SetPosition(currntPosition);
+				TileMap::AddTile(tile);
+				currntPosition.x += tile->GetHeightAndWidth().x;
 
-			if (currntPosition.x >= 96) {
-				currntPosition.x = initPosX;
-				currntPosition.y -= tile->GetHeightAndWidth().y;
+				if (currntPosition.x >= 96) {
+					currntPosition.x = initPosX;
+					currntPosition.y -= tile->GetHeightAndWidth().y;
+				}
 			}
 		}
+
+		if (bta::PathTo(std::make_pair(0, 0), std::make_pair(3, COL - 1), tmpArr)) {
+			DEBUG_LOG("Path found ");
+
+
+		} else {
+			DEBUG_LOG("No path found");
+		}
 	}
-
-	if (bta::PathTo(std::make_pair(0, 0), std::make_pair(3, COL - 1), tmpArr)) {
-		DEBUG_LOG("Path found ");
-
-
-	}
-	else {
-		DEBUG_LOG("No path found");
-	}
-
 
 }
 
@@ -256,7 +257,7 @@ int main(int argc, char* argv[]) {
 
 	// set random value using chrono
 	srand(std::chrono::steady_clock::now().time_since_epoch().count());
-	
+
 	Game* game = new AliceGame();
 	game->Run();
 	delete game;

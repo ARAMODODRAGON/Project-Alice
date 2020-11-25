@@ -12,7 +12,6 @@
     <ClCompile Include="Engine\Battle\Spells\Attack\BTAttackSpell.cpp" />
     <ClCompile Include="Engine\Battle\BattleAlogrithm.cpp" />
     <ClCompile Include="Engine\Battle\BTPhase.cpp" />
-    <ClCompile Include="Engine\Battle\BattleLevel.cpp" />
     <ClCompile Include="Engine\Battle\BTEnemy.cpp" />
     <ClCompile Include="Engine\Battle\BTPlayer.cpp" />
     <ClCompile Include="Engine\Battle\BattleManager.cpp" />
@@ -53,6 +52,7 @@
     <ClCompile Include="Engine\Battle\TileMap\TileMap.cpp" />
     <ClCompile Include="Engine\Content\SoundSystem.cpp" />
     <ClCompile Include="Engine\Content\AudioSourceComponent.cpp" />
+    <ClCompile Include="Engine\Battle\TileMap\Tile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Cutscene\Actions\CMoveAction.hpp" />
@@ -67,7 +67,6 @@
     <ClInclude Include="Engine\Battle\Spells\BTSpell.hpp" />
     <ClInclude Include="Engine\Battle\BattleAlogrithm.hpp" />
     <ClInclude Include="Engine\Battle\BTPhase.hpp" />
-    <ClInclude Include="Engine\Battle\BattleLevel.hpp" />
     <ClInclude Include="Engine\Battle\BTEnemy.hpp" />
     <ClInclude Include="Engine\Battle\BTPlayer.hpp" />
     <ClInclude Include="Engine\Battle\BattleManager.hpp" />
@@ -116,5 +115,6 @@
     <ClInclude Include="Engine\Battle\TileMap\TileMap.hpp" />
     <ClInclude Include="Engine\Content\SoundSystem.hpp" />
     <ClInclude Include="Engine\Content\AudioSourceComponent.hpp" />
+    <ClInclude Include="Engine\Battle\TileMap\Tile.hpp" />
   </ItemGroup>
 </Project>

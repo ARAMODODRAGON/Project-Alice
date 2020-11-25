@@ -18,6 +18,8 @@ class BattleManager {
 	Rect battleArea;
 	FileIndex* phaseIndex;
 
+	float timer;
+
 	BattleManager();
 	~BattleManager();
 
@@ -25,6 +27,7 @@ public:
 
 	// events
 	static void Init(const string& phaseFilePath);
+	static void Update(const float timescale);
 
 	// loading phases
 	static json LoadPhaseFile(const string& phaseFile);
@@ -42,6 +45,8 @@ public:
 	static BTEnemy* GetEnemy(size_t index = 0);
 	static Rect GetBattleArea();
 	static void SetBattleArea(const Rect& battleArea_);
+	static float GetTimer() { return Get()->timer; }
+	static void SetTimer(const float timer_) { Get()->timer = timer_; }
 
 };
 

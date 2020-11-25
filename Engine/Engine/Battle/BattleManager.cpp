@@ -1,6 +1,6 @@
 #include "BattleManager.hpp"
 
-BattleManager::BattleManager() : phaseIndex(nullptr) {
+BattleManager::BattleManager() : phaseIndex(nullptr), timer(0.0f) {
 	// just some initial values
 	players.reserve(2);
 	enemies.reserve(5);
@@ -24,6 +24,15 @@ void BattleManager::Init(const string& phaseFilePath) {
 		Get()->phaseIndex = new FileIndex(phaseFilePath);
 	} else {
 		DEBUG_ERROR("Init has already been called!");
+	}
+}
+
+void BattleManager::Update(const float timescale) {
+	const float delta = timescale * (1.0f / 60.0f);
+	if (Get()->timer != 0.0f) Get()->timer -= delta;
+	if (Get()->timer < 0.0f) {
+		Get()->timer = 0.0f;
+		DEBUG_LOG("Timer reached 0");
 	}
 }
 

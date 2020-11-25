@@ -1,11 +1,9 @@
 {
-    "type": "BattleLevel",
-    "data": {
-        "objects": [ 
-            { "type": "BattleCamera" },
-            { "type": "TestBattlePlayer" },
-            { "type": "TestEnemy" }
-        
-        ]
-    }
+    "@type": "Level",
+    "objects": [ 
+		{ "type": "BattleCamera" },
+		{ "type": "TestBattlePlayer" },
+		{ "type": "TestEnemy" }
+	
+	]
 }

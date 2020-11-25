@@ -33,7 +33,6 @@
     <ClInclude Include="Engine\Battle\Spells\BTSpell.hpp" />
     <ClInclude Include="Engine\Battle\BattleAlogrithm.hpp" />
     <ClInclude Include="Engine\Battle\BTPhase.hpp" />
-    <ClInclude Include="Engine\Battle\BattleLevel.hpp" />
     <ClInclude Include="Engine\Battle\BTEnemy.hpp" />
     <ClInclude Include="Engine\Battle\BTPlayer.hpp" />
     <ClInclude Include="Engine\Battle\BattleManager.hpp" />
@@ -95,7 +94,6 @@
     <ClCompile Include="Engine\Battle\Spells\Attack\BTAttackSpell.cpp" />
     <ClCompile Include="Engine\Battle\BattleAlogrithm.cpp" />
     <ClCompile Include="Engine\Battle\BTPhase.cpp" />
-    <ClCompile Include="Engine\Battle\BattleLevel.cpp" />
     <ClCompile Include="Engine\Battle\BTEnemy.cpp" />
     <ClCompile Include="Engine\Battle\BTPlayer.cpp" />
     <ClCompile Include="Engine\Battle\BattleManager.cpp" />
