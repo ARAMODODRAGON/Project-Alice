@@ -175,12 +175,12 @@ void UIRenderer::Draw(const vec2& screenSize) {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glActiveTexture(GL_TEXTURE0);
 
-	DrawSetFont("TestFont2");
-	DrawText("The quick brown fox jumps over the lazy dog", -screenSize.x, 100.0, 1.0, 1.0, vec3(1.0));
-	DrawSetFont("TestFont");
-	DrawText("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG", -screenSize.x, 200.0, 1.0, 1.0, vec3(0.0, 0.0, 1.0));
-
-	DrawSprite("circle 128", 0.0, 0.0, 2.5, 2.5);
+	//DrawSetFont("TestFont2");
+	//DrawText("The quick brown fox jumps over the lazy dog", -screenSize.x, 100.0, 1.0, 1.0, vec3(1.0));
+	//DrawSetFont("TestFont");
+	//DrawText("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG", -screenSize.x, 200.0, 1.0, 1.0, vec3(0.0, 0.0, 1.0));
+	//
+	//DrawSprite("circle 128", 0.0, 0.0, 2.5, 2.5);
 
 	// Loop through every element on the draw queue and draw them in order
 	for (auto element : drawQueue) {

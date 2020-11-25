@@ -49,7 +49,7 @@ void CutsceneManager::Init(const string& cutsceneIndexPath_)
 	if (!Get()->cutscenesIndex) {
 		Get()->cutscenesIndex = new FileIndex(cutsceneIndexPath_);
 
-		DEBUG_LOG(" Successfully initiated CUTSCENE MANAGER");
+		//DEBUG_LOG(" Successfully initiated CUTSCENE MANAGER");
 	}
 	else {
 		DEBUG_ERROR("Init has already been called!");
@@ -117,7 +117,7 @@ void CutsceneManager::loadCutscene(const std::string& filePath_)
 				std::string& actorName = (std::string)tmp["data"]["actorName"];
 				glm::vec2 actionPosition((float)tmp["data"]["position"]["x"], (float)tmp["data"]["position"]["y"]);
 				
-				DEBUG_ERROR("action poition" + VTOS(actionPosition));
+				//DEBUG_ERROR("action poition " + VTOS(actionPosition));
 
 				if (type == "CMoveAction") {
 
