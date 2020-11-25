@@ -18,7 +18,10 @@ using glm::mat4;
 using glm::to_string;
 
 struct Rect {
-	vec2 min, max;
+	union {
+		struct { vec2 min, max; };
+		struct { float left, bottom, right, top; };
+	};
 
 	Rect() { }
 
@@ -52,35 +55,35 @@ inline bool NearlyEqual(const float& v0, const float& v1, const float& percision
 }
 
 inline bool NearlyZero(const vec2& v, const float& percision = DEFAULT_PERCISION) {
-	return (abs(v.x) < percision) 
+	return (abs(v.x) < percision)
 		&& (abs(v.y) < percision);
 }
 inline bool NearlyEqual(const vec2& v0, const vec2& v1, const float& percision = DEFAULT_PERCISION) {
-	return (abs(v0.x - v1.x) < percision) 
+	return (abs(v0.x - v1.x) < percision)
 		&& (abs(v0.y - v1.y) < percision);
 }
 
 inline bool NearlyZero(const vec3& v, const float& percision = DEFAULT_PERCISION) {
-	return (abs(v.x) < percision) 
-		&& (abs(v.y) < percision) 
+	return (abs(v.x) < percision)
+		&& (abs(v.y) < percision)
 		&& (abs(v.z) < percision);
 }
 inline bool NearlyEqual(const vec3& v0, const vec3& v1, const float& percision = DEFAULT_PERCISION) {
-	return (abs(v0.x - v1.x) < percision) 
-		&& (abs(v0.y - v1.y) < percision) 
+	return (abs(v0.x - v1.x) < percision)
+		&& (abs(v0.y - v1.y) < percision)
 		&& (abs(v0.z - v1.z) < percision);
 }
 
 inline bool NearlyZero(const vec4& v, const float& percision = DEFAULT_PERCISION) {
-	return (abs(v.x) < percision) 
-		&& (abs(v.y) < percision) 
-		&& (abs(v.z) < percision) 
+	return (abs(v.x) < percision)
+		&& (abs(v.y) < percision)
+		&& (abs(v.z) < percision)
 		&& (abs(v.w) < percision);
 }
 inline bool NearlyEqual(const vec4& v0, const vec4& v1, const float& percision = DEFAULT_PERCISION) {
-	return (abs(v0.x - v1.x) < percision) 
-		&& (abs(v0.y - v1.y) < percision) 
-		&& (abs(v0.z - v1.z) < percision) 
+	return (abs(v0.x - v1.x) < percision)
+		&& (abs(v0.y - v1.y) < percision)
+		&& (abs(v0.z - v1.z) < percision)
 		&& (abs(v0.w - v1.w) < percision);
 }
 

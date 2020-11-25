@@ -14,12 +14,15 @@ void BattleDemoLevel::Init() {
 	
 	// setup camera
 	camera = ObjectFactory::Make<BattleDemoCamera>();
+	// camera size = (512, 288)
 
 	// setup the bounds of the level
 	Rect levelBounds;
-	constexpr float halfHeight = (288.0f / 2.0f) - 20.0f;
-	levelBounds.max = vec2(halfHeight * 0.88, halfHeight);
-	levelBounds.min = -levelBounds.max;
+	constexpr float halfHeight = (288.0f / 2.0f) - 5.0f;
+	levelBounds.top = halfHeight;
+	levelBounds.bottom = -halfHeight;
+	levelBounds.right = halfHeight * 0.88f;
+	levelBounds.left = -levelBounds.right;
 	BattleManager::SetBattleArea(levelBounds);
 
 }
