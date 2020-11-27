@@ -89,6 +89,7 @@ BTPhase* BTEnemy::AddPhase(const type type_) {
 
 	phases.push_back(phase_);
 	phase_->SetEnemy(this);
+	phase_->Init();
 	return phase_;
 
 }

@@ -38,6 +38,7 @@ public:
 	BTPhase();
 	virtual ~BTPhase() = 0;
 
+	virtual void Init() {}
 	virtual void StartPhase() = 0;       // init all starting values 
 	virtual void UpdatePhase() = 0;		//updates the phase logic 
 	virtual bool IsComplete() = 0;		//checks if the phase is complete 

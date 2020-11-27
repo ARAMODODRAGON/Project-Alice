@@ -26,6 +26,21 @@ public:
 	void OnDestroy() override;
 
 	BTPhase* AddPhase(const type type_); //add a phase 
+	template<class T> T* AddPhase() {
+		// derived
+		if (std::is_base_of<BTPhase, T>::value) {
+			// reinterpret is allowed because we know its dirvetive
+			T* phaseT = new T();
+			BTPhase* phase = reinterpret_cast<BTPhase*>(phaseT);
+			phase->SetEnemy(this);
+			phases.push_back(phase); 
+			phase->Init();
+			return phaseT;
+		}
+		// not derived
+		DEBUG_ERROR("Given type does not inherit from BTPhase");
+		return nullptr;
+	}
 	BTPhase* GetPhase(const string& phaseName_); // return a phase by the name given
 
 	inline float GetMaxHealth() { return maxHealth; }
