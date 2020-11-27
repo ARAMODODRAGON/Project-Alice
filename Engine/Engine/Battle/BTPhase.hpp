@@ -40,7 +40,7 @@ public:
 
 	virtual void StartPhase() = 0;       // init all starting values 
 	virtual void UpdatePhase() = 0;		//updates the phase logic 
-	virtual bool isComplete() = 0;		//checks if the phase is complete 
+	virtual bool IsComplete() = 0;		//checks if the phase is complete 
 
 
 	//getters and setters for enemy values as the phases will control the ai side of the enemys 

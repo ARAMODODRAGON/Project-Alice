@@ -11,9 +11,6 @@ class BTPhase;
 
 class BTEnemy : public Object
 {
-	//glm::vec2 destination;
-	float maxSpeed;
-	float maxAcceleration;
 	float maxHealth;
 	float currentHealth;
 	std::vector<BTPhase*> phases;
@@ -31,19 +28,10 @@ public:
 	BTPhase* AddPhase(const type type_); //add a phase 
 	BTPhase* GetPhase(const string& phaseName_); // return a phase by the name given
 
-	inline float GetMaxSpeed() { return maxSpeed; }
-	inline float GetMaxAcceleration() { return maxAcceleration; }
 	inline float GetMaxHealth() { return maxHealth; }
+	inline float SetMaxHealth(const float maxHealth_) { maxHealth = maxHealth_; }
 	inline float GetCurrentHealth() { return currentHealth; }
-	//inline bool GetIsMoving() { return isMoving; }
-	//inline glm::vec2 GetDestination() { return destination; }
-
-	inline void SetMaxAcceleration(float maxAcceleration_) { maxAcceleration = maxAcceleration_; }
-	//inline void SetIsMoving(bool isMoving_) { isMoving = isMoving_; }
-	inline void SetMaxSpeed(float movementSpeed_) { maxSpeed = movementSpeed_; }
-	//inline void SetDestination(glm::vec2 destination_) { destination = destination_; }
-
-
+	inline float SetCurrentHealth(const float currentHealth_) { currentHealth = currentHealth_; }
 
 	RTTR_ENABLE(Object) RTTR_REGISTRATION_FRIEND
 };

@@ -35,8 +35,8 @@ void TestPhase::UpdatePhase()
 	SetCurrentHealth(GetEnemy()->GetCurrentHealth());
 	SetMaxHealth(GetEnemy()->GetMaxHealth());
 
-	SetAcceleration(GetEnemy()->GetMaxAcceleration());
-	SetMaxSpeed(GetEnemy()->GetMaxSpeed());
+	//SetAcceleration(GetEnemy()->GetMaxAcceleration());
+	//SetMaxSpeed(GetEnemy()->GetMaxSpeed());
 	vec2 velocity = GetEnemy()->GetVelocity();
 
 	if (timer < (timerEnd * 40)) {
@@ -59,7 +59,7 @@ void TestPhase::UpdatePhase()
 	timer++;
 }
 
-bool TestPhase::isComplete()
+bool TestPhase::IsComplete()
 {
 	if (result == BTAResult::Arrived) {
 		DEBUG_LOG(GetPhaseName() + " phase is Complete ");

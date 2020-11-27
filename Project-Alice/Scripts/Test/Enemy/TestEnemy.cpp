@@ -23,12 +23,12 @@ void TestEnemy::Start()
 	sprite->SetPivot(vec2(8.0f));
 	sprite->SetLayer(1);
 	//srand(time(NULL));
-	moveFromMiddle = new TestPhase();
-	moveToMiddle = new TestPhase1();
-	SetMaxSpeed(50.0f);
-	SetMaxAcceleration(50.0f);
-    AddPhase(moveFromMiddle->get_type()); 
-    AddPhase(moveToMiddle->get_type());	
+	//moveFromMiddle = new TestPhase();
+	//moveToMiddle = new TestPhase1();
+	//SetMaxSpeed(50.0f);
+	//SetMaxAcceleration(50.0f);
+	moveFromMiddle = rttr_cast<TestPhase*>(AddPhase(moveFromMiddle->get_type())); 
+	moveToMiddle = rttr_cast<TestPhase1*>(AddPhase(moveToMiddle->get_type()));	
 
 }
 
@@ -45,9 +45,4 @@ void TestEnemy::LateUpdate()
 
 void TestEnemy::OnDestroy()
 {
-	moveFromMiddle = nullptr;
-	delete moveFromMiddle;
-
-	moveToMiddle = nullptr;
-	delete moveToMiddle;
 }
