@@ -23,7 +23,7 @@ struct Rect {
 		struct { float left, bottom, right, top; };
 	};
 
-	Rect() { }
+	Rect() : min(0.0f), max(0.0f) { }
 
 	Rect(const vec2& min_, const vec2& max_)
 		: min(min_), max(max_) { }
