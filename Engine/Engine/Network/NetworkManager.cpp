@@ -128,18 +128,18 @@ void ConnectToServer(const uint32 lobbyID = -1) {
 		}
 
 		// read back into json object
-		j = buffer;
+		j = json::parse(buffer);
 
 		// read data about the created lobby
 
 		// should look like
 		/* "type": "lobby created", "ID": number, "userID": number */
 
+
 		s = j["type"];
 
-
 		std::cout << "test3" << std::endl;
-		if (s != "lobby created") {
+		if ( s != "lobby created") {
 			DEBUG_LOG("Got incorrect response from server? response: " + j.get<string>());
 			closesocket(connectSocket);
 			status = NetStatus::Failed;
