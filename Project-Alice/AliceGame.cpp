@@ -21,6 +21,7 @@ bool AliceGame::Init() {
 	string levelToLoad;
 	std::cout << "Enter level that you would like to load:" << std::endl;
 	std::getline(std::cin, levelToLoad);
+	if (levelToLoad == "") levelToLoad = "collision_test";
 
 	if (!Game::Init()) return false;
 
@@ -55,10 +56,10 @@ void AliceGame::Update() {
 
 	if (!connected && NetworkManager::GetStatus() == NetStatus::Connected) {
 		connected = true;
-		const LobbyData* lod = NetworkManager::GetLobby();
-		DEBUG_LOG("Connected to server with lobby ID:{" + VTOS(lod->ID) + "}"); // + "} and userID:{" + "}"
+		if (const LobbyData* lod = NetworkManager::GetLobby()) {
+			DEBUG_LOG("Connected to server with lobby ID:{" + VTOS(lod->ID) + "}"); // + "} and userID:{" + "}"
+		}
 	}
-
 }
 
 void AliceGame::Draw() {
@@ -91,6 +92,8 @@ bool AliceGame::Exit() {
 	PhysicsScene::Exit();
 	RenderScene::Exit();
 	ContentHandler::Exit();
+
+	NetworkManager::ExitLobby();
 
 	return true;
 }

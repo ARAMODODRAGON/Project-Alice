@@ -19,6 +19,25 @@ enum class NetStatus : uint8 {
 	JoiningLobby
 };
 
+inline string NetStatusToString(NetStatus e) {
+	switch (e) {
+		case NetStatus::Failed:
+			return "Failed";
+		case NetStatus::Connected:
+			return "Connected";
+		case NetStatus::Disconnected:
+			return "Disconnected";
+		case NetStatus::Loading:
+			return "Loading";
+		case NetStatus::CreatingLobby:
+			return "CreatingLobby";
+		case NetStatus::JoiningLobby:
+			return "JoiningLobby";
+		default:
+			return std::to_string(static_cast<std::underlying_type<NetStatus>::type>(e));
+	}
+}
+
 class NetworkManager {
 public:
 
