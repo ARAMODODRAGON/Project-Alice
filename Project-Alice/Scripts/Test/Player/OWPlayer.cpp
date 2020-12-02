@@ -1,6 +1,7 @@
 #include "OWPlayer.hpp"
 #include <Engine/Common.hpp>
 #include "../Projectile.hpp"
+#include <Engine\Battle\BattleManager.hpp>
 
 RTTR_REGISTRATION {
 	registration::class_<OWPlayer>("OWPlayer")
@@ -36,19 +37,23 @@ void OWPlayer::Start() {
 	coll->SetRadius(4.0f);
 	ui = AddComponent<UIRenderer>();
 
-	// create another object
-	Object* o = Make();
-	SpriteRenderer* s = o->AddComponent<SpriteRenderer>();
-	s->LoadTexture("circle 128");
-	s->SetPivot(vec2(128.0f / 2.0f, 128.0f / 2.0f)); // center pivot
-	s->SetScale(vec2(1.0f / 11.0f));
-	CircleCollider* c = o->AddComponent<CircleCollider>();
-	c->SetRadius(8.0f);
+	bangBang = AddComponent<ShootComponent>();
+	bangBang->Allocate(type::get<BTBullet>(), 8);
+	bangBang->Allocate(type::get<BTBullet>(), 8);
 
-	// create a camera
-	cam = Make<Object>()->AddComponent<Camera>();
-	vec2 size = Game::Get()->GetWindow()->GetScreenSize() / 6.5f;
-	cam->SetCameraSize(size);
+	// create another object
+	//Object* o = Make();
+	//SpriteRenderer* s = o->AddComponent<SpriteRenderer>();
+	//s->LoadTexture("circle 128");
+	//s->SetPivot(vec2(128.0f / 2.0f, 128.0f / 2.0f)); // center pivot
+	//s->SetScale(vec2(1.0f / 11.0f));
+	//CircleCollider* c = o->AddComponent<CircleCollider>();
+	//c->SetRadius(8.0f);
+	//
+	//// create a camera
+	//cam = Make<Object>()->AddComponent<Camera>();
+	//vec2 size = Game::Get()->GetWindow()->GetScreenSize() / 6.5f;
+	//cam->SetCameraSize(size);
 }
 
 void OWPlayer::Update() {
@@ -129,6 +134,10 @@ void OWPlayer::Update() {
 }
 
 void OWPlayer::LateUpdate() {
+	const Rect r = BattleManager::GetBattleArea();
+
+	SetPosition(glm::clamp(GetPosition(), r.min, r.max));
+
 	//ui->DrawText("THIS IS A TEST", -500.0f, -0.5f, 1.0f, vec3(0.0f, 0.5f, 0.0f));
 }
 

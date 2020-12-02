@@ -4,11 +4,14 @@
 #include <cstdlib>
 #include <time.h>
 
+
 class AliceGame : public Game {
 
 	int32 quitTimer;
 	const int32 max_quit_time;
 	bool connected;
+	int32 tmpArr[ROW][COL];
+
 
 public:
 

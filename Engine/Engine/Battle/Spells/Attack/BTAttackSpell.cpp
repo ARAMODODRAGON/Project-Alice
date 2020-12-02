@@ -6,19 +6,14 @@ RTTR_REGISTRATION{
 		.property("count", &BTAttackSpell::allocateCount);
 }
 
-BTAttackSpell::BTAttackSpell(rttr::type _type, int _count) 
-	: attackType(_type)
-	, allocateCount(_count)
+BTAttackSpell::BTAttackSpell()
+	: attackType(type::get<void>())
+	, allocateCount(0)
 	, shootComponent(nullptr)
 {}
 
 BTAttackSpell::~BTAttackSpell() {
 	shootComponent->OnDestroy();
-	//delete shootComponent, shootComponent = nullptr;
-}
-
-void BTAttackSpell::Update() {
-	// TODO -- Add shooty shooty bang bang here
 }
 
 ShootComponent* BTAttackSpell::GetShootComponent() {

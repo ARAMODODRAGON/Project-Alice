@@ -3,6 +3,8 @@
 #include "../General/FileIndex.hpp"
 #include "../Rendering/ContentHandler.hpp"
 #include "../General/Macros.hpp"
+#include "../Battle/TileMap/TileMap.hpp"
+#include "../Battle/TileMap/Tile.hpp"
 
 class Level;
 
@@ -21,6 +23,7 @@ class LevelManager {
 	string levelToLoad;
 	LevelAction levelAction;
 	FileIndex* index;
+
 
 	LevelManager();
 	~LevelManager();

@@ -1,6 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="Engine\Cutscene\Actions\CMoveAction.cpp" />
+    <ClCompile Include="Engine\Cutscene\CAction.cpp" />
+    <ClCompile Include="Engine\Cutscene\CActor.cpp" />
+    <ClCompile Include="Engine\Cutscene\CutsceneManager.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\Defence\BTAbsoluteReflection.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\Defence\BTAbsoluteBarrier.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\Attack\BTBoomerang.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\Defence\BTDefenceSpell.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\Attack\BTAttackSpell.cpp" />
+    <ClCompile Include="Engine\Battle\BattleAlogrithm.cpp" />
+    <ClCompile Include="Engine\Battle\BTPhase.cpp" />
+    <ClCompile Include="Engine\Battle\BTEnemy.cpp" />
     <ClCompile Include="Engine\Battle\BTPlayer.cpp" />
     <ClCompile Include="Engine\Battle\BattleManager.cpp" />
     <ClCompile Include="Engine\Core\Debugger.cpp" />
@@ -13,25 +25,22 @@
     <ClCompile Include="Engine\General\Math.cpp" />
     <ClCompile Include="Engine\Input\Keyboard.cpp" />
     <ClCompile Include="Engine\Input\Mouse.cpp" />
+    <ClCompile Include="Engine\Physics\CircleCollider.cpp" />
+    <ClCompile Include="Engine\Physics\ColliderComponent.cpp" />
+    <ClCompile Include="Engine\Physics\Colliders.cpp" />
+    <ClCompile Include="Engine\Physics\CollisionLogic.cpp" />
+    <ClCompile Include="Engine\Physics\ColType.cpp" />
+    <ClCompile Include="Engine\Physics\PhysicsScene.cpp" />
     <ClCompile Include="Engine\Rendering\Camera.cpp" />
     <ClCompile Include="Engine\Rendering\ContentHandler.cpp" />
     <ClCompile Include="Engine\Rendering\ContentLoadFunctions.cpp" />
     <ClCompile Include="Engine\Rendering\ContentTypes.cpp" />
     <ClCompile Include="Engine\Rendering\IRenderer.cpp" />
     <ClCompile Include="Engine\Rendering\RenderScene.cpp" />
-    <ClCompile Include="Engine\Battle\BTEnemy.cpp" />
-    <ClCompile Include="Engine\Battle\BattleLevel.cpp" />
-    <ClCompile Include="Engine\Physics\Colliders.cpp" />
-    <ClCompile Include="Engine\Physics\ColType.cpp" />
-    <ClCompile Include="Engine\Physics\CircleCollider.cpp" />
-    <ClCompile Include="Engine\Physics\ColliderComponent.cpp" />
-    <ClCompile Include="Engine\Physics\PhysicsScene.cpp" />
-    <ClCompile Include="Engine\Physics\CollisionLogic.cpp" />
-    <ClCompile Include="Engine\Rendering\UIRenderer.cpp" />
-    <ClCompile Include="Engine\Battle\BTPhase.cpp" />
-    <ClCompile Include="Engine\Battle\BattleAlogrithm.cpp" />
     <ClCompile Include="Engine\Rendering\SpriteRenderer.cpp" />
+    <ClCompile Include="Engine\Rendering\UIRenderer.cpp" />
     <ClCompile Include="Engine\Objects\Component.cpp" />
+    <ClCompile Include="Engine\General\FileIndex.cpp" />
     <ClCompile Include="Engine\Objects\Object.cpp" />
     <ClCompile Include="Engine\Objects\ObjectFactory.cpp" />
     <ClCompile Include="Engine\Battle\ShootComponent.cpp" />
@@ -40,9 +49,31 @@
     <ClCompile Include="Engine\Battle\Spells\Attack\BTAttackSpell.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Defence\BTDefenceSpell.cpp" />
     <ClCompile Include="Engine\Battle\Spells\BTSpell.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\Attack\BTWindSlash.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\Attack\BTHomingLasers.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\Defence\BTHealing.cpp" />
+    <ClCompile Include="Engine\Battle\Spells\SpellList.cpp" />
+    <ClCompile Include="Engine\General\SaveSystem.cpp" />
+    <ClCompile Include="Engine\Battle\TileMap\TileMap.cpp" />
+    <ClCompile Include="Engine\Content\SoundSystem.cpp" />
+    <ClCompile Include="Engine\Content\AudioSourceComponent.cpp" />
+    <ClCompile Include="Engine\Battle\TileMap\Tile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Cutscene\Actions\CMoveAction.hpp" />
+    <ClInclude Include="Engine\Cutscene\CAction.hpp" />
+    <ClInclude Include="Engine\Cutscene\CActor.hpp" />
+    <ClInclude Include="Engine\Cutscene\CutsceneManager.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\Defence\BTAbsoluteReflection.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\Defence\BTAbsoluteBarrier.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\Attack\BTBoomerang.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\Defence\BTDefenceSpell.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\Attack\BTAttackSpell.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\BTSpell.hpp" />
+    <ClInclude Include="Engine\Battle\BattleAlogrithm.hpp" />
+    <ClInclude Include="Engine\Battle\BTPhase.hpp" />
     <ClInclude Include="Engine\Battle\BTEnemy.hpp" />
+    <ClInclude Include="Engine\Battle\BTPlayer.hpp" />
     <ClInclude Include="Engine\Battle\BattleManager.hpp" />
     <ClInclude Include="Engine\Input\Button.hpp" />
     <ClInclude Include="Engine\Common.hpp" />
@@ -59,7 +90,11 @@
     <ClInclude Include="Engine\Input\Keyboard.hpp" />
     <ClInclude Include="Engine\Input\Mouse.hpp" />
     <ClInclude Include="Engine\General\Serialization.hpp" />
+    <ClInclude Include="Engine\Physics\CircleCollider.hpp" />
+    <ClInclude Include="Engine\Physics\ColliderComponent.hpp" />
     <ClInclude Include="Engine\Physics\Colliders.hpp" />
+    <ClInclude Include="Engine\Physics\CollisionLogic.hpp" />
+    <ClInclude Include="Engine\Physics\ColType.hpp" />
     <ClInclude Include="Engine\Physics\PhysicsScene.hpp" />
     <ClInclude Include="Engine\Rendering\Camera.hpp" />
     <ClInclude Include="Engine\Rendering\ContentHandler.hpp" />
@@ -68,17 +103,10 @@
     <ClInclude Include="Engine\Rendering\IRenderer.hpp" />
     <ClInclude Include="Engine\Rendering\Rect.hpp" />
     <ClInclude Include="Engine\Rendering\RenderScene.hpp" />
-    <ClInclude Include="Engine\Battle\BattleLevel.hpp" />
-    <ClInclude Include="Engine\Physics\ColType.hpp" />
-    <ClInclude Include="Engine\Physics\CircleCollider.hpp" />
-    <ClInclude Include="Engine\Physics\ColliderComponent.hpp" />
-    <ClInclude Include="Engine\Physics\CollisionLogic.hpp" />
-    <ClInclude Include="Engine\Battle\BTPlayer.hpp" />
-    <ClInclude Include="Engine\Rendering\UIRenderer.hpp" />
-    <ClInclude Include="Engine\Battle\BTPhase.hpp" />
-    <ClInclude Include="Engine\Battle\BattleAlogrithm.hpp" />
     <ClInclude Include="Engine\Rendering\SpriteRenderer.hpp" />
+    <ClInclude Include="Engine\Rendering\UIRenderer.hpp" />
     <ClInclude Include="Engine\Objects\Component.hpp" />
+    <ClInclude Include="Engine\General\FileIndex.hpp" />
     <ClInclude Include="Engine\Objects\JsonToObjectLoader.hpp" />
     <ClInclude Include="Engine\Objects\Object.hpp" />
     <ClInclude Include="Engine\Objects\ObjectFactory.hpp" />
@@ -144,5 +172,15 @@
     <ClCompile Include="Engine\Core\Level.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClInclude Include="Engine\Battle\Spells\Attack\BTWindSlash.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\Attack\BTHomingLasers.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\Defence\BTHealing.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\SpellList.hpp" />
+    <ClInclude Include="Engine\Battle\Spells\SpellMacros.hpp" />
+    <ClInclude Include="Engine\General\SaveSystem.hpp" />
+    <ClInclude Include="Engine\Battle\TileMap\TileMap.hpp" />
+    <ClInclude Include="Engine\Content\SoundSystem.hpp" />
+    <ClInclude Include="Engine\Content\AudioSourceComponent.hpp" />
+    <ClInclude Include="Engine\Battle\TileMap\Tile.hpp" />
   </ItemGroup>
 </Project>

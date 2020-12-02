@@ -209,3 +209,12 @@ FT_Face LoadFont(const string& path, const int width, const int height) {
 	FT_Set_Pixel_Sizes(face, width, height);
 	return face;
 }
+
+Mix_Chunk* LoadSound(const string& path) {
+	const char* soundPath = path.c_str();
+	Mix_Chunk* sound = Mix_LoadWAV(soundPath);
+	if (sound == nullptr) {
+		DEBUG_ERROR("Failed to load in sound at path " + path);
+	}
+	return sound;
+}

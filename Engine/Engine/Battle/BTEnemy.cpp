@@ -2,18 +2,15 @@
 #include "../Game.hpp"
 #include "BTPhase.hpp"
 
-RTTR_REGISTRATION{
+RTTR_REGISTRATION {
 	registration::class_<BTEnemy>("BTEnemy")
 		.public_object_constructor
-		.property("movmentSpeed",&BTEnemy::maxSpeed)
-		//.property("destination",&BTEnemy::destination)
-		.property("maxAcceleration",&BTEnemy::maxAcceleration)
 		.property("phases",&BTEnemy::phases)
 		.property("currentPhase",&BTEnemy::currentPhase)
 		.property("maxHealth",&BTEnemy::maxHealth);
 }
 
-BTEnemy::BTEnemy() : maxSpeed(0.0f), /*destination(0.0f),*/ maxAcceleration(0.0f),currentHealth(0.0f),currentPhase(-1),maxHealth(0.0f) {
+BTEnemy::BTEnemy() : currentHealth(0.0f), currentPhase(-1), maxHealth(0.0f) {
 	BattleManager::AddEnemy(this);
 
 }
@@ -23,13 +20,11 @@ BTEnemy::~BTEnemy() {
 	BattleManager::RemoveEnemy(this);
 }
 
-void BTEnemy::Start()
-{
+void BTEnemy::Start() {
 
 }
 
-void BTEnemy::Update()
-{
+void BTEnemy::Update() {
 
 	if (phases.empty()) {
 		DEBUG_ERROR("There are no phases in the phases Vector");
@@ -38,19 +33,19 @@ void BTEnemy::Update()
 	//right now only goes through the phases 0,1,2 etc....
 	//when current phase is greater than the size go back to the begining of the vector 
 
-	else{
+	else {
 
 		if (currentPhase == -1) {
 			currentPhase = 0;
 			phases[currentPhase]->StartPhase();
 		}
 
-		if (!phases[currentPhase]->isComplete()) {
-			
+		if (!phases[currentPhase]->IsComplete()) {
+
 			phases[currentPhase]->UpdatePhase();
 		}
 
-		if (phases[currentPhase]->isComplete()) {
+		if (phases[currentPhase]->IsComplete()) {
 			currentPhase += 1;
 
 			if (currentPhase > phases.size() - 1) {
@@ -61,15 +56,12 @@ void BTEnemy::Update()
 
 			phases[currentPhase]->StartPhase();
 		}
-	}		 
+	}
 }
 
-void BTEnemy::LateUpdate()
-{
-}
+void BTEnemy::LateUpdate() { }
 
-void BTEnemy::OnDestroy()
-{
+void BTEnemy::OnDestroy() {
 	for (auto phase : phases) {
 		phase = nullptr;
 	}
@@ -77,8 +69,7 @@ void BTEnemy::OnDestroy()
 
 }
 
-BTPhase* BTEnemy::AddPhase(const type type_)
-{
+BTPhase* BTEnemy::AddPhase(const type type_) {
 	if (!type_.is_derived_from(type::get<BTPhase>())) {
 		DEBUG_ERROR("Type : " + type_.get_name() + "is not of type BTPhase");
 		return nullptr;
@@ -98,12 +89,12 @@ BTPhase* BTEnemy::AddPhase(const type type_)
 
 	phases.push_back(phase_);
 	phase_->SetEnemy(this);
+	phase_->Init();
 	return phase_;
 
 }
 
-BTPhase* BTEnemy::GetPhase(const string& phaseName_)
-{
+BTPhase* BTEnemy::GetPhase(const string& phaseName_) {
 	for (BTPhase* phase : phases) {
 
 		if (phase->GetPhaseName() == phaseName_) {

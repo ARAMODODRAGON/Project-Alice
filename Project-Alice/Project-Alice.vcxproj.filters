@@ -24,9 +24,6 @@
     <ClInclude Include="Scripts\Test\Projectile.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scripts\Battle\BattleCamera.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Scripts\Test\Enemy\TestEnemy.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -42,6 +39,33 @@
     <ClInclude Include="Scripts\Test\Phases\TestPhase1.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Scripts\Overworld\SpellInventory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Test\Actor\TimActor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Test\Actor\BobertActor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Test\Tiles\TestTile.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Test\Battle\BattleCamera.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Levels\BattleDemo\BattleDemoLevel.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Levels\BattleDemo\BattleDemoCamera.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Levels\BattleDemo\BattleDemoEnemyCW.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts\Levels\BattleDemo\EnemyCWPhases\EnemyCWPhase0.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AliceGame.cpp">
@@ -51,9 +75,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\Test\Projectile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripts\Battle\BattleCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\Test\Enemy\TestEnemy.cpp">
@@ -69,6 +90,33 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scripts\Test\Phases\TestPhase1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Overworld\SpellInventory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Test\Actor\TimActor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Test\Actor\BobertActor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Test\Tiles\TestTile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Test\Battle\BattleCamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Levels\BattleDemo\BattleDemoLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Levels\BattleDemo\BattleDemoCamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Levels\BattleDemo\BattleDemoEnemyCW.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts\Levels\BattleDemo\EnemyCWPhases\EnemyCWPhase0.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

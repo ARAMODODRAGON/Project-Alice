@@ -29,20 +29,28 @@ void LevelManager::Init(const string& levelFolder, const string& defaultLevel) {
 
 void LevelManager::Update() {
 	auto* inst = Get();
+	#if _DEBUG
 	if (inst->currentLevel)
 		inst->currentLevel->Update();
 	else {
 		DEBUG_ERROR("levelmanager has not been initialized correctly!");
 	}
+	#else
+	inst->currentLevel->Update();
+	#endif
 }
 
 void LevelManager::LateUpdate() {
 	auto* inst = Get();
+	#if _DEBUG
 	if (inst->currentLevel)
 		inst->currentLevel->LateUpdate();
 	else {
 		DEBUG_ERROR("levelmanager has not been initialized correctly!");
 	}
+	#else
+	inst->currentLevel->LateUpdate();
+	#endif
 }
 
 void LevelManager::Cleanup() {
@@ -182,8 +190,11 @@ void LevelManager::DoLevelAction() {
 }
 
 void LevelManager::LoadLevel(const string& level) {
+
+
 	Get()->levelAction = LevelAction::Replace;
 	Get()->levelToLoad = level;
+
 }
 
 void LevelManager::ResetActions() {
@@ -205,13 +216,13 @@ void LevelManager::MakeLevel() {
 	// get data
 	json j = index->GetJSON(levelToLoad);
 
-	if (!j.contains("type")) {
+	if (!j.contains("@type")) {
 		DEBUG_ERROR("Invalid level file. No type specified");
 		return;
 	}
 
 	// get level type
-	string levelTyS = j["type"];
+	string levelTyS = j["@type"];
 	type levelTy = type::get_by_name(levelTyS.c_str());
 
 	if (!levelTy) {
@@ -231,11 +242,7 @@ void LevelManager::MakeLevel() {
 	currentLevel = level;
 
 	// if everything is successful then load the level data
-	if (j.contains("data")) {
-		Game::Get()->LevelLoad(level, j["data"]);
-	} else {
-		DEBUG_WARNING("No data in level file");
-	}
+	Game::Get()->LevelLoad(level, j);
 
 	// finally init 
 	currentLevel->Init();

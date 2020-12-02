@@ -112,6 +112,44 @@ namespace bta {
 		return BTAResult::Moving;
 	}
 
+	bool PathTo(std::pair<int32, int32> startPos,std::pair<int32,int32> destination,int32 arr[ROW][COL])
+	{
+		int32 direction[4][2] = { {0, 1},
+			                      {0,-1},
+			                      {1, 0},
+			                      {-1,0} };
+
+		std::queue<std::pair<int32,int32>> tiles;
+		auto& tileVector = TileMap::GetTileVector();
+		tiles.push(startPos);
+
+		while (!tiles.empty()) {
+
+			std::pair<int32, int32> reached = tiles.front();
+			tiles.pop();
+			arr[reached.first][reached.second] = -1;
+
+			if (reached.first > ROW && reached.second > COL) {
+				return false;
+			}
+
+			if (reached == destination) {
+				return true;
+			}
+
+			for (size_t i = 0; i < 4; ++i) {
+				uint32 a = reached.first + direction[i][0];
+				uint32 b = reached.second + direction[i][1];
+
+				if (a < ROW && b < COL && arr[a][b] != -1 && a >= 0 && b >= 0) {
+					tiles.push(std::make_pair(a, b));
+				}
+			}
+		}
+
+		return false;
+	}
+
 }
 
 //// check 

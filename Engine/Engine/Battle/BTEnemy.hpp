@@ -11,9 +11,6 @@ class BTPhase;
 
 class BTEnemy : public Object
 {
-	//glm::vec2 destination;
-	float maxSpeed;
-	float maxAcceleration;
 	float maxHealth;
 	float currentHealth;
 	std::vector<BTPhase*> phases;
@@ -29,21 +26,27 @@ public:
 	void OnDestroy() override;
 
 	BTPhase* AddPhase(const type type_); //add a phase 
+	template<class T> T* AddPhase() {
+		// derived
+		if (std::is_base_of<BTPhase, T>::value) {
+			// reinterpret is allowed because we know its dirvetive
+			T* phaseT = new T();
+			BTPhase* phase = reinterpret_cast<BTPhase*>(phaseT);
+			phase->SetEnemy(this);
+			phases.push_back(phase); 
+			phase->Init();
+			return phaseT;
+		}
+		// not derived
+		DEBUG_ERROR("Given type does not inherit from BTPhase");
+		return nullptr;
+	}
 	BTPhase* GetPhase(const string& phaseName_); // return a phase by the name given
 
-	inline float GetMaxSpeed() { return maxSpeed; }
-	inline float GetMaxAcceleration() { return maxAcceleration; }
 	inline float GetMaxHealth() { return maxHealth; }
+	inline float SetMaxHealth(const float maxHealth_) { maxHealth = maxHealth_; }
 	inline float GetCurrentHealth() { return currentHealth; }
-	//inline bool GetIsMoving() { return isMoving; }
-	//inline glm::vec2 GetDestination() { return destination; }
-
-	inline void SetMaxAcceleration(float maxAcceleration_) { maxAcceleration = maxAcceleration_; }
-	//inline void SetIsMoving(bool isMoving_) { isMoving = isMoving_; }
-	inline void SetMaxSpeed(float movementSpeed_) { maxSpeed = movementSpeed_; }
-	//inline void SetDestination(glm::vec2 destination_) { destination = destination_; }
-
-
+	inline float SetCurrentHealth(const float currentHealth_) { currentHealth = currentHealth_; }
 
 	RTTR_ENABLE(Object) RTTR_REGISTRATION_FRIEND
 };

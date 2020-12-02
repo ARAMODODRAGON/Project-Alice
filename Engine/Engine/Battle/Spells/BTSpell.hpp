@@ -1,6 +1,7 @@
 #ifndef BATTLE_SPELL_HPP
 #define BATTLE_SPELL_HPP
 
+#include "SpellMacros.hpp"
 #include "../BTPlayer.hpp"
 
 class BTSpell {
@@ -8,13 +9,13 @@ class BTSpell {
 
 public:
 	BTSpell() : player(nullptr) {};
-	virtual ~BTSpell() = 0 ;
+	virtual ~BTSpell() {};
 
 	BTPlayer* GetPlayer() { return player; }
 	void SetPlayer(BTPlayer* _player) { player = _player; }
 
 private:
-	virtual void Shoot() = 0;
+	virtual void Shoot() {};
 
 	RTTR_ENABLE() RTTR_REGISTRATION_FRIEND
 };

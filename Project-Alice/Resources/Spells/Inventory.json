@@ -1,0 +1,16 @@
+{
+  "Inventory": [
+    "Healing",
+    "Boomerang",
+    "Wind Slash",
+    "Homing Lasers",
+    "Absolute Barrier",
+    "Absolute Reflection"
+  ],
+  "Equipped Attacks": [
+    "Boomerang",
+    "Wind Slash",
+    "Homing Lasers"
+  ],
+  "Equipped Defence" : "Healing"
+}

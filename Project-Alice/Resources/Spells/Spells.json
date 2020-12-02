@@ -1,0 +1,30 @@
+{
+  "Attack Spells": [
+    {
+      "Name": "Boomerang",
+      "Info": "A shot that comes back to the caster. Passes through any targets it comes in contact with."
+    },
+    {
+      "Name": "Wind Slash",
+      "Info": "Three slashes of wind are fired off in three different directions."
+    },
+    {
+      "Name": "Homing Lasers",
+      "Info": "Rapidly fires laser shots at the enemy that home into their position. Has a chance of passing through the target to home back into them a second time."
+    }
+  ],
+  "Defence Spells": [
+    {
+      "Name": "Absolute Barrier",
+      "Info": "Encases the caster in an indestructible sphere for 10 seconds. All damage is nullified for this duration."
+    },
+    {
+      "Name": "Absolute Reflection",
+      "Info": "Reflects all damage recieved for the next 4 seconds back to the target(s). For the duration of this spell, the caster will be unable to use their other spells."
+    },
+    {
+      "Name": "Healing",
+      "Info": "Refills the casters health completely, and applies 3 seconds of invulnerability as well. Does not recharge during battle."
+    }
+  ]
+}
