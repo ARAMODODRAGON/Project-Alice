@@ -97,7 +97,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>C:\GameDev\SDL\lib;C:\GameDev\OpenGL\lib;C:\GameDev\SDL2_mixer-2.0.4\lib\x86;C:\GameDev\FreeType\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2main.lib;SDL2test.lib;glew32.lib;glew32s.lib;opengl32.lib;rttr_core_d.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2main.lib;SDL2test.lib;glew32.lib;glew32s.lib;opengl32.lib;rttr_core_d.lib;freetype.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference>
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
