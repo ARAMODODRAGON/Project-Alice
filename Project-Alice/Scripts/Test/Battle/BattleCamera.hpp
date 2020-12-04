@@ -2,6 +2,7 @@
 #define BATTLE_BATTLE_CAMERA_HPP
 #include <Engine/Common.hpp>
 
+
 class BattleCamera : public Object {
 
 	Camera* cam;

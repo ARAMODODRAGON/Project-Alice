@@ -11,6 +11,7 @@ void BDEnemyCW::Start() {
 	if (spr = AddComponent<SpriteRenderer>()) {
 		spr->LoadTexture("64by64texture");
 		spr->SetPivot(spr->GetTilingSize() * 0.5f);
+		spr->SetScale(vec2(0.5f));
 	}
 
 	// setup the phases

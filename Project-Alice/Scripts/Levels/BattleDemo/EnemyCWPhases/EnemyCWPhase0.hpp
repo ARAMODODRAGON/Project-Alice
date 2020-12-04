@@ -22,6 +22,7 @@ private:
 	uint8 state;
 	uint8 repeatState;
 	ShootComponent* shc;
+	int32 i;
 
 	virtual void Init() override;
 	virtual void StartPhase() override;

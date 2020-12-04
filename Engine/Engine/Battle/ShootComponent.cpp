@@ -18,7 +18,7 @@ void ShootComponent::OnDestroy() {
 		}
 		set.bullets.clear();
 	}
-	bulletSet.clear();
+	bulletSet.clear();	
 }
 
 void ShootComponent::Allocate(rttr::type _object, int _total) {
@@ -55,13 +55,14 @@ void ShootComponent::Shoot(rttr::type _object, int _total, std::function<void(BT
 				if (!set.bullets[i]->GetIsActive()) {
 					_func(set.bullets[i]);
 					_total--;
+					DEBUG_LOG("Fired");
 				}
 				// Break out of the loop early if all required bullets have been created
 				if (_total <= 0) {
-					DEBUG_WARNING("Not enough bullets have been allocated. Number needed to shoot remaining is " + VTOS(_total) + " bullets.");
+					//DEBUG_WARNING("Not enough bullets have been allocated. Number needed to shoot remaining is " + VTOS(_total) + " bullets.");
 					break;
 				}
 			}
 		}
 	}
-}
+}		  

@@ -11,7 +11,7 @@ TestEnemy::TestEnemy() : sprite(nullptr), moveFromMiddle(nullptr),moveToMiddle(n
 
 TestEnemy::~TestEnemy()
 {
-	OnDestroy();
+	//OnDestroy();
 }
 
 

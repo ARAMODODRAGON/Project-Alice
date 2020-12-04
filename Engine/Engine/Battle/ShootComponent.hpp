@@ -5,6 +5,14 @@
 
 // TEMPORARY CLASS
 class BTBullet : public Object {
+	SpriteRenderer* sprite;
+public:
+	void SetSprite(std::string spritePath_,glm::vec2 scale_) {
+		sprite = AddComponent<SpriteRenderer>();
+		sprite->LoadTexture(spritePath_);
+		sprite->SetScale(scale_);
+		sprite->SetTilingSize(glm::vec2(16.0f));
+	}
 	RTTR_ENABLE(Object) RTTR_REGISTRATION_FRIEND
 };
 
