@@ -4,27 +4,13 @@
 
 LevelManager::LevelManager()
 	: currentLevel(nullptr)
-	, levelToLoad("")
-	, levelAction(LevelAction::None)
-	, index(nullptr) { }
+	, levelToLoad(nullptr)
+	, levelAction(LevelAction::None) { }
 
 LevelManager::~LevelManager() {
 	// delete level
 	if (currentLevel) delete currentLevel;
 	currentLevel = nullptr;
-	// delete index
-	if (index) delete index;
-	index = nullptr;
-}
-
-void LevelManager::Init(const string& levelFolder, const string& defaultLevel) {
-	// load the index
-	if (Get()->index == nullptr)
-		Get()->index = new FileIndex(levelFolder);
-
-	// load the first level
-	LoadLevel(defaultLevel);
-	Get()->DoLevelAction();
 }
 
 void LevelManager::Update() {
@@ -189,62 +175,18 @@ void LevelManager::DoLevelAction() {
 	}
 }
 
-void LevelManager::LoadLevel(const string& level) {
-
-
-	Get()->levelAction = LevelAction::Replace;
-	Get()->levelToLoad = level;
-
-}
-
 void LevelManager::ResetActions() {
 	levelAction = LevelAction::None;
-	levelToLoad = "";
+	levelToLoad = nullptr;
 }
 
 void LevelManager::MakeLevel() {
-	// check
-	if (!index) {
-		DEBUG_ERROR("No level index is loaded! Failed to load level!");
-		return;
-	}
-	if (!index->Contains(levelToLoad)) {
-		DEBUG_ERROR("No level with name " + levelToLoad + "! Failed to load level!");
+	if (levelToLoad == nullptr) {
+		DEBUG_ERROR("err in the level manager");
 		return;
 	}
 
-	// get data
-	json j = index->GetJSON(levelToLoad);
-
-	if (!j.contains("@type")) {
-		DEBUG_ERROR("Invalid level file. No type specified");
-		return;
-	}
-
-	// get level type
-	string levelTyS = j["@type"];
-	type levelTy = type::get_by_name(levelTyS.c_str());
-
-	if (!levelTy) {
-		DEBUG_ERROR("Could not load level of type " + levelTyS);
-		return;
-	}
-
-	variant lvl = levelTy.create();
-	Level* level = lvl.get_value<Level*>();
-
-	if (!level) {
-		DEBUG_ERROR("Failed to convert level to pointer! If you see this contact Dom.");
-		return;
-	}
-
-	// set the level
+	Level* level = levelToLoad();
 	currentLevel = level;
-
-	// if everything is successful then load the level data
-	Game::Get()->LevelLoad(level, j);
-
-	// finally init 
-	currentLevel->Init();
-	DEBUG_LOG("Loaded level \"" + levelToLoad + "\" successfully!");
+	level->Init();
 }

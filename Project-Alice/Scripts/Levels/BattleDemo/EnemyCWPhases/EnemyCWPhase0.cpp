@@ -1,17 +1,12 @@
 #include "EnemyCWPhase0.hpp"
 
-RTTR_REGISTRATION {
-	registration::class_<EnemyCWPhase0>("EnemyCWPhase0")
-		.public_object_constructor;
-}
-
 EnemyCWPhase0::EnemyCWPhase0() : shc(nullptr), i(-1) { }
 
 EnemyCWPhase0::~EnemyCWPhase0() { }
 
 void EnemyCWPhase0::Init() {
 	if (shc = GetEnemy()->AddComponent<ShootComponent>()) {
-		shc->Allocate(type::get<void>(), 100);
+		shc->Allocate<BTBullet>(100);
 
 	}
 
@@ -36,7 +31,7 @@ void EnemyCWPhase0::UpdatePhase() {
 
 
 	if (state == State::State_Shoot3) {
-		shc->Shoot(type::get<void>(), 3, [&angleDelta, &pos, &tmpX, &tmpY, &speed, &state_] (BTBullet* b) {
+		shc->Shoot<BTBullet>(3, [&angleDelta, &pos, &tmpX, &tmpY, &speed, &state_] (BTBullet* b) {
 			b->SetPosition(pos);
 			b->SetSprite("Flashing Grey Orb", glm::vec2(1));
 			b->SetVelocity(vec2(tmpX, tmpY) * speed);
@@ -51,7 +46,7 @@ void EnemyCWPhase0::UpdatePhase() {
 		GetEnemy()->SetVelocity(vel);
 		if (result == BTAResult::Arrived) {
 
-			shc->Shoot(type::get<void>(), 3, [&angleDelta, &pos, &tmpX, &tmpY, &speed, &state_] (BTBullet* b) {
+			shc->Shoot<BTBullet>(3, [&angleDelta, &pos, &tmpX, &tmpY, &speed, &state_] (BTBullet* b) {
 				b->SetPosition(pos);
 				b->SetSprite("Flashing Grey Orb", glm::vec2(1));
 				b->SetVelocity(vec2(tmpX, tmpY) * speed);

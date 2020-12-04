@@ -1,10 +1,5 @@
 #include "DebugMenu.hpp"
 
-RTTR_REGISTRATION {
-	registration::class_<DebugMenu>("DebugMenu")
-	.public_object_constructor;
-}
-
 DebugMenu::DebugMenu() : drawUI(false), ui(nullptr), multiFrameFPS { 0.0 }, frameIndex(0) { }
 
 DebugMenu::~DebugMenu() { }

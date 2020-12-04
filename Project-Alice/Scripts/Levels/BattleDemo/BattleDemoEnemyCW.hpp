@@ -24,7 +24,6 @@ private:
 	// components
 	SpriteRenderer* spr;
 
-	RTTR_ENABLE(BTEnemy) RTTR_REGISTRATION_FRIEND
 };
 
 #endif // !BATTLE_DEMO_ENEMY_CW_HPP

@@ -3,13 +3,6 @@
 #include "Spells/Defence/BTDefenceSpell.hpp"
 #include <iostream>
 
-RTTR_REGISTRATION {
-	registration::class_<BTPlayer>("BTPlayer")
-		.property("moveSpeed", &BTPlayer::moveSpeed)
-		.property("hitpoints", &BTPlayer::hitpoints)
-		.property("maxHitpoints", &BTPlayer::maxHitpoints);
-}
-
 BTPlayer::BTPlayer() {
 	BattleManager::AddPlayer(this);
 
@@ -124,28 +117,6 @@ void BTPlayer::SetSprite(const string& _texture, vec2 _pivot, int _layer) {
 void BTPlayer::SetCollider(float _radius) {
 	collider = AddComponent<CircleCollider>();
 	collider->SetRadius(4.0f);
-}
-
-void BTPlayer::SetBattleSpells(array<string, MAX_EQUIPPED_SPELLS> _atkSpells, const string& _defSpell) {
-	DeleteSpells();
-	// Add the three equipped attack spells
-	for (uint32 i = 0; i < MAX_EQUIPPED_SPELLS; i++) {
-		type t = type::get_by_name(_atkSpells[i].c_str());
-		variant spell = t.create();
-		if (!spell) { // The spell couldn't be created; throw an error.
-			DEBUG_ERROR("Spell " + _atkSpells[i] + " couldn't be created!");
-			continue;
-		}
-		atkSpells[i] = spell.get_value<BTAttackSpell*>();
-	}
-	// Add the single equipped defence spell
-	type t = type::get_by_name(_defSpell.c_str());
-	variant spell = t.create();
-	if (!spell) { // The spell couldn't be created; throw an error.
-		DEBUG_ERROR("Spell " + _defSpell + " couldn't be created!");
-		return;
-	}
-	defenceSpell = spell.get_value<BTDefenceSpell*>();
 }
 
 void BTPlayer::SetBattleSpells(ATKSpells atkSpells_, BTDefenceSpell* defenceSpell_) {

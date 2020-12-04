@@ -83,8 +83,6 @@ protected:
 	inline void SetPhaseDestination(glm::vec2 destination_) { destination = destination_; }
 #pragma endregion
 
-	RTTR_ENABLE() RTTR_REGISTRATION_FRIEND
-
 };
 #endif
 

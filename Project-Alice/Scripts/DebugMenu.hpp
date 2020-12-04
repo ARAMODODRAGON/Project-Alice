@@ -21,8 +21,6 @@ public:
 	virtual void Start() override;
 	virtual void LateUpdate() override;
 
-
-	RTTR_ENABLE(Object) RTTR_REGISTRATION_FRIEND
 };
 
 #endif // !SCRIPTS_DEBUG_MENU_HPP

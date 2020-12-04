@@ -14,7 +14,6 @@ public:
 	void Start() override;
 	void OnDestroy() override;
 
-	RTTR_ENABLE(Component, Collider) RTTR_REGISTRATION_FRIEND
 
 private:
 

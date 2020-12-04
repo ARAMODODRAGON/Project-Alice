@@ -40,7 +40,6 @@ public:
 	void OnCollisionEnter(const CollisionData& data) override;
 	void OnCollisionExit(const CollisionData& data) override;
 
-	RTTR_ENABLE(Object) RTTR_REGISTRATION_FRIEND
 };
 
 #endif // !PLAYER_OWPLAYER_HPP

@@ -4,40 +4,21 @@
 #include <nlohmann/json.hpp>
 using nlohmann::json;
 
-// need to remove these since RTTR uses these words differently
+// need to remove these 
 #undef max
 #undef min
 
-#include <rttr/type.h>
-#include <rttr/rttr_enable.h>
-#include <rttr/registration.h>
-#include <rttr/method.h>
-#include <rttr/property.h>
-#include <rttr/constructor.h>
-#include <rttr/destructor.h>
-#include <rttr/variant.h>
-#include <rttr/variant_array_view.h>
-#include <rttr/access_levels.h>
-#include <rttr/policy.h>
-#include <rttr/rttr_cast.h>
-using rttr::type;
-using rttr::registration;
-using rttr::method;
-using rttr::property;
-using rttr::constructor;
-using rttr::destructor;
-using rttr::variant;
-using rttr::variant_array_view;
-using rttr::access_levels;
-using rttr::policy;
-using rttr::rttr_cast;
+#include "Types.hpp"
 
-#define public_access_ rttr::detail::public_access()
-#define protected_access_ rttr::detail::protected_access()
-#define private_access_ rttr::detail::private_access()
+inline uint32 __TypeCounter() {
+	static uint32 counter = 0;
+	return counter++;
+}
 
-#define public_object_constructor constructor<>()  (rttr::detail::as_raw_pointer(), public_access_)
-#define protected_object_constructor constructor<>()  (rttr::detail::as_raw_pointer(), protected_access_)
-#define private_object_constructor constructor<>()  (rttr::detail::as_raw_pointer(), private_access_)
+template<class T>
+inline uint32 GetTypeID() {
+	static uint32 ID = __TypeCounter();
+	return ID;
+}
 
 #endif // !_SERIALIZATION_HPP

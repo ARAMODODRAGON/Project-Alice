@@ -8,10 +8,9 @@ public:
 	BTWindSlash();
 	~BTWindSlash();
 
-	void OnCreate(type _type, int _count) override;
+	void OnCreate(int _count) override;
 	void Update(Button _shootButton) override;
 
-	RTTR_ENABLE(BTAttackSpell) RTTR_REGISTRATION_FRIEND
 };
 
 #endif

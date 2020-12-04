@@ -22,7 +22,6 @@ private:
 	BDEnemyCW* enemy;
 	BDPlayer* player;
 
-	RTTR_ENABLE() RTTR_REGISTRATION_FRIEND
 };
 
 #endif // !BATTLE_BATTLE_DEMO_LEVEL_HPP

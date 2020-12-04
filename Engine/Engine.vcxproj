@@ -84,7 +84,6 @@
   <ItemGroup>
     <ClCompile Include="Engine\Content\AudioSourceComponent.cpp" />
     <ClCompile Include="Engine\Cutscene\Actions\CMoveAction.cpp" />
-    <ClCompile Include="Engine\Cutscene\CAction.cpp" />
     <ClCompile Include="Engine\Cutscene\CActor.cpp" />
     <ClCompile Include="Engine\Cutscene\CutsceneManager.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Defence\BTAbsoluteReflection.cpp" />
@@ -98,13 +97,11 @@
     <ClCompile Include="Engine\Battle\BTPlayer.cpp" />
     <ClCompile Include="Engine\Battle\BattleManager.cpp" />
     <ClCompile Include="Engine\Core\Debugger.cpp" />
-    <ClCompile Include="Engine\Core\Level.cpp" />
     <ClCompile Include="Engine\Core\LevelManager.cpp" />
     <ClCompile Include="Engine\Input\SystemEvents.cpp" />
     <ClCompile Include="Engine\Core\Timer.cpp" />
     <ClCompile Include="Engine\Core\Window.cpp" />
     <ClCompile Include="Engine\Game.cpp" />
-    <ClCompile Include="Engine\General\Math.cpp" />
     <ClCompile Include="Engine\Input\Keyboard.cpp" />
     <ClCompile Include="Engine\Input\Mouse.cpp" />
     <ClCompile Include="Engine\Physics\CircleCollider.cpp" />
@@ -117,7 +114,6 @@
     <ClCompile Include="Engine\Rendering\ContentHandler.cpp" />
     <ClCompile Include="Engine\Rendering\ContentLoadFunctions.cpp" />
     <ClCompile Include="Engine\Rendering\ContentTypes.cpp" />
-    <ClCompile Include="Engine\Rendering\IRenderer.cpp" />
     <ClCompile Include="Engine\Rendering\RenderScene.cpp" />
     <ClCompile Include="Engine\Rendering\SpriteRenderer.cpp" />
     <ClCompile Include="Engine\Rendering\UIRenderer.cpp" />
@@ -189,8 +185,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\GameDev\SDL2_mixer-2.0.4\include;C:\GameDev\SDL\include;C:\GameDev\OpenGL\include;C:\GameDev\nlohmann-json\include;C:\GameDev\RTTR\Include;C:\GameDev\FreeType\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\GameDev\SDL2_mixer-2.0.4\lib\x86;C:\GameDev\FreeType\win32;C:\GameDev\RTTR\Libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\GameDev\SDL2_mixer-2.0.4\include;C:\GameDev\SDL\include;C:\GameDev\OpenGL\include;C:\GameDev\nlohmann-json\include;C:\GameDev\FreeType\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\GameDev\SDL2_mixer-2.0.4\lib\x86;C:\GameDev\FreeType\win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>

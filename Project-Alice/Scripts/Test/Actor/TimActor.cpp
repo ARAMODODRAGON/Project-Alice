@@ -1,14 +1,5 @@
 #include "TimActor.hpp"
 
-RTTR_REGISTRATION{
-	registration::class_<TimActor>("TimActor")
-	.public_object_constructor
-	.property("actorName",&TimActor::actorName);
-
-}
-
-
-
 TimActor::TimActor():CActor("tim")
 {	
 	

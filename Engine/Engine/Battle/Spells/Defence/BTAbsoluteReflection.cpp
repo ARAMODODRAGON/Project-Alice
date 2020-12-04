@@ -1,10 +1,5 @@
 #include "BTAbsoluteReflection.hpp"
 
-RTTR_REGISTRATION{
-	registration::class_<BTAbsoluteReflection>(ABSOLUTE_REFLECTION)
-		.public_object_constructor;
-}
-
 BTAbsoluteReflection::BTAbsoluteReflection() {}
 BTAbsoluteReflection::~BTAbsoluteReflection() {}
 

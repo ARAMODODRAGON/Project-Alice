@@ -1,10 +1,5 @@
 #include "Projectile.hpp"
 
-RTTR_REGISTRATION {
-	registration::class_<Projectile>("Projectile")
-		.public_object_constructor;
-}
-
 Projectile::Projectile()
 	: timer(0), sprite(nullptr), color(1.0f), destroyTime(60) { }
 
@@ -29,5 +24,5 @@ void Projectile::LateUpdate() {
 	timer++;
 	sprite->SetTilingIndex(static_cast<unsigned int>(timer * frame_per_second) % 5);
 
-	if (timer > destroyTime) { Destroy(this); }
+	if (timer > destroyTime) { ObjectFactory::Destroy(this); }
 }

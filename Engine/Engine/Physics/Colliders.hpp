@@ -141,7 +141,6 @@ public:
 	LayerMask GetTriggerMask() const { return triggerMask; }
 	void SetTriggerMask(const LayerMask& triggerMask_) { triggerMask = triggerMask_; }
 
-	RTTR_ENABLE() RTTR_REGISTRATION_FRIEND
 };
 
 #endif // !_PHYSICS_COLLIDERS_HPP

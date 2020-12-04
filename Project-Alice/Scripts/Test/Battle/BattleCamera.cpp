@@ -1,11 +1,6 @@
 #include "BattleCamera.hpp"
 #define SIZE_FACTOR (1.0f / 6.5f);
 
-RTTR_REGISTRATION {
-	registration::class_<BattleCamera>("BattleCamera")
-		.public_object_constructor;
-}
-
 BattleCamera::BattleCamera() : cam(nullptr) { }
 
 BattleCamera::~BattleCamera() { }

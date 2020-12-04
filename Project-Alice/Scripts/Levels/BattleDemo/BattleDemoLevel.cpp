@@ -1,11 +1,6 @@
 #include "BattleDemoLevel.hpp"
 #include <Engine\Battle\BattleManager.hpp>
 
-RTTR_REGISTRATION {
-	registration::class_<BattleDemoLevel>("BattleDemoLevel")
-		.public_object_constructor;
-}
-
 BattleDemoLevel::BattleDemoLevel() { }
 
 BattleDemoLevel::~BattleDemoLevel() { }

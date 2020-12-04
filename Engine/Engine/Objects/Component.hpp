@@ -1,6 +1,5 @@
 #ifndef _OBJECTS_COMPONENT_HPP
 #define _OBJECTS_COMPONENT_HPP
-#include "../General/Serialization.hpp"
 
 // lightweight class that attaches to an object and can have different properties
 // such examples of components are Sprites, Colliders, Cameras
@@ -26,7 +25,6 @@ public:
 	bool GetIsActive() const { return isActive; }
 	void SetIsActive(bool isActive_) { isActive = isActive_; }
 
-	RTTR_ENABLE() RTTR_REGISTRATION_FRIEND
 };
 
 #endif // !_OBJECTS_COMPONENT_HPP

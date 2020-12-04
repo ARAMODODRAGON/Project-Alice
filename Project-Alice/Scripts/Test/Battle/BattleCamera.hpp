@@ -18,7 +18,6 @@ public:
 	// getters
 	Camera* GetCamera() const { return cam; }
 
-	RTTR_ENABLE(Object) RTTR_REGISTRATION_FRIEND
 };
 
 #endif // !BATTLE_BATTLE_CAMERA_HPP

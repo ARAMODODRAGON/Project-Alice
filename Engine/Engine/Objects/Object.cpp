@@ -2,17 +2,6 @@
 #include "../Core/Level.hpp"
 #include "../Physics/PhysicsScene.hpp"
 
-RTTR_REGISTRATION {
-	registration::class_<Object>("Object")
-		.public_object_constructor
-		.property("isActive", &Object::isActive)
-		.property("name", &Object::name)
-		.property("position", &Object::position)
-		.property("velocity", &Object::velocity)
-		.property("rotation", &Object::rotation)
-		.property("components", &Object::components);
-}
-
 // TODO: add VAO code
 Object::Object()
 	: level(nullptr)
@@ -35,19 +24,6 @@ Object::~Object() {
 	PhysicsScene::RemoveObject(this);
 }
 
-Object* Object::Make() {
-	return ObjectFactory::Make<Object>();
-
-}
-
-Object* Object::Make(const string& objectName) {
-	return ObjectFactory::Make<Object>(objectName);
-}
-
-void Object::Destroy(Object* entity) {
-	return ObjectFactory::Destroy(entity);
-}
-
 void Object::DestroyComponent(Component* comp) {
 	// find the object and destroy immediately
 	for (auto it = components.begin(); it != components.end(); ++it) {
@@ -58,7 +34,6 @@ void Object::DestroyComponent(Component* comp) {
 			return;
 		}
 	}
-
-	DEBUG_WARNING("The component of type " + comp->get_type().get_name() + " was not attached to the object " + name);
+	DEBUG_WARNING("The component was not attached to the object " + name);
 }
 

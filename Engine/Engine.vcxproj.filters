@@ -2,7 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Engine\Cutscene\Actions\CMoveAction.cpp" />
-    <ClCompile Include="Engine\Cutscene\CAction.cpp" />
     <ClCompile Include="Engine\Cutscene\CActor.cpp" />
     <ClCompile Include="Engine\Cutscene\CutsceneManager.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Defence\BTAbsoluteReflection.cpp" />
@@ -16,13 +15,11 @@
     <ClCompile Include="Engine\Battle\BTPlayer.cpp" />
     <ClCompile Include="Engine\Battle\BattleManager.cpp" />
     <ClCompile Include="Engine\Core\Debugger.cpp" />
-    <ClCompile Include="Engine\Core\Level.cpp" />
     <ClCompile Include="Engine\Core\LevelManager.cpp" />
     <ClCompile Include="Engine\Input\SystemEvents.cpp" />
     <ClCompile Include="Engine\Core\Timer.cpp" />
     <ClCompile Include="Engine\Core\Window.cpp" />
     <ClCompile Include="Engine\Game.cpp" />
-    <ClCompile Include="Engine\General\Math.cpp" />
     <ClCompile Include="Engine\Input\Keyboard.cpp" />
     <ClCompile Include="Engine\Input\Mouse.cpp" />
     <ClCompile Include="Engine\Physics\CircleCollider.cpp" />
@@ -35,7 +32,6 @@
     <ClCompile Include="Engine\Rendering\ContentHandler.cpp" />
     <ClCompile Include="Engine\Rendering\ContentLoadFunctions.cpp" />
     <ClCompile Include="Engine\Rendering\ContentTypes.cpp" />
-    <ClCompile Include="Engine\Rendering\IRenderer.cpp" />
     <ClCompile Include="Engine\Rendering\RenderScene.cpp" />
     <ClCompile Include="Engine\Rendering\SpriteRenderer.cpp" />
     <ClCompile Include="Engine\Rendering\UIRenderer.cpp" />

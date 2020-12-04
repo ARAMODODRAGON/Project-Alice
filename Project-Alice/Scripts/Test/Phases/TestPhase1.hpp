@@ -14,6 +14,5 @@ public:
 	void UpdatePhase()override;
 	bool IsComplete()override;
 
-	RTTR_ENABLE(BTPhase) RTTR_REGISTRATION_FRIEND
 };
 #endif // !TEST_PHASE_1_HPP

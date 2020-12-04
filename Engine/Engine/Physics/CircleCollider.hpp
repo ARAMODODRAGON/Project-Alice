@@ -18,7 +18,6 @@ public:
 	virtual ColType GetColType() const override { return ColType::Circle; }
 	virtual BoundingCircle GetBounds() const override;
 
-	RTTR_ENABLE(ColliderComponent) RTTR_REGISTRATION_FRIEND
 };
 
 #endif // !_PHYSICS_CIRCLE_COLLIDER_HPP

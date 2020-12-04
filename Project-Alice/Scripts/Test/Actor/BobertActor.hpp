@@ -14,7 +14,6 @@ public:
 	void Start() override;
 	void Update()override;
 
-	RTTR_ENABLE(CActor) RTTR_REGISTRATION_FRIEND
 };
 #endif // !BOBERT_ACTOR_HPP
 

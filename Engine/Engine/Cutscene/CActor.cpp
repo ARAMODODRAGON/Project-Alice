@@ -1,12 +1,6 @@
 #include "CActor.hpp"
 #include "CutsceneManager.hpp"
 
-RTTR_REGISTRATION{
-	registration::class_<CActor>("CActor");
-	
-
-}
-
 CActor::CActor(std::string actorName_) :facingDir(FacingDirection::DEFAULT), curntAction(CurrentAction::NONE), isControlled(false)
 {
 	actorName = actorName_;

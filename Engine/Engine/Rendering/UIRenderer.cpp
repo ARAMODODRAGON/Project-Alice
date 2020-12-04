@@ -2,11 +2,6 @@
 #include "RenderScene.hpp"
 #include <glew.h>
 
-RTTR_REGISTRATION {
-	registration::class_<UIRenderer>("UIRenderer")
-		.public_object_constructor;
-}
-
 UIRenderer::UIRenderer() {
 	RenderScene::AddCanvasRenderer(this);
 

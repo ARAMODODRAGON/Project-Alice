@@ -10,6 +10,7 @@ class Level;
 
 class LevelManager {
 	PRIVATE_SINGLETON(LevelManager);
+	using LevelBinding = Level * (*)();
 
 	enum class LevelAction : unsigned char {
 		None,				// do nothing
@@ -18,11 +19,10 @@ class LevelManager {
 
 	// levels
 	Level* currentLevel;
-	
+
 	// loading levels
-	string levelToLoad;
+	LevelBinding levelToLoad;
 	LevelAction levelAction;
-	FileIndex* index;
 
 
 	LevelManager();
@@ -31,17 +31,19 @@ class LevelManager {
 public:
 
 	// events
-	static void Init(const string& levelFolder, const string& defaultLevel);
+	template<typename LevelToLoad>
+	static void Init();
 	static void Update();
 	static void LateUpdate();
 	static void Cleanup();
 	static void Exit();
 
 	static Level* GetLevel() { return Get()->currentLevel; }
-	
+
 	// load a level
-	static void LoadLevel(const string& level);
-	
+	template<typename LevelToLoad>
+	static void LoadLevel();
+
 private:
 
 	// helper functions
@@ -50,5 +52,18 @@ private:
 	void MakeLevel();
 
 };
+
+template<typename LevelToLoad>
+inline void LevelManager::Init() {
+	// load the first level
+	LoadLevel<LevelToLoad>();
+	Get()->DoLevelAction();
+}
+
+template<typename LevelToLoad>
+inline void LevelManager::LoadLevel() {
+	Get()->levelAction = LevelAction::Replace;
+	Get()->levelToLoad = []()->Level* { return new LevelToLoad(); };
+}
 
 #endif // !_CORE_LEVEL_MANAGER_HPP

@@ -70,8 +70,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\GameDev\SDL2_mixer-2.0.4\include;C:\GameDev\FreeType\include;C:\GameDev\SDL\include;C:\GameDev\OpenGL\include;C:\GameDev\nlohmann-json\include;C:\GameDev\RTTR\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\GameDev\SDL2_mixer-2.0.4\lib\x86;C:\GameDev\FreeType\win32;C:\GameDev\RTTR\Libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\GameDev\SDL2_mixer-2.0.4\include;C:\GameDev\FreeType\include;C:\GameDev\SDL\include;C:\GameDev\OpenGL\include;C:\GameDev\nlohmann-json\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\GameDev\SDL2_mixer-2.0.4\lib\x86;C:\GameDev\FreeType\win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>C:\GameDev\boost_1_72_0;C:\GameDev\SDL\include;C:\GameDev\OpenGL\include;C:\GameDev\glm-0.9.9.6;C:\GameDev\nlohmann-json\include;C:\GameDev\rttr-0.9.5\install\include;$(IncludePath)</IncludePath>
@@ -97,7 +97,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>C:\GameDev\SDL\lib;C:\GameDev\OpenGL\lib;C:\GameDev\SDL2_mixer-2.0.4\lib\x86;C:\GameDev\FreeType\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2main.lib;SDL2test.lib;glew32.lib;glew32s.lib;opengl32.lib;rttr_core_d.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2main.lib;SDL2test.lib;glew32.lib;glew32s.lib;opengl32.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference>
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>

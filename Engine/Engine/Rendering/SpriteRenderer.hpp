@@ -91,7 +91,6 @@ private:
 	void UpdateVertexArray();
 	void Draw(const Camera& camera) override;
 
-	RTTR_ENABLE(Component, IRenderer)
 };
 
 #endif // !_RENDERING_SPRITE_HPP

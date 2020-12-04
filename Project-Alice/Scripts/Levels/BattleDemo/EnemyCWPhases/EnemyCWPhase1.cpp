@@ -1,10 +1,5 @@
 #include "EnemyCWPhase1.hpp"
 
-RTTR_REGISTRATION {
-	registration::class_<EnemyCWPhase1>("EnemyCWPhase1")
-	.public_object_constructor;
-}
-
 EnemyCWPhase1::EnemyCWPhase1() { }
 
 EnemyCWPhase1::~EnemyCWPhase1() { }

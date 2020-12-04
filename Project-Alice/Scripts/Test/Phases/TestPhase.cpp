@@ -2,14 +2,6 @@
 #include "Engine/Game.hpp"
 
 
-RTTR_REGISTRATION{
-	registration::class_<TestPhase>("TestPhase")
-	.public_object_constructor
-	.property("timer",&TestPhase::timer)
-	.property("timerEnd",&TestPhase::timerEnd)
-	.property("result",&TestPhase::result);
-}
-
 TestPhase::TestPhase():timer(0),timerEnd(0),result(BTAResult::Error) {
 	
 }

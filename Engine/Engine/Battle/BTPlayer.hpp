@@ -36,7 +36,6 @@ public:
 	void SetSprite(const string& _texture, vec2 _pivot, int _layer);
 	void SetCollider(float _radius);
 
-	void SetBattleSpells(array<string, MAX_EQUIPPED_SPELLS> _atkSpells, const string& _defSpell);
 	// sets the spells directly
 	void SetBattleSpells(ATKSpells spells, BTDefenceSpell* spell);
 private:
@@ -56,7 +55,6 @@ private:
 
 	void DeleteSpells();
 
-	RTTR_ENABLE(Object) RTTR_REGISTRATION_FRIEND
 };
 
 #endif 

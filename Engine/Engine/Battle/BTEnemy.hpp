@@ -25,7 +25,6 @@ public:
 	void LateUpdate() override;
 	void OnDestroy() override;
 
-	BTPhase* AddPhase(const type type_); //add a phase 
 	template<class T> T* AddPhase() {
 		// derived
 		if (std::is_base_of<BTPhase, T>::value) {
@@ -48,7 +47,6 @@ public:
 	inline float GetCurrentHealth() { return currentHealth; }
 	inline void SetCurrentHealth(const float currentHealth_) { currentHealth = currentHealth_; }
 
-	RTTR_ENABLE(Object) RTTR_REGISTRATION_FRIEND
 };
 #endif
 

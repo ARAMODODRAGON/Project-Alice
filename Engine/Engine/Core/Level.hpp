@@ -18,7 +18,6 @@ public:
 	virtual void LateUpdate() { }
 	virtual void Exit() { }
 
-	RTTR_ENABLE() RTTR_REGISTRATION_FRIEND
 };
 
 #endif // !_CORE_LEVEL_HPP

@@ -1,11 +1,6 @@
 #include "EnemyCWPhase2.hpp"
 #include <Engine\Battle\BTPlayer.hpp>
 
-RTTR_REGISTRATION {
-	registration::class_<EnemyCWPhase2>("EnemyCWPhase2")
-	.public_object_constructor;
-}
-
 EnemyCWPhase2::EnemyCWPhase2() { }
 
 EnemyCWPhase2::~EnemyCWPhase2() { }
