@@ -3,7 +3,7 @@
 #include "Spells/Defence/BTDefenceSpell.hpp"
 #include <iostream>
 
-RTTR_REGISTRATION{
+RTTR_REGISTRATION {
 	registration::class_<BTPlayer>("BTPlayer")
 		.property("moveSpeed", &BTPlayer::moveSpeed)
 		.property("hitpoints", &BTPlayer::hitpoints)
@@ -14,12 +14,17 @@ BTPlayer::BTPlayer() {
 	BattleManager::AddPlayer(this);
 
 	moveSpeed = 0.0f;
+	slowSpeed = 0.0f;
 
 	maxHitpoints = 0;
 	hitpoints = 0;
 
-	sprite = nullptr;
-	collider = nullptr;
+	if (sprite = AddComponent<SpriteRenderer>()) { }
+	else DEBUG_ERROR("Failed to add SpriteRenderer to player");
+	if (collider = AddComponent<CircleCollider>()) {
+
+	}
+	else DEBUG_ERROR("Failed to add CircleCollider to player");
 
 	defenceSpell = nullptr;
 	atkSpells = { nullptr, nullptr, nullptr };
@@ -27,11 +32,12 @@ BTPlayer::BTPlayer() {
 }
 
 BTPlayer::~BTPlayer() {
+	DeleteSpells();
 	BattleManager::RemovePlayer(this);
 }
 
 void BTPlayer::Start() {
-	
+
 }
 
 void BTPlayer::Update() {
@@ -40,6 +46,7 @@ void BTPlayer::Update() {
 	const Button keyLeft = Keyboard::GetKey(KeyCode::ArrowLeft);
 	const Button keyUp = Keyboard::GetKey(KeyCode::ArrowUp);
 	const Button keyDown = Keyboard::GetKey(KeyCode::ArrowDown);
+	const Button keySlow = Keyboard::GetKey(KeyCode::LeftShift);
 
 	const Button keyPrevSpell = Keyboard::GetKey(KeyCode::KeyZ);
 	const Button keyNextSpell = Keyboard::GetKey(KeyCode::KeyX);
@@ -48,11 +55,11 @@ void BTPlayer::Update() {
 
 	// Set player velodity based on the current input
 	vec2 inputDirection = vec2(float(keyRight.IsHeld()) - float(keyLeft.IsHeld()), float(keyUp.IsHeld()) - float(keyDown.IsHeld()));
-	if (inputDirection.x != 0.0f && inputDirection.y != 0.0f) { // Don't normalize the vector if it's set to (0.0, 0.0)
+	if (glm::length2(inputDirection) > 0.0f) { // Don't normalize the vector if it's set to (0.0, 0.0)
 		inputDirection = glm::normalize(inputDirection);
 	}
-	SetVelocity(inputDirection * moveSpeed);
-	
+	SetVelocity(inputDirection * (keySlow ? slowSpeed : moveSpeed));
+
 	// Swapping to the next/previous spell
 	if (keyPrevSpell.Pressed()) {
 		curAtkSpell--;
@@ -78,7 +85,11 @@ void BTPlayer::Update() {
 }
 
 void BTPlayer::LateUpdate() {
+	Rect r = BattleManager::GetBattleArea();
 
+	r.min += vec2(3);
+	r.max -= vec2(3);
+	SetPosition(r.Clamp(GetPosition()));
 }
 
 // Increases or decreases the player's hitpoints by the value of the modifier; maxing out the hp at its maximum possible value
@@ -87,38 +98,11 @@ void BTPlayer::UpdateHitpoints(int _modifier) {
 	hitpoints += _modifier;
 	if (hitpoints > maxHitpoints) {
 		hitpoints = maxHitpoints;
-	} else if (hitpoints <= 0) {
+	}
+	else if (hitpoints <= 0) {
 		hitpoints = 0;
 		// TODO -- Make player dead here
 	}
-}
-
-float BTPlayer::GetMoveSpeed() {
-	return moveSpeed;
-}
-
-int BTPlayer::GetHitpoints() {
-	return hitpoints;
-}
-
-int BTPlayer::GetMaxHitpoints() {
-	return maxHitpoints;
-}
-
-SpriteRenderer* BTPlayer::GetSprite() {
-	return sprite;
-}
-
-CircleCollider* BTPlayer::GetCollider() {
-	return collider;
-}
-
-void BTPlayer::SetMoveSpeed(float _moveSpeed) {
-	moveSpeed = _moveSpeed;
-}
-
-void BTPlayer::SetHitpoints(int _hitpoints) {
-	UpdateHitpoints(_hitpoints - hitpoints);
 }
 
 void BTPlayer::SetMaxHitpoints(int _maxHitpoints, bool _updateCurHP) {
@@ -143,6 +127,7 @@ void BTPlayer::SetCollider(float _radius) {
 }
 
 void BTPlayer::SetBattleSpells(array<string, MAX_EQUIPPED_SPELLS> _atkSpells, const string& _defSpell) {
+	DeleteSpells();
 	// Add the three equipped attack spells
 	for (uint32 i = 0; i < MAX_EQUIPPED_SPELLS; i++) {
 		type t = type::get_by_name(_atkSpells[i].c_str());
@@ -161,4 +146,17 @@ void BTPlayer::SetBattleSpells(array<string, MAX_EQUIPPED_SPELLS> _atkSpells, co
 		return;
 	}
 	defenceSpell = spell.get_value<BTDefenceSpell*>();
+}
+
+void BTPlayer::SetBattleSpells(ATKSpells atkSpells_, BTDefenceSpell* defenceSpell_) {
+	DeleteSpells();
+	atkSpells = atkSpells_;
+	defenceSpell = defenceSpell_;
+}
+
+void BTPlayer::DeleteSpells() {
+	for (BTAttackSpell* sp : atkSpells) {
+		if (sp) delete sp, sp = nullptr;
+	}
+	if (defenceSpell) delete defenceSpell, defenceSpell = nullptr;
 }

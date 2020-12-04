@@ -7,18 +7,9 @@
 class BTAttackSpell;
 class BTDefenceSpell;
 class BTPlayer : public Object {
-	float moveSpeed;
-
-	int hitpoints;
-	int maxHitpoints;
-
-	CircleCollider* collider;
-	SpriteRenderer* sprite;
-
-	BTDefenceSpell* defenceSpell;
-	array<BTAttackSpell*, MAX_EQUIPPED_SPELLS> atkSpells;
-	uint32 curAtkSpell;
 public:
+	using ATKSpells = array<BTAttackSpell*, MAX_EQUIPPED_SPELLS>;
+
 	BTPlayer();
 	virtual ~BTPlayer() = 0;
 
@@ -29,24 +20,43 @@ public:
 	void UpdateHitpoints(int _modifier);
 
 	// Getters and Setters
-	float GetMoveSpeed();
-	int GetHitpoints();
-	int GetMaxHitpoints();
+	float GetMoveSpeed() { return moveSpeed; }
+	float GetSlowSpeed() { return slowSpeed; }
+	int GetHitpoints() { return hitpoints; }
+	int GetMaxHitpoints() { return maxHitpoints; }
 
-	SpriteRenderer* GetSprite();
-	CircleCollider* GetCollider();
+	SpriteRenderer* GetSprite() { return sprite; }
+	CircleCollider* GetCollider() { return collider; }
 
-	void SetMoveSpeed(float _moveSpeed);
-	void SetHitpoints(int _hitpoints);
+	void SetMoveSpeed(float _moveSpeed) { moveSpeed = _moveSpeed; }
+	void SetSlowSpeed(float _slowSpeed) { slowSpeed = _slowSpeed; }
+	void SetHitpoints(int _hitpoints) { UpdateHitpoints(_hitpoints - hitpoints); }
 	void SetMaxHitpoints(int _maxHitpoints, bool _updateCurHP);
 
 	void SetSprite(const string& _texture, vec2 _pivot, int _layer);
 	void SetCollider(float _radius);
 
 	void SetBattleSpells(array<string, MAX_EQUIPPED_SPELLS> _atkSpells, const string& _defSpell);
+	// sets the spells directly
+	void SetBattleSpells(ATKSpells spells, BTDefenceSpell* spell);
+private:
+
+	float moveSpeed;
+	float slowSpeed;
+
+	int hitpoints;
+	int maxHitpoints;
+
+	CircleCollider* collider;
+	SpriteRenderer* sprite;
+
+	BTDefenceSpell* defenceSpell;
+	ATKSpells atkSpells;
+	uint8 curAtkSpell;
+
+	void DeleteSpells();
 
 	RTTR_ENABLE(Object) RTTR_REGISTRATION_FRIEND
 };
 
-#endif
-
+#endif 

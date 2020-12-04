@@ -44,6 +44,15 @@ struct Rect {
 		return true;
 	}
 
+	vec2 Clamp(const vec2& pos) {
+		vec2 ret = pos;
+		if (ret.x > max.x) ret.x = max.x;
+		if (ret.y > max.y) ret.y = max.y;
+		if (ret.x < min.x) ret.x = min.x;
+		if (ret.y < min.y) ret.y = min.y;
+		return ret;
+	}
+
 };
 
 #define DEFAULT_PERCISION 0.0001f

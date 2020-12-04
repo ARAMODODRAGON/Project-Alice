@@ -161,6 +161,7 @@
     <ClInclude Include="Scripts\Levels\BattleDemo\BattleDemoCamera.hpp" />
     <ClInclude Include="Scripts\Levels\BattleDemo\BattleDemoEnemyCW.hpp" />
     <ClInclude Include="Scripts\Levels\BattleDemo\BattleDemoLevel.hpp" />
+    <ClInclude Include="Scripts\Levels\BattleDemo\BDPlayer.hpp" />
     <ClInclude Include="Scripts\Levels\BattleDemo\EnemyCWPhases\EnemyCWPhase0.hpp" />
     <ClInclude Include="Scripts\Levels\BattleDemo\EnemyCWPhases\EnemyCWPhase1.hpp" />
     <ClInclude Include="Scripts\Levels\BattleDemo\EnemyCWPhases\EnemyCWPhase2.hpp" />
@@ -182,6 +183,7 @@
     <ClCompile Include="Scripts\Levels\BattleDemo\BattleDemoCamera.cpp" />
     <ClCompile Include="Scripts\Levels\BattleDemo\BattleDemoEnemyCW.cpp" />
     <ClCompile Include="Scripts\Levels\BattleDemo\BattleDemoLevel.cpp" />
+    <ClCompile Include="Scripts\Levels\BattleDemo\BDPlayer.cpp" />
     <ClCompile Include="Scripts\Levels\BattleDemo\EnemyCWPhases\EnemyCWPhase0.cpp" />
     <ClCompile Include="Scripts\Levels\BattleDemo\EnemyCWPhases\EnemyCWPhase1.cpp" />
     <ClCompile Include="Scripts\Levels\BattleDemo\EnemyCWPhases\EnemyCWPhase2.cpp" />

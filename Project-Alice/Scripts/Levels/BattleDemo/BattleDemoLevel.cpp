@@ -26,9 +26,9 @@ void BattleDemoLevel::Init() {
 	levelBounds.left = -levelBounds.right;
 	BattleManager::SetBattleArea(levelBounds);
 
-	// add enemy
+	// add player & enemy
+	player = ObjectFactory::Make<BDPlayer>();
 	enemy = ObjectFactory::Make<BDEnemyCW>();
-	
 
 }
 
