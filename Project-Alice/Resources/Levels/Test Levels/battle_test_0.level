@@ -1,9 +1,0 @@
-{
-    "@type": "Level",
-    "objects": [ 
-		{ "type": "BattleCamera" },
-		{ "type": "TestBattlePlayer" },
-		{ "type": "TestEnemy" }
-	
-	]
-}

@@ -158,7 +158,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AliceGame.hpp" />
     <ClInclude Include="Scripts\Levels\BattleDemo\BattleDemoCamera.hpp" />
     <ClInclude Include="Scripts\Levels\BattleDemo\BattleDemoEnemyCW.hpp" />
     <ClInclude Include="Scripts\Levels\BattleDemo\BattleDemoLevel.hpp" />
@@ -180,7 +179,7 @@
     <ClInclude Include="Scripts\Test\Tiles\TestTile.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AliceGame.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="Scripts\Levels\BattleDemo\BattleDemoCamera.cpp" />
     <ClCompile Include="Scripts\Levels\BattleDemo\BattleDemoEnemyCW.cpp" />
     <ClCompile Include="Scripts\Levels\BattleDemo\BattleDemoLevel.cpp" />
