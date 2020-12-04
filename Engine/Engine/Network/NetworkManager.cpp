@@ -242,7 +242,8 @@ void NetworkManager::CreateLobby() {
 	}
 
 	// start the ConnectToServer function
-	connectToServerFut = std::async(ConnectToServer, -1);
+	//connectToServerFut = std::async(ConnectToServer, -1);
+	ConnectToServer(-1);
 }
 
 void NetworkManager::JoinLobby(const uint32 lobbyID) {
@@ -252,7 +253,8 @@ void NetworkManager::JoinLobby(const uint32 lobbyID) {
 	}
 
 	// start the ConnectToServer function
-	connectToServerFut = std::async(ConnectToServer, lobbyID);
+	//connectToServerFut = std::async(ConnectToServer, lobbyID);
+	::ConnectToServer(lobbyID);
 }
 
 static void ExitLobby() {
@@ -336,7 +338,7 @@ static void ExitLobby() {
 	else if (s == "left lobby") {
 		userID = -1;
 		delete lobby; lobby = nullptr;
-	} 
+	}
 	// invalid response
 	else {
 		DEBUG_LOG("Invalid response");
