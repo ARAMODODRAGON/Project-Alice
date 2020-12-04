@@ -47,7 +47,6 @@ inline void ShootComponent::Allocate(int _total) {
 	const uint32 tyID = GetTypeID<T>();
 	for (auto set : bulletSet) { // Loop through the available sets of bullets 
 		if (set.typeID != tyID) continue;
-
 		DEBUG_LOG("Bullets for that type have already been allocated.");
 		return; // Bullets couldn't be allocated; return false
 	}

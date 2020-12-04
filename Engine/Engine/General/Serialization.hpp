@@ -17,7 +17,7 @@ inline uint32 __TypeCounter() {
 
 template<class T>
 inline uint32 GetTypeID() {
-	static uint32 ID = __TypeCounter();
+	static const uint32 ID = __TypeCounter();
 	return ID;
 }
 

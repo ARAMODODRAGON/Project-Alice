@@ -20,8 +20,10 @@ bool SaveSystem::SaveData(const string& _fileName) {
 		char* bufptr = nullptr;
 		auto err = _dupenv_s(&bufptr, &bufferSize, "APPDATA");
 		if (err != 0) return false;
-		appdataFolder = bufptr;
-		delete[] bufptr;
+		if (bufptr) {
+			appdataFolder = bufptr;
+			delete[] bufptr;
+		}
 	}
 	string filePath(appdataFolder + "/Project-Alice");
 	if (_mkdir(filePath.c_str()) != 0) {
@@ -46,8 +48,10 @@ bool SaveSystem::LoadData(const string& _fileName) {
 		char* bufptr = nullptr;
 		auto err = _dupenv_s(&bufptr, &bufferSize, "APPDATA");
 		if (err != 0) return false;
-		appdataFolder = bufptr;
-		delete[] bufptr;
+		if (bufptr) {
+			appdataFolder = bufptr;
+			delete[] bufptr;
+		}
 	}
 	string filePath(appdataFolder + "/Project-Alice");
 	struct stat info;
