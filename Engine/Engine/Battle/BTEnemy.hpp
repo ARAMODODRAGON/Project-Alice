@@ -44,9 +44,9 @@ public:
 	BTPhase* GetPhase(const string& phaseName_); // return a phase by the name given
 
 	inline float GetMaxHealth() { return maxHealth; }
-	inline float SetMaxHealth(const float maxHealth_) { maxHealth = maxHealth_; }
+	inline void SetMaxHealth(const float maxHealth_) { maxHealth = maxHealth_; }
 	inline float GetCurrentHealth() { return currentHealth; }
-	inline float SetCurrentHealth(const float currentHealth_) { currentHealth = currentHealth_; }
+	inline void SetCurrentHealth(const float currentHealth_) { currentHealth = currentHealth_; }
 
 	RTTR_ENABLE(Object) RTTR_REGISTRATION_FRIEND
 };

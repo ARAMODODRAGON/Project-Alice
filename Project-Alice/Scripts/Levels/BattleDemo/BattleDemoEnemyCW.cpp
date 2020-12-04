@@ -16,4 +16,14 @@ void BDEnemyCW::Start() {
 
 	// setup the phases
 	ph0 = AddPhase<EnemyCWPhase0>();
+	ph1 = AddPhase<EnemyCWPhase1>();
+	ph2 = AddPhase<EnemyCWPhase2>();
+}
+
+void BDEnemyCW::Update() { 
+	BTEnemy::Update();
+	Button b = Keyboard::GetKey(KeyCode::KeyG);
+	if (b) {
+		SetCurrentHealth(GetCurrentHealth() - 0.5f);
+	}
 }
