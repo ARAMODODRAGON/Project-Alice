@@ -4,7 +4,7 @@
 
 // register the index
 ObjectFactory::ObjectFactory()
-	: index(nullptr) {
+	: index(nullptr), disableDestroy(false) {
 	// allocate some memory
 	objects.reserve(20);
 }
@@ -79,6 +79,7 @@ void ObjectFactory::Clear() {
 }
 
 void ObjectFactory::Destroy(Object* entity) {
+	if (Get()->disableDestroy) return;
 	// get reference
 	auto& objects = Get()->objects;
 
@@ -104,9 +105,11 @@ void ObjectFactory::Add(Object* e) {
 }
 
 void ObjectFactory::DestroyAll() {
+	disableDestroy = true;
 	// clear the objects
 	Clear();
 	// delete the index
 	if (index) delete index;
 	index = nullptr;
+	disableDestroy = false;
 }

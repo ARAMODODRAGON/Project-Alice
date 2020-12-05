@@ -11,15 +11,6 @@ class ILevel;
 class ObjectFactory {
 	PRIVATE_SINGLETON(ObjectFactory);
 
-	// an object with a bool. this bool is whether or not the object should destroy
-	using PairType = pair<Object*, bool>;
-	// all the entities
-	vector<PairType> objects; // TODO: seperate array for new objects, these then get pushed into this array during cleanup
-	list<Object*> newObjects;
-
-	// an object index & level
-	FileIndex* index;
-
 public:
 
 	ObjectFactory();
@@ -38,6 +29,17 @@ public:
 	static void Destroy(Object* entity);
 
 private:
+
+	// an object with a bool. this bool is whether or not the object should destroy
+	using PairType = pair<Object*, bool>;
+	// all the entities
+	vector<PairType> objects; // TODO: seperate array for new objects, these then get pushed into this array during cleanup
+	list<Object*> newObjects;
+
+	// an object index & level
+	FileIndex* index;
+
+	bool disableDestroy;
 
 	// helper functions
 	void Add(Object* e);
