@@ -1,7 +1,7 @@
 #ifndef ALC_GENERAL_HPP
 #define ALC_GENERAL_HPP
 #include <string>
-#include <string_view>
+//#include <string_view>
 #include <array>
 #include <vector>
 #include <list>
@@ -116,9 +116,11 @@ TYPE& operator=(const TYPE&) = delete;
 TYPE(TYPE&&) = delete;					\
 TYPE& operator=(TYPE&&) = delete;
 
-#define ALC_NON_CONSTUCTABLE(TYPE)		\
+#define ALC_NON_CONSTRUCTABLE(TYPE)		\
 ALC_NO_COPY(TYPE) ALC_NO_MOVE(TYPE)		\
 TYPE() = delete;						\
 ~TYPE() = delete;
+
+#include "Core\Debugger.hpp"
 
 #endif // !ALC_GENERAL_HPP
