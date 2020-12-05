@@ -1,6 +1,8 @@
 #ifndef _CORE_DEBUGGER_HPP
 #define _CORE_DEBUGGER_HPP
 #include "../General.hpp"
+#include <glm\glm.hpp>
+#include <glm\gtx\string_cast.hpp>
 
 namespace ALC {
 
@@ -16,6 +18,11 @@ namespace ALC {
 
 	};
 
+	namespace detail {
+		using std::to_string;
+		using glm::to_string;
+	}
+
 }
 
 #define ALC_DEBUG_LOG(msg) \
@@ -28,5 +35,8 @@ namespace ALC {
 	::ALC::Debugger::Error(msg, __FILE__, __LINE__)
 #define ALC_DEBUG_FATAL_ERROR(msg) \
 	::ALC::Debugger::FatalError(msg, __FILE__, __LINE__)
+
+#define VTOS(value) \
+	::ALC::detail::to_string(value)
 
 #endif // !_CORE_DEBUGGER_HPP

@@ -3,6 +3,8 @@
 #include <glew.h>
 #include <ALC\Entities\EntityRegistry.hpp>
 #include <ALC\Entities\Components.hpp>
+#include <ALC\Input\Keyboard.hpp>
+#include <glm\gtx\norm.hpp>
 
 class PlayerController final : public ALC::Behavior {
 public:
@@ -17,9 +19,16 @@ public:
 		if (e.HasComponent<ALC::Transform2D>()) {
 			auto& transform = e.GetComponent<ALC::Transform2D>();
 
+			const auto key_up = ALC::Keyboard::GetKey(ALC::KeyCode::ArrowUp);
+			const auto key_down = ALC::Keyboard::GetKey(ALC::KeyCode::ArrowDown);
+			const auto key_left = ALC::Keyboard::GetKey(ALC::KeyCode::ArrowLeft);
+			const auto key_right = ALC::Keyboard::GetKey(ALC::KeyCode::ArrowRight);
+			glm::vec2 input = glm::vec2(key_right.IsHeld() - key_left.IsHeld(), key_up.IsHeld() - key_down.IsHeld());
+			if (glm::length2(input) > 0.0f) {
+				ALC_DEBUG_LOG("Moving at " + VTOS(input));
+			}
 
-			glm::vec2 input = glm::vec2();
-
+			transform.position += input;
 		}
 	}
 	void LateUpdate(ALC::Entity e) override { }
@@ -36,37 +45,27 @@ public:
 			e.AddComponent<ALC::Transform2D>();
 		});
 	}
-
 	~BattleScene() { }
-
 	void Init() override {
 		auto e = reg.CreateEntity();
 		player = e.AddBehavior<PlayerController>();
 	}
-
 	void Exit() override { }
-
 	void Step() override {
 		reg.Update();
 
 		reg.LateUpdate();
 	}
-
 	void PreDraw() override {
 
 	}
-
 	void Draw() override {
 	}
-
 	void PostDraw() override {
 		reg.Cleanup();
 	}
-
 private:
-
 	PlayerController* player;
-
 };
 
 class AliceGame final : public ALC::Game {
