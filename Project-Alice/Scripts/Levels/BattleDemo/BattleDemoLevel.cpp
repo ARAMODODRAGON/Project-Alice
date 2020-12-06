@@ -1,20 +1,17 @@
 #include "BattleDemoLevel.hpp"
 #include <Engine\Battle\BattleManager.hpp>
 
-RTTR_REGISTRATION {
-	registration::class_<BattleDemoLevel>("BattleDemoLevel")
-		.public_object_constructor;
-}
-
 BattleDemoLevel::BattleDemoLevel() { }
 
 BattleDemoLevel::~BattleDemoLevel() { }
 
 void BattleDemoLevel::Init() {
 	
+	SoundSystem::LoadMusic("Battle Theme (UNFINISHED)", "Demo Battle Theme");
+	SoundSystem::PlayMusic("Demo Battle Theme");
+
 	// setup camera
 	camera = ObjectFactory::Make<BattleDemoCamera>();
-	// camera size = (512, 288)
 
 	// setup the bounds of the level
 	Rect levelBounds;
@@ -26,9 +23,9 @@ void BattleDemoLevel::Init() {
 	levelBounds.left = -levelBounds.right;
 	BattleManager::SetBattleArea(levelBounds);
 
-	// add enemy
+	// add player & enemy
+	player = ObjectFactory::Make<BDPlayer>();
 	enemy = ObjectFactory::Make<BDEnemyCW>();
-	
 
 }
 

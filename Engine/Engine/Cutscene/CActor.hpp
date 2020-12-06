@@ -53,8 +53,6 @@ public:
 	FacingDirection ActorDirection(glm::vec2 actorVel_);
 	bool isRuning();
 	
-
-	RTTR_ENABLE(Object) RTTR_REGISTRATION_FRIEND
 };
 #endif // !C_ACTOR_HPP
 

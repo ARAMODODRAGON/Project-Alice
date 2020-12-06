@@ -3,11 +3,6 @@
 #include <Engine\Input\Keyboard.hpp>
 #include <Engine\Game.hpp>
 
-RTTR_REGISTRATION {
-	registration::class_<BattleDemoCamera>("BattleDemoCamera")
-		.public_object_constructor;
-}
-
 BattleDemoCamera::BattleDemoCamera() : camera(nullptr), ui(nullptr) { }
 
 BattleDemoCamera::~BattleDemoCamera() { }
@@ -22,6 +17,10 @@ void BattleDemoCamera::Start() {
 	if (ui = AddComponent<UIRenderer>()) {
 		// init ui here
 		ui->AddSprite("default");
+	}
+	// create audio component
+	if (audio = AddComponent<AudioSourceComponent>()) {
+		// init audio here
 	}
 }
 

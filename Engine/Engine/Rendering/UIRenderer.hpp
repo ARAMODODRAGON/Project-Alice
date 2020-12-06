@@ -63,7 +63,6 @@ private:
 	// Renders each GUI element in order to the screen
 	void Draw(const vec2& screenSize) override;
 
-	RTTR_ENABLE(Component, ICanvasRenderer) RTTR_REGISTRATION_FRIEND
 };
 
 #endif // !_RENDERING_UI_RENDERER_HPP

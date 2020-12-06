@@ -1,14 +1,7 @@
 #include "BTAttackSpell.hpp"
 
-RTTR_REGISTRATION{
-	registration::class_<BTAttackSpell>("BTAttackSpell")
-		.property("type", &BTAttackSpell::attackType)
-		.property("count", &BTAttackSpell::allocateCount);
-}
-
 BTAttackSpell::BTAttackSpell()
-	: attackType(type::get<void>())
-	, allocateCount(0)
+	: allocateCount(0)
 	, shootComponent(nullptr)
 {}
 
@@ -23,6 +16,5 @@ ShootComponent* BTAttackSpell::GetShootComponent() {
 void BTAttackSpell::SetShootComponent(ShootComponent* _component) {
 	if (shootComponent == nullptr) {
 		shootComponent = _component;
-		shootComponent->Allocate(attackType, allocateCount);
 	}
 }

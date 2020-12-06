@@ -1,7 +1,6 @@
 #ifndef _ENTITY_HPP
 #define _ENTITY_HPP
 #include "../General/Types.hpp"
-#include "../General/Serialization.hpp"
 #include "ObjectFactory.hpp"
 #include "Component.hpp"
 #include "../Physics/Colliders.hpp"
@@ -41,13 +40,6 @@ public:
 	virtual void OnCollisionStay(const CollisionData& col) { }
 	virtual void OnCollisionExit(const CollisionData& col) { }
 
-	// object creation / destruction
-	template<class T> T* Make();
-	Object* Make();
-	template<class T> T* Make(const string& objectName);
-	Object* Make(const string& objectName);
-	static void Destroy(Object* entity);
-
 	// component creation / destruction
 	template<class T> T* AddComponent();
 	void DestroyComponent(Component* comp);
@@ -71,18 +63,7 @@ public:
 	float GetRotation() const { return rotation; }
 	void SetRotation(const float& rotation_) { rotation = rotation_; }
 
-	RTTR_ENABLE() RTTR_REGISTRATION_FRIEND
 };
-
-template<class T>
-inline T* Object::Make() {
-	return ObjectFactory::Make<T>();
-}
-
-template<class T>
-inline T* Object::Make(const string& objectName) {
-	return ObjectFactory::Make<T>(objectName);
-}
 
 // component creation / destruction
 

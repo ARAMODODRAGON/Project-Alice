@@ -50,7 +50,7 @@ public:
 	inline std::string GetPhaseName() { return phaseName; }
 
 	inline glm::vec2 GetPhaseDestination() { return destination; }
-	inline glm::vec2 GetEnemyPosition() { return position; }
+	inline glm::vec2 GetEnemyPosition() { return GetEnemy()->GetPosition(); }
 
 	inline int GetEnemyCurrentHealth() { return currentHealth; }
 	inline int GetEnemyMaxHealth() { return maxHealth; }
@@ -82,8 +82,6 @@ protected:
 	inline void SetPosition(glm::vec2 position_) { position = position_; }
 	inline void SetPhaseDestination(glm::vec2 destination_) { destination = destination_; }
 #pragma endregion
-
-	RTTR_ENABLE() RTTR_REGISTRATION_FRIEND
 
 };
 #endif

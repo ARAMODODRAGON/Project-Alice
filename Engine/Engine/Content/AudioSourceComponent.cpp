@@ -1,10 +1,5 @@
 #include "AudioSourceComponent.hpp"
 
-RTTR_REGISTRATION{
-	registration::class_<AudioSourceComponent>("ShootComponent")
-		.public_object_constructor;
-}
-
 AudioSourceComponent::AudioSourceComponent() 
 	: soundName("") 
 {}

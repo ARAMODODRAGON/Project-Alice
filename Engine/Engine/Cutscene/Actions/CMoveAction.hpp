@@ -29,7 +29,6 @@ public :
 	void SetActorName(std::string actorName_) { actorName = actorName_; }
 	void SetPosition(glm::vec2 position_) { position = position_; }
 
-	RTTR_ENABLE(CAction)RTTR_REGISTRATION_FRIEND
 };
 #endif
 

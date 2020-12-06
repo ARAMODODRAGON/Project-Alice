@@ -15,6 +15,5 @@ public:
 	void Start() override;
 	void Update()override;
 
-	RTTR_ENABLE(CActor) RTTR_REGISTRATION_FRIEND
 };
 #endif // !TIM_ACTOR_HPP

@@ -24,6 +24,5 @@ public:
 		height = height_;
 	}
 
-	RTTR_ENABLE(Object) RTTR_REGISTRATION_FRIEND
 };
 #endif // !TILE_HPP

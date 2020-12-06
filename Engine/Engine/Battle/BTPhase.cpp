@@ -1,20 +1,5 @@
 #include "BTPhase.hpp"
 
-
-RTTR_REGISTRATION{
-	registration::class_<BTPhase>("BTPhase")
-		.property("nextPahse",&BTPhase::nextPhase)
-		.property("phaseName",&BTPhase::phaseName)
-		.property("currentHealth",&BTPhase::currentHealth)
-		.property("maxHealth",&BTPhase::maxHealth)
-		.property("startingTime",&BTPhase::startingTime)
-		.property("enemy",&BTPhase::enemy)
-		.property("acceleration",&BTPhase::acceleration)
-		.property("maxSpeed",&BTPhase::maxSpeed)
-		.property("destination",&BTPhase::destination)
-		.property("position",&BTPhase::position);
-}
-
 BTPhase::BTPhase()
 	: nextPhase("")
 	, phaseName("")

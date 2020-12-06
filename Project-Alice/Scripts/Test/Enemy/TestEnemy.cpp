@@ -1,17 +1,11 @@
 #include "TestEnemy.hpp"
 
-RTTR_REGISTRATION{
-	registration::class_<TestEnemy>("TestEnemy")
-		.public_object_constructor;
-//.property("destination",&TestEnemy::destination);
-}
-
 
 TestEnemy::TestEnemy() : sprite(nullptr), moveFromMiddle(nullptr),moveToMiddle(nullptr) {}
 
 TestEnemy::~TestEnemy()
 {
-	OnDestroy();
+	//OnDestroy();
 }
 
 
@@ -27,8 +21,8 @@ void TestEnemy::Start()
 	//moveToMiddle = new TestPhase1();
 	//SetMaxSpeed(50.0f);
 	//SetMaxAcceleration(50.0f);
-	moveFromMiddle = rttr_cast<TestPhase*>(AddPhase(moveFromMiddle->get_type())); 
-	moveToMiddle = rttr_cast<TestPhase1*>(AddPhase(moveToMiddle->get_type()));	
+	moveFromMiddle = AddPhase<TestPhase>(); 
+	moveToMiddle = AddPhase<TestPhase1>();	
 
 }
 

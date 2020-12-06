@@ -13,7 +13,6 @@ public:
 
 	void Start() override;
 
-	RTTR_ENABLE(Object) RTTR_REGISTRATION_FRIEND
 };
 
 #endif

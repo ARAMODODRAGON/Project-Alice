@@ -2,11 +2,6 @@
 
 #include <iostream>
 
-RTTR_REGISTRATION{
-	registration::class_<TestBattlePlayer>("TestBattlePlayer")
-		.public_object_constructor;
-}
-
 TestBattlePlayer::TestBattlePlayer() { }
 
 TestBattlePlayer::~TestBattlePlayer() { }
@@ -19,7 +14,7 @@ void TestBattlePlayer::Start() {
 	DEBUG_LOG("Player Pos is : " + VTOS(GetPosition()));
 
 	// FOR TESTING //
-	SetBattleSpells(SpellInventory::GetEquippedAtkSpells(), SpellInventory::GetEquippedDefSpell());
+	//SetBattleSpells(SpellInventory::GetEquippedAtkSpells(), SpellInventory::GetEquippedDefSpell());
 
 	audioSource = AddComponent<AudioSourceComponent>();
 	audioSource->SetSound("Test");

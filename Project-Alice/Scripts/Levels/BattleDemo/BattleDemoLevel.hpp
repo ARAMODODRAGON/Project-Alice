@@ -3,6 +3,7 @@
 #include <Engine\Core\Level.hpp>
 #include "BattleDemoCamera.hpp"
 #include "BattleDemoEnemyCW.hpp"
+#include "BDPlayer.hpp"
 
 class BattleDemoLevel : public Level {
 public:
@@ -19,8 +20,8 @@ private:
 
 	BattleDemoCamera* camera;
 	BDEnemyCW* enemy;
+	BDPlayer* player;
 
-	RTTR_ENABLE() RTTR_REGISTRATION_FRIEND
 };
 
 #endif // !BATTLE_BATTLE_DEMO_LEVEL_HPP

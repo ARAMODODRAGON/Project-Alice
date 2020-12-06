@@ -1,10 +1,5 @@
 #include "TestPhase1.hpp"
 
-RTTR_REGISTRATION{
-	registration::class_<TestPhase1>("TestPhase1")
-	.public_object_constructor;
-}
-
 TestPhase1::TestPhase1()
 {
 }

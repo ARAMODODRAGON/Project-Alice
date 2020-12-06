@@ -21,7 +21,6 @@ public:
 	SpriteRenderer* GetSprite() const { return sprite; }
 	void SetDestroyTime(uint32 destroyTime_) { destroyTime = destroyTime_; }
 
-	RTTR_ENABLE(Object)
 };
 
 #endif // !PROJECTILE_HPP

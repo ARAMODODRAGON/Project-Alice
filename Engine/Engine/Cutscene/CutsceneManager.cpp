@@ -17,8 +17,9 @@ CutsceneManager::~CutsceneManager()
 	if (activeActors.size() > 0) {
 
 		for (auto actor : activeActors) {
+			//delete actor.second;
 			actor.second = nullptr;
-			delete actor.second;
+			
 		}
 
 		activeActors.clear();
@@ -31,8 +32,9 @@ CutsceneManager::~CutsceneManager()
 	if (actors.size() > 0) {
 		for (auto actor : actors)
 		{
+			//delete actor.second;
 			actor.second = nullptr;
-			delete actor.second;
+			
 		}
 
 		actors.clear();

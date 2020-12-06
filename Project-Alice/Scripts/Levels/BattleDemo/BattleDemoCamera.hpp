@@ -3,11 +3,13 @@
 #include <Engine\Objects\Object.hpp>
 #include <Engine\Rendering\Camera.hpp>
 #include <Engine\Rendering\UIRenderer.hpp>
+#include <Engine\Content\AudioSourceComponent.hpp>
 
 class BattleDemoCamera : public Object {
 
 	Camera* camera;
 	UIRenderer* ui;
+	AudioSourceComponent* audio;
 
 public:
 
@@ -22,8 +24,8 @@ public:
 	// getters
 	Camera* GetCamera() const { return camera; }
 	UIRenderer* GetUI() const { return ui; }
-
-	RTTR_ENABLE() RTTR_REGISTRATION_FRIEND
+	AudioSourceComponent* GetAudio() const { return audio; }
+	
 };
 
 #endif // !BATTLE_BATTLE_DEMO_CAMERA_HPP

@@ -11,7 +11,6 @@ public:
 
 	virtual void Use() = 0;
 
-	RTTR_ENABLE(BTSpell) RTTR_REGISTRATION_FRIEND
 };
 
 #endif

@@ -9,6 +9,7 @@
 #include <Engine/Physics/PhysicsScene.hpp>
 #include <Engine/Cutscene/CutsceneManager.hpp>
 #include <Engine/Battle/TileMap/TileMap.hpp>
+#include "Scripts\Levels\BattleDemo\BattleDemoLevel.hpp"
 
 //#include <Engine/Battle/Spells/SpellMacros.hpp>
 #include <random>
@@ -56,7 +57,7 @@ bool AliceGame::Init() {
 	ObjectFactory::Init("Resources/Objects/Objects.index");
 	PhysicsScene::Init();
 	BattleManager::Init("Resources/EnemyPhases/EnemyPhases.index");
-	LevelManager::Init("Resources/Levels/Levels.index", levelToLoad);
+	LevelManager::Init<BattleDemoLevel>();
 	CutsceneManager::Init("Resources/Cutscenes/Cutscene.index");
 
 	// FOR TESTING SPELL INVENTORY //
@@ -159,52 +160,7 @@ bool AliceGame::Exit() {
 }
 
 static void LoadObjects(const json& data) {
-	for (auto it = data.begin(); it != data.end(); ++it) {
-		if (!it->is_object()) {
-			DEBUG_ERROR("Non object in object array! Skipped");
-			continue;
-		}
-		const json& objData = (*it);
-
-		// construct using index
-		if (objData.contains("objectName") && objData["objectName"].is_string()) {
-			string objectName = objData["objectName"].get<string>();
-			Object* o = nullptr;
-
-			// construct with instance data
-			if (objData.contains("data") && objData.is_object())
-				o = ObjectFactory::Make(objectName, objData["data"]);
-
-			// construct without instance data
-			else o = ObjectFactory::Make<Object>(objectName);
-
-			// check
-			if (o == nullptr) DEBUG_ERROR("Could not make object of name " + objectName);
-			else DEBUG_LOG("Successfully made object of name " + objectName);
-		}
-		// construct using type
-		else if (objData.contains("type") && objData["type"].is_string()) {
-			string typName = objData["type"].get<string>();
-			type typ = type::get_by_name(typName.c_str());
-			Object* o = nullptr;
-
-			// construct with instance data
-			if (objData.contains("data") && objData.is_object())
-				o = ObjectFactory::Make(typ, objData["data"]);
-
-			// construct without instance data
-			else o = ObjectFactory::Make(typ);
-
-			// check
-			if (o == nullptr) DEBUG_ERROR("Could not make object of type " + typName);
-			else DEBUG_LOG("Successfully made object of type " + typName);
-		}
-		// if nothing print error
-		else {
-			DEBUG_ERROR("No Type or ObjectName found");
-		}
-
-	}
+	DEBUG_LOG("Does nothing");
 }
 
 void AliceGame::LevelLoad(Level* level, const json& data) {

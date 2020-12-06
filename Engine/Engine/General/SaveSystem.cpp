@@ -1,9 +1,10 @@
 #include "SaveSystem.hpp"
+#define _CRT_SECURE_NO_WARNINGS
 #include <sys/stat.h>
 #include <direct.h>
 #include <fstream>
 
-vector<pair<string, ISaveable*>> saveData = vector<pair<string, ISaveable*>>();
+static vector<pair<string, ISaveable*>> saveData;
 
 bool SaveSystem::SaveData(const string& _fileName) {
 	json savefile;
@@ -13,8 +14,18 @@ bool SaveSystem::SaveData(const string& _fileName) {
 		savefile[saveData[i].first] = data;
 	}
 	// Before writing the data to the file, make a directory for the save data if it doesn't exist
-	const char* appdata = getenv("APPDATA");
-	string filePath(to_string(appdata) + "/Project-Alice");
+	string appdataFolder = "";
+	{
+		size_t bufferSize;
+		char* bufptr = nullptr;
+		auto err = _dupenv_s(&bufptr, &bufferSize, "APPDATA");
+		if (err != 0) return false;
+		if (bufptr) {
+			appdataFolder = bufptr;
+			delete[] bufptr;
+		}
+	}
+	string filePath(appdataFolder + "/Project-Alice");
 	if (_mkdir(filePath.c_str()) != 0) {
 		DEBUG_WARNING("There was a problem with creating the save directory OR it already exists!");
 	}
@@ -31,8 +42,18 @@ bool SaveSystem::SaveData(const string& _fileName) {
 
 bool SaveSystem::LoadData(const string& _fileName) {
 	json loadedfile;
-	const char* appdata = getenv("APPDATA");
-	string filePath(to_string(appdata) + "/Project-Alice");
+	string appdataFolder = "";
+	{
+		size_t bufferSize;
+		char* bufptr = nullptr;
+		auto err = _dupenv_s(&bufptr, &bufferSize, "APPDATA");
+		if (err != 0) return false;
+		if (bufptr) {
+			appdataFolder = bufptr;
+			delete[] bufptr;
+		}
+	}
+	string filePath(appdataFolder + "/Project-Alice");
 	struct stat info;
 	if (stat(filePath.c_str(), &info) != 0) { // The directory couldn't be accessed for whatever reason
 		DEBUG_ERROR("Cannot access directory: " + filePath + "\nNo data will be loaded from file.");

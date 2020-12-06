@@ -29,7 +29,6 @@ public:
 	const mat4& GetProjMat() const { return proj; }
 	void SetCameraSize(const vec2& size_) { size = size_; }
 
-	RTTR_ENABLE(Component)
 };
 
 #endif // !_RENDERING_CAMERA_HPP

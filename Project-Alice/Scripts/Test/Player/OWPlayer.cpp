@@ -3,14 +3,6 @@
 #include "../Projectile.hpp"
 #include <Engine\Battle\BattleManager.hpp>
 
-RTTR_REGISTRATION {
-	registration::class_<OWPlayer>("OWPlayer")
-		.public_object_constructor
-		.property("shootColor", &OWPlayer::shootColor)
-		.property("shootSpeed", &OWPlayer::shootSpeed)
-		.property("shootDestroyTimer", &OWPlayer::shootDestroyTimer);
-}
-
 OWPlayer::OWPlayer()
 	: sprite(nullptr)
 	, cam(nullptr)
@@ -38,8 +30,8 @@ void OWPlayer::Start() {
 	ui = AddComponent<UIRenderer>();
 
 	bangBang = AddComponent<ShootComponent>();
-	bangBang->Allocate(type::get<BTBullet>(), 8);
-	bangBang->Allocate(type::get<BTBullet>(), 8);
+	bangBang->Allocate<BTBullet>(8);
+	//bangBang->Allocate<BTBullet>(8);
 
 	// create another object
 	//Object* o = Make();
@@ -106,7 +98,7 @@ void OWPlayer::Update() {
 
 	if (Keyboard::GetKey(KeyCode::KeyC).Pressed()) {
 		// create a projectile
-		if (Projectile* proj = Make<Projectile>()) {
+		if (Projectile* proj = ObjectFactory::Make<Projectile>()) {
 			// set sprite properties
 			proj->GetSprite()->SetColor(shootColor);
 			proj->GetSprite()->SetLayer(1);

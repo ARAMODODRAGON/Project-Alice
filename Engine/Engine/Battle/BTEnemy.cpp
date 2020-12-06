@@ -2,14 +2,6 @@
 #include "../Game.hpp"
 #include "BTPhase.hpp"
 
-RTTR_REGISTRATION {
-	registration::class_<BTEnemy>("BTEnemy")
-		.public_object_constructor
-		.property("phases",&BTEnemy::phases)
-		.property("currentPhase",&BTEnemy::currentPhase)
-		.property("maxHealth",&BTEnemy::maxHealth);
-}
-
 BTEnemy::BTEnemy() : currentHealth(0.0f), currentPhase(-1), maxHealth(0.0f) {
 	BattleManager::AddEnemy(this);
 
@@ -66,31 +58,6 @@ void BTEnemy::OnDestroy() {
 		phase = nullptr;
 	}
 	phases.clear();
-
-}
-
-BTPhase* BTEnemy::AddPhase(const type type_) {
-	if (!type_.is_derived_from(type::get<BTPhase>())) {
-		DEBUG_ERROR("Type : " + type_.get_name() + "is not of type BTPhase");
-		return nullptr;
-	}
-
-	variant phaseObj = type_.get_constructor().invoke();
-	if (!phaseObj) {
-		DEBUG_ERROR("Could not construct phase of type : " + type_.get_name());
-		return nullptr;
-	}
-
-	BTPhase* phase_ = phaseObj.get_value<BTPhase*>();
-	if (!phase_) {
-		DEBUG_ERROR("could not instatiate phase : " + type_.get_name());
-		return nullptr;
-	}
-
-	phases.push_back(phase_);
-	phase_->SetEnemy(this);
-	phase_->Init();
-	return phase_;
 
 }
 

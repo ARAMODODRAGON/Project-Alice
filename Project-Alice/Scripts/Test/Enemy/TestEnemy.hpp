@@ -31,7 +31,6 @@ public:
 	void OnDestroy() override;
 
 
-	RTTR_ENABLE(BTEnemy) RTTR_REGISTRATION_FRIEND
 };
 #endif // !TEST_ENEMY_HPP
 

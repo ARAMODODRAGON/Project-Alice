@@ -22,13 +22,13 @@ private:
 	uint8 state;
 	uint8 repeatState;
 	ShootComponent* shc;
+	int32 i;
 
 	virtual void Init() override;
 	virtual void StartPhase() override;
 	virtual void UpdatePhase() override;
 	virtual bool IsComplete() override;
 
-	RTTR_ENABLE(BTPhase) RTTR_REGISTRATION_FRIEND
 };
 
 #endif // !ENEMY_CW_PHASE_0

@@ -1,13 +1,6 @@
 
 #include "BobertActor.hpp"
 
-RTTR_REGISTRATION{
-	registration::class_<BobertActor>("BobertActor")
-	.public_object_constructor
-	.property("actorName",&BobertActor::actorName);
-
-}
-
 BobertActor::BobertActor():CActor("bobert")
 {
 }

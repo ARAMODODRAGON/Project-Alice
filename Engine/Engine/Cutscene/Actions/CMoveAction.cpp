@@ -1,15 +1,6 @@
 #include "CMoveAction.hpp"
 #include "../CutsceneManager.hpp"
 
-RTTR_REGISTRATION{
-  registration::class_<CMoveAction>("CMoveAction")
-	 .public_object_constructor
-	 .property("name",&CMoveAction::name)
-	 .property("actorName",&CMoveAction::actorName)
-	 .property("position",&CMoveAction::position);
-
-}
-
 CMoveAction::CMoveAction() :actor(nullptr), result(BTAResult::Error)
 {
 }

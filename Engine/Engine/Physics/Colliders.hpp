@@ -121,7 +121,7 @@ class Collider {
 
 public:
 
-	Collider() : position(0.0f), collisionMask(~0), triggerMask(~0) { /* The ~0 sets all layers to true */ }
+	Collider() : isSimulated(true), position(0.0f), collisionMask(~0), triggerMask(~0) { /* The ~0 sets all layers to true */ }
 	virtual ~Collider() = 0 { } // abstract
 
 	// getters and setters
@@ -141,7 +141,6 @@ public:
 	LayerMask GetTriggerMask() const { return triggerMask; }
 	void SetTriggerMask(const LayerMask& triggerMask_) { triggerMask = triggerMask_; }
 
-	RTTR_ENABLE() RTTR_REGISTRATION_FRIEND
 };
 
 #endif // !_PHYSICS_COLLIDERS_HPP

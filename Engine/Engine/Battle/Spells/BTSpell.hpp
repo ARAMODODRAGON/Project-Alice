@@ -17,7 +17,6 @@ public:
 private:
 	virtual void Shoot() {};
 
-	RTTR_ENABLE() RTTR_REGISTRATION_FRIEND
 };
 
 #endif

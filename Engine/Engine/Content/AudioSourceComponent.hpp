@@ -14,7 +14,6 @@ public:
 	void PlaySound(int _loops = 0, int _channel = 0);
 	void SetSound(const string& _soundName);
 
-	RTTR_ENABLE(Component) RTTR_REGISTRATION_FRIEND
 };
 
 #endif
