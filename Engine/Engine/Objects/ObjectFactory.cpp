@@ -62,6 +62,7 @@ void ObjectFactory::Cleanup() {
 void ObjectFactory::Exit() { Get()->DestroyAll(); }
 
 void ObjectFactory::Clear() { 
+	Get()->disableDestroy = true;
 	// get ref
 	auto& objects = Get()->objects;
 	auto& newObjects = Get()->newObjects;
@@ -76,6 +77,8 @@ void ObjectFactory::Clear() {
 		delete no;
 	}
 	newObjects.clear();
+
+	Get()->disableDestroy = false;
 }
 
 void ObjectFactory::Destroy(Object* entity) {

@@ -44,7 +44,6 @@
     <ClCompile Include="Engine\General\FileIndex.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Attack\BTAttackSpell.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Defence\BTDefenceSpell.cpp" />
-    <ClCompile Include="Engine\Battle\Spells\BTSpell.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Attack\BTWindSlash.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Attack\BTHomingLasers.cpp" />
     <ClCompile Include="Engine\Battle\Spells\Defence\BTHealing.cpp" />
@@ -117,9 +116,6 @@
     <ClCompile Include="Engine\Core\Debugger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\General\Math.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Core\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -159,13 +155,7 @@
     <ClCompile Include="Engine\Battle\BattleManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Rendering\IRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Battle\BTPlayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Core\Level.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClInclude Include="Engine\Battle\Spells\Attack\BTWindSlash.hpp" />

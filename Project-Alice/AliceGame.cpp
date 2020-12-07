@@ -10,6 +10,7 @@
 #include <Engine/Cutscene/CutsceneManager.hpp>
 #include <Engine/Battle/TileMap/TileMap.hpp>
 #include "Scripts\Levels\BattleDemo\BattleDemoLevel.hpp"
+#include "Scripts\Levels\NetworkedDemo\NetworkedLevel.hpp"
 
 //#include <Engine/Battle/Spells/SpellMacros.hpp>
 #include <random>
@@ -33,14 +34,6 @@ bool AliceGame::Init() {
 
 	SaveSystem::LoadData("Save");
 
-	// read the level
-	string levelToLoad;
-	std::cout << std::endl
-		<< "Hit enter to go to the " DEFAULT_LEVEL " level or" << std::endl
-		<< "enter the name of the level that you would like to load:" << std::endl;
-	std::getline(std::cin, levelToLoad);
-	if (levelToLoad == "") levelToLoad = DEFAULT_LEVEL;
-
 	if (!Game::Init()) return false;
 
 	// FOR TESTING SOUND SYSTEM //
@@ -57,7 +50,7 @@ bool AliceGame::Init() {
 	ObjectFactory::Init("Resources/Objects/Objects.index");
 	PhysicsScene::Init();
 	BattleManager::Init("Resources/EnemyPhases/EnemyPhases.index");
-	LevelManager::Init<BattleDemoLevel>();
+	LevelManager::Init<NetworkedLevel>();
 	CutsceneManager::Init("Resources/Cutscenes/Cutscene.index");
 
 	// FOR TESTING SPELL INVENTORY //
@@ -112,12 +105,12 @@ void AliceGame::Update() {
 	// do physics
 	PhysicsScene::Step();
 
-	if (!connected && NetworkManager::GetStatus() == NetStatus::Connected) {
-		connected = true;
-		if (const LobbyData* lod = NetworkManager::GetLobby()) {
-			DEBUG_LOG("Connected to server with lobby ID:{" + VTOS(lod->ID) + "}"); // + "} and userID:{" + "}"
-		}
-	}
+	//if (!connected && NetworkManager::GetStatus() == NetStatus::Connected) {
+	//	connected = true;
+	//	if (const LobbyData* lod = NetworkManager::GetLobby()) {
+	//		DEBUG_LOG("Connected to server with lobby ID:{" + VTOS(lod->ID) + "}"); // + "} and userID:{" + "}"
+	//	}
+	//}
 }
 
 void AliceGame::Draw() {
@@ -154,7 +147,7 @@ bool AliceGame::Exit() {
 	ContentHandler::Exit();
 	//CutsceneManager::Exit();
 
-	NetworkManager::ExitLobby();
+	//NetworkManager::ExitLobby();
 
 	return true;
 }
@@ -218,21 +211,21 @@ void AliceGame::LevelLoad(Level* level, const json& data) {
 
 int main(int argc, char* argv[]) {
 
-	NetworkManager::Init();
 	// set random value using chrono
 	srand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 
-	std::cout << "<create|join>" << std::endl;
-	string msg;
-	std::getline(std::cin, msg);
-
-	if (msg == "create") NetworkManager::CreateLobby();
-	else if (msg == "join") {
-		std::cout << "ID = ";
-		uint32 id;
-		std::cin >> id;
-		NetworkManager::JoinLobby(id);
-	}
+	NetworkManager::Init();
+	//std::cout << "<create|join>" << std::endl;
+	//string msg;
+	//std::getline(std::cin, msg);
+	//
+	//if (msg == "create") NetworkManager::CreateLobby();
+	//else if (msg == "join") {
+	//	std::cout << "ID = ";
+	//	uint32 id;
+	//	std::cin >> id;
+	//	NetworkManager::JoinLobby(id);
+	//}
 
 	Game* game = new AliceGame();
 	game->Run();

@@ -16,7 +16,6 @@ struct Spell {
 	string info;
 };
 
-using namespace std;
 class SpellList {
 	NON_CONSTRUCTABLE(SpellList);
 public:

@@ -27,50 +27,50 @@ void BattleDemoCamera::Start() {
 void BattleDemoCamera::Update() { }
 
 void BattleDemoCamera::LateUpdate() {
-	const Rect levelBounds = BattleManager::GetBattleArea();
-	constexpr float width = 3.0f;
-
-	vec2 ratio = Game::Get()->GetWindow()->GetScreenSize() / camera->GetCameraSize() * 2.0f;
-
-	// draw the level boundries
-	Rect r;
-
-	// left
-	r.bottom = levelBounds.bottom - width;
-	r.top = levelBounds.top + width;
-	r.right = levelBounds.left;
-	r.left = r.right - width;
-	r.min *= ratio;
-	r.max *= ratio;
-	ui->DrawSprite("default", r.left, r.bottom, r.right - r.left, r.top - r.bottom);
-
-	// right
-	r.bottom = levelBounds.bottom - width;
-	r.top = levelBounds.top + width;
-	r.left = levelBounds.right;
-	r.right = r.left + width;
-	r.min *= ratio;
-	r.max *= ratio;
-	ui->DrawSprite("default", r.left, r.bottom, r.right - r.left, r.top - r.bottom);
-
-	// top
-	r.left = levelBounds.left;
-	r.right = levelBounds.right;
-	r.bottom = levelBounds.top;
-	r.top = r.bottom + width;
-	r.min *= ratio;
-	r.max *= ratio;
-	ui->DrawSprite("default", r.left, r.bottom, r.right - r.left, r.top - r.bottom);
-
-	// bottom
-	r.left = levelBounds.left;
-	r.right = levelBounds.right;
-	r.top = levelBounds.bottom;
-	r.bottom = r.top - width;
-	r.min *= ratio;
-	r.max *= ratio;
-	ui->DrawSprite("default", r.left, r.bottom, r.right - r.left, r.top - r.bottom);
-
+	//const Rect levelBounds = BattleManager::GetBattleArea();
+	//constexpr float width = 3.0f;
+	//
+	//vec2 ratio = Game::Get()->GetWindow()->GetScreenSize() / camera->GetCameraSize() * 2.0f;
+	//
+	//// draw the level boundries
+	//Rect r;
+	//
+	//// left
+	//r.bottom = levelBounds.bottom - width;
+	//r.top = levelBounds.top + width;
+	//r.right = levelBounds.left;
+	//r.left = r.right - width;
+	//r.min *= ratio;
+	//r.max *= ratio;
+	//ui->DrawSprite("default", r.left, r.bottom, r.right - r.left, r.top - r.bottom);
+	//
+	//// right
+	//r.bottom = levelBounds.bottom - width;
+	//r.top = levelBounds.top + width;
+	//r.left = levelBounds.right;
+	//r.right = r.left + width;
+	//r.min *= ratio;
+	//r.max *= ratio;
+	//ui->DrawSprite("default", r.left, r.bottom, r.right - r.left, r.top - r.bottom);
+	//
+	//// top
+	//r.left = levelBounds.left;
+	//r.right = levelBounds.right;
+	//r.bottom = levelBounds.top;
+	//r.top = r.bottom + width;
+	//r.min *= ratio;
+	//r.max *= ratio;
+	//ui->DrawSprite("default", r.left, r.bottom, r.right - r.left, r.top - r.bottom);
+	//
+	//// bottom
+	//r.left = levelBounds.left;
+	//r.right = levelBounds.right;
+	//r.top = levelBounds.bottom;
+	//r.bottom = r.top - width;
+	//r.min *= ratio;
+	//r.max *= ratio;
+	//ui->DrawSprite("default", r.left, r.bottom, r.right - r.left, r.top - r.bottom);
+	//
 }
 
 void BattleDemoCamera::OnDestroy() { }

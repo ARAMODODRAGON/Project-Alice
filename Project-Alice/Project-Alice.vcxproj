@@ -166,6 +166,7 @@
     <ClInclude Include="Scripts\Levels\BattleDemo\EnemyCWPhases\EnemyCWPhase0.hpp" />
     <ClInclude Include="Scripts\Levels\BattleDemo\EnemyCWPhases\EnemyCWPhase1.hpp" />
     <ClInclude Include="Scripts\Levels\BattleDemo\EnemyCWPhases\EnemyCWPhase2.hpp" />
+    <ClInclude Include="Scripts\Levels\NetworkedDemo\NetworkedLevel.hpp" />
     <ClInclude Include="Scripts\Test\Actor\BobertActor.hpp" />
     <ClInclude Include="Scripts\Test\Battle\BattleCamera.hpp" />
     <ClInclude Include="Scripts\DebugMenu.hpp" />
@@ -188,6 +189,7 @@
     <ClCompile Include="Scripts\Levels\BattleDemo\EnemyCWPhases\EnemyCWPhase0.cpp" />
     <ClCompile Include="Scripts\Levels\BattleDemo\EnemyCWPhases\EnemyCWPhase1.cpp" />
     <ClCompile Include="Scripts\Levels\BattleDemo\EnemyCWPhases\EnemyCWPhase2.cpp" />
+    <ClCompile Include="Scripts\Levels\NetworkedDemo\NetworkedLevel.cpp" />
     <ClCompile Include="Scripts\Test\Actor\BobertActor.cpp" />
     <ClCompile Include="Scripts\Test\Battle\BattleCamera.cpp" />
     <ClCompile Include="Scripts\DebugMenu.cpp" />
