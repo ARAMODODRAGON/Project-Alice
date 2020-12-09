@@ -98,3 +98,8 @@ void Window::SwapBuffers() {
 	// swap buffers
 	SDL_GL_SwapWindow(window);
 }
+
+void Window::SetScreenSize(const uvec2& newsize) {
+	screenSize = newsize;
+	SDL_SetWindowSize(window, screenSize.x, screenSize.y);
+}

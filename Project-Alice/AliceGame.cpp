@@ -35,6 +35,7 @@ bool AliceGame::Init() {
 	SaveSystem::LoadData("Save");
 
 	if (!Game::Init()) return false;
+	GetWindow()->SetScreenSize(uvec2(960, 480));
 
 	// FOR TESTING SOUND SYSTEM //
 

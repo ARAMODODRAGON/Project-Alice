@@ -23,6 +23,7 @@ public:
 
 	// getters & setters
 	vec2 GetScreenSize() const { return screenSize; }
+	void SetScreenSize(const uvec2& newsize);
 
 };
 
