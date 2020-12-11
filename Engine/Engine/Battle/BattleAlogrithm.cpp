@@ -6,7 +6,7 @@ namespace bta {
 		// check 
 		if (velocity == nullptr) {
 			DEBUG_ERROR("Velocity was nullptr, could not calculate new velocity");
-			return BTAResult::Arrived;
+			return BTAResult::Error;
 		}
 		// points from the current position to the destination
 		glm::vec2 direction(0.0f);
