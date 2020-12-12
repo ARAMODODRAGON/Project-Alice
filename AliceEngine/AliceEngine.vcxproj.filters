@@ -45,10 +45,13 @@
     <ClInclude Include="ALC\Input\SystemEvents.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ALC\Entities\Components.hpp">
+    <ClInclude Include="ALC\Entities\Registry.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ALC\Entities\EntityRegistry.hpp">
+    <ClInclude Include="ALC\Entities\EntityID.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ALC\Entities\detail\RegistryDetail.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -77,8 +80,10 @@
     <ClCompile Include="ALC\Input\SystemEvents.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ALC\Entities\EntityRegistry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ALC\Entities\detail\Registry.inl">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

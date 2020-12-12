@@ -23,8 +23,9 @@
     <ClInclude Include="ALC\Core\Game.hpp" />
     <ClInclude Include="ALC\Core\Timer.hpp" />
     <ClInclude Include="ALC\Core\Window.hpp" />
-    <ClInclude Include="ALC\Entities\Components.hpp" />
-    <ClInclude Include="ALC\Entities\EntityRegistry.hpp" />
+    <ClInclude Include="ALC\Entities\detail\RegistryDetail.hpp" />
+    <ClInclude Include="ALC\Entities\EntityID.hpp" />
+    <ClInclude Include="ALC\Entities\Registry.hpp" />
     <ClInclude Include="ALC\General.hpp" />
     <ClInclude Include="ALC\Input\Button.hpp" />
     <ClInclude Include="ALC\Input\Keyboard.hpp" />
@@ -37,11 +38,13 @@
     <ClCompile Include="ALC\Core\Game.cpp" />
     <ClCompile Include="ALC\Core\Timer.cpp" />
     <ClCompile Include="ALC\Core\Window.cpp" />
-    <ClCompile Include="ALC\Entities\EntityRegistry.cpp" />
     <ClCompile Include="ALC\Input\Keyboard.cpp" />
     <ClCompile Include="ALC\Input\Mouse.cpp" />
     <ClCompile Include="ALC\Input\SystemEvents.cpp" />
     <ClCompile Include="ALC\SceneManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ALC\Entities\detail\Registry.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

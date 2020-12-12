@@ -108,18 +108,26 @@ static TYPE* Get() {					\
 }										\
 private:
 
+// disables the copy constructor and operator
 #define ALC_NO_COPY(TYPE)				\
 TYPE(const TYPE&) = delete;				\
 TYPE& operator=(const TYPE&) = delete;		
 
+// disables the move constructor and operator
 #define ALC_NO_MOVE(TYPE)				\
 TYPE(TYPE&&) = delete;					\
 TYPE& operator=(TYPE&&) = delete;
 
+// disables copy/move constructors and operators
+// and disables the default constructor and destructor
 #define ALC_NON_CONSTRUCTABLE(TYPE)		\
 ALC_NO_COPY(TYPE) ALC_NO_MOVE(TYPE)		\
 TYPE() = delete;						\
 ~TYPE() = delete;
+
+// declares that the class/function/variable is internal to the 
+// library and should not be accessed by any external source
+#define ALC_INTERNAL
 
 #include "Core\Debugger.hpp"
 
