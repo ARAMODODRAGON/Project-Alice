@@ -53,7 +53,7 @@ void main() {
 namespace ALC {
 
 	SpriteBatch::SpriteBatch()
-		: m_vao(-1), m_vbo(-1), m_maxtextures(-1), m_TextureCountLoc(-1), m_camera(nullptr) {
+		: m_vao(-1), m_vbo(-1), m_maxtextures(-1), m_TextureCountLoc(-1), m_bufferSize(0), m_camera(nullptr) {
 
 		// get the max number of textures per shader
 		glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &m_maxtextures);
@@ -123,7 +123,7 @@ namespace ALC {
 
 		// set uniform data
 		mat4 transform = m_camera->GetTransform();
-		glUniformMatrix4fv(shader.GetUniform("u_transform"), 1, GL_FALSE, &(transform[0].x));
+		glUniformMatrix4fv(currentShader.GetUniform("u_transform"), 1, GL_FALSE, &(transform[0].x));
 
 	}
 
@@ -151,11 +151,11 @@ namespace ALC {
 		/* bottom right */ verts[3].position = vec2(max.x, min.y);
 
 		// set color
-		verts[0].color = verts[1].color 
+		verts[0].color = verts[1].color
 			= verts[2].color = verts[3].color = sprite.color;
 
 		// set texture index
-		verts[0].textureIndex = verts[1].textureIndex 
+		verts[0].textureIndex = verts[1].textureIndex
 			= verts[2].textureIndex = verts[3].textureIndex = textureindex;
 
 		// set uvcoords
@@ -213,8 +213,17 @@ namespace ALC {
 	void SpriteBatch::DrawCurrent() {
 		if (m_verticies.size() == 0)
 			return;
+		const uint32 bytes = (sizeof(vertex) * m_verticies.size());
+
+		// resize the buffer if needed
+		if (m_bufferSize < bytes) {
+			if (m_bufferSize == 0) m_bufferSize = bytes;
+			else m_bufferSize *= 2;
+			glBufferData(GL_ARRAY_BUFFER, m_bufferSize, nullptr, GL_STREAM_DRAW);
+		}
+
 		// update the vertex data
-		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertex) * m_verticies.size(), m_verticies.data());
+		glBufferSubData(GL_ARRAY_BUFFER, 0, bytes, m_verticies.data());
 
 		// load in the textures
 		for (size_t i = 0; i < m_textures.size(); i++) {

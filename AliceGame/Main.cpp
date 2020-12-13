@@ -38,7 +38,7 @@ public:
 				ALC_DEBUG_LOG("Moving at " + VTOS(input));
 			}
 
-			transform.position += input;
+			transform.position += input * 1.4f;
 		}
 	}
 	void LateUpdate(ALC::Entity e) override { }
@@ -51,21 +51,18 @@ class BattleScene final : public ALC::IScene {
 public:
 	ALC::ContentStorage storage;
 	ALC::Registry reg;
-	ALC::SpriteBatch* batch;
+	ALC::SpriteBatch batch;
 	ALC::Camera camera;
 	ALC::Texture tex;
 
 	BattleScene() { }
-	~BattleScene() { 
-		if (batch) delete batch, batch = nullptr;
-	}
+	~BattleScene() { }
 	void Init() override {
 		// set the context
 		ALC::ContentManager::SetContext(storage);
-		batch = new ALC::SpriteBatch();
 
 		// setup camera
-
+		camera.SetCameraSize(camera.GetCameraSize() * 0.3f);
 
 		// create our player
 		ALC::Entity e = reg.Create();
@@ -73,24 +70,24 @@ public:
 	}
 
 	void Exit() override { }
-	
+
 	void Step() override {
 		reg.UpdateBehaviors();
 	}
 
-	void PreDraw() override { 
+	void PreDraw() override {
 		reg.LateUpdateBehaviors();
 	}
 
 	void Draw() override {
-		batch->Begin(camera);
-		
+		batch.Begin(camera);
+
 		reg.ForeachComponent<ALC::Transform, ALC::SpriteComponent>(
 			[this](ALC::Entity e, ALC::Transform& transform, ALC::SpriteComponent& sprite) {
-			batch->Draw(ALC::Transform(), sprite);
+			batch.Draw(transform, sprite);
 		});
-		
-		batch->End();
+
+		batch.End();
 	}
 
 	void PostDraw() override { }
