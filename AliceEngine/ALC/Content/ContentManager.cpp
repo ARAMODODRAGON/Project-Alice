@@ -25,7 +25,7 @@ namespace ALC {
 
 		// load the texture and add it to the map
 		Texture texture = Texture::Load(path);
-		storage.m_textures.emplace(path, texture);
+		if (texture) storage.m_textures.emplace(path, texture);
 
 		// return the newly loaded texture
 		return texture;
@@ -45,7 +45,7 @@ namespace ALC {
 
 		// load the shader and add it to the map
 		Shader shader = Shader::Load(path);
-		storage.m_shaders.emplace(path, shader);
+		if (shader) storage.m_shaders.emplace(path, shader);
 
 		// return the newly loaded shader
 		return shader;
@@ -65,7 +65,7 @@ namespace ALC {
 
 		// load the shader and add it to the map
 		Shader shader = Shader::LoadSource(source);
-		storage.m_shaders.emplace(source, shader);
+		if (shader) storage.m_shaders.emplace(source, shader);
 
 		// return the newly loaded shader
 		return shader;
@@ -90,6 +90,12 @@ namespace ALC {
 			Shader::Delete(shader);
 		}
 		storage.m_shaders.clear();
+
+		//// iterate through and delete all of the fonts
+		//for (auto& [key, font] : storage.m_fonts) {
+		//	Font::Delete(font);
+		//}
+		//storage.m_fonts.clear();
 
 	}
 
