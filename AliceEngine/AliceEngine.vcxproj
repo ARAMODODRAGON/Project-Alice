@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ALC\Content\ContentManager.hpp" />
+    <ClInclude Include="ALC\Content\Shader.hpp" />
     <ClInclude Include="ALC\Content\Texture.hpp" />
     <ClInclude Include="ALC\Core\Debugger.hpp" />
     <ClInclude Include="ALC\Core\Game.hpp" />
@@ -40,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ALC\Content\ContentManager.cpp" />
+    <ClCompile Include="ALC\Content\Shader.cpp" />
     <ClCompile Include="ALC\Content\Texture.cpp" />
     <ClCompile Include="ALC\Core\Debugger.cpp" />
     <ClCompile Include="ALC\Core\Game.cpp" />
@@ -48,6 +50,7 @@
     <ClCompile Include="ALC\Input\Keyboard.cpp" />
     <ClCompile Include="ALC\Input\Mouse.cpp" />
     <ClCompile Include="ALC\Input\SystemEvents.cpp" />
+    <ClCompile Include="ALC\Rendering\SpriteBatch.cpp" />
     <ClCompile Include="ALC\SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
