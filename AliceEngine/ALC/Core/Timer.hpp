@@ -16,6 +16,7 @@ namespace ALC {
 
 		uint32 targetFPS;
 		double secondsPerFrame;
+		double lastDelta;
 
 	public:
 

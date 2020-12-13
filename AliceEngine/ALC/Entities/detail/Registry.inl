@@ -20,7 +20,7 @@ namespace ALC {
 		return m_registry->__GetReg().has<Component...>(m_entity);
 	}
 
-	template<typename Component, typename... Args, typename>
+	template<typename Component, typename... Args>
 	inline Component& Entity::AddComponent(Args&&... args) {
 		if (HasComponent<Component>())
 			return m_registry->__GetReg().get<Component>(m_entity);

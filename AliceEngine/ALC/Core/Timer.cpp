@@ -3,7 +3,7 @@
 
 namespace ALC {
 
-	Timer::Timer() : targetFPS(0) {
+	Timer::Timer() : targetFPS(0), lastDelta(0.0) {
 		SetTargetFPS(60);
 		lastTime = currentTime = steady_clock::now();
 	}
@@ -11,23 +11,21 @@ namespace ALC {
 	Timer::~Timer() { }
 
 	void Timer::BeginFrame() {
+		lastDelta = (currentTime - lastTime).count();
 		// save the previous time point
 		lastTime = currentTime;
-
-		// get new time
-		currentTime = steady_clock::now();
 	}
 
 	void Timer::WaitForEndOfFrame() {
 		// get new time
-		currentTime = steady_clock::now();
-
-		//DEBUG_LOG("Current delta: " + VTOS((currentTime - lastTime).count()));
+		time_point t = steady_clock::now();
 
 		// loop as long as this frame is not done yet
-		while ((currentTime - lastTime).count() < secondsPerFrame) {
-			currentTime = steady_clock::now();
+		while ((t - lastTime).count() < secondsPerFrame) {
+			t = steady_clock::now();
 		}
+
+		currentTime = t;
 	}
 
 	bool Timer::CheckIfFrameComplete() {
@@ -41,11 +39,11 @@ namespace ALC {
 	}
 
 	double Timer::GetFPS() const {
-		return 1.0 / (currentTime - lastTime).count();
+		return 1.0 / lastDelta;
 	}
 
 	double Timer::GetDelta() const {
-		return (currentTime - lastTime).count();
+		return lastDelta;
 	}
 
 }

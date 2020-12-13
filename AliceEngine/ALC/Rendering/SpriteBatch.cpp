@@ -40,11 +40,11 @@ in float v_textureIndex;
 
 void main() {
 
-	out_fragcolor = v_color;
-	//if (int(v_textureIndex) == -1) {
-	//} else {
-	//	out_fragcolor = texture(u_textures[int(v_textureIndex)], v_uvcoords) * v_color;
-	//} 
+	if (int(v_textureIndex) == -1) {
+		out_fragcolor = v_color;
+	} else {
+		out_fragcolor = texture(u_textures[int(v_textureIndex)], v_uvcoords) * v_color;
+	} 
 	
 }
 
@@ -141,6 +141,8 @@ namespace ALC {
 		const vec2 min = position + sprite.bounds.min;
 		const vec2 max = position + sprite.bounds.max;
 		const vec2 size = sprite.texture.GetSize();
+		const vec2 texmin = sprite.textureBounds.min / size;
+		const vec2 texmax = sprite.textureBounds.max / size;
 
 		// create verticies
 		vertex verts[4];
@@ -159,10 +161,10 @@ namespace ALC {
 			= verts[2].textureIndex = verts[3].textureIndex = textureindex;
 
 		// set uvcoords
-		/* bottom left  */ verts[0].uvcoords = vec2(0.0, size.y);
-		/* top left     */ verts[1].uvcoords = vec2(0.0f);
-		/* top right    */ verts[2].uvcoords = vec2(size.x, 0.0f);
-		/* bottom right */ verts[3].uvcoords = size;
+		/* bottom left  */ verts[0].uvcoords = vec2(texmin.x, texmax.y);
+		/* top left     */ verts[1].uvcoords = texmin;
+		/* top right    */ verts[2].uvcoords = vec2(texmax.x, texmin.y);
+		/* bottom right */ verts[3].uvcoords = texmax;
 
 		// push into vector
 		m_verticies.push_back(verts[0]);

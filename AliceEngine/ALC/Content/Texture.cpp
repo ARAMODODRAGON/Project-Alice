@@ -48,25 +48,25 @@ namespace ALC {
 		glGenTextures(1, &textureID);
 		glBindTexture(GL_TEXTURE_2D, textureID);
 
-		uint32 mode = 0;
+		//uint32 mode = 0;
 		// set the texture mode
-		if (channels == STBI_rgb_alpha || channels == STBI_default)
-			mode = GL_RGBA;
-		else if (channels == STBI_rgb)
-			mode = GL_RGB;
-		else if (channels == STBI_grey_alpha)
-			mode = GL_RG;
-		else if (channels == STBI_grey)
-			mode = GL_R;
-		// invalid? dunno if this really will do anything
-		else {
-			ALC_DEBUG_ERROR("Invalid image channel mode when loading " + path);
-			stbi_image_free(pixels);
-			return nullptr;
-		}
+		//if (channels == STBI_rgb_alpha)
+		//	mode = GL_RGBA;
+		//else if (channels == STBI_rgb)
+		//	mode = GL_RGB;
+		//else if (channels == STBI_grey_alpha)
+		//	mode = GL_RG;
+		//else if (channels == STBI_grey)
+		//	mode = GL_R;
+		//// invalid? dunno if this really will do anything
+		//else {
+		//	ALC_DEBUG_ERROR("Invalid image channel mode when loading " + path);
+		//	stbi_image_free(pixels);
+		//	return nullptr;
+		//}
 
 		// load in and then free the texture
-		glTexImage2D(GL_TEXTURE_2D, 0, mode, width, height, 0, mode, GL_UNSIGNED_BYTE, pixels);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 		stbi_image_free(pixels);
 
 		// Wrapping and filtering options

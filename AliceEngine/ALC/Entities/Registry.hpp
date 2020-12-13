@@ -25,7 +25,7 @@ namespace ALC {
 
 		// adds a component and initializes it with the args
 		// if it already exists then it returns the component as-is
-		template<typename Component, typename... Args, typename = detail::is_component_t<Component>>
+		template<typename Component, typename... Args>
 		Component& AddComponent(Args&&... args);
 
 		// gets a component if it already exists
