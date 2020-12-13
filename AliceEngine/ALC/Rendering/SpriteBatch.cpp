@@ -1,7 +1,7 @@
 #include "SpriteBatch.hpp"
 #include <glew.h>
 
-constexpr const char* defaultSpriteShader = R""(
+static constexpr const char* defaultSpriteShader = R""(
 #type vertex
 #version 450 core
 layout (location = 0) in vec2 position;

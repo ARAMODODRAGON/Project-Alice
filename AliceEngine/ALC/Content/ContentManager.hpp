@@ -47,7 +47,7 @@ namespace ALC {
 		// static Font LoadFont(const string& path);
 		
 		// loads a font file and stores it in the context
-		// static Font LoadFont(const string& path);
+		// static Font LoadFont(ContentStorage& context, const string& path);
 
 		// clears out and deletes the content stored in the content manager
 		static void Clear();

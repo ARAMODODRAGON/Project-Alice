@@ -17,10 +17,8 @@ namespace ALC {
 		virtual void PostDraw() = 0;
 	};
 
-	namespace detail {
-		using SceneBinding = IScene * (*)();
-	}
-	#define ALC_BIND_SCENE(SceneType) (::ALC::detail::SceneBinding)[]()->::ALC::IScene* { return new SceneType(); }
+	using SceneBinding = IScene * (*)();
+	#define ALC_BIND_SCENE(SceneType) (::ALC::SceneBinding)[]()->::ALC::IScene* { return new SceneType(); }
 
 	class SceneManager {
 		ALC_NON_CONSTRUCTABLE(SceneManager);
@@ -37,7 +35,7 @@ namespace ALC {
 
 	private:
 
-		static void StartGame(Game* game_, const std::vector<detail::SceneBinding> bindings);
+		static void StartGame(Game* game_, const std::vector<SceneBinding> bindings);
 		static uint32 levelToLoad;
 		static IScene* activeScene;
 		static Game* activeGame;
@@ -47,7 +45,7 @@ namespace ALC {
 	};
 
 	template<typename GameTy, typename Bindings>
-	inline void ALC::SceneManager::Start(const string& title_, const uvec2& windowSize_, Bindings&& bindings) {
+	inline void SceneManager::Start(const string& title_, const uvec2& windowSize_, Bindings&& bindings) {
 		if (isRunning) {
 			ALC_DEBUG_ERROR("Game is already running, cannot start another instance");
 			return;

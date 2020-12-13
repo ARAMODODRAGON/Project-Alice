@@ -36,12 +36,19 @@ public:
 };
 
 class BattleScene final : public ALC::IScene {
+	ALC_NO_COPY(BattleScene);
 public:
+	ALC::ContentStorage content;
 	ALC::Registry reg;
 	ALC::SpriteBatch spritebatch;
 	ALC::Camera camera;
+	ALC::Texture tex;
+	ALC::Shader shader;
 
-	BattleScene() { }
+	BattleScene() {
+		tex = ALC::ContentManager::LoadTexture("Resources/Textures/Grey Orb Flashing.png");
+		shader = ALC::ContentManager::LoadShader("");
+	}
 	~BattleScene() { }
 	void Init() override {
 		ALC::Entity e = reg.Create();
