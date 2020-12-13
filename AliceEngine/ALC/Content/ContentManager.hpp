@@ -55,8 +55,15 @@ namespace ALC {
 		// clears out and deletes the content stored in the context
 		static void Clear(ContentStorage& context);
 
+		// sets the passed in storage as the default context to load into
+		// any content loaded before setting the context does not move to this context
+		static void SetContext(ContentStorage& context);
+
 	private:
 		static ContentStorage s_genericStorage;
+		static ContentStorage* s_contextStorage;
+	public:
+		static void __RemoveContext(ContentStorage* context);
 	};
 
 }

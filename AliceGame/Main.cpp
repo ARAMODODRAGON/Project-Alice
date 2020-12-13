@@ -45,12 +45,16 @@ public:
 	ALC::Texture tex;
 	ALC::Shader shader;
 
-	BattleScene() {
-		tex = ALC::ContentManager::LoadTexture("Resources/Textures/Grey Orb Flashing.png");
-		shader = ALC::ContentManager::LoadShader("");
-	}
+	BattleScene() { }
 	~BattleScene() { }
 	void Init() override {
+		// set the context
+		ALC::ContentManager::SetContext(content);
+
+		// load some content
+		tex = ALC::ContentManager::LoadTexture("Resources/Textures/Grey Orb Flashing.png");
+		shader = ALC::ContentManager::LoadShader("");
+
 		ALC::Entity e = reg.Create();
 		e.AddBehavior<PlayerController>();
 	}
@@ -87,11 +91,11 @@ public:
 
 int main(int argc, char* agrv[]) {
 
-	const auto SceneIndex = {
+	const ALC::vector<ALC::SceneBinding> SceneIndex = {
 		ALC_BIND_SCENE(BattleScene)
 	};
 
-	ALC::SceneManager::Start<AliceGame>("Project Alice", glm::uvec2(1280, 720), SceneIndex);
+	ALC::SceneManager::Start<AliceGame>("Project Alice", ALC::uvec2(1280, 720), SceneIndex);
 
 	return 0;
 }

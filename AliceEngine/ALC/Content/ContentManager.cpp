@@ -4,12 +4,16 @@ namespace ALC {
 
 	ContentStorage::ContentStorage() { }
 	ContentStorage::~ContentStorage() {
+		ContentManager::__RemoveContext(this);
 		ContentManager::Clear(*this);
 	}
 
 	ContentStorage ContentManager::s_genericStorage;
+	ContentStorage* ContentManager::s_contextStorage = nullptr;
 
 	Texture ContentManager::LoadTexture(const string& path) {
+		if (s_contextStorage)
+			return LoadTexture(*s_contextStorage, path);
 		return LoadTexture(s_genericStorage, path);
 	}
 
@@ -28,6 +32,8 @@ namespace ALC {
 	}
 
 	Shader ContentManager::LoadShader(const string& path) {
+		if (s_contextStorage)
+			return LoadShader(*s_contextStorage, path);
 		return LoadShader(s_genericStorage, path);
 	}
 
@@ -46,6 +52,8 @@ namespace ALC {
 	}
 
 	Shader ContentManager::LoadShaderSource(const string& source) {
+		if (s_contextStorage)
+			return LoadShaderSource(*s_contextStorage, source);
 		return LoadShaderSource(s_genericStorage, source);
 	}
 
@@ -64,7 +72,9 @@ namespace ALC {
 	}
 
 	void ContentManager::Clear() {
-		ContentManager::Clear(s_genericStorage);
+		if (s_contextStorage)
+			Clear(*s_contextStorage);
+		Clear(s_genericStorage);
 	}
 
 	void ContentManager::Clear(ContentStorage& context) {
@@ -81,6 +91,16 @@ namespace ALC {
 		}
 		context.m_shaders.clear();
 
+	}
+
+	void ContentManager::SetContext(ContentStorage& context) {
+		s_contextStorage = &context;
+	}
+
+	void ContentManager::__RemoveContext(ContentStorage* context) {
+		// remove the context only if it is the context
+		if (s_contextStorage == context)
+			s_contextStorage = nullptr;
 	}
 
 }

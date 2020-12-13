@@ -24,7 +24,7 @@ namespace ALC {
 		ALC_NON_CONSTRUCTABLE(SceneManager);
 	public:
 
-		template<typename GameTy, typename Bindings>
+		template<typename GameTy, typename Bindings, typename = std::enable_if_t<std::is_default_constructible_v<GameTy>>>
 		static void Start(const string& title_, const uvec2& windowSize_, Bindings&& bindings);
 
 		static void LoadLevel(const uint32 index) { levelToLoad = index; }
@@ -44,7 +44,7 @@ namespace ALC {
 
 	};
 
-	template<typename GameTy, typename Bindings>
+	template<typename GameTy, typename Bindings, typename>
 	inline void SceneManager::Start(const string& title_, const uvec2& windowSize_, Bindings&& bindings) {
 		if (isRunning) {
 			ALC_DEBUG_ERROR("Game is already running, cannot start another instance");
