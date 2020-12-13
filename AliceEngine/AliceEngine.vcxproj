@@ -33,7 +33,7 @@
     <ClInclude Include="ALC\Input\Button.hpp" />
     <ClInclude Include="ALC\Input\Keyboard.hpp" />
     <ClInclude Include="ALC\Input\Mouse.hpp" />
-    <ClInclude Include="ALC\Input\SystemEvents.hpp" />
+    <ClInclude Include="ALC\Input\detail\SystemEvents.hpp" />
     <ClInclude Include="ALC\rect.hpp" />
     <ClInclude Include="ALC\Rendering\Camera.hpp" />
     <ClInclude Include="ALC\Rendering\SpriteBatch.hpp" />
@@ -49,7 +49,7 @@
     <ClCompile Include="ALC\Core\Window.cpp" />
     <ClCompile Include="ALC\Input\Keyboard.cpp" />
     <ClCompile Include="ALC\Input\Mouse.cpp" />
-    <ClCompile Include="ALC\Input\SystemEvents.cpp" />
+    <ClCompile Include="ALC\Input\detail\SystemEvents.cpp" />
     <ClCompile Include="ALC\Rendering\SpriteBatch.cpp" />
     <ClCompile Include="ALC\SceneManager.cpp" />
   </ItemGroup>
