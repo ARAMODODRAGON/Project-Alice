@@ -17,15 +17,15 @@ namespace ALC {
 		return LoadTexture(s_genericStorage, path);
 	}
 
-	Texture ContentManager::LoadTexture(ContentStorage& context, const string& path) {
+	Texture ContentManager::LoadTexture(ContentStorage& storage, const string& path) {
 		// check if it already exists
-		auto it = context.m_textures.find(path);
-		if (it != context.m_textures.end())
+		auto it = storage.m_textures.find(path);
+		if (it != storage.m_textures.end())
 			return it->second;
 
 		// load the texture and add it to the map
 		Texture texture = Texture::Load(path);
-		context.m_textures.emplace(path, texture);
+		storage.m_textures.emplace(path, texture);
 
 		// return the newly loaded texture
 		return texture;
@@ -37,15 +37,15 @@ namespace ALC {
 		return LoadShader(s_genericStorage, path);
 	}
 
-	Shader ContentManager::LoadShader(ContentStorage& context, const string& path) {
+	Shader ContentManager::LoadShader(ContentStorage& storage, const string& path) {
 		// check if it already exists
-		auto it = context.m_shaders.find(path);
-		if (it != context.m_shaders.end())
+		auto it = storage.m_shaders.find(path);
+		if (it != storage.m_shaders.end())
 			return it->second;
 
 		// load the shader and add it to the map
 		Shader shader = Shader::Load(path);
-		context.m_shaders.emplace(path, shader);
+		storage.m_shaders.emplace(path, shader);
 
 		// return the newly loaded shader
 		return shader;
@@ -57,15 +57,15 @@ namespace ALC {
 		return LoadShaderSource(s_genericStorage, source);
 	}
 
-	Shader ContentManager::LoadShaderSource(ContentStorage& context, const string& source) {
+	Shader ContentManager::LoadShaderSource(ContentStorage& storage, const string& source) {
 		// check if it already exists
-		auto it = context.m_shaders.find(source);
-		if (it != context.m_shaders.end())
+		auto it = storage.m_shaders.find(source);
+		if (it != storage.m_shaders.end())
 			return it->second;
 
 		// load the shader and add it to the map
 		Shader shader = Shader::LoadSource(source);
-		context.m_shaders.emplace(source, shader);
+		storage.m_shaders.emplace(source, shader);
 
 		// return the newly loaded shader
 		return shader;
@@ -77,29 +77,29 @@ namespace ALC {
 		Clear(s_genericStorage);
 	}
 
-	void ContentManager::Clear(ContentStorage& context) {
+	void ContentManager::Clear(ContentStorage& storage) {
 
 		// iterate through and delete all of the textures
-		for (auto& [key, texture] : context.m_textures) {
+		for (auto& [key, texture] : storage.m_textures) {
 			Texture::Delete(texture);
 		}
-		context.m_textures.clear();
+		storage.m_textures.clear();
 
 		// iterate through and delete all of the shaders
-		for (auto& [key, shader] : context.m_shaders) {
+		for (auto& [key, shader] : storage.m_shaders) {
 			Shader::Delete(shader);
 		}
-		context.m_shaders.clear();
+		storage.m_shaders.clear();
 
 	}
 
-	void ContentManager::SetContext(ContentStorage& context) {
-		s_contextStorage = &context;
+	void ContentManager::SetContext(ContentStorage& storage) {
+		s_contextStorage = &storage;
 	}
 
-	void ContentManager::__RemoveContext(ContentStorage* context) {
-		// remove the context only if it is the context
-		if (s_contextStorage == context)
+	void ContentManager::__RemoveContext(ContentStorage* storage) {
+		// remove the storage only if it is the context
+		if (s_contextStorage == storage)
 			s_contextStorage = nullptr;
 	}
 

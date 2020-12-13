@@ -38,7 +38,7 @@ public:
 class BattleScene final : public ALC::IScene {
 	ALC_NO_COPY(BattleScene);
 public:
-	ALC::ContentStorage content;
+	ALC::ContentStorage storage;
 	ALC::Registry reg;
 	ALC::SpriteBatch spritebatch;
 	ALC::Camera camera;
@@ -49,7 +49,7 @@ public:
 	~BattleScene() { }
 	void Init() override {
 		// set the context
-		ALC::ContentManager::SetContext(content);
+		ALC::ContentManager::SetContext(storage);
 
 		// load some content
 		tex = ALC::ContentManager::LoadTexture("Resources/Textures/Grey Orb Flashing.png");
