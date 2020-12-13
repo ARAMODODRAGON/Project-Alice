@@ -13,8 +13,8 @@ namespace ALC {
 		return m_textureID != -1;
 	}
 
-	Texture::operator bool() const {
-		return m_textureID != -1;
+	Texture::operator uint32() const {
+		return m_textureID;
 	}
 
 	uint32 Texture::GetID() const {

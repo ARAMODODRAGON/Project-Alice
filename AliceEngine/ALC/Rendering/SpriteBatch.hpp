@@ -3,6 +3,7 @@
 #include "../Entities/Registry.hpp"
 #include "Camera.hpp"
 #include "../Content/Texture.hpp"
+#include "../Content/Shader.hpp"
 
 namespace ALC {
 
@@ -16,6 +17,8 @@ namespace ALC {
 		rect bounds;
 
 		// the area of the texture to draw to screen
+		// where 0,0 is the top left
+		// in pixel coords
 		rect textureBounds;
 
 		// the texture to draw to screen
@@ -36,13 +39,14 @@ namespace ALC {
 		~SpriteBatch();
 
 		// begin drawing the sprites
-		void Begin();
+		void Begin(Camera& m_camera, Shader shader = nullptr);
 
 		// draw a sprite 
 		void Draw(const Transform& transform, const SpriteComponent& sprite);
 
 		// finish drawing the sprites
-		void End(const Camera& camera /*, Shader shader */);
+		// uses the default shader if no shader is specified
+		void End();
 
 	private:
 
@@ -57,7 +61,10 @@ namespace ALC {
 		vector<Texture> m_textures;
 		uint32 m_vao, m_vbo;
 		int32 m_maxtextures;
-		uint32 m_textureLoc;
+		uint32 m_TextureCountLoc;
+		Shader m_currentShader;
+		Camera* m_camera;
+		Shader m_defaultShader;
 
 		bool TryAddTexture(const Texture& texture);
 	};

@@ -12,8 +12,8 @@ namespace ALC {
 		return m_programID != -1;
 	}
 
-	Shader::operator bool() const {
-		return m_programID != -1;
+	Shader::operator uint32() const {
+		return m_programID;
 	}
 
 	uint32 Shader::GetID() const {
@@ -26,6 +26,10 @@ namespace ALC {
 
 	bool Shader::operator!=(const Shader& other) const {
 		return m_programID != other.m_programID;
+	}
+
+	uint32 Shader::GetUniform(const string& name) {
+		return glGetUniformLocation(m_programID, name.c_str());
 	}
 
 	static uint32 GetShaderTypeFromString(const string& shadertype) {

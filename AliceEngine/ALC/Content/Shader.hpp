@@ -10,13 +10,14 @@ namespace ALC {
 		Shader();
 
 		// creates invalid shader
+		// same as default constructor
 		Shader(std::nullptr_t);
 
 		// checks if this is a valid shader
 		bool IsValid() const;
 
-		// checks if this is a valid shader
-		operator bool() const;
+		// returns the shader ID
+		operator uint32() const;
 
 		// returns the shader ID
 		uint32 GetID() const;
@@ -26,6 +27,9 @@ namespace ALC {
 
 		// compares this to other
 		bool operator!=(const Shader& other) const;
+
+		// returns the uniform location of the given name
+		uint32 GetUniform(const string& name);
 
 		// functions for loading shaders
 

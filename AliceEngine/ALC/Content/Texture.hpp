@@ -15,8 +15,8 @@ namespace ALC {
 		// returns true if this is a valid texture
 		bool IsValid() const;
 
-		// returns true if this is a valid texture
-		operator bool() const;
+		// returns the texture ID
+		operator uint32() const;
 
 		// returns the texture ID
 		uint32 GetID() const;

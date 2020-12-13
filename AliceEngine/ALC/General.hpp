@@ -109,19 +109,6 @@ namespace ALC {
 
 #include "rect.hpp"
 
-#define ALC_SINGLETON(TYPE)				\
-private:								\
-TYPE(const TYPE&) = delete; 			\
-TYPE& operator=(const TYPE&) = delete;	\
-TYPE(TYPE&&) = delete; 					\
-TYPE& operator=(TYPE&&) = delete;		\
-public:									\
-static TYPE* Get() {					\
-	static TYPE _instance;				\
-	return &_instance;					\
-}										\
-private:
-
 // disables the copy constructor and operator
 #define ALC_NO_COPY(TYPE)				\
 TYPE(const TYPE&) = delete;				\
@@ -138,6 +125,15 @@ TYPE& operator=(TYPE&&) = delete;
 ALC_NO_COPY(TYPE) ALC_NO_MOVE(TYPE)		\
 TYPE() = delete;						\
 ~TYPE() = delete;
+
+#define ALC_SINGLETON(TYPE)								\
+ALC_NO_COPY(TYPE) ALC_NO_MOVE(TYPE)						\
+public:													\
+static TYPE* Get() {									\
+	static ::ALC::Scope<TYPE> _instance(new TYPE());	\
+	return &_instance.get();							\
+}														\
+private:
 
 // declares that the class/function/variable is internal to the 
 // library and should not be accessed by any external source
