@@ -7,6 +7,7 @@
 #include <list>
 #include <forward_list>
 #include <map>
+#include <unordered_map>
 #include <utility>
 #include <memory>
 #include <glm\glm.hpp>
@@ -20,6 +21,7 @@ namespace ALC {
 	using std::list;
 	using std::forward_list;
 	using std::map;
+	using std::unordered_map;
 	using std::pair;
 
 	// using statement for std::shared_ptr<T>
@@ -50,6 +52,16 @@ namespace ALC {
 	using glm::uvec4;
 	using glm::mat3;
 	using glm::mat4;
+
+	// colors
+
+	#define ALC_COLOR_CLEAR ::ALC::vec4(0.0f, 0.0f, 0.0f, 0.0f)
+	#define ALC_COLOR_BLACK ::ALC::vec4(0.0f, 0.0f, 0.0f, 1.0f)
+	#define ALC_COLOR_WHITE ::ALC::vec4(1.0f, 1.0f, 1.0f, 1.0f)
+	#define ALC_COLOR_RED	::ALC::vec4(1.0f, 0.0f, 0.0f, 1.0f)
+	#define ALC_COLOR_GREEN ::ALC::vec4(0.0f, 1.0f, 0.0f, 1.0f)
+	#define ALC_COLOR_BLUE	::ALC::vec4(0.0f, 0.0f, 1.0f, 1.0f)
+
 
 	#define DEFAULT_PERCISION 0.0001f
 	inline bool NearlyZero(const float& v, const float& percision = DEFAULT_PERCISION) {
@@ -94,6 +106,8 @@ namespace ALC {
 	#undef DEFAULT_PERCISION
 
 }
+
+#include "rect.hpp"
 
 #define ALC_SINGLETON(TYPE)				\
 private:								\

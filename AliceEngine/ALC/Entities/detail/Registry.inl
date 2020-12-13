@@ -239,5 +239,8 @@ namespace ALC {
 		});
 	}
 
+	inline entt::registry& Registry::__GetReg() {
+		return m_registry;
+	}
 
 }

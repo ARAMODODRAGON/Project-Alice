@@ -4,6 +4,8 @@
 #include <ALC\Input\Keyboard.hpp>
 #include <glm\gtx\norm.hpp>
 #include <ALC\Entities\Registry.hpp>
+#include <ALC\Rendering\SpriteBatch.hpp>
+#include <ALC\Rendering\Camera.hpp>
 
 class PlayerController final : public ALC::Behavior {
 public:
@@ -36,6 +38,8 @@ public:
 class BattleScene final : public ALC::IScene {
 public:
 	ALC::Registry reg;
+	ALC::SpriteBatch spritebatch;
+	ALC::Camera camera;
 
 	BattleScene() { }
 	~BattleScene() { }
@@ -62,8 +66,7 @@ public:
 	void Step() override { }
 
 	void PreDraw() override {
-		const glm::vec4 color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-		GetWindow()->ClearScreen(color);
+		GetWindow()->ClearScreen(ALC_COLOR_BLACK);
 	}
 
 	void Draw() override { }

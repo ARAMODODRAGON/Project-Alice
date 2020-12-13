@@ -2,6 +2,7 @@
 #define ALC_SCENEMANAGER_HPP
 #include "General.hpp"
 #include "Core\Game.hpp"
+#include "Content\ContentManager.hpp"
 
 namespace ALC {
 
@@ -55,6 +56,7 @@ namespace ALC {
 		Scope<Game> game(new GameTy());
 		game->__Initialize(title_, windowSize_);
 		StartGame(game.get(), bindings);
+		ContentManager::Clear();
 		isRunning = false;
 	}
 
