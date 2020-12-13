@@ -1,8 +1,8 @@
 #include "SystemEvents.hpp"
 #include <SDL_events.h>
-#include "Keyboard.hpp"
-#include "Mouse.hpp"
-#include "../SceneManager.hpp"
+#include "../Keyboard.hpp"
+#include "../Mouse.hpp"
+#include "../../SceneManager.hpp"
 
 namespace ALC {
 	namespace detail {

@@ -1,5 +1,5 @@
 #include "SceneManager.hpp"
-#include "Input\SystemEvents.hpp"
+#include "Input\detail\SystemEvents.hpp"
 
 namespace ALC {
 
