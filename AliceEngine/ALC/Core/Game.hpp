@@ -18,14 +18,14 @@ namespace ALC {
 		virtual void Draw() = 0;
 		virtual void PostDraw() = 0;
 
-		Window* GetWindow() { return window; }
-		Timer* GetTimer() { return timer; }
+		Window* GetWindow() { return m_window; }
+		Timer* GetTimer() { return m_timer; }
 
 	public:
-		void __Initialize(const string& title_, const uvec2& windowsize);
+		void __Initialize(Window* window_, Timer* timer_);
 	private:
-		Window* window;
-		Timer* timer;
+		Window* m_window;
+		Timer* m_timer;
 	};
 
 }

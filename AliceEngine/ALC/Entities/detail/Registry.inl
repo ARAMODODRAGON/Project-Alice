@@ -176,10 +176,30 @@ namespace ALC {
 		m_registry.clear();
 	}
 
+	inline void Registry::UpdateBehaviors() {
+		m_registry.view<detail::BehaviorList>().each(
+			[this](entt::entity e, detail::BehaviorList& bl) {
+			Entity entity(e, this);
+			for (Behavior* b : bl.behaviors) {
+				b->Update(entity);
+			}
+		});
+	}
+
+	inline void Registry::LateUpdateBehaviors() {
+		m_registry.view<detail::BehaviorList>().each(
+			[this](entt::entity e, detail::BehaviorList& bl) {
+			Entity entity(e, this);
+			for (Behavior* b : bl.behaviors) {
+				b->LateUpdate(entity);
+			}
+		});
+	}
+
 	inline void ALC::Registry::Cleanup() {
 		// destroy behaviors
 		for (auto pr : m_behaviorsToDestroy) {
-			m_registry.view<detail::BehaviorList>().each([pr, this] (entt::entity e, detail::BehaviorList& bl) {
+			m_registry.view<detail::BehaviorList>().each([pr, this](entt::entity e, detail::BehaviorList& bl) {
 				if (pr.first == e) {
 					for (auto it = bl.behaviors.begin(); it != bl.behaviors.end(); ++it) {
 						if ((*it) == pr.second) {
@@ -221,7 +241,7 @@ namespace ALC {
 		m_behaviorsToDestroy.push_back(BehaviorPair(e.__GetEntt(), behavior));
 	}
 
-	template<typename... Components, typename Callable, typename>
+	template<typename... Components, typename Callable>
 	inline void Registry::ForeachComponent(Callable callable) {
 		m_registry.view<Components...>().each(
 			[callable, this](entt::entity e, Components&... comps) {

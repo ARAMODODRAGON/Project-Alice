@@ -2,16 +2,16 @@
 
 namespace ALC {
 
-	Game::Game() : window(nullptr), timer(nullptr) { }
+	Game::Game() : m_window(nullptr), m_timer(nullptr) { }
 	Game::~Game() {
-		if (window) delete window, window = nullptr;
-		if (timer) delete timer, timer = nullptr;
+		if (m_window) m_window = nullptr;
+		if (m_timer) m_timer = nullptr;
 	}
 
-	void Game::__Initialize(const string& title_, const uvec2& windowsize) {
-		if (window || timer) return;
-		window = new Window(title_, windowsize);
-		timer = new Timer();
+	void Game::__Initialize(Window* window_, Timer* timer_) {
+		if (m_window || m_timer) return;
+		m_window = window_;
+		m_timer = timer_;
 	}
 
 }

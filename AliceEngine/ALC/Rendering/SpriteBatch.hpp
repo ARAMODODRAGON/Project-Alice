@@ -39,7 +39,7 @@ namespace ALC {
 		~SpriteBatch();
 
 		// begin drawing the sprites
-		void Begin(Camera& m_camera, Shader shader = nullptr);
+		void Begin(Camera& camera, Shader shader = nullptr);
 
 		// draw a sprite 
 		void Draw(const Transform& transform, const SpriteComponent& sprite);
@@ -62,11 +62,11 @@ namespace ALC {
 		uint32 m_vao, m_vbo;
 		int32 m_maxtextures;
 		uint32 m_TextureCountLoc;
-		Shader m_currentShader;
 		Camera* m_camera;
 		Shader m_defaultShader;
 
-		bool TryAddTexture(const Texture& texture);
+		uint32 TryAddTexture(const Texture& texture);
+		void DrawCurrent();
 	};
 
 }

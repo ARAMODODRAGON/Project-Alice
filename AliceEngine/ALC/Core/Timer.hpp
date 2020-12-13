@@ -23,6 +23,7 @@ namespace ALC {
 		~Timer();
 
 		// functions
+		void BeginFrame();
 		void WaitForEndOfFrame();
 		bool CheckIfFrameComplete();
 

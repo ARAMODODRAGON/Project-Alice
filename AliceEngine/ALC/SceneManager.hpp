@@ -27,35 +27,37 @@ namespace ALC {
 		template<typename GameTy, typename Bindings, typename = std::enable_if_t<std::is_default_constructible_v<GameTy>>>
 		static void Start(const string& title_, const uvec2& windowSize_, Bindings&& bindings);
 
-		static void LoadLevel(const uint32 index) { levelToLoad = index; }
-		static bool IsRunning() { return isRunning; }
-		static void Quit() { shouldQuit = true; }
-		static IScene* GetActiveScene() { return activeScene; }
-		static Game* GetActiveGame() { return activeGame; }
+		static void LoadLevel(const uint32 index) { s_levelToLoad = index; }
+		static bool IsRunning() { return s_isRunning; }
+		static void Quit() { s_shouldQuit = true; }
+		static IScene* GetActiveScene() { return s_activeScene; }
+		static Game* GetActiveGame() { return s_activeGame; }
+		static Window* GetWindow() { return s_window; }
 
 	private:
 
 		static void StartGame(Game* game_, const std::vector<SceneBinding> bindings);
-		static uint32 levelToLoad;
-		static IScene* activeScene;
-		static Game* activeGame;
-		static bool isRunning;
-		static bool shouldQuit;
+		static uint32 s_levelToLoad;
+		static IScene* s_activeScene;
+		static Game* s_activeGame;
+		static Window* s_window;
+		static bool s_isRunning;
+		static bool s_shouldQuit;
 
 	};
 
 	template<typename GameTy, typename Bindings, typename>
 	inline void SceneManager::Start(const string& title_, const uvec2& windowSize_, Bindings&& bindings) {
-		if (isRunning) {
+		if (s_isRunning) {
 			ALC_DEBUG_ERROR("Game is already running, cannot start another instance");
 			return;
 		}
-		isRunning = true;
+		s_isRunning = true;
+		s_window = new Window(title_, windowSize_);
 		Scope<Game> game(new GameTy());
-		game->__Initialize(title_, windowSize_);
 		StartGame(game.get(), bindings);
 		ContentManager::Clear();
-		isRunning = false;
+		s_isRunning = false;
 	}
 
 }

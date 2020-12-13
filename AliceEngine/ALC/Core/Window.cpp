@@ -52,10 +52,6 @@ namespace ALC {
 		// create context
 		glContext = SDL_GL_CreateContext(window);
 
-
-		// set an attribute
-		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 32);
-
 		// check if it was created
 		GLenum error = glewInit();
 		if (error != GLEW_OK) {
@@ -64,8 +60,7 @@ namespace ALC {
 		}
 
 		// enable this shit
-		glEnable(GL_DEPTH_TEST | GL_BLEND);
-		glDepthFunc(GL_GREATER);
+		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		// print graphics card and opengl version
@@ -80,11 +75,11 @@ namespace ALC {
 		SDL_GL_DeleteContext(glContext);
 		SDL_DestroyWindow(window); window = nullptr;
 	}
-	
+
 	void Window::ClearScreen(const vec4& color) {
 		// clear screen
 		glClearColor(color.r, color.g, color.b, color.a);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
 	void Window::SwapBuffers() {

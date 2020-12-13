@@ -10,10 +10,15 @@ namespace ALC {
 
 	Timer::~Timer() { }
 
-	void Timer::WaitForEndOfFrame() {
+	void Timer::BeginFrame() {
 		// save the previous time point
 		lastTime = currentTime;
 
+		// get new time
+		currentTime = steady_clock::now();
+	}
+
+	void Timer::WaitForEndOfFrame() {
 		// get new time
 		currentTime = steady_clock::now();
 

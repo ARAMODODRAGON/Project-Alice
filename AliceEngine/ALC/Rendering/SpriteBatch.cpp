@@ -1,6 +1,7 @@
 #include "SpriteBatch.hpp"
 #include <glew.h>
 #include "../Content/ContentManager.hpp"
+#include <stdexcept>
 
 static constexpr const char* sprbatchShaderSrc[] = { R""(
 #type vertex
@@ -39,23 +40,25 @@ in float v_textureIndex;
 
 void main() {
 
-	if (v_textureIndex == -1) {
-		out_fragcolor = v_color;
-	} else {
-		out_fragcolor = texture(u_textures[int(v_textureIndex)], v_uvcoords) * v_color;
-	} 
+	out_fragcolor = v_color;
+	//if (int(v_textureIndex) == -1) {
+	//} else {
+	//	out_fragcolor = texture(u_textures[int(v_textureIndex)], v_uvcoords) * v_color;
+	//} 
 	
 }
 
 )"" };
 
 namespace ALC {
-	
-	SpriteBatch::SpriteBatch() 
+
+	SpriteBatch::SpriteBatch()
 		: m_vao(-1), m_vbo(-1), m_maxtextures(-1), m_TextureCountLoc(-1), m_camera(nullptr) {
 
 		// get the max number of textures per shader
 		glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &m_maxtextures);
+		ALC_DEBUG_LOG("Max textures per batch: " + VTOS(m_maxtextures));
+		if (m_maxtextures == -1) throw std::runtime_error("m_maxtextures was -1");
 
 		// make sure our shader is loaded
 		// set the max texture count
@@ -103,41 +106,79 @@ namespace ALC {
 
 	SpriteBatch::~SpriteBatch() { }
 
-	void SpriteBatch::Begin(Camera& m_camera, Shader shader) {
+	void SpriteBatch::Begin(Camera& camera, Shader shader) {
 		m_textures.clear();
 		m_verticies.clear();
-	}
 
-	void SpriteBatch::Draw(const Transform& transform, const SpriteComponent& sprite) {
+		m_camera = &camera;
 
-	}
-
-	void SpriteBatch::End() {
 		// set the shader
-		if (m_currentShader == nullptr) glUseProgram(m_defaultShader);
-		else glUseProgram(m_currentShader);
+		Shader currentShader = shader;
+		if (currentShader == nullptr) currentShader = m_defaultShader;
+		glUseProgram(currentShader);
 
 		// bind vertex array and buffer
 		glBindVertexArray(m_vao);
 		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 
-		// update the vertex data
-		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertex) * 4 * m_verticies.size(), m_verticies.data());
+		// set uniform data
+		mat4 transform = m_camera->GetTransform();
+		glUniformMatrix4fv(shader.GetUniform("u_transform"), 1, GL_FALSE, &(transform[0].x));
 
-		// load in the textures
-		for (size_t i = 0; i < m_textures.size(); i++) {
-			glActiveTexture(GL_TEXTURE0 + i);
-			glBindTexture(GL_TEXTURE_2D, m_textures[i]);
+	}
+
+	void SpriteBatch::Draw(const Transform& transform, const SpriteComponent& sprite) {
+
+		// check if should batch break
+		uint32 textureindex = TryAddTexture(sprite.texture);
+		if (textureindex == -2) {
+			DrawCurrent();
+			m_textures.push_back(sprite.texture);
+			textureindex = 0;
 		}
 
-		//uniform int TextureCount;
-		//uniform sampler2D textures[TextureCount];
-		//uniform mat4 transform;
-		// set uniform data
-		// TODO
+		const vec2 position = vec2(transform.position) + sprite.offset;
+		const vec2 min = position + sprite.bounds.min;
+		const vec2 max = position + sprite.bounds.max;
+		const vec2 size = sprite.texture.GetSize();
 
-		// draw
-		glDrawArrays(GL_TRIANGLES, 0, m_verticies.size());
+		// create verticies
+		vertex verts[4];
+
+		/* bottom left  */ verts[0].position = min;
+		/* top left     */ verts[1].position = vec2(min.x, max.y);
+		/* top right    */ verts[2].position = max;
+		/* bottom right */ verts[3].position = vec2(max.x, min.y);
+
+		// set color
+		verts[0].color = verts[1].color 
+			= verts[2].color = verts[3].color = sprite.color;
+
+		// set texture index
+		verts[0].textureIndex = verts[1].textureIndex 
+			= verts[2].textureIndex = verts[3].textureIndex = textureindex;
+
+		// set uvcoords
+		/* bottom left  */ verts[0].uvcoords = vec2(0.0, size.y);
+		/* top left     */ verts[1].uvcoords = vec2(0.0f);
+		/* top right    */ verts[2].uvcoords = vec2(size.x, 0.0f);
+		/* bottom right */ verts[3].uvcoords = size;
+
+		// push into vector
+		m_verticies.push_back(verts[0]);
+		m_verticies.push_back(verts[1]);
+		m_verticies.push_back(verts[2]);
+		m_verticies.push_back(verts[0]);
+		m_verticies.push_back(verts[2]);
+		m_verticies.push_back(verts[3]);
+
+		// finish
+	}
+
+	void SpriteBatch::End() {
+
+		// draw any remaining verticies
+		DrawCurrent();
 
 		// unbind
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -145,12 +186,48 @@ namespace ALC {
 		glUseProgram(0);
 
 		// clean up
-		m_currentShader = nullptr;
 		m_camera = nullptr;
 	}
 
-	bool SpriteBatch::TryAddTexture(const Texture& texture) {
-		return false;
+	uint32 SpriteBatch::TryAddTexture(const Texture& texture) {
+		// solid color
+		if (texture == nullptr)
+			return -1;
+
+		// check if its already in the vector
+		for (size_t i = 0; i < m_textures.size(); i++) {
+			if (m_textures[i] == texture) {
+				return i;
+			}
+		}
+
+		// try add
+		if (m_textures.size() < uint32(m_maxtextures)) {
+			m_textures.push_back(texture);
+			return m_textures.size() - 1;
+		}
+
+		return -2; // batch break
+	}
+
+	void SpriteBatch::DrawCurrent() {
+		if (m_verticies.size() == 0)
+			return;
+		// update the vertex data
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertex) * m_verticies.size(), m_verticies.data());
+
+		// load in the textures
+		for (size_t i = 0; i < m_textures.size(); i++) {
+			glActiveTexture(GL_TEXTURE0 + i);
+			glBindTexture(GL_TEXTURE_2D, m_textures[i]);
+		}
+
+		// draw
+		glDrawArrays(GL_TRIANGLES, 0, m_verticies.size());
+
+		// clear out vectors
+		m_textures.clear();
+		m_verticies.clear();
 	}
 
 }

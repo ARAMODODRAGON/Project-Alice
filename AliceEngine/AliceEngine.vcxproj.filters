@@ -113,6 +113,9 @@
     <ClCompile Include="ALC\Input\detail\SystemEvents.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ALC\Rendering\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ALC\Entities\detail\Registry.inl">

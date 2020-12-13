@@ -3,11 +3,12 @@
 
 namespace ALC {
 
-	uint32 SceneManager::levelToLoad = -1;
-	IScene* SceneManager::activeScene = nullptr;
-	Game* SceneManager::activeGame = nullptr;
-	bool SceneManager::isRunning = false;
-	bool SceneManager::shouldQuit = false;
+	uint32 SceneManager::s_levelToLoad = -1;
+	IScene* SceneManager::s_activeScene = nullptr;
+	Game* SceneManager::s_activeGame = nullptr;
+	Window* SceneManager::s_window = nullptr;
+	bool SceneManager::s_isRunning = false;
+	bool SceneManager::s_shouldQuit = false;
 
 	void SceneManager::StartGame(Game* game_, const std::vector<SceneBinding> bindings) {
 		if (bindings.size() == 0) {
@@ -15,60 +16,62 @@ namespace ALC {
 		}
 
 		// setup variables
-		levelToLoad = -1;
-		activeScene = bindings[0]();
-		activeGame = game_;
-		shouldQuit = false;
+		s_levelToLoad = -1;
+		s_activeScene = bindings[0]();
+		s_activeGame = game_;
+		s_shouldQuit = false;
+		Timer timer;
+		s_activeGame->__Initialize(s_window, &timer);
 
 		// init
 		try {
-			activeGame->Init();
-			activeScene->Init();
+			s_activeGame->Init();
+			s_activeScene->Init();
 		}
 		// catch any errors and quit
 		catch (const std::exception& e) {
 			ALC_DEBUG_FATAL_ERROR(e.what());
-			delete activeScene;
+			delete s_activeScene;
 			return;
 		}
 
-		while (isRunning && !shouldQuit) {
+		while (s_isRunning && !s_shouldQuit) {
+			timer.BeginFrame();
 
-			if (levelToLoad != -1) {
-				if (levelToLoad < bindings.size()) {
-					activeScene->Exit();
-					delete activeScene;
-					activeScene = bindings[levelToLoad]();
-					activeScene->Init();
+			if (s_levelToLoad != -1) {
+				if (s_levelToLoad < bindings.size()) {
+					s_activeScene->Exit();
+					delete s_activeScene;
+					s_activeScene = bindings[s_levelToLoad]();
+					s_activeScene->Init();
 				}
-				levelToLoad = -1;				
+				s_levelToLoad = -1;
 			}
 
 			detail::SystemEvents::PollEvents();
-			activeGame->Step();
-			activeScene->Step();
+			s_activeGame->Step();
+			s_activeScene->Step();
 
-			activeGame->PreDraw();
-			activeScene->PreDraw();
+			s_activeGame->PreDraw();
+			s_activeScene->PreDraw();
 
-			activeGame->Draw();
-			activeScene->Draw();
+			s_activeGame->Draw();
+			s_activeScene->Draw();
 
-			activeGame->PostDraw();
-			activeScene->PostDraw();
+			s_activeGame->PostDraw();
+			s_activeScene->PostDraw();
 
 		}
 
 		// exit
 		try {
-			activeGame->Exit();
-			activeScene->Exit();
-		}
-		catch (const std::exception& e) {
+			s_activeGame->Exit();
+			s_activeScene->Exit();
+		} catch (const std::exception& e) {
 			ALC_DEBUG_FATAL_ERROR(e.what());
 		}
 
-		delete activeScene, activeScene = nullptr;
+		delete s_activeScene, s_activeScene = nullptr;
 	}
 
 }

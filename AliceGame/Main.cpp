@@ -13,7 +13,18 @@ public:
 	PlayerController() { }
 	~PlayerController() { }
 
-	void Start(ALC::Entity e) override { }
+	void Start(ALC::Entity e) override {
+		if (!e.HasComponent<ALC::Transform>())
+			e.AddComponent<ALC::Transform>();
+
+		if (!e.HasComponent<ALC::SpriteComponent>())
+			e.AddComponent<ALC::SpriteComponent>();
+		auto& spr = e.GetComponent<ALC::SpriteComponent>();
+		//spr.texture = ALC::ContentManager::LoadTexture("Resources/Textures/Grey Orb Flashing.png");
+		spr.bounds = ALC::rect(-8, -8, 8, 8);
+		//spr.textureBounds = ALC::rect(ALC::vec2(0.0f), spr.texture.GetSize());
+
+	}
 	void Update(ALC::Entity e) override {
 		if (e.HasComponent<ALC::Transform>()) {
 			auto& transform = e.GetComponent<ALC::Transform>();
@@ -40,27 +51,48 @@ class BattleScene final : public ALC::IScene {
 public:
 	ALC::ContentStorage storage;
 	ALC::Registry reg;
-	ALC::SpriteBatch spritebatch;
+	ALC::SpriteBatch* batch;
 	ALC::Camera camera;
 	ALC::Texture tex;
 
 	BattleScene() { }
-	~BattleScene() { }
+	~BattleScene() { 
+		if (batch) delete batch, batch = nullptr;
+	}
 	void Init() override {
 		// set the context
 		ALC::ContentManager::SetContext(storage);
+		batch = new ALC::SpriteBatch();
 
-		// load some content
-		tex = ALC::ContentManager::LoadTexture("Resources/Textures/Grey Orb Flashing.png");
+		// setup camera
 
+
+		// create our player
 		ALC::Entity e = reg.Create();
 		e.AddBehavior<PlayerController>();
 	}
 
 	void Exit() override { }
-	void Step() override { }
-	void PreDraw() override { }
-	void Draw() override { }
+	
+	void Step() override {
+		reg.UpdateBehaviors();
+	}
+
+	void PreDraw() override { 
+		reg.LateUpdateBehaviors();
+	}
+
+	void Draw() override {
+		batch->Begin(camera);
+		
+		reg.ForeachComponent<ALC::Transform, ALC::SpriteComponent>(
+			[this](ALC::Entity e, ALC::Transform& transform, ALC::SpriteComponent& sprite) {
+			batch->Draw(ALC::Transform(), sprite);
+		});
+		
+		batch->End();
+	}
+
 	void PostDraw() override { }
 };
 

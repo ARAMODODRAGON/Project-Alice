@@ -127,6 +127,12 @@ namespace ALC {
 		// destroys all entities
 		void DestroyAll();
 
+		// update event
+		void UpdateBehaviors();
+
+		// lateupdate event
+		void LateUpdateBehaviors();
+
 		// cleans up
 		// must be called for marked destructibles to be destroyed
 		void Cleanup();
@@ -142,7 +148,7 @@ namespace ALC {
 		void DestroyBehavior(Behavior* behavior, Entity e);
 
 		// iterate through the components
-		template<typename... Components, typename Callable, typename = detail::are_components_t<Components...>>
+		template<typename... Components, typename Callable>
 		void ForeachComponent(Callable callable);
 
 		// iterate through the behaviors
