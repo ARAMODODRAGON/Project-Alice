@@ -58,13 +58,14 @@ namespace ALC {
 		};
 
 		vector<vertex> m_verticies;
-		vector<Texture> m_textures;
+		vector<uint32> m_textures;
 		uint32 m_vao, m_vbo;
 		int32 m_maxtextures;
 		uint32 m_TextureCountLoc;
 		uint32 m_bufferSize;
 		Camera* m_camera;
 		Shader m_defaultShader;
+		Shader m_currentShader;
 
 		uint32 TryAddTexture(const Texture& texture);
 		void DrawCurrent();

@@ -15,12 +15,12 @@ uniform mat4 u_transform;
 
 out vec4 v_color;
 out vec2 v_uvcoords;
-out float v_textureIndex;
+out flat int v_textureIndex;
 
 void main() {
 
 	v_color = a_color;
-	v_textureIndex = float(a_textureIndex);
+	v_textureIndex = a_textureIndex;
 	v_uvcoords = a_uvcoords;
 	vec4 vertex = u_transform * vec4(a_position, 0.0, 1.0);
 	gl_Position = vertex;
@@ -32,18 +32,18 @@ void main() {
 out vec4 out_fragcolor;
 
 const int c_TextureCount = )"", R""(;
-uniform sampler2D u_textures[c_TextureCount];
+layout (binding = 0) uniform sampler2D u_textures[c_TextureCount];
 
 in vec4 v_color;
 in vec2 v_uvcoords;
-in float v_textureIndex;
+in flat int v_textureIndex;
 
 void main() {
 
-	if (int(v_textureIndex) == -1) {
+	if (v_textureIndex == -1) {
 		out_fragcolor = v_color;
 	} else {
-		out_fragcolor = texture(u_textures[int(v_textureIndex)], v_uvcoords) * v_color;
+		out_fragcolor = texture(u_textures[v_textureIndex], v_uvcoords) * v_color;
 	} 
 	
 }
@@ -96,7 +96,7 @@ namespace ALC {
 
 		// set the textureIndex to location 3
 		glEnableVertexAttribArray(3);
-		glVertexAttribPointer(3, 1, GL_INT, GL_FALSE, sizeof(vertex), (GLvoid*)offsetof(vertex, textureIndex));
+		glVertexAttribIPointer(3, 1, GL_INT, sizeof(vertex), (GLvoid*)offsetof(vertex, textureIndex));
 
 		// unbind
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
