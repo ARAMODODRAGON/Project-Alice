@@ -2,60 +2,65 @@
 #include <glew.h>
 #include "../Content/ContentManager.hpp"
 
-static constexpr const char* defaultSpriteShaderSource = R""(
+static constexpr const char* sprbatchShaderSrc[] = { R""(
 #type vertex
 #version 450 core
-layout (location = 0) in vec2 position;
-layout (location = 1) in vec2 uvcoord;
-layout (location = 2) in vec4 color;
-layout (location = 3) in int textureIndex;
+layout (location = 0) in vec2 a_position;
+layout (location = 1) in vec2 a_uvcoords;
+layout (location = 2) in vec4 a_color;
+layout (location = 3) in int a_textureIndex;
 
-uniform mat4 transform;
+uniform mat4 u_transform;
 
-out vec4 pass_color;
-out vec2 pass_uvcoords;
-out int pass_textureIndex;
+out vec4 v_color;
+out vec2 v_uvcoords;
+out float v_textureIndex;
 
 void main() {
 
-	pass_color = color;
-	pass_textureIndex = textureIndex;
-	pass_uvcoords = uvcoords;
-	gl_Position = transform * vec4(position, 0.0, 1.0)
-
+	v_color = a_color;
+	v_textureIndex = float(a_textureIndex);
+	v_uvcoords = a_uvcoords;
+	vec4 vertex = u_transform * vec4(a_position, 0.0, 1.0);
+	gl_Position = vertex;
+	
 }
 
 #type fragment
 #version 450 core
 out vec4 out_fragcolor;
 
-uniform int TextureCount;
-uniform sampler2D textures[TextureCount];
+const int c_TextureCount = )"", R""(;
+uniform sampler2D u_textures[c_TextureCount];
 
-in vec4 pass_color;
-in vec2 pass_uvcoords;
-in int pass_textureIndex;
+in vec4 v_color;
+in vec2 v_uvcoords;
+in float v_textureIndex;
 
 void main() {
 
-	if (pass_textureIndex == -1)
-		out_fragcolor = pass_color;
-	else 
-		out_fragcolor = texture(textures[pass_textureIndex], pass_uvcoords) * pass_color;
+	if (v_textureIndex == -1) {
+		out_fragcolor = v_color;
+	} else {
+		out_fragcolor = texture(u_textures[int(v_textureIndex)], v_uvcoords) * v_color;
+	} 
+	
 }
 
-)"";
+)"" };
 
 namespace ALC {
-
+	
 	SpriteBatch::SpriteBatch() 
 		: m_vao(-1), m_vbo(-1), m_maxtextures(-1), m_TextureCountLoc(-1), m_camera(nullptr) {
 
-		// make sure our shader is loaded
-		m_defaultShader = ContentManager::LoadShaderSource(defaultSpriteShaderSource);
-
 		// get the max number of textures per shader
 		glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &m_maxtextures);
+
+		// make sure our shader is loaded
+		// set the max texture count
+		string src = sprbatchShaderSrc[0] + VTOS(m_maxtextures) + sprbatchShaderSrc[1];
+		m_defaultShader = ContentManager::LoadShaderSource(src);
 
 		// allocate the texture vector to match the max number
 		m_textures.reserve(m_maxtextures);
@@ -98,7 +103,7 @@ namespace ALC {
 
 	SpriteBatch::~SpriteBatch() { }
 
-	void SpriteBatch::Begin(Camera& m_camera, Shader shader = nullptr) {
+	void SpriteBatch::Begin(Camera& m_camera, Shader shader) {
 		m_textures.clear();
 		m_verticies.clear();
 	}
@@ -125,6 +130,9 @@ namespace ALC {
 			glBindTexture(GL_TEXTURE_2D, m_textures[i]);
 		}
 
+		//uniform int TextureCount;
+		//uniform sampler2D textures[TextureCount];
+		//uniform mat4 transform;
 		// set uniform data
 		// TODO
 

@@ -1,7 +1,8 @@
 #include "Texture.hpp"
 #include <glew.h>
+#define STBI_NO_GIF // we dont want any gif loading
 #define STB_IMAGE_IMPLEMENTATION
-#include <stbi\stb_image.h>
+#include "detail\stb_image.h"
 
 namespace ALC {
 

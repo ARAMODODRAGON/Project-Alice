@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ALC\Content\ContentManager.hpp" />
+    <ClInclude Include="ALC\Content\detail\stb_image.h" />
     <ClInclude Include="ALC\Content\Shader.hpp" />
     <ClInclude Include="ALC\Content\Texture.hpp" />
     <ClInclude Include="ALC\Core\Debugger.hpp" />
@@ -110,7 +111,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\GameDev\entt-3.5.2;C:\GameDev\FreeType\include;C:\GameDev\nlohmann-json\include;C:\GameDev\OpenGL\include;C:\GameDev\SDL\include;C:\GameDev\SDL2_mixer-2.0.4\include;C:\GameDev\tinytools;$(IncludePath)</IncludePath>
+    <IncludePath>C:\GameDev\entt-3.5.2;C:\GameDev\FreeType\include;C:\GameDev\nlohmann-json\include;C:\GameDev\OpenGL\include;C:\GameDev\SDL\include;C:\GameDev\SDL2_mixer-2.0.4\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\GameDev\FreeType\win32;C:\GameDev\OpenGL\lib;C:\GameDev\SDL\lib;C:\GameDev\SDL2_mixer-2.0.4\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

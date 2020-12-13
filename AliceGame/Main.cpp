@@ -43,7 +43,6 @@ public:
 	ALC::SpriteBatch spritebatch;
 	ALC::Camera camera;
 	ALC::Texture tex;
-	ALC::Shader shader;
 
 	BattleScene() { }
 	~BattleScene() { }
@@ -53,7 +52,6 @@ public:
 
 		// load some content
 		tex = ALC::ContentManager::LoadTexture("Resources/Textures/Grey Orb Flashing.png");
-		shader = ALC::ContentManager::LoadShader("");
 
 		ALC::Entity e = reg.Create();
 		e.AddBehavior<PlayerController>();

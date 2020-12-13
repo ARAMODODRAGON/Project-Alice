@@ -44,25 +44,25 @@ namespace ALC {
 		unordered_map<uint32, string> sources;
 
 		// read the file for each shader
-		constexpr const char* typeToken = "#type";
-		constexpr size_t typeTokenLen = 6;
-		size_t pos = source.find_first_of(typeToken, 0);
+		static const string typeToken = "#type";
+		static const size_t typeTokenLen = typeToken.size();
+		size_t pos = source.find(typeToken, 0);
 		while (pos != string::npos) {
-			size_t eol = source.find_first_of("\n", pos);
-			if (eol != string::npos) {
+			size_t eol = source.find_first_of("\r\n", pos);
+			if (eol == string::npos) {
 				ALC_DEBUG_ERROR("Syntax error");
 				return nullptr;
 			}
 			size_t begin = pos + typeTokenLen + 1;
-			uint32 shaderType = GetShaderTypeFromString(source.substr(eol, eol - begin));
+			uint32 shaderType = GetShaderTypeFromString(source.substr(begin, eol - begin));
 			if (shaderType == -1) {
-				ALC_DEBUG_ERROR("invalid shader type");
+				pos = source.find(typeToken, eol);
 				continue;
 			}
-
-			size_t nextLinePos = source.find_first_not_of("\n", eol);
-			size_t endPos = (nextLinePos == string::npos ? source.size() - 1 : nextLinePos);
-			sources.emplace(shaderType, source.substr(nextLinePos, pos - endPos));
+			size_t nextLinePos = source.find_first_not_of("\r\n", eol);
+			pos = source.find(typeToken, nextLinePos + 2);
+			size_t endPos = pos - (nextLinePos == string::npos ? source.size() - 1 : nextLinePos);
+			sources.emplace(shaderType, source.substr(nextLinePos, endPos));
 		}
 
 		// end 'the cherno'
@@ -75,10 +75,10 @@ namespace ALC {
 		vector<uint32> shaders;
 		uint32 shaderProgram = glCreateProgram();
 
-		for (auto& [type, source] : sources) {
+		for (auto& [type_, source_] : sources) {
 			// create and load the shader
-			uint32 shaderID = glCreateShader(type);
-			const char* csource = source.c_str();
+			uint32 shaderID = glCreateShader(type_);
+			const char* csource = source_.c_str();
 			glShaderSource(shaderID, 1, &csource, 0);
 			glCompileShader(shaderID);
 
@@ -90,6 +90,7 @@ namespace ALC {
 				char infoLog[512];
 				glGetShaderInfoLog(shaderID, 512, 0, infoLog);
 				ALC_DEBUG_ERROR("Failed to compile shader: " + string(infoLog));
+				ALC_DEBUG_LOG(source_);
 
 				// delete the shader and return
 				glDeleteShader(shaderID);
@@ -117,7 +118,7 @@ namespace ALC {
 			// get error message and print
 			GLchar infoLog[512];
 			glGetProgramInfoLog(shaderProgram, 512, 0, infoLog);
-			ALC_DEBUG_ERROR("Failed to link program: " + string(infoLog));
+			ALC_DEBUG_ERROR("Failed to link program: \n" + string(infoLog));
 			// delete shaders/program
 			for (GLuint id : shaders) glDeleteShader(id);
 			glDeleteProgram(shaderProgram);
@@ -152,7 +153,7 @@ namespace ALC {
 		return LoadSource(source);
 	}
 
-	void Shader::Delete(const Shader& shader) { 
+	void Shader::Delete(const Shader& shader) {
 		glDeleteProgram(shader.m_programID);
 	}
 
