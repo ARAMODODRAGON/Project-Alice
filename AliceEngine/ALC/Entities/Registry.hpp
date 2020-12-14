@@ -2,7 +2,6 @@
 #define ALC_ENTITIES_REGISTRY_HPP
 #include <entt\entt.hpp>
 #include "EntityID.hpp"
-#include <glm\glm.hpp>
 #include "detail\RegistryDetail.hpp"
 
 namespace ALC {
@@ -97,14 +96,6 @@ namespace ALC {
 		explicit EntityInfo(EntityID ID_) ALC_INTERNAL;
 	private:
 		EntityID m_ID;
-	};
-
-	struct Transform final : ALC_Component {
-
-		glm::vec3 position;
-		glm::vec3 scale;
-		glm::vec3 rotation;
-
 	};
 
 	class Registry final {

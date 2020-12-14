@@ -35,6 +35,8 @@
     <ClInclude Include="ALC\Input\Keyboard.hpp" />
     <ClInclude Include="ALC\Input\Mouse.hpp" />
     <ClInclude Include="ALC\Input\detail\SystemEvents.hpp" />
+    <ClInclude Include="ALC\Physics\Rigidbody2D.hpp" />
+    <ClInclude Include="ALC\Physics\Transform2D.hpp" />
     <ClInclude Include="ALC\rect.hpp" />
     <ClInclude Include="ALC\Rendering\Camera.hpp" />
     <ClInclude Include="ALC\Rendering\SpriteBatch.hpp" />

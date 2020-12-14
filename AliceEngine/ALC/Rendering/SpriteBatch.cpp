@@ -19,7 +19,6 @@ out flat int v_textureIndex;
 
 void main() {
 
-	if (a_color.a == 0.0) discard;
 	v_color = a_color;
 	v_textureIndex = a_textureIndex;
 	v_uvcoords = a_uvcoords;
@@ -128,7 +127,7 @@ namespace ALC {
 
 	}
 
-	void SpriteBatch::Draw(const Transform& transform, const SpriteComponent& sprite) {
+	void SpriteBatch::Draw(const Transform2D& transform, const SpriteComponent& sprite) {
 
 		// check if should batch break
 		uint32 textureindex = TryAddTexture(sprite.texture);
@@ -138,7 +137,7 @@ namespace ALC {
 			textureindex = 0;
 		}
 
-		const vec2 position = vec2(transform.position) + sprite.offset;
+		const vec2 position = transform.position + sprite.offset;
 		const vec2 min = position + sprite.bounds.min;
 		const vec2 max = position + sprite.bounds.max;
 		const vec2 size = sprite.texture.GetSize();

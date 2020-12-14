@@ -7,7 +7,7 @@
 #include <ALC\Rendering\SpriteBatch.hpp>
 #include <ALC\Rendering\Camera.hpp>
 #include <glm\gtc\random.hpp>
-
+#include <ALC\Physics\Rigidbody2D.hpp>
 
 class PlayerController final : public ALC::Behavior {
 public:
@@ -16,8 +16,10 @@ public:
 	~PlayerController() { }
 
 	void Start(ALC::Entity e) override {
-		if (!e.HasComponent<ALC::Transform>())
-			e.AddComponent<ALC::Transform>();
+		if (!e.HasComponent<ALC::Transform2D>())
+			e.AddComponent<ALC::Transform2D>();
+		if (!e.HasComponent<ALC::Rigidbody2D>())
+			e.AddComponent<ALC::Rigidbody2D>();
 
 		if (!e.HasComponent<ALC::SpriteComponent>())
 			e.AddComponent<ALC::SpriteComponent>();
@@ -28,14 +30,14 @@ public:
 
 	}
 	void Update(ALC::Entity e) override {
-		if (e.HasComponent<ALC::Transform>()) {
-			auto& transform = e.GetComponent<ALC::Transform>();
+		if (e.HasComponent<ALC::Transform2D>()) {
+			auto& transform = e.GetComponent<ALC::Transform2D>();
 
 			const auto key_up = ALC::Keyboard::GetKey(ALC::KeyCode::ArrowUp);
 			const auto key_down = ALC::Keyboard::GetKey(ALC::KeyCode::ArrowDown);
 			const auto key_left = ALC::Keyboard::GetKey(ALC::KeyCode::ArrowLeft);
 			const auto key_right = ALC::Keyboard::GetKey(ALC::KeyCode::ArrowRight);
-			glm::vec3 input = glm::vec3(key_right.IsHeld() - key_left.IsHeld(), key_up.IsHeld() - key_down.IsHeld(), 0.0f);
+			glm::vec2 input = glm::vec2(key_right.IsHeld() - key_left.IsHeld(), key_up.IsHeld() - key_down.IsHeld());
 			if (glm::length2(input) > 0.0f) {
 				//ALC_DEBUG_LOG("Moving at " + VTOS(input));
 			}
@@ -65,7 +67,7 @@ public:
 
 		// setup camera
 		camera.SetCameraSize(camera.GetCameraSize() * 0.3f);
-		ALC::vec3 camsize = ALC::vec3(camera.GetCameraSize(), 0.0f);
+		ALC::vec2 camsize = camera.GetCameraSize();
 
 		// create our player
 		reg.Create().AddBehavior<PlayerController>();
@@ -100,8 +102,10 @@ public:
 		// create 500 objects with random positions
 		for (size_t i = 0; i < 4000; i++) {
 			ALC::Entity e = reg.Create();
-			auto& transform = e.AddComponent<ALC::Transform>();
+			auto& transform = e.AddComponent<ALC::Transform2D>();
 			auto& sprite = e.AddComponent<ALC::SpriteComponent>();
+			auto& body = e.AddComponent<ALC::Rigidbody2D>();
+			body.velocity = glm::circularRand(1.0f) * (0.2f + 0.8f * (float(rand()) / float(RAND_MAX)));
 
 			sprite.texture = textures[rand() % texture_count];
 			sprite.textureBounds = ALC::rect(ALC::vec2(0.0f), sprite.texture.GetSize());
@@ -126,6 +130,17 @@ public:
 
 	void Step() override {
 		reg.UpdateBehaviors();
+
+		ALC::vec2 bounds = camera.GetCameraSize() * 0.5f;
+		const float delta = 1.0f / 60.0f;
+		reg.ForeachComponent<ALC::Transform2D, ALC::Rigidbody2D>(
+			[delta, bounds](ALC::Entity e, ALC::Transform2D& t, ALC::Rigidbody2D& r) {
+			t.position += r.velocity;
+			if (t.position.x < -bounds.x || t.position.x > bounds.x)
+				r.velocity.x = -r.velocity.x;
+			if (t.position.y < -bounds.y || t.position.x > bounds.y)
+				r.velocity.y = -r.velocity.y;
+		});
 	}
 
 	void PreDraw() override {
@@ -135,8 +150,8 @@ public:
 	void Draw() override {
 		batch.Begin(camera);
 
-		reg.ForeachComponent<ALC::Transform, ALC::SpriteComponent>(
-			[this](ALC::Entity e, ALC::Transform& transform, ALC::SpriteComponent& sprite) {
+		reg.ForeachComponent<ALC::Transform2D, ALC::SpriteComponent>(
+			[this](ALC::Entity e, ALC::Transform2D& transform, ALC::SpriteComponent& sprite) {
 			batch.Draw(transform, sprite);
 		});
 

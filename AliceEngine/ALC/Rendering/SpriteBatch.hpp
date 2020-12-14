@@ -4,6 +4,7 @@
 #include "Camera.hpp"
 #include "../Content/Texture.hpp"
 #include "../Content/Shader.hpp"
+#include "../Physics/Transform2D.hpp"
 
 namespace ALC {
 
@@ -42,7 +43,7 @@ namespace ALC {
 		void Begin(Camera& camera, Shader shader = nullptr);
 
 		// draw a sprite 
-		void Draw(const Transform& transform, const SpriteComponent& sprite);
+		void Draw(const Transform2D& transform, const SpriteComponent& sprite);
 
 		// finish drawing the sprites
 		// uses the default shader if no shader is specified
