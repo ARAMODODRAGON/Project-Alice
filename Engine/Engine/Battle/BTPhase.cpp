@@ -7,10 +7,12 @@ BTPhase::BTPhase()
 	, maxHealth(0.0f)
 	, startingTime(0.0f)
 	, enemy(nullptr)
+	, player(nullptr)
 	, acceleration(0.0f)
 	, maxSpeed(0.0f)
-	, destination(vec2())
-	, position(vec2())
+	, destination(glm::vec2())
+	, enemyPos(glm::vec2())
+	, playerPos(glm::vec2())
 {}
 
 BTPhase::~BTPhase()
@@ -18,6 +20,8 @@ BTPhase::~BTPhase()
 	delete enemy;
 	enemy = nullptr;
 }
+
+
 
 
 

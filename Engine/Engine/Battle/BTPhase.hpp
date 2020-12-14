@@ -5,12 +5,15 @@
 #include <vector>
 #include <string>
 #include <glm/glm.hpp>
+#include "BTPlayer.hpp"
 #include "BTEnemy.hpp"
+
+
 #include <chrono>
 
 
 
-class BTEnemy;
+
 class BattleManager;
 
 
@@ -28,9 +31,11 @@ class BTPhase
 	float maxSpeed;
 
 	glm::vec2 destination;
-	glm::vec2 position;
+	glm::vec2 enemyPos;
+	glm::vec2 playerPos;
 
 	BTEnemy* enemy;
+	BTPlayer* player;
 	
 	
 
@@ -42,6 +47,7 @@ public:
 	virtual void StartPhase() = 0;       // init all starting values 
 	virtual void UpdatePhase() = 0;		//updates the phase logic 
 	virtual bool IsComplete() = 0;		//checks if the phase is complete 
+	virtual void PlayerDirection(vec2 enemyPos_,uint8 dir) = 0;
 
 
 	//getters and setters for enemy values as the phases will control the ai side of the enemys 
@@ -50,9 +56,11 @@ public:
 	inline std::string GetPhaseName() { return phaseName; }
 
 	inline glm::vec2 GetPhaseDestination() { return destination; }
-	inline glm::vec2 GetEnemyPosition() { return GetEnemy()->GetPosition(); }
+	inline glm::vec2 GetEnemyPosition() { return  enemyPos; }  
+	inline glm::vec2 GetPlayerPosition() { return playerPos; }
 
 	inline int GetEnemyCurrentHealth() { return currentHealth; }
+
 	inline int GetEnemyMaxHealth() { return maxHealth; }
 
 	inline float GetstartingTime() { return startingTime; }
@@ -60,6 +68,7 @@ public:
 	inline float GetEnemyMaxSpeed() { return maxSpeed; }
 
 	inline BTEnemy* GetEnemy() { return enemy; }
+	inline BTPlayer* GetPlayer() { return player; }
 
 #pragma endregion
 
@@ -79,7 +88,9 @@ protected:
 	inline void SetNextPhase(std::string nextPhase_) { nextPhase = nextPhase_; }
 	inline void SetPhaseName(std::string phaseName_) { phaseName = phaseName_; }
 
-	inline void SetPosition(glm::vec2 position_) { position = position_; }
+	inline void SetEnemyPosition(glm::vec2 enemyPos_) { enemyPos = enemyPos_; }
+	inline void SetPlayerPosition(glm::vec2 playerPos_) { playerPos = playerPos_; }
+
 	inline void SetPhaseDestination(glm::vec2 destination_) { destination = destination_; }
 #pragma endregion
 

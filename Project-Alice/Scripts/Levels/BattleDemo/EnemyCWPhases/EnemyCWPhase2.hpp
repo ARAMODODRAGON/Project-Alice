@@ -15,6 +15,7 @@ private:
 	virtual void StartPhase() override;
 	virtual void UpdatePhase() override;
 	virtual bool IsComplete() override;
+	virtual void PlayerDirection(glm::vec2 enemyPos_, uint8 dir_) override;
 
 };
 

@@ -3,19 +3,20 @@
 namespace bta {
 
 	BTAResult MoveTo(vec2* velocity, const vec2& startPos_, const vec2& destination_, float maxAcceleration_, float maxSpeed_) {
-		// check 
+		// check to see if velocity exist 
 		if (velocity == nullptr) {
-			DEBUG_ERROR("Velocity was nullptr, could not calculate new velocity");
+			DEBUG_ERROR("Velocity was nullptr, could not calculate new velocity"); //print message to the consol
 			return BTAResult::Arrived;
 		}
-		// points from the current position to the destination
-		glm::vec2 direction(0.0f);
+
+		
+		glm::vec2 direction(0.0f); // points from the current position to the destination
 		glm::vec2 targetVelocity(0.0f);
 
 		float distance = 0;
 		float slowRadius = 4.0f;
 		float targetRadius = 1.0f;
-		float timeToTarget = 0.1f;
+		float timeToTarget = .1f;
 		float targetSpeed;
 
 
@@ -27,31 +28,25 @@ namespace bta {
 		*velocity *= maxAcceleration_;
 
 
-		if (NearlyZero(distance, targetRadius)) {
+		if (NearlyEqual(distance, targetRadius,4.0f)) {	  // if object is within 4 units of target stop
 			distance = 0;
 			maxAcceleration_ = 0.0f;
 			*velocity = vec2(0.0f);
-			return BTAResult::Arrived;
+			return BTAResult::Arrived; // object has arrived at its destination 
 		}	   
 
-		else if (distance > slowRadius) {
+		else if (distance > slowRadius) {  // if object distance is greater than the slow radius  move at max speed
 			targetSpeed = maxSpeed_;
-			/*targetVelocity = direction;
-			targetVelocity = glm::normalize(targetVelocity);
-			targetVelocity *= targetSpeed;
-
-			velocity = targetVelocity - direction;
-			velocity /= timeToTarget;*/
 		}
 
-		else {
+		else {	 // if objects distance is less than the slow radius start to slow the object down 
 			targetSpeed = maxSpeed_ * (distance / slowRadius);
 			targetVelocity = direction;
 			targetVelocity = glm::normalize(targetVelocity);
 			targetVelocity *= targetSpeed;
 
 			*velocity = targetVelocity - direction;
-			*velocity /= timeToTarget;
+			*velocity /= timeToTarget ;
 
 		}
 
