@@ -19,6 +19,7 @@ struct BulletComponent {
 
 class PlayerController final : public ALC::Behavior {
 	float counter;
+	ALC::uint32 counter2;
 public:
 
 	struct ShootData {
@@ -30,7 +31,7 @@ public:
 
 	ALC::array<ALC::Texture, 22> textures;
 
-	PlayerController() : counter(0.0f) {
+	PlayerController() : counter(0.0f), counter2(0) {
 		textures = {
 			ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/1B Ninja.png"),
 			ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/AAEEEIOU.png"),
@@ -59,13 +60,10 @@ public:
 	~PlayerController() { }
 
 	void Start(ALC::Entity e) override {
-		if (!e.HasComponent<ALC::Transform2D>())
-			e.AddComponent<ALC::Transform2D>();
-		if (!e.HasComponent<ALC::Rigidbody2D>())
-			e.AddComponent<ALC::Rigidbody2D>();
+		if (!e.HasComponent<ALC::Transform2D>()) e.AddComponent<ALC::Transform2D>();
+		if (!e.HasComponent<ALC::Rigidbody2D>()) e.AddComponent<ALC::Rigidbody2D>();
+		if (!e.HasComponent<ALC::SpriteComponent>()) e.AddComponent<ALC::SpriteComponent>();
 
-		if (!e.HasComponent<ALC::SpriteComponent>())
-			e.AddComponent<ALC::SpriteComponent>();
 		auto& spr = e.GetComponent<ALC::SpriteComponent>();
 		//spr.texture = ALC::ContentManager::LoadTexture("Resources/Textures/Grey Orb Flashing.png");
 		spr.bounds = ALC::rect(-8, -8, 8, 8);
@@ -98,15 +96,22 @@ public:
 
 			rigidbody.velocity = input * 60.0f;
 
+			constexpr float shoottime = 0.1f;
 			const auto key_shoot = ALC::Keyboard::GetKey(ALC::KeyCode::KeyC);
 			if (key_shoot) {
 				const float delta = ALC::SceneManager::GetActiveGame()->GetTimer()->GetDelta();
 				counter += delta;
-				if (counter > 1.0f || key_shoot.Pressed()) {
+				if (counter > shoottime || key_shoot.Pressed()) {
 					if (!key_shoot.Pressed())
-						counter -= 1.0f;
-					for (ALC::uint32 i = 0; i < 9; i++) {
-						Shoot((360.0f / 9.0f) * float(i), 80.0f, transform.position);
+						counter -= shoottime;
+					constexpr ALC::uint32 shootcount = 9;
+					float initialoffset = 0.0f;
+					if (counter2 % 2) initialoffset = (360.0f / float(shootcount)) * 0.5f;
+					++counter2;
+					for (ALC::uint32 i = 0; i < shootcount; i++) {
+						// (360.0f / float(shootcount)) the difference in angle if you want to shoot 'shootcount' bullets
+						// * float(i) multiplies to get a specific angle
+						Shoot((360.0f / float(shootcount)) * float(i) + initialoffset, 80.0f, transform.position);
 					}
 				}
 			} else {
@@ -251,14 +256,14 @@ public:
 			player->shootdata.clear();
 		}
 
-		//reg.ForeachComponent<BulletComponent>(
-		//	[delta, this](ALC::Entity e, BulletComponent& bul) {
-		//	bul.lifetime += delta;
-		//	if (bul.lifetime > bul.maxlifetime) {
-		//		reg.DestroyEntity(e);
-		//		//ALC_DEBUG_LOG("Destroy!");
-		//	}
-		//});
+		reg.ForeachComponent<BulletComponent>(
+			[delta, this](ALC::Entity e, BulletComponent& bul) {
+			bul.lifetime += delta;
+			if (bul.lifetime > bul.maxlifetime) {
+				reg.DestroyEntity(e);
+				//ALC_DEBUG_LOG("Destroy!");
+			}
+		});
 	}
 
 	void PreDraw() override {
