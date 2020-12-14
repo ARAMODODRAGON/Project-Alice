@@ -19,6 +19,7 @@ out flat int v_textureIndex;
 
 void main() {
 
+	if (a_color.a == 0.0) discard;
 	v_color = a_color;
 	v_textureIndex = a_textureIndex;
 	v_uvcoords = a_uvcoords;

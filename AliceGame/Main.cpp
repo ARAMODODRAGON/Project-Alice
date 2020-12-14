@@ -116,7 +116,7 @@ public:
 				default: break;
 			}
 			sprite.color = glm::mix(sprite.color, ALC_COLOR_WHITE, (float(rand()) / float(RAND_MAX)));
-			sprite.color.a = 0.1f + 0.9f * (float(rand()) / float(RAND_MAX));
+			sprite.color.a = 0.7f * (float(rand()) / float(RAND_MAX));
 
 		}
 
