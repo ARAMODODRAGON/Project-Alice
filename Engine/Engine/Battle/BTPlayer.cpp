@@ -43,8 +43,8 @@ void BTPlayer::Update() {
 
 	const Button keyPrevSpell = Keyboard::GetKey(KeyCode::KeyZ);
 	const Button keyNextSpell = Keyboard::GetKey(KeyCode::KeyX);
-	const Button keyAtkSpell = Keyboard::GetKey(KeyCode::Space);
-	const Button keyDefSpell = Keyboard::GetKey(KeyCode::KeyV);
+	const Button keyAtkSpell = Keyboard::GetKey(KeyCode::KeyC);
+	const Button keyDefSpell = Keyboard::GetKey(KeyCode::Space);
 
 	// Set player velodity based on the current input
 	vec2 inputDirection = vec2(float(keyRight.IsHeld()) - float(keyLeft.IsHeld()), float(keyUp.IsHeld()) - float(keyDown.IsHeld()));

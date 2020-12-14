@@ -3,11 +3,13 @@
 #include <Engine\Objects\Object.hpp>
 #include <Engine\Rendering\Camera.hpp>
 #include <Engine\Rendering\UIRenderer.hpp>
+#include <Engine\Content\AudioSourceComponent.hpp>
 
 class BattleDemoCamera : public Object {
 
 	Camera* camera;
 	UIRenderer* ui;
+	AudioSourceComponent* audio;
 
 public:
 
@@ -22,6 +24,7 @@ public:
 	// getters
 	Camera* GetCamera() const { return camera; }
 	UIRenderer* GetUI() const { return ui; }
+	AudioSourceComponent* GetAudio() const { return audio; }
 	
 };
 

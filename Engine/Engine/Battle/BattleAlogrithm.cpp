@@ -5,8 +5,8 @@ namespace bta {
 	BTAResult MoveTo(vec2* velocity, const vec2& startPos_, const vec2& destination_, float maxAcceleration_, float maxSpeed_) {
 		// check to see if velocity exist 
 		if (velocity == nullptr) {
-			DEBUG_ERROR("Velocity was nullptr, could not calculate new velocity"); //print message to the consol
-			return BTAResult::Arrived;
+			DEBUG_ERROR("Velocity was nullptr, could not calculate new velocity");
+			return BTAResult::Error;
 		}
 
 		

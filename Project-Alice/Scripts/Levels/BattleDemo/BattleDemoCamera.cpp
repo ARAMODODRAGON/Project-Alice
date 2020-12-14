@@ -18,6 +18,10 @@ void BattleDemoCamera::Start() {
 		// init ui here
 		ui->AddSprite("default");
 	}
+	// create audio component
+	if (audio = AddComponent<AudioSourceComponent>()) {
+		// init audio here
+	}
 }
 
 void BattleDemoCamera::Update() { }

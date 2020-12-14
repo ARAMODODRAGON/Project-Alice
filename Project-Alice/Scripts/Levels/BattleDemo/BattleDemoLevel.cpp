@@ -7,9 +7,11 @@ BattleDemoLevel::~BattleDemoLevel() { }
 
 void BattleDemoLevel::Init() {
 	
+	SoundSystem::LoadMusic("Battle Theme (UNFINISHED)", "Demo Battle Theme");
+	SoundSystem::PlayMusic("Demo Battle Theme");
+
 	// setup camera
 	camera = ObjectFactory::Make<BattleDemoCamera>();
-	// camera size = (512, 288)
 
 	// setup the bounds of the level
 	Rect levelBounds;
