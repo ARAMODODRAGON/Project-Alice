@@ -15,7 +15,7 @@ namespace ALC {
 		return m_entity != entt::null;
 	}
 
-	template<typename... Component, typename>
+	template<typename... Component>
 	inline bool Entity::HasComponent() {
 		return m_registry->__GetReg().has<Component...>(m_entity);
 	}
@@ -27,7 +27,7 @@ namespace ALC {
 		return m_registry->__GetReg().emplace<Component>(m_entity);
 	}
 
-	template<typename... Component, typename>
+	template<typename... Component>
 	inline decltype(auto) Entity::GetComponent() {
 		return m_registry->__GetReg().get<Component...>(m_entity);
 	}
@@ -39,7 +39,8 @@ namespace ALC {
 		detail::BehaviorList& blist = GetComponent<detail::BehaviorList>();
 		T* behavior = new T();
 		blist.behaviors.push_back(behavior);
-		////////////////////////////////behavior->__SetContext(m_entity, m_registry);
+		auto& entityinfo = GetComponent<EntityInfo>();
+		behavior->__SetContext(entityinfo.GetID(), m_registry);
 		behavior->Start(*this);
 		return behavior;
 	}

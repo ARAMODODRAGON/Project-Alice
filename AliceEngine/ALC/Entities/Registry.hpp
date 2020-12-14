@@ -19,7 +19,7 @@ namespace ALC {
 		operator bool() const;
 
 		// returns if component exists on entity
-		template<typename... Component, typename = detail::are_components_t<Component...>>
+		template<typename... Component>
 		bool HasComponent();
 
 		// adds a component and initializes it with the args
@@ -29,7 +29,7 @@ namespace ALC {
 
 		// gets a component if it already exists
 		// can return multiple components
-		template<typename... Component, typename = detail::are_components_t<Component...>>
+		template<typename... Component>
 		decltype(auto) GetComponent();
 
 		// creates a behavior of type
