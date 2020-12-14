@@ -5,11 +5,11 @@
 
 namespace ALC {
 
-	struct Transform2D final : ALC_Component {
+	struct Transform2D final {
 
-		glm::vec2 position;
-		glm::vec2 scale;
-		glm::vec2 rotation;
+		vec2 position = vec2(0.0f);
+		vec2 scale = vec2(0.0f);
+		vec2 rotation = vec2(0.0f);
 
 	};
 

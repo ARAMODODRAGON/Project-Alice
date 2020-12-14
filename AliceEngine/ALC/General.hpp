@@ -11,6 +11,18 @@
 #include <utility>
 #include <memory>
 #include <glm\glm.hpp>
+#undef assert
+#include <assert.h>
+#ifdef NDEBUG
+#define ALC_ASSERT(condition, text)
+#else
+#define ALC_ASSERT(condition, text) assert(condition)
+#endif
+
+#define ALC_PI 3.141592653f
+#define ALC_TO_RADIANS(degrees) (degrees * (ALC_PI / 180.0f))
+#define ALC_TO_DEGREES(radians) (radians * (180.0f / ALC_PI))
+
 
 namespace ALC {
 

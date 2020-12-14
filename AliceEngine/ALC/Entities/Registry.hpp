@@ -85,7 +85,7 @@ namespace ALC {
 		Registry* m_registry;
 	};
 
-	struct EntityInfo final : ALC_Component {
+	struct EntityInfo final {
 
 		EntityInfo();
 
@@ -132,7 +132,7 @@ namespace ALC {
 		void DestroyEntity(Entity e);
 
 		// marks the component to be destroyed
-		template<typename T, typename = detail::is_component_t<T>>
+		template<typename T>
 		void DestroyComponent(Entity e);
 
 		// marks the behavior to be destroyed
@@ -150,6 +150,7 @@ namespace ALC {
 		entt::registry& __GetReg() ALC_INTERNAL;
 	private:
 
+		bool m_validState;
 		entt::registry m_registry;
 		uint64 m_entityIDCounter;
 

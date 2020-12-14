@@ -8,10 +8,10 @@
 
 namespace ALC {
 
-	struct SpriteComponent final : ALC_Component {
+	struct SpriteComponent final {
 
 		// the offset from the Entity's center
-		vec2 offset;
+		vec2 offset = vec2(0.0f);
 
 		// the area in which to draw the sprite 
 		// relative to the center + offset

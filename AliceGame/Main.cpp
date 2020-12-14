@@ -10,9 +10,23 @@
 #include <ALC\Physics\Rigidbody2D.hpp>
 #include <glm/gtx/vector_angle.hpp>
 
+struct BulletComponent {
+
+	float lifetime = 0.0f;
+	float maxlifetime = 2.0f;
+
+};
+
 class PlayerController final : public ALC::Behavior {
 	float counter;
 public:
+
+	struct ShootData {
+		float angle;
+		float speed;
+		ALC::vec2 position;
+	};
+	ALC::vector<ShootData> shootdata;
 
 	ALC::array<ALC::Texture, 22> textures;
 
@@ -58,22 +72,20 @@ public:
 		//spr.textureBounds = ALC::rect(ALC::vec2(0.0f), spr.texture.GetSize());
 
 	}
-	void Shoot(const float angle, const float speed, const ALC::vec2& position) {
-		auto& reg = GetRegistry();
-		ALC::Entity e = reg.Create();
-		auto& transform = e.AddComponent<ALC::Transform2D>();
-		auto& rigidbody = e.AddComponent<ALC::Rigidbody2D>();
-		auto& sprite = e.AddComponent<ALC::SpriteComponent>();
-		//sprite.texture = textures[rand() % textures.size()];
-		//sprite.textureBounds = ALC::rect(ALC::vec2(0.0f), sprite.texture.GetSize());
-		sprite.bounds = ALC::rect(-3, -3, 3, 3);
-		transform.position = position;
-		ALC::vec4 vel = glm::rotateZ(ALC::vec4(0.0f, 1.0f, 0.0f, 1.0f), angle);
-		rigidbody.velocity = ALC::vec2(vel.x, vel.y) * speed;
+	void Shoot(const float angle, const float speed, const ALC::vec2 position) {
+		if (ALC::NearlyZero(position, 1.0f)) {
+			ALC_DEBUG_LOG("DOOP");
+		}
+		ShootData dat;
+		dat.angle = angle;
+		dat.speed = speed;
+		dat.position = position;
+		shootdata.push_back(dat);
 	}
 	void Update(ALC::Entity e) override {
 		if (e.HasComponent<ALC::Transform2D, ALC::Rigidbody2D>()) {
-			auto [transform, rigidbody] = e.GetComponent<ALC::Transform2D, ALC::Rigidbody2D>();
+			ALC::Transform2D& transform = e.GetComponent<ALC::Transform2D>();
+			ALC::Rigidbody2D& rigidbody = e.GetComponent<ALC::Rigidbody2D>();
 
 			const auto key_up = ALC::Keyboard::GetKey(ALC::KeyCode::ArrowUp);
 			const auto key_down = ALC::Keyboard::GetKey(ALC::KeyCode::ArrowDown);
@@ -91,9 +103,10 @@ public:
 				const float delta = ALC::SceneManager::GetActiveGame()->GetTimer()->GetDelta();
 				counter += delta;
 				if (counter > 1.0f || key_shoot.Pressed()) {
-					counter -= 1.0f;
-					for (ALC::uint32 i = 0; i < 25; ++i) {
-						Shoot((360.0f / 24.0f) * float(i), 80.0f, transform.position);
+					if (!key_shoot.Pressed())
+						counter -= 1.0f;
+					for (ALC::uint32 i = 0; i < 9; i++) {
+						Shoot((360.0f / 9.0f) * float(i), 80.0f, transform.position);
 					}
 				}
 			} else {
@@ -116,6 +129,7 @@ public:
 	ALC::SpriteBatch batch;
 	ALC::Camera camera;
 	ALC::Texture tex;
+	PlayerController* player;
 
 	BattleScene() { }
 	~BattleScene() { }
@@ -128,7 +142,7 @@ public:
 		ALC::vec2 camsize = camera.GetCameraSize();
 
 		// create our player
-		reg.Create().AddBehavior<PlayerController>();
+		player = reg.Create().AddBehavior<PlayerController>();
 
 		//ALC::Texture textures[] = {
 		//	ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/1B Ninja.png"),
@@ -186,12 +200,25 @@ public:
 
 	void Exit() override { }
 
+	void Shoot(PlayerController::ShootData& dat) {
+		ALC::Entity e = reg.Create();
+		auto& transform = e.AddComponent<ALC::Transform2D>();
+		auto& rigidbody = e.AddComponent<ALC::Rigidbody2D>();
+		e.AddComponent<BulletComponent>();
+		auto& sprite = e.AddComponent<ALC::SpriteComponent>();
+		//sprite.texture = textures[rand() % textures.size()];
+		//sprite.textureBounds = ALC::rect(ALC::vec2(0.0f), sprite.texture.GetSize());
+		sprite.bounds = ALC::rect(-3, -3, 3, 3);
+		transform.position = dat.position;
+		ALC::vec4 vel = glm::rotateZ(ALC::vec4(0.0f, 1.0f, 0.0f, 1.0f), ALC_TO_RADIANS(dat.angle));
+		rigidbody.velocity = ALC::vec2(vel.x, vel.y) * dat.speed;
+	}
+
 	void Step() override {
 		reg.UpdateBehaviors();
 
 		ALC::vec2 bounds = camera.GetCameraSize() * 0.5f;
-		//const float delta = ALC::SceneManager::GetActiveGame()->GetTimer()->GetDelta();
-		const float delta = 1.0f / 60.0f;
+		const float delta = ALC::SceneManager::GetActiveGame()->GetTimer()->GetDelta();
 		reg.ForeachComponent<ALC::Transform2D, ALC::Rigidbody2D>(
 			[delta, bounds](ALC::Entity e, ALC::Transform2D& t, ALC::Rigidbody2D& r) {
 			t.position += r.velocity * delta;
@@ -216,6 +243,22 @@ public:
 			//	t.position.y -= 0.1f;
 			//}
 		});
+
+		if (player && player->shootdata.size()) {
+			for (size_t i = 0; i < player->shootdata.size(); i++) {
+				Shoot(player->shootdata[i]);
+			}
+			player->shootdata.clear();
+		}
+
+		//reg.ForeachComponent<BulletComponent>(
+		//	[delta, this](ALC::Entity e, BulletComponent& bul) {
+		//	bul.lifetime += delta;
+		//	if (bul.lifetime > bul.maxlifetime) {
+		//		reg.DestroyEntity(e);
+		//		//ALC_DEBUG_LOG("Destroy!");
+		//	}
+		//});
 	}
 
 	void PreDraw() override {
@@ -233,7 +276,9 @@ public:
 		batch.End();
 	}
 
-	void PostDraw() override { }
+	void PostDraw() override {
+		reg.Cleanup();
+	}
 };
 
 class AliceGame final : public ALC::Game {

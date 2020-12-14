@@ -128,11 +128,12 @@ namespace ALC {
 	///////////////////////////// Registry
 
 	inline Registry::Registry()
-		: m_entityIDCounter(0) { }
+		: m_validState(true), m_entityIDCounter(0) { }
 
 	inline Registry::~Registry() { DestroyAll(); }
 
 	inline Entity Registry::Create() {
+		ALC_ASSERT(m_validState, "cannot create while iterating through the registry");
 		EntityID ID(m_entityIDCounter++);
 		entt::entity entity = m_registry.create();
 		Entity e(entity, this);
@@ -165,6 +166,8 @@ namespace ALC {
 	}
 
 	inline void Registry::DestroyAll() {
+		ALC_ASSERT(m_validState, "cannot destroy while iterating through the registry");
+		m_validState = false;
 		m_registry.view<detail::BehaviorList>().each(
 			[this](entt::entity e, detail::BehaviorList& bl) {
 			Entity entity(e, this);
@@ -175,9 +178,12 @@ namespace ALC {
 			bl.behaviors.clear();
 		});
 		m_registry.clear();
+		m_validState = true;
 	}
 
 	inline void Registry::UpdateBehaviors() {
+		ALC_ASSERT(m_validState, "cannot have multiple levels of iteration");
+		m_validState = false;
 		m_registry.view<detail::BehaviorList>().each(
 			[this](entt::entity e, detail::BehaviorList& bl) {
 			Entity entity(e, this);
@@ -185,9 +191,12 @@ namespace ALC {
 				b->Update(entity);
 			}
 		});
+		m_validState = true;
 	}
 
 	inline void Registry::LateUpdateBehaviors() {
+		ALC_ASSERT(m_validState, "cannot have multiple levels of iteration");
+		m_validState = false;
 		m_registry.view<detail::BehaviorList>().each(
 			[this](entt::entity e, detail::BehaviorList& bl) {
 			Entity entity(e, this);
@@ -195,9 +204,12 @@ namespace ALC {
 				b->LateUpdate(entity);
 			}
 		});
+		m_validState = true;
 	}
 
 	inline void ALC::Registry::Cleanup() {
+		ALC_ASSERT(m_validState, "cannot destroy while iterating through registry");
+		m_validState = false;
 		// destroy behaviors
 		for (auto pr : m_behaviorsToDestroy) {
 			m_registry.view<detail::BehaviorList>().each([pr, this](entt::entity e, detail::BehaviorList& bl) {
@@ -223,13 +235,14 @@ namespace ALC {
 		// destroy entities
 		m_registry.destroy(m_entitiesToDestroy.begin(), m_entitiesToDestroy.end());
 		m_entitiesToDestroy.clear();
+		m_validState = true;
 	}
 
 	inline void Registry::DestroyEntity(Entity e) {
 		m_entitiesToDestroy.push_back(e.__GetEntt());
 	}
 
-	template<typename T, typename>
+	template<typename T>
 	inline void Registry::DestroyComponent(Entity e) {
 		m_componentsToDestroy.push_back(CompDestroyPair(
 			e.__GetEntt(),
@@ -244,20 +257,26 @@ namespace ALC {
 
 	template<typename... Components, typename Callable>
 	inline void Registry::ForeachComponent(Callable callable) {
+		ALC_ASSERT(m_validState, "cannot have multiple levels of iteration");
+		m_validState = false;
 		m_registry.view<Components...>().each(
 			[callable, this](entt::entity e, Components&... comps) {
 			Entity entity(e, this);
 			callable(entity, comps...);
 		});
+		m_validState = true;
 	}
 
 	template<typename Callable>
 	inline void Registry::ForeachBehavior(Callable callable) {
+		ALC_ASSERT(m_validState, "cannot have multiple levels of iteration");
+		m_validState = false;
 		m_registry.view<detail::BehaviorList>()
 			.each([callable, this](entt::entity e, detail::BehaviorList& bl) {
 			Entity entity(e, this);
 			callable(entity, bl);
 		});
+		m_validState = true;
 	}
 
 	inline entt::registry& Registry::__GetReg() {

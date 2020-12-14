@@ -4,10 +4,10 @@
 
 namespace ALC {
 
-	struct Rigidbody2D : ALC_Component {
+	struct Rigidbody2D {
 
-		glm::vec2 velocity;
-		glm::vec2 acceleration;
+		vec2 velocity = vec2(0.0f);
+		vec2 acceleration = vec2(0.0f);
 
 	};
 
