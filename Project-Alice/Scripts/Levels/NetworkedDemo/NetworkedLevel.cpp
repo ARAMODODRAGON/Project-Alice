@@ -117,11 +117,6 @@ void NetworkedLevel::LateUpdate() {
 			== SOCKET_ERROR) {
 			DEBUG_ERROR("That didn't work! " + VTOS(WSAGetLastError()));
 		}
-		if (Keyboard::GetKey(KeyCode::KeyF).Pressed()) {
-		}
-		if ((counter % 20) == 0) {
-
-		}
 	}
 	else {
 		std::queue<json> localqueue;
