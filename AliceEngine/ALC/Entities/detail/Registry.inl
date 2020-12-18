@@ -91,8 +91,8 @@ namespace ALC {
 	inline Behavior::~Behavior() { }
 
 	inline void Behavior::Start(Entity e) { }
-	inline void Behavior::Update(Entity e) { }
-	inline void Behavior::LateUpdate(Entity e) { }
+	inline void Behavior::Update(Entity e, Timestep t) { }
+	inline void Behavior::LateUpdate(Entity e, Timestep t) { }
 	inline void Behavior::OnDestroy(Entity e) { }
 
 	inline Entity Behavior::GetEntity() {
@@ -181,27 +181,27 @@ namespace ALC {
 		m_validState = true;
 	}
 
-	inline void Registry::UpdateBehaviors() {
+	inline void Registry::UpdateBehaviors(Timestep t) {
 		ALC_ASSERT(m_validState, "cannot have multiple levels of iteration");
 		m_validState = false;
 		m_registry.view<detail::BehaviorList>().each(
-			[this](entt::entity e, detail::BehaviorList& bl) {
+			[this, t](entt::entity e, detail::BehaviorList& bl) {
 			Entity entity(e, this);
 			for (Behavior* b : bl.behaviors) {
-				b->Update(entity);
+				b->Update(entity, t);
 			}
 		});
 		m_validState = true;
 	}
 
-	inline void Registry::LateUpdateBehaviors() {
+	inline void Registry::LateUpdateBehaviors(Timestep t) {
 		ALC_ASSERT(m_validState, "cannot have multiple levels of iteration");
 		m_validState = false;
 		m_registry.view<detail::BehaviorList>().each(
-			[this](entt::entity e, detail::BehaviorList& bl) {
+			[this, t](entt::entity e, detail::BehaviorList& bl) {
 			Entity entity(e, this);
 			for (Behavior* b : bl.behaviors) {
-				b->LateUpdate(entity);
+				b->LateUpdate(entity, t);
 			}
 		});
 		m_validState = true;

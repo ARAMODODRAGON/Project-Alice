@@ -10,6 +10,8 @@
 #include <unordered_map>
 #include <utility>
 #include <memory>
+#include <functional>
+#define GLM_FORCE_RADIANS
 #include <glm\glm.hpp>
 #undef assert
 #include <assert.h>
@@ -35,6 +37,7 @@ namespace ALC {
 	using std::map;
 	using std::unordered_map;
 	using std::pair;
+	using std::function;
 
 	// using statement for std::shared_ptr<T>
 	template<typename T>

@@ -6,6 +6,18 @@
 
 namespace ALC {
 
+	// wrapper around a delta value
+	struct Timestep final {
+		explicit Timestep(const double delta)
+			: m_delta(delta) { }
+
+		operator float() const { return static_cast<float>(m_delta); }
+		double GetDouble() const { return m_delta; }
+
+	private:
+		double m_delta;
+	};
+
 	class Timer {
 		using steady_clock = std::chrono::steady_clock;
 		using duration = std::chrono::duration<double>;
@@ -23,6 +35,9 @@ namespace ALC {
 		Timer();
 		~Timer();
 
+		// returns a timestep struct
+		Timestep GetTimestep() const;
+
 		// functions
 		void BeginFrame();
 		void WaitForEndOfFrame();
@@ -34,8 +49,8 @@ namespace ALC {
 			targetFPS = targetFPS_;
 			secondsPerFrame = 1.0 / static_cast<double>(targetFPS);
 		}
-		double GetFPS() const;
-		double GetDelta() const;
+		float GetFPS() const;
+		float GetDelta() const;
 
 	};
 

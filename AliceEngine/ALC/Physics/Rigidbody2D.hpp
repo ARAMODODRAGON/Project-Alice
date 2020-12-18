@@ -4,7 +4,7 @@
 
 namespace ALC {
 
-	struct Rigidbody2D {
+	struct Rigidbody2D final {
 
 		vec2 velocity = vec2(0.0f);
 		vec2 acceleration = vec2(0.0f);

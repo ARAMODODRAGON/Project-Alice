@@ -10,6 +10,10 @@ namespace ALC {
 
 	Timer::~Timer() { }
 
+	Timestep Timer::GetTimestep() const {
+		return Timestep(lastDelta);
+	}
+
 	void Timer::BeginFrame() {
 		lastDelta = (currentTime - lastTime).count();
 		// save the previous time point
@@ -38,12 +42,12 @@ namespace ALC {
 		return false;
 	}
 
-	double Timer::GetFPS() const {
-		return 1.0 / lastDelta;
+	float Timer::GetFPS() const {
+		return static_cast<float>(1.0 / lastDelta);
 	}
 
-	double Timer::GetDelta() const {
-		return lastDelta;
+	float Timer::GetDelta() const {
+		return static_cast<float>(lastDelta);
 	}
 
 }

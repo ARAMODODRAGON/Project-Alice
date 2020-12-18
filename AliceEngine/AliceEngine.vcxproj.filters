@@ -81,6 +81,9 @@
     <ClInclude Include="ALC\Physics\Rigidbody2D.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ALC\Entities\EntityCreationHandler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ALC\SceneManager.cpp">
@@ -122,9 +125,15 @@
     <ClCompile Include="ALC\Rendering\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ALC\Entities\EntityCreationHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ALC\Entities\detail\Registry.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="ALC\Entities\detail\EntityCreationHandler.inl">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

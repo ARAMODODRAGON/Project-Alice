@@ -3,6 +3,7 @@
 #include <entt\entt.hpp>
 #include "EntityID.hpp"
 #include "detail\RegistryDetail.hpp"
+#include "../Core/Timer.hpp"
 
 namespace ALC {
 
@@ -63,10 +64,10 @@ namespace ALC {
 
 		// virtual functions
 
-		virtual void Start(Entity e);
-		virtual void Update(Entity e);
-		virtual void LateUpdate(Entity e);
-		virtual void OnDestroy(Entity e);
+		virtual void Start(Entity self);
+		virtual void Update(Entity self, Timestep t);
+		virtual void LateUpdate(Entity self, Timestep t);
+		virtual void OnDestroy(Entity self);
 
 		// returns the entity
 		// slow since it needs to search for the entity
@@ -119,10 +120,10 @@ namespace ALC {
 		void DestroyAll();
 
 		// update event
-		void UpdateBehaviors();
+		void UpdateBehaviors(Timestep t);
 
 		// lateupdate event
-		void LateUpdateBehaviors();
+		void LateUpdateBehaviors(Timestep t);
 
 		// cleans up
 		// must be called for marked destructibles to be destroyed

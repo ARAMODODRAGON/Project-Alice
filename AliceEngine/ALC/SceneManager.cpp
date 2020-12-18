@@ -49,8 +49,10 @@ namespace ALC {
 			}
 
 			detail::SystemEvents::PollEvents();
-			s_activeGame->Step();
-			s_activeScene->Step();
+
+			Timestep t = timer.GetTimestep();
+			s_activeGame->Step(t);
+			s_activeScene->Step(t);
 
 			s_activeGame->PreDraw();
 			s_activeScene->PreDraw();
