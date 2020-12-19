@@ -1,5 +1,35 @@
 #include "DemoChara.hpp"
 
+DemoChara::DemoChara()
+	: timer(0.0f), circleshootoffset(0.0f), clockwise(true), spinspeedmult(1.0f) {
+	textures = {
+		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/1B Ninja.png"),
+		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/AAEEEIOU.png"),
+		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/AmazedFace.png"),
+		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/Ayyad.jpg"),
+		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/ayyad.png"),
+		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/Ayyyad.jpg"),
+		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/Dwane_Face.png"),
+		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/HACK.png"),
+		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/IMG_2312.JPG"),
+		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/King_Sean.png"),
+		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/mohd.png"),
+		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/MrV.png"),
+		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/NIGHT.png"),
+		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/P.E.E.P.png"),
+		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/PizzaTime.png"),
+		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/Random.png"),
+		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/Random_Purple.png"),
+		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/Random_Yellow.png"),
+		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/Scott.png"),
+		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/SeanToxic.png"),
+		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/Slick Shades Devil.png"),
+		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/unknown.png")
+	};
+}
+
+DemoChara::~DemoChara() { }
+
 void DemoChara::Start(ALC::Entity self) {
 	if (!self.HasComponent<ALC::Transform2D>()) self.AddComponent<ALC::Transform2D>();
 	if (!self.HasComponent<ALC::Rigidbody2D>()) self.AddComponent<ALC::Rigidbody2D>();
