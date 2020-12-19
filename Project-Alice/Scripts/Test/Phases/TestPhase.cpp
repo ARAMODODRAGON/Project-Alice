@@ -23,7 +23,7 @@ void TestPhase::StartPhase()
 
 void TestPhase::UpdatePhase()
 {
-	SetPosition(GetEnemy()->GetPosition());
+	//SetPosition(GetEnemy()->GetPosition());
 	SetCurrentHealth(GetEnemy()->GetCurrentHealth());
 	SetMaxHealth(GetEnemy()->GetMaxHealth());
 

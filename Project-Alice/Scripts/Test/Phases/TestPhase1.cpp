@@ -18,7 +18,7 @@ void TestPhase1::StartPhase()
 
 void TestPhase1::UpdatePhase()
 {
-	SetPosition(GetEnemy()->GetPosition());
+	//SetPosition(GetEnemy()->GetPosition());
 	SetCurrentHealth(GetEnemy()->GetCurrentHealth());
 	SetMaxHealth(GetEnemy()->GetMaxHealth());
 

@@ -21,8 +21,8 @@ void TestEnemy::Start()
 	//moveToMiddle = new TestPhase1();
 	//SetMaxSpeed(50.0f);
 	//SetMaxAcceleration(50.0f);
-	moveFromMiddle = AddPhase<TestPhase>(); 
-	moveToMiddle = AddPhase<TestPhase1>();	
+	//moveFromMiddle = AddPhase<TestPhase>(); 
+	//moveToMiddle = AddPhase<TestPhase1>();	
 
 }
 

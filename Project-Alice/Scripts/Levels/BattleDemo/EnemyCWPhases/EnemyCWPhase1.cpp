@@ -25,3 +25,5 @@ bool EnemyCWPhase1::IsComplete() {
 	}
 	return false;
 }
+
+void EnemyCWPhase1::PlayerDirection(glm::vec2 enemyPos_, uint8 dir_) { }
