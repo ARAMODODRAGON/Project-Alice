@@ -35,33 +35,40 @@ void DemoChara::Shoot(ALC::Entity self, const float angle, const float speed, co
 
 void DemoChara::Update(ALC::Entity self, ALC::Timestep t) {
 	if (self.HasComponent<ALC::Transform2D, ALC::Rigidbody2D>()) {
+		// get components
 		ALC::Transform2D& transform = self.GetComponent<ALC::Transform2D>();
 		ALC::Rigidbody2D& rigidbody = self.GetComponent<ALC::Rigidbody2D>();
 
+		// get input
 		const auto key_up = ALC::Keyboard::GetKey(ALC::KeyCode::ArrowUp);
 		const auto key_down = ALC::Keyboard::GetKey(ALC::KeyCode::ArrowDown);
 		const auto key_left = ALC::Keyboard::GetKey(ALC::KeyCode::ArrowLeft);
 		const auto key_right = ALC::Keyboard::GetKey(ALC::KeyCode::ArrowRight);
+		const auto key_shoot = ALC::Keyboard::GetKey(ALC::KeyCode::KeyC);
+
+		// convert input into velocity
 		glm::vec2 input = glm::vec2(key_right.IsHeld() - key_left.IsHeld(), key_up.IsHeld() - key_down.IsHeld());
 		if (glm::length2(input) > 0.0f) {
 			//ALC_DEBUG_LOG("Moving at " + VTOS(input));
 		}
-
 		rigidbody.velocity = input * 60.0f;
 
+		// calculate shoot related variables
 		constexpr float shoottime = 0.07f;
-		const auto key_shoot = ALC::Keyboard::GetKey(ALC::KeyCode::KeyC);
 		if (clockwise)
 			circleshootoffset += 50.0f * t * spinspeedmult;
 		else
 			circleshootoffset -= 50.0f * t * spinspeedmult;
 		spinspeedmult += t * 1.3f;
 
+		// shoot
 		if (key_shoot) {
 			timer += t;
 			if (timer > shoottime || key_shoot.Pressed()) {
 				if (!key_shoot.Pressed())
 					timer -= shoottime;
+
+				// shoots 'shootcount' bullets in circular formation
 				constexpr ALC::uint32 shootcount = 9;
 				for (ALC::uint32 i = 0; i < shootcount; i++) {
 					// (360.0f / float(shootcount)) the difference in angle if you want to shoot 'shootcount' bullets
@@ -69,11 +76,14 @@ void DemoChara::Update(ALC::Entity self, ALC::Timestep t) {
 					Shoot(self, (360.0f / float(shootcount)) * float(i) + circleshootoffset, 80.0f, transform.position);
 				}
 			}
-		} else {
-			if (key_shoot.Released()) clockwise = !clockwise;
+		} 
+		// not shooting
+		else {
 			circleshootoffset = 0.0f;
 			timer = 0.0f;
 			spinspeedmult = 1.0f;
+			// flip shoot rotation dir
+			if (key_shoot.Released()) clockwise = !clockwise;
 		}
 	}
 }
