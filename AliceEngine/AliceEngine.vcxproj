@@ -42,6 +42,7 @@
     <ClInclude Include="ALC\Rendering\Camera.hpp" />
     <ClInclude Include="ALC\Rendering\SpriteBatch.hpp" />
     <ClInclude Include="ALC\SceneManager.hpp" />
+    <ClInclude Include="ALC\StateMachine.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ALC\Content\ContentManager.cpp" />

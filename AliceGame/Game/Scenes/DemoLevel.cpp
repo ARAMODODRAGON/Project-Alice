@@ -49,13 +49,13 @@ void DemoLevel::Step(ALC::Timestep t) {
 	});
 
 	// create all entities
-	m_ech.CreateEntities(m_reg);
+	m_ech.Cleanup(m_reg);
 
 	m_reg.ForeachComponent<DemoBulletComponent>(
 		[delta, this](ALC::Entity e, DemoBulletComponent& bul) {
 		bul.lifetime += delta;
 		if (bul.lifetime > bul.maxlifetime) {
-			m_reg.DestroyEntity(e);
+			m_ech.Destroy(e);
 			//ALC_DEBUG_LOG("Destroy!");
 		}
 	});
@@ -76,4 +76,7 @@ void DemoLevel::Draw() {
 	m_batch.End();
 }
 
-void DemoLevel::PostDraw() { }
+void DemoLevel::PostDraw() { 
+	m_reg.Cleanup();
+	m_ech.Cleanup(m_reg);
+}
