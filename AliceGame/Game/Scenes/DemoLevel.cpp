@@ -15,6 +15,7 @@ void DemoLevel::Init() {
 	// create our player
 	m_reg.Create().AddBehavior<DemoChara>();
 
+	m_reg.Create();
 	auto e = m_reg.Create();
 	eid = e.GetComponent<ALC::EntityInfo>().GetID();
 	e.AddComponent<ALC::Transform2D>();
