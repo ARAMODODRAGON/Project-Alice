@@ -48,14 +48,8 @@ namespace ALC {
 		reg.destroy(m_destructables.begin(), m_destructables.end());
 
 		// create each entity
-		vector<entt::entity> entities;
-		entities.resize(m_createCallables.size());
-
-		reg.create(entities.begin(), entities.end());
-
-		// call on each
-		for (size_t i = 0; i < entities.size(); i++) {
-			Entity e(entities[i], &registry);
+		for (size_t i = 0; i < m_createCallables.size(); i++) {
+			Entity e = registry.Create();
 			m_createCallables[i](e);
 		}
 

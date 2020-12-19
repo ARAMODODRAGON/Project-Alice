@@ -87,6 +87,15 @@
     <ClInclude Include="ALC\StateMachine.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ALC\Layermask.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ALC\Physics\Physics2DHandler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ALC\Physics\Collision2D.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ALC\SceneManager.cpp">
@@ -129,6 +138,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ALC\Entities\EntityCreationHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ALC\Physics\Physics2DHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ALC\Physics\Collision2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

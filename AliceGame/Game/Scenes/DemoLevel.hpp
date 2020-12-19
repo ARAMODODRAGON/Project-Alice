@@ -6,6 +6,7 @@
 #include <ALC\Rendering\SpriteBatch.hpp>
 #include <ALC\Physics\Rigidbody2D.hpp>
 #include "../Characters/DemoChara.hpp"
+#include <ALC\Physics\Physics2DHandler.hpp>
 
 class DemoLevel final : public ALC::IScene {
 public:
@@ -27,6 +28,8 @@ private:
 	ALC::EntityCreationHandler m_ech;
 	ALC::SpriteBatch m_batch;
 	ALC::Camera m_camera;
+	ALC::Physics2DHandler m_physics2D;
+	ALC::EntityID eid;
 
 };
 

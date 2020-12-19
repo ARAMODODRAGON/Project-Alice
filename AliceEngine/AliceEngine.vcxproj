@@ -36,6 +36,9 @@
     <ClInclude Include="ALC\Input\Keyboard.hpp" />
     <ClInclude Include="ALC\Input\Mouse.hpp" />
     <ClInclude Include="ALC\Input\detail\SystemEvents.hpp" />
+    <ClInclude Include="ALC\Layermask.hpp" />
+    <ClInclude Include="ALC\Physics\Collision2D.hpp" />
+    <ClInclude Include="ALC\Physics\Physics2DHandler.hpp" />
     <ClInclude Include="ALC\Physics\Rigidbody2D.hpp" />
     <ClInclude Include="ALC\Physics\Transform2D.hpp" />
     <ClInclude Include="ALC\rect.hpp" />
@@ -56,6 +59,8 @@
     <ClCompile Include="ALC\Input\Keyboard.cpp" />
     <ClCompile Include="ALC\Input\Mouse.cpp" />
     <ClCompile Include="ALC\Input\detail\SystemEvents.cpp" />
+    <ClCompile Include="ALC\Physics\Collision2D.cpp" />
+    <ClCompile Include="ALC\Physics\Physics2DHandler.cpp" />
     <ClCompile Include="ALC\Rendering\Camera.cpp" />
     <ClCompile Include="ALC\Rendering\SpriteBatch.cpp" />
     <ClCompile Include="ALC\SceneManager.cpp" />

@@ -44,39 +44,49 @@ void DemoChara::Start(ALC::Entity self) {
 	if (!self.HasComponent<ALC::SpriteComponent>()) self.AddComponent<ALC::SpriteComponent>();
 
 	auto& spr = self.GetComponent<ALC::SpriteComponent>();
+	spr.bounds = ALC::rect(-8.0f, -8.0f, 8.0f, 8.0f);
+
+	auto& rb = self.GetComponent<ALC::Rigidbody2D>();
+	rb.triggerMask = ALC::Layermask32::ALL;
+	rb.triggerMask.SetLayer(0, false);
+	auto& circle = rb.SetShape<ALC::CircleShape>();
+	circle.radius = 8.0f;
 	//spr.texture = ALC::ContentManager::LoadTexture("Resources/Textures/Grey Orb Flashing.png");
-	spr.bounds = ALC::rect(-8, -8, 8, 8);
 	//spr.textureBounds = ALC::rect(ALC::vec2(0.0f), spr.texture.GetSize());
 
 }
 
 void DemoChara::OnDestroy(ALC::Entity self) { }
 
-void DemoChara::Shoot(ALC::Entity self, const float angle, const float speed, 
+void DemoChara::Shoot(ALC::Entity self, const float angle, const float speed,
 					  const ALC::vec2 position, const ALC::vec4 color) {
 	if (!self.HasComponent<ALC::EntityCreatorComponent>())
 		self.AddComponent<ALC::EntityCreatorComponent>();
 	auto& ecc = self.GetComponent<ALC::EntityCreatorComponent>();
 
 	ecc.Create([angle, speed, position, color](ALC::Entity e) {
-		auto& transform = e.AddComponent<ALC::Transform2D>();
-		auto& rigidbody = e.AddComponent<ALC::Rigidbody2D>();
-		auto& sprite = e.AddComponent<ALC::SpriteComponent>();
-		sprite.color = color;
+		auto& tr = e.AddComponent<ALC::Transform2D>();
+		auto& rb = e.AddComponent<ALC::Rigidbody2D>();
+		rb.triggerMask.SetLayer(0, true);
+		auto& circle = rb.SetShape<ALC::CircleShape>();
+		circle.radius = 3.0f;
+		auto& spr = e.AddComponent<ALC::SpriteComponent>();
+		spr.color = color;
 		e.AddComponent<DemoBulletComponent>();
 		//sprite.texture = textures[rand() % textures.size()];
 		//sprite.textureBounds = ALC::rect(ALC::vec2(0.0f), sprite.texture.GetSize());
-		sprite.bounds = ALC::rect(-3, -3, 3, 3);
-		transform.position = position;
+		spr.bounds = ALC::rect(-3.0f, -3.0f, 3.0f, 3.0f);
+		tr.position = position;
 		ALC::vec4 vel = glm::rotateZ(ALC::vec4(0.0f, 1.0f, 0.0f, 1.0f), ALC_TO_RADIANS(angle));
-		rigidbody.velocity = ALC::vec2(vel.x, vel.y) * speed;
+		rb.velocity = ALC::vec2(vel.x, vel.y) * speed;
 	});
 }
 
 void DemoChara::Update(ALC::Entity self, ALC::Timestep t) {
 	// get components
-	ALC::Transform2D& transform = self.GetComponent<ALC::Transform2D>();
-	ALC::Rigidbody2D& rigidbody = self.GetComponent<ALC::Rigidbody2D>();
+	auto& transform = self.GetComponent<ALC::Transform2D>();
+	auto& rigidbody = self.GetComponent<ALC::Rigidbody2D>();
+	auto& sprite = self.GetComponent<ALC::SpriteComponent>();
 
 	// get input
 	const auto key_up = ALC::Keyboard::GetKey(ALC::KeyCode::ArrowUp);
@@ -96,7 +106,14 @@ void DemoChara::Update(ALC::Entity self, ALC::Timestep t) {
 
 }
 
-void DemoChara::LateUpdate(ALC::Entity self, ALC::Timestep t) { }
+void DemoChara::LateUpdate(ALC::Entity self, ALC::Timestep t) {
+	auto& rigidbody = self.GetComponent<ALC::Rigidbody2D>();
+	auto& sprite = self.GetComponent<ALC::SpriteComponent>();
+	if (rigidbody.GetCollisionCount() > 0)
+		sprite.color = ALC_COLOR_RED;
+	else
+		sprite.color = ALC_COLOR_BLUE;
+}
 
 void DemoChara::BeginStateA(const State last, ALC::Entity self, ALC::Timestep t) {
 	ALC_DEBUG_LOG("State A Begin");
@@ -130,7 +147,7 @@ void DemoChara::StateA(ALC::Entity self, ALC::Timestep t) {
 			for (ALC::uint32 i = 0; i < shootcount; i++) {
 				// (360.0f / float(shootcount)) the difference in angle if you want to shoot 'shootcount' bullets
 				// * float(i) multiplies to get a specific angle
-				Shoot(self, (360.0f / float(shootcount)) * float(i) + m_circleshootoffset, 
+				Shoot(self, (360.0f / float(shootcount)) * float(i) + m_circleshootoffset,
 					  80.0f, transform.position, ALC_COLOR_RED);
 			}
 		}
@@ -181,7 +198,7 @@ void DemoChara::StateB(ALC::Entity self, ALC::Timestep t) {
 			for (ALC::uint32 i = 0; i < shootcount; i++) {
 				// (360.0f / float(shootcount)) the difference in angle if you want to shoot 'shootcount' bullets
 				// * float(i) multiplies to get a specific angle
-				Shoot(self, (360.0f / float(shootcount)) * float(i) + m_circleshootoffset, 
+				Shoot(self, (360.0f / float(shootcount)) * float(i) + m_circleshootoffset,
 					  80.0f, transform.position, ALC_COLOR_BLUE);
 			}
 		}
