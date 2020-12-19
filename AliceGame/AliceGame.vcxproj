@@ -149,12 +149,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game\AliceGame.cpp" />
+    <ClCompile Include="Game\Characters\DemoChara.cpp" />
+    <ClCompile Include="Game\Scenes\DemoLevel.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AliceEngine\AliceEngine.vcxproj">
       <Project>{b1e12aba-a857-490f-ab20-f6f3710bf9ea}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Game\AliceGame.hpp" />
+    <ClInclude Include="Game\Characters\DemoChara.hpp" />
+    <ClInclude Include="Game\Scenes\DemoLevel.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

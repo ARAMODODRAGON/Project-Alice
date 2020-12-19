@@ -13,6 +13,7 @@ namespace ALC {
 
 		operator float() const { return static_cast<float>(m_delta); }
 		double GetDouble() const { return m_delta; }
+		float GetFPS() const { return static_cast<float>(1.0 / m_delta); }
 
 	private:
 		double m_delta;
