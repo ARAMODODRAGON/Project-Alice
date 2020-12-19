@@ -51,8 +51,8 @@ void DemoLevel::Step(ALC::Timestep t) {
 	// create all entities
 	m_ech.CreateEntities(m_reg);
 
-	m_reg.ForeachComponent<BulletComponent>(
-		[delta, this](ALC::Entity e, BulletComponent& bul) {
+	m_reg.ForeachComponent<DemoBulletComponent>(
+		[delta, this](ALC::Entity e, DemoBulletComponent& bul) {
 		bul.lifetime += delta;
 		if (bul.lifetime > bul.maxlifetime) {
 			m_reg.DestroyEntity(e);

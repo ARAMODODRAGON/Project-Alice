@@ -7,7 +7,7 @@
 #include <ALC\Input\Keyboard.hpp>
 #include <glm/gtx/vector_angle.hpp>
 
-struct BulletComponent final {
+struct DemoBulletComponent final {
 	float lifetime = 0.0f;
 	float maxlifetime = 3.0f;
 };

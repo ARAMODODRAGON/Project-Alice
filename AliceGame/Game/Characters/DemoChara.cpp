@@ -22,7 +22,7 @@ void DemoChara::Shoot(ALC::Entity self, const float angle, const float speed, co
 	ecc.Create([angle, speed, position](ALC::Entity e) {
 		auto& transform = e.AddComponent<ALC::Transform2D>();
 		auto& rigidbody = e.AddComponent<ALC::Rigidbody2D>();
-		e.AddComponent<BulletComponent>();
+		e.AddComponent<DemoBulletComponent>();
 		auto& sprite = e.AddComponent<ALC::SpriteComponent>();
 		//sprite.texture = textures[rand() % textures.size()];
 		//sprite.textureBounds = ALC::rect(ALC::vec2(0.0f), sprite.texture.GetSize());
