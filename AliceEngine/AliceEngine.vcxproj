@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ALC\Bullets\BulletPhysics.hpp" />
+    <ClInclude Include="ALC\Bullets\BulletPhysicsHandler.hpp" />
     <ClInclude Include="ALC\Content\ContentManager.hpp" />
     <ClInclude Include="ALC\Content\detail\stb_image.h" />
     <ClInclude Include="ALC\Content\Shader.hpp" />
@@ -38,6 +40,7 @@
     <ClInclude Include="ALC\Input\detail\SystemEvents.hpp" />
     <ClInclude Include="ALC\Layermask.hpp" />
     <ClInclude Include="ALC\Physics\Collision2D.hpp" />
+    <ClInclude Include="ALC\Physics\CollisionInfo.hpp" />
     <ClInclude Include="ALC\Physics\Physics2DHandler.hpp" />
     <ClInclude Include="ALC\Physics\Rigidbody2D.hpp" />
     <ClInclude Include="ALC\Physics\Transform2D.hpp" />
@@ -48,6 +51,7 @@
     <ClInclude Include="ALC\StateMachine.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ALC\Bullets\BulletPhysicsHandler.cpp" />
     <ClCompile Include="ALC\Content\ContentManager.cpp" />
     <ClCompile Include="ALC\Content\Shader.cpp" />
     <ClCompile Include="ALC\Content\Texture.cpp" />

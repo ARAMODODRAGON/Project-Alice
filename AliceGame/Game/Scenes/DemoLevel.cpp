@@ -19,10 +19,9 @@ void DemoLevel::Init() {
 	auto e = m_reg.Create();
 	eid = e.GetComponent<ALC::EntityInfo>().GetID();
 	e.AddComponent<ALC::Transform2D>();
-	auto& rb = e.AddComponent<ALC::Rigidbody2D>();
-	rb.triggerMask = ALC::Layermask32::ALL;
-	auto& circle = rb.SetShape<ALC::CircleShape>();
-	circle.radius = 8.0f;
+	auto& rb = e.AddComponent<ALC::CharacterBody>();
+	rb.mask = ALC::Layermask32::ALL;
+	rb.radius = 8.0f;
 	auto& spr = e.AddComponent<ALC::SpriteComponent>();
 	spr.bounds = ALC::rect(-8.0f, -8.0f, 8.0f, 8.0f);
 	spr.color = ALC_COLOR_GREEN;
@@ -31,7 +30,10 @@ void DemoLevel::Init() {
 void DemoLevel::Exit() { }
 
 void DemoLevel::Step(ALC::Timestep t) {
-	m_reg.UpdateBehaviors(t);
+	// force a timestep of 1 / 60
+	static ALC::Timestep ts = ALC::Timestep(1.0 / 60.0);
+
+	m_reg.UpdateBehaviors(ts);
 
 	//ALC::vec2 bounds = m_camera.GetCameraSize() * 0.5f;
 	//const float delta = ALC::SceneManager::GetActiveGame()->GetTimer()->GetDelta();
@@ -60,28 +62,34 @@ void DemoLevel::Step(ALC::Timestep t) {
 	//	//}
 	//});
 
-	m_physics2D.Step(m_reg, t);
+	m_bPhysics.Step(m_reg, ts);
 
 	// create all entities
 	m_ech.Cleanup(m_reg);
 
-	m_reg.ForeachComponent<DemoBulletComponent>(
-		[t, this](ALC::Entity e, DemoBulletComponent& bul) {
-		bul.lifetime += t;
+	ALC::vec2 bounds = m_camera.GetCameraSize() * 0.5f;
+	m_reg.ForeachComponent<DemoBulletComponent, ALC::BulletBody, ALC::Transform2D>(
+		[&](ALC::Entity e, DemoBulletComponent& bul, ALC::BulletBody& rb, ALC::Transform2D& tr) {
+		bul.lifetime += ts;
 		if (bul.lifetime > bul.maxlifetime) {
 			m_ech.Destroy(e);
 			//ALC_DEBUG_LOG("Destroy!");
 		}
+		else if (tr.position.x < -bounds.x || tr.position.x > bounds.x ||
+			tr.position.y < -bounds.y || tr.position.y > bounds.y) {
+			rb.isSimulated = false;
+			m_ech.Destroy(e);
+		}
 	});
 
 	ALC::Entity e = m_reg.GetEntity(eid);
-	auto [rb, spr] = e.GetComponent<ALC::Rigidbody2D, ALC::SpriteComponent>();
-	if (rb.GetCollisionCount() > 0)
+	auto [rb, spr] = e.GetComponent<ALC::CharacterBody, ALC::SpriteComponent>();
+	if (rb.Count() > 0)
 		spr.color = ALC_COLOR_WHITE;
 	else
 		spr.color = ALC_COLOR_GREEN;
 
-	m_reg.LateUpdateBehaviors(t);
+	m_reg.LateUpdateBehaviors(ts);
 }
 
 void DemoLevel::PreDraw() { }

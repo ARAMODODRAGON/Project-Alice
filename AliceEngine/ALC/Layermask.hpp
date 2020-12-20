@@ -4,20 +4,20 @@
 
 namespace ALC {
 
-	template<typename I, typename = std::enable_if_t<std::is_integral_v<I>>>
+	template<typename I>
 	struct Layermask {
 
-		// int with all layers set
-		static constexpr I ALL = ~static_cast<I>(0);
+		// mask with all layers set
+		static const Layermask<I> ALL;
 
-		// int with no layers set
-		static constexpr I NONE = static_cast<I>(0);
+		// mask with no layers set
+		static const Layermask<I> NONE;
 
 		// constructors / operators
 		Layermask() : mask(0) { }
 		Layermask(const I mask_) : mask(mask_) { }
-		Layermask& operator=(const I mask_) { 
-			mask = mask_; 
+		Layermask& operator=(const I mask_) {
+			mask = mask_;
 			return *this;
 		}
 
@@ -72,6 +72,13 @@ namespace ALC {
 		I mask;
 
 	};
+
+
+	template<typename I>
+	const Layermask<I> Layermask<I>::ALL = ~static_cast<I>(0);
+	template<typename I>
+	const Layermask<I> Layermask<I>::NONE = static_cast<I>(0);
+
 
 	// 64 layers
 	using Layermask64 = Layermask<uint64>;

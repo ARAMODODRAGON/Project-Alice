@@ -17,6 +17,7 @@ namespace ALC {
 
 		for (size_t i = 0; i < group.size(); i++) {
 			auto [body, info, transform] = group.get<Rigidbody2D, EntityInfo, Transform2D>(entities[i]);
+			if (!body.isSimulated) continue;
 
 			// do physics
 			body.velocity += body.acceleration * t.Get();
@@ -35,48 +36,53 @@ namespace ALC {
 		}
 
 		for (size_t i = 0; i < (group.size() - 1); i++) {
-			auto [b0, i0, t0] = group.get<Rigidbody2D, EntityInfo, Transform2D>(entities[i]);
-			if (b0.GetShapeType() == ShapeType::None) continue;
+			//auto [b0, i0, t0] = group.get<Rigidbody2D, EntityInfo, Transform2D>(entities[i]);
+			auto& b0 = group.get<Rigidbody2D>(entities[i]);
+			if (b0.GetShapeType() == ShapeType::None || !b0.isSimulated) continue;
 
 			for (size_t j = i + 1; j < group.size(); j++) {
-				auto [b1, i1, t1] = group.get<Rigidbody2D, EntityInfo, Transform2D>(entities[i + 1]);
-				if (b1.GetShapeType() == ShapeType::None) continue;
-			
+				//auto [b1, i1, t1] = group.get<Rigidbody2D, EntityInfo, Transform2D>(entities[i + 1]);
+				auto& b1 = group.get<Rigidbody2D>(entities[j]);
+				if (b1.GetShapeType() == ShapeType::None || !b1.isSimulated) continue;
+
+				// check collisions first
+				if (b1.preferCollisions || b0.preferCollisions) {
+
+					// collision
+					if (b0.collisionMask && b1.collisionMask) {
+						//ALC_DEBUG_WARNING("Collisions not currently supported");
+						continue;
+					}
+					// trigger
+					else if (b0.triggerMask && b1.triggerMask) {
+						auto [t0, i0] =  group.get<Transform2D, EntityInfo>(entities[i]);
+						auto [t1, i1] =  group.get<Transform2D, EntityInfo>(entities[j]);
+						if (DoTrigger(t0, b0, t1, b1)) {
+							UpdateCollisionInfo(i0, b0, i1, b1);
+						}
+					}
+
+				}
+				// check triggers first
+				else {
+
+					// trigger
+					if (b0.triggerMask && b1.triggerMask) {
+						auto [t0, i0] =  group.get<Transform2D, EntityInfo>(entities[i]);
+						auto [t1, i1] =  group.get<Transform2D, EntityInfo>(entities[j]);
+						if (DoTrigger(t0, b0, t1, b1)) {
+							UpdateCollisionInfo(i0, b0, i1, b1);
+						}
+					}
+					// collision
+					else if (b0.collisionMask && b1.collisionMask) {
+						//ALC_DEBUG_WARNING("Collisions not currently supported");
+						continue;
+					}
+
+				}
 			}
 		}
-
-		//// check collisions first
-		//if (b1.preferCollisions || b0.preferCollisions) {
-		//
-		//	// collision
-		//	if (b0.collisionMask && b1.collisionMask) {
-		//		//ALC_DEBUG_WARNING("Collisions not currently supported");
-		//		continue;
-		//	}
-		//	// trigger
-		//	else if (b0.triggerMask && b1.triggerMask) {
-		//		if (DoTrigger(t0, b0, t1, b1)) {
-		//			UpdateCollisionInfo(i0, b0, i1, b1);
-		//		}
-		//	}
-		//
-		//}
-		//// check triggers first
-		//else {
-		//
-		//	// trigger
-		//	if (b0.triggerMask && b1.triggerMask) {
-		//		if (DoTrigger(t0, b0, t1, b1)) {
-		//			UpdateCollisionInfo(i0, b0, i1, b1);
-		//		}
-		//	}
-		//	// collision
-		//	else if (b0.collisionMask && b1.collisionMask) {
-		//		//ALC_DEBUG_WARNING("Collisions not currently supported");
-		//		continue;
-		//	}
-		//
-		//}
 	}
 
 	bool Physics2DHandler::DoTrigger(

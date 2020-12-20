@@ -40,17 +40,15 @@ DemoChara::~DemoChara() { }
 
 void DemoChara::Start(ALC::Entity self) {
 	if (!self.HasComponent<ALC::Transform2D>()) self.AddComponent<ALC::Transform2D>();
-	if (!self.HasComponent<ALC::Rigidbody2D>()) self.AddComponent<ALC::Rigidbody2D>();
+	if (!self.HasComponent<ALC::CharacterBody>()) self.AddComponent<ALC::CharacterBody>();
 	if (!self.HasComponent<ALC::SpriteComponent>()) self.AddComponent<ALC::SpriteComponent>();
 
 	auto& spr = self.GetComponent<ALC::SpriteComponent>();
 	spr.bounds = ALC::rect(-8.0f, -8.0f, 8.0f, 8.0f);
 
-	auto& rb = self.GetComponent<ALC::Rigidbody2D>();
-	rb.triggerMask = ALC::Layermask32::ALL;
-	rb.triggerMask.SetLayer(0, false);
-	auto& circle = rb.SetShape<ALC::CircleShape>();
-	circle.radius = 8.0f;
+	auto& rb = self.GetComponent<ALC::CharacterBody>();
+	rb.mask = ALC::Layermask32::NONE;
+	rb.radius = 8.0f;
 	//spr.texture = ALC::ContentManager::LoadTexture("Resources/Textures/Grey Orb Flashing.png");
 	//spr.textureBounds = ALC::rect(ALC::vec2(0.0f), spr.texture.GetSize());
 
@@ -66,10 +64,10 @@ void DemoChara::Shoot(ALC::Entity self, const float angle, const float speed,
 
 	ecc.Create([angle, speed, position, color](ALC::Entity e) {
 		auto& tr = e.AddComponent<ALC::Transform2D>();
-		auto& rb = e.AddComponent<ALC::Rigidbody2D>();
-		rb.triggerMask.SetLayer(0, true);
-		auto& circle = rb.SetShape<ALC::CircleShape>();
-		circle.radius = 3.0f;
+		auto& rb = e.AddComponent<ALC::BulletBody>();
+		rb.mask = ALC::Layermask32::ALL;
+		//rb.mask.SetLayer(0, true);
+		rb.radius = 3.0f;
 		auto& spr = e.AddComponent<ALC::SpriteComponent>();
 		spr.color = color;
 		e.AddComponent<DemoBulletComponent>();
@@ -85,7 +83,7 @@ void DemoChara::Shoot(ALC::Entity self, const float angle, const float speed,
 void DemoChara::Update(ALC::Entity self, ALC::Timestep t) {
 	// get components
 	auto& transform = self.GetComponent<ALC::Transform2D>();
-	auto& rigidbody = self.GetComponent<ALC::Rigidbody2D>();
+	auto& rigidbody = self.GetComponent<ALC::CharacterBody>();
 	auto& sprite = self.GetComponent<ALC::SpriteComponent>();
 
 	// get input
@@ -107,9 +105,9 @@ void DemoChara::Update(ALC::Entity self, ALC::Timestep t) {
 }
 
 void DemoChara::LateUpdate(ALC::Entity self, ALC::Timestep t) {
-	auto& rigidbody = self.GetComponent<ALC::Rigidbody2D>();
+	auto& rigidbody = self.GetComponent<ALC::CharacterBody>();
 	auto& sprite = self.GetComponent<ALC::SpriteComponent>();
-	if (rigidbody.GetCollisionCount() > 0)
+	if (rigidbody.Count() > 0)
 		sprite.color = ALC_COLOR_RED;
 	else
 		sprite.color = ALC_COLOR_BLUE;
@@ -123,8 +121,8 @@ void DemoChara::BeginStateA(const State last, ALC::Entity self, ALC::Timestep t)
 }
 
 void DemoChara::StateA(ALC::Entity self, ALC::Timestep t) {
-	ALC::Transform2D& transform = self.GetComponent<ALC::Transform2D>();
-	ALC::Rigidbody2D& rigidbody = self.GetComponent<ALC::Rigidbody2D>();
+	auto& transform = self.GetComponent<ALC::Transform2D>();
+	auto& rigidbody = self.GetComponent<ALC::CharacterBody>();
 	const auto key_shoot = ALC::Keyboard::GetKey(ALC::KeyCode::KeyC);
 
 	// calculate shoot related variables
@@ -174,8 +172,8 @@ void DemoChara::BeginStateB(const State last, ALC::Entity self, ALC::Timestep t)
 }
 
 void DemoChara::StateB(ALC::Entity self, ALC::Timestep t) {
-	ALC::Transform2D& transform = self.GetComponent<ALC::Transform2D>();
-	ALC::Rigidbody2D& rigidbody = self.GetComponent<ALC::Rigidbody2D>();
+	auto& transform = self.GetComponent<ALC::Transform2D>();
+	auto& rigidbody = self.GetComponent<ALC::CharacterBody>();
 	const auto key_shoot = ALC::Keyboard::GetKey(ALC::KeyCode::KeyC);
 
 	// calculate shoot related variables

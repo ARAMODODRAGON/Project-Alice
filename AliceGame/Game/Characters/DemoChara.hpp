@@ -1,7 +1,7 @@
 #ifndef ALICE_CHARACTERS_DEMOCHARA_HPP
 #define ALICE_CHARACTERS_DEMOCHARA_HPP
 #include <ALC\Entities\EntityCreationHandler.hpp>
-#include <ALC\Physics\Rigidbody2D.hpp>
+#include <ALC\Bullets\BulletPhysics.hpp>
 #include <ALC\Content\ContentManager.hpp>
 #include <ALC\Rendering\SpriteBatch.hpp>
 #include <ALC\Input\Keyboard.hpp>
