@@ -1,3 +1,4 @@
+#include "..\Registry.hpp"
 //#include "..\Registry.hpp"
 
 namespace ALC {
@@ -240,6 +241,22 @@ namespace ALC {
 
 	inline void Registry::DestroyEntity(Entity e) {
 		m_entitiesToDestroy.push_back(e.__GetEntt());
+	}
+
+	template<typename ...T>
+	inline void Registry::StepSystem(Timestep ts, ISystem<T...>& system) {
+		ALC_ASSERT(m_validState, "cannot have multiple levels of iteration");
+		m_validState = false;
+
+		// foreach entity with matching components in systems
+		auto view = m_registry.view<T...>();
+		view.each(
+			[&system, &ts, this](entt::entity ent, T&... params) {
+			Entity e(ent, this);
+			system.Step(ts, e, params...);
+		});
+
+		m_validState = true;
 	}
 
 	template<typename T>

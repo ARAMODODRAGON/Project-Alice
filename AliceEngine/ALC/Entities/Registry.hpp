@@ -99,6 +99,13 @@ namespace ALC {
 		EntityID m_ID;
 	};
 
+	// interface for all systems
+	template<typename... Params>
+	struct ISystem {
+		virtual ~ISystem() = 0 { }
+		virtual void Step(Timestep ts, const Entity e, Params&... params) = 0;
+	};
+
 	class Registry final {
 		ALC_NO_COPY(Registry)
 	public:
@@ -124,6 +131,10 @@ namespace ALC {
 
 		// lateupdate event
 		void LateUpdateBehaviors(Timestep t);
+
+		// updates a system
+		template<typename... T>
+		void StepSystem(Timestep ts, ISystem<T...>& system);
 
 		// cleans up
 		// must be called for marked destructibles to be destroyed

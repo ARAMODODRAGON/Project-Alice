@@ -16,7 +16,7 @@ struct DemoBulletComponent final {
 class DemoChara final : public ALC::Behavior {
 public:
 
-	ALC::array<ALC::Texture, 22> textures;
+	//ALC::array<ALC::Texture, 22> textures;
 
 	DemoChara();
 	~DemoChara();

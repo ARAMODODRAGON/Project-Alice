@@ -45,9 +45,6 @@
     <ClInclude Include="ALC\Entities\Registry.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ALC\Entities\EntityID.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ALC\Entities\detail\RegistryDetail.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -105,6 +102,15 @@
     <ClInclude Include="ALC\Bullets\BulletPhysicsHandler.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ALC\Bullets\BulletComponent.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ALC\Entities\EntityID.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ALC\Bullets\BaseBulletSystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ALC\SceneManager.cpp">
@@ -156,6 +162,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ALC\Bullets\BulletPhysicsHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ALC\Bullets\BaseBulletSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

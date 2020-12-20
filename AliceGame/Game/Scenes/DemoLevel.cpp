@@ -1,6 +1,6 @@
 #include "DemoLevel.hpp"
 
-DemoLevel::DemoLevel() { }
+DemoLevel::DemoLevel() : m_baseBulletSys(m_ech) { }
 
 DemoLevel::~DemoLevel() { }
 
@@ -62,25 +62,13 @@ void DemoLevel::Step(ALC::Timestep t) {
 	//	//}
 	//});
 
+	m_baseBulletSys.bounds = m_camera.GetCameraSize() * 0.5f;
+	m_reg.StepSystem(ts, m_baseBulletSys);
+
 	m_bPhysics.Step(m_reg, ts);
 
 	// create all entities
 	m_ech.Cleanup(m_reg);
-
-	ALC::vec2 bounds = m_camera.GetCameraSize() * 0.5f;
-	m_reg.ForeachComponent<DemoBulletComponent, ALC::BulletBody, ALC::Transform2D>(
-		[&](ALC::Entity e, DemoBulletComponent& bul, ALC::BulletBody& rb, ALC::Transform2D& tr) {
-		bul.lifetime += ts;
-		if (bul.lifetime > bul.maxlifetime) {
-			m_ech.Destroy(e);
-			//ALC_DEBUG_LOG("Destroy!");
-		}
-		else if (tr.position.x < -bounds.x || tr.position.x > bounds.x ||
-			tr.position.y < -bounds.y || tr.position.y > bounds.y) {
-			rb.isSimulated = false;
-			m_ech.Destroy(e);
-		}
-	});
 
 	ALC::Entity e = m_reg.GetEntity(eid);
 	auto [rb, spr] = e.GetComponent<ALC::CharacterBody, ALC::SpriteComponent>();

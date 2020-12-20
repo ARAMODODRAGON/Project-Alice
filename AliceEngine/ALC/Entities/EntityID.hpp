@@ -1,5 +1,5 @@
-#ifndef ALC_ENTITIES_UID_HPP
-#define ALC_ENTITIES_UID_HPP
+#ifndef ALC_ENTITIES_ID_HPP
+#define ALC_ENTITIES_ID_HPP
 #include "../General.hpp"
 
 namespace ALC {
@@ -33,4 +33,4 @@ namespace ALC {
 
 }
 
-#endif // !ALC_ENTITIES_UID_HPP
+#endif // !ALC_ENTITIES_ID_HPP

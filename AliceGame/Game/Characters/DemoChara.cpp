@@ -1,33 +1,8 @@
 #include "DemoChara.hpp"
+#include <ALC\Bullets\BulletComponent.hpp>
 
 DemoChara::DemoChara()
 	: m_state(this), m_timer(0.0f), m_circleshootoffset(0.0f), m_clockwise(true), m_spinspeedmult(1.0f) {
-	// set textures
-	textures = {
-		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/1B Ninja.png"),
-		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/AAEEEIOU.png"),
-		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/AmazedFace.png"),
-		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/Ayyad.jpg"),
-		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/ayyad.png"),
-		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/Ayyyad.jpg"),
-		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/Dwane_Face.png"),
-		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/HACK.png"),
-		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/IMG_2312.JPG"),
-		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/King_Sean.png"),
-		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/mohd.png"),
-		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/MrV.png"),
-		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/NIGHT.png"),
-		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/P.E.E.P.png"),
-		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/PizzaTime.png"),
-		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/Random.png"),
-		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/Random_Purple.png"),
-		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/Random_Yellow.png"),
-		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/Scott.png"),
-		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/SeanToxic.png"),
-		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/Slick Shades Devil.png"),
-		ALC::ContentManager::LoadTexture("Resources/Textures/BatchDemo/unknown.png")
-	};
-
 	// set the state
 	m_state.Add(State_A, &DemoChara::StateA);
 	m_state.Add(State_A, &DemoChara::BeginStateA);
@@ -45,12 +20,11 @@ void DemoChara::Start(ALC::Entity self) {
 
 	auto& spr = self.GetComponent<ALC::SpriteComponent>();
 	spr.bounds = ALC::rect(-8.0f, -8.0f, 8.0f, 8.0f);
+	//spr.texture = ALC::ContentManager::LoadTexture("Resources/Textures/circle.png");
 
-	auto& rb = self.GetComponent<ALC::CharacterBody>();
-	rb.mask = ALC::Layermask32::NONE;
-	rb.radius = 8.0f;
-	//spr.texture = ALC::ContentManager::LoadTexture("Resources/Textures/Grey Orb Flashing.png");
-	//spr.textureBounds = ALC::rect(ALC::vec2(0.0f), spr.texture.GetSize());
+	auto& cb = self.GetComponent<ALC::CharacterBody>();
+	cb.mask = ALC::Layermask32::NONE;
+	cb.radius = 8.0f;
 
 }
 
@@ -61,19 +35,25 @@ void DemoChara::Shoot(ALC::Entity self, const float angle, const float speed,
 	if (!self.HasComponent<ALC::EntityCreatorComponent>())
 		self.AddComponent<ALC::EntityCreatorComponent>();
 	auto& ecc = self.GetComponent<ALC::EntityCreatorComponent>();
+	auto texture = self.GetComponent<ALC::SpriteComponent>().texture;
 
-	ecc.Create([angle, speed, position, color](ALC::Entity e) {
+	ecc.Create([angle, speed, position, color, texture](ALC::Entity e) {
 		auto& tr = e.AddComponent<ALC::Transform2D>();
 		auto& rb = e.AddComponent<ALC::BulletBody>();
+		auto& bc = e.AddComponent<ALC::BulletComponent>();
+		bc.speedMult = 7.0f;
+		bc.speedReduction = 24.0f * 2.5f;
+		bc.lifetime = 5.0f;
 		rb.mask = ALC::Layermask32::ALL;
 		//rb.mask.SetLayer(0, true);
 		rb.radius = 3.0f;
 		auto& spr = e.AddComponent<ALC::SpriteComponent>();
 		spr.color = color;
+		spr.texture = texture;
+		spr.bounds = ALC::rect(-3.0f, -3.0f, 3.0f, 3.0f);
 		e.AddComponent<DemoBulletComponent>();
 		//sprite.texture = textures[rand() % textures.size()];
 		//sprite.textureBounds = ALC::rect(ALC::vec2(0.0f), sprite.texture.GetSize());
-		spr.bounds = ALC::rect(-3.0f, -3.0f, 3.0f, 3.0f);
 		tr.position = position;
 		ALC::vec4 vel = glm::rotateZ(ALC::vec4(0.0f, 1.0f, 0.0f, 1.0f), ALC_TO_RADIANS(angle));
 		rb.velocity = ALC::vec2(vel.x, vel.y) * speed;
@@ -105,9 +85,9 @@ void DemoChara::Update(ALC::Entity self, ALC::Timestep t) {
 }
 
 void DemoChara::LateUpdate(ALC::Entity self, ALC::Timestep t) {
-	auto& rigidbody = self.GetComponent<ALC::CharacterBody>();
+	auto& cb = self.GetComponent<ALC::CharacterBody>();
 	auto& sprite = self.GetComponent<ALC::SpriteComponent>();
-	if (rigidbody.Count() > 0)
+	if (cb.Count() > 0)
 		sprite.color = ALC_COLOR_RED;
 	else
 		sprite.color = ALC_COLOR_BLUE;
