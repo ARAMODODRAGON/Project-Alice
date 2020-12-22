@@ -8,11 +8,6 @@
 #include <glm/gtx/vector_angle.hpp>
 #include <ALC\StateMachine.hpp>
 
-struct DemoBulletComponent final {
-	float lifetime = 0.0f;
-	float maxlifetime = 3.0f;
-};
-
 class DemoChara final : public ALC::Behavior {
 public:
 
