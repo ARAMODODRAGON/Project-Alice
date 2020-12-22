@@ -15,7 +15,7 @@ namespace ALC {
 		#pragma region SDL & Window initialization
 
 		// initialize sdl
-		if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+		if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
 			ALC_DEBUG_FATAL_ERROR("Failed to init SDL");
 			throw std::runtime_error("Failed to init SDL");
 		}
@@ -74,6 +74,8 @@ namespace ALC {
 		// destroy window and context
 		SDL_GL_DeleteContext(glContext);
 		SDL_DestroyWindow(window); window = nullptr;
+
+		SDL_Quit();
 	}
 
 	void Window::ClearScreen(const vec4& color) {

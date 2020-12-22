@@ -6,12 +6,12 @@
 
 namespace ALC {
 
-	Texture::Texture() : m_textureID(-1), m_textureSize(0) { }
+	Texture::Texture() : m_textureID(0), m_textureSize(0) { }
 
 	Texture::Texture(std::nullptr_t) : Texture() { }
 
 	bool Texture::IsValid() const {
-		return m_textureID != -1;
+		return m_textureID != 0;
 	}
 
 	Texture::operator uint32() const {
@@ -24,6 +24,10 @@ namespace ALC {
 
 	uvec2 Texture::GetSize() const {
 		return m_textureSize;
+	}
+
+	rect Texture::GetBounds() const {
+		return rect(vec2(0.0f), m_textureSize);
 	}
 
 	bool Texture::operator==(const Texture& other) const {

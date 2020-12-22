@@ -92,8 +92,8 @@ namespace ALC {
 	inline Behavior::~Behavior() { }
 
 	inline void Behavior::Start(Entity e) { }
-	inline void Behavior::Update(Entity e, Timestep t) { }
-	inline void Behavior::LateUpdate(Entity e, Timestep t) { }
+	inline void Behavior::Update(Entity e, Timestep ts) { }
+	inline void Behavior::LateUpdate(Entity e, Timestep ts) { }
 	inline void Behavior::OnDestroy(Entity e) { }
 
 	inline Entity Behavior::GetEntity() {

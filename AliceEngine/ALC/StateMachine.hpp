@@ -93,7 +93,7 @@ namespace ALC {
 			}
 
 			// state must be bound
-			ALC_ASSERT(m_boundStates.find(m_currentState) != m_boundStates.end(), "state function must be set");
+			ALC_ASSERT(m_boundStates.find(m_currentState) != m_boundStates.end(), "callbacks must be set");
 
 			// call
 			(m_instance->*(m_boundStates[m_currentState]))(params...);

@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ALC\Audio\AudioSystem.hpp" />
     <ClInclude Include="ALC\Bullets\BaseBulletSystem.hpp" />
     <ClInclude Include="ALC\Bullets\BulletComponent.hpp" />
     <ClInclude Include="ALC\Bullets\BulletPhysics.hpp" />
     <ClInclude Include="ALC\Bullets\BulletPhysicsHandler.hpp" />
     <ClInclude Include="ALC\Content\ContentManager.hpp" />
     <ClInclude Include="ALC\Content\detail\stb_image.h" />
+    <ClInclude Include="ALC\Content\Font.hpp" />
     <ClInclude Include="ALC\Content\Shader.hpp" />
     <ClInclude Include="ALC\Content\Texture.hpp" />
     <ClInclude Include="ALC\Core\Debugger.hpp" />
@@ -56,6 +58,7 @@
     <ClCompile Include="ALC\Bullets\BaseBulletSystem.cpp" />
     <ClCompile Include="ALC\Bullets\BulletPhysicsHandler.cpp" />
     <ClCompile Include="ALC\Content\ContentManager.cpp" />
+    <ClCompile Include="ALC\Content\Font.cpp" />
     <ClCompile Include="ALC\Content\Shader.cpp" />
     <ClCompile Include="ALC\Content\Texture.cpp" />
     <ClCompile Include="ALC\Core\Debugger.cpp" />
@@ -168,7 +171,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>

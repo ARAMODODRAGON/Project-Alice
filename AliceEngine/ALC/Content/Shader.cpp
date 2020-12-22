@@ -4,12 +4,12 @@
 
 namespace ALC {
 
-	Shader::Shader() : m_programID(-1) { }
+	Shader::Shader() : m_programID(0) { }
 
 	Shader::Shader(std::nullptr_t) : Shader() { }
 
 	bool Shader::IsValid() const {
-		return m_programID != -1;
+		return m_programID != 0;
 	}
 
 	Shader::operator uint32() const {

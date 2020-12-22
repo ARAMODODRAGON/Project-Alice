@@ -19,7 +19,7 @@ namespace ALC {
 
 		// the area of the texture to draw to screen
 		// where 0,0 is the top left
-		// in pixel coords
+		// and bottom left is the texture size in pixels
 		rect textureBounds;
 
 		// the texture to draw to screen

@@ -4,7 +4,7 @@
 
 namespace ALC {
 
-	struct Texture {
+	struct Texture final {
 
 		// default constructor
 		Texture();
@@ -23,6 +23,9 @@ namespace ALC {
 
 		// returns the texture size
 		uvec2 GetSize() const;
+
+		// returns a rect with the min set to 0,0 and max set to GetSize()
+		rect GetBounds() const;
 
 		// compare the textures
 		bool operator==(const Texture& other) const;

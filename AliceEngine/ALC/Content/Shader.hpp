@@ -4,7 +4,7 @@
 
 namespace ALC {
 
-	struct Shader {
+	struct Shader final {
 
 		// default constructor
 		Shader();

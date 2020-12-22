@@ -25,6 +25,8 @@ void DemoLevel::Init() {
 	auto& spr = e.AddComponent<ALC::SpriteComponent>();
 	spr.bounds = ALC::rect(-8.0f, -8.0f, 8.0f, 8.0f);
 	spr.color = ALC_COLOR_GREEN;
+	spr.texture = ALC::ContentManager::LoadTexture("Resources/Textures/circle.png");
+	spr.textureBounds = spr.texture.GetBounds();
 }
 
 void DemoLevel::Exit() { }

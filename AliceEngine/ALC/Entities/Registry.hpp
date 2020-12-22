@@ -65,8 +65,8 @@ namespace ALC {
 		// virtual functions
 
 		virtual void Start(Entity self);
-		virtual void Update(Entity self, Timestep t);
-		virtual void LateUpdate(Entity self, Timestep t);
+		virtual void Update(Entity self, Timestep ts);
+		virtual void LateUpdate(Entity self, Timestep ts);
 		virtual void OnDestroy(Entity self);
 
 		// returns the entity
