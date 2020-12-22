@@ -103,7 +103,7 @@ namespace ALC {
 	template<typename... Params>
 	struct ISystem {
 		virtual ~ISystem() = 0 { }
-		virtual void Step(Timestep ts, const Entity e, Params&... params) = 0;
+		virtual void Step(Timestep ts, Entity e, Params&... params) = 0;
 	};
 
 	class Registry final {

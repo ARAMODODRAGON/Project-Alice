@@ -1,4 +1,5 @@
 #include "DemoChara.hpp"
+#include "../Systems/BulletDeleterSystem.hpp"
 
 DemoChara::DemoChara()
 	: m_state(this), m_timer(0.0f), m_circleshootoffset(0.0f), m_clockwise(true), m_spinspeedmult(1.0f) {
@@ -8,7 +9,9 @@ DemoChara::DemoChara()
 	//m_state.Add(State_B, &DemoChara::StateB);
 	//m_state.Add(State_B, &DemoChara::BeginStateB);
 
+	// we want our bullets to delete and also always move up
 	SetDefaultVelocity(ALC::vec2(0.0f, 1.0f) * 80.0f);
+	SetBulletTypes<BulletDeleterComponent>();
 }
 
 DemoChara::~DemoChara() { }
@@ -60,7 +63,7 @@ void DemoChara::Update(ALC::Entity self, ALC::Timestep ts) {
 
 		// shoot range of bullets
 		auto texture = spr.texture;
-		ShootCircle(self, 9, [texture](ALC::Entity bullet) {
+		ShootRange(self, 4, 60.0f, [texture](ALC::Entity bullet) {
 			auto& s = bullet.GetComponent<ALC::SpriteComponent>();
 			s.bounds = ALC::rect(-3.0f, -3.0f, 3.0f, 3.0f);
 			s.texture = texture;

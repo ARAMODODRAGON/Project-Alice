@@ -27,6 +27,9 @@
     <ClCompile Include="Game\Characters\DemoChara.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Systems\BulletDeleterSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\AliceGame.hpp">
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game\Characters\DemoChara.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Systems\BulletDeleterSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

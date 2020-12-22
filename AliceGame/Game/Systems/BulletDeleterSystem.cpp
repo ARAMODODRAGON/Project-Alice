@@ -1,0 +1,41 @@
+#include "BulletDeleterSystem.hpp"
+
+
+BulletDeleterSystem::BulletDeleterSystem(ALC::EntityCreationHandler& ech)
+	: m_ech(ech), m_deathBoundry(ALC::vec2(0.0f), ALC::vec2(0.0f)) { }
+
+void BulletDeleterSystem::SetDeathBoundry(const ALC::rect& deathBoundry) {
+	m_deathBoundry = deathBoundry;
+}
+
+void BulletDeleterSystem::Step(ALC::Timestep ts, ALC::Entity e, BulletDeleterComponent& bdc) {
+
+	// kill by boundry
+	if (bdc.lifetime <= 0.0f) {
+		// ignore if the boundry is 0 in size
+		if (ALC::NearlyEqual(m_deathBoundry.min, m_deathBoundry.max))
+			return;
+
+		// delete if out of bounds
+		else {
+			auto [ts, spr] = e.GetComponent<ALC::Transform2D, ALC::SpriteComponent>();
+			// get the bounds of the bullet
+			ALC::rect bounds = spr.bounds;
+			bounds.min += ts.position;
+			bounds.max += ts.position;
+
+			// delete if its out of bounds
+			if (!ALC::rect::Intersects(bounds, m_deathBoundry)) {
+				m_ech.Destroy(e);
+			}
+		}
+	}
+	// kill by time
+	else if (bdc.lifetime > 0.0f) {
+		bdc.lifetime -= ts;
+		if (bdc.lifetime <= 0.0f) {
+			m_ech.Destroy(e);
+		}
+	}
+
+}

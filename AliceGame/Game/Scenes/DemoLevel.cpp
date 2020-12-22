@@ -1,6 +1,6 @@
 #include "DemoLevel.hpp"
 
-DemoLevel::DemoLevel() { }
+DemoLevel::DemoLevel() : m_bdeleter(m_ech) { }
 
 DemoLevel::~DemoLevel() { }
 
@@ -10,7 +10,8 @@ void DemoLevel::Init() {
 
 	// setup camera
 	m_camera.SetCameraSize(m_camera.GetCameraSize() * 0.3f);
-	ALC::vec2 camsize = m_camera.GetCameraSize();
+	ALC::vec2 halfcamsize = m_camera.GetCameraSize() * 0.5f;
+	m_bdeleter.SetDeathBoundry(ALC::rect(-halfcamsize, halfcamsize));
 
 	// create our player
 	m_reg.Create().AddBehavior<DemoChara>();
@@ -77,6 +78,8 @@ void DemoLevel::Step(ALC::Timestep t) {
 		spr.color = ALC_COLOR_GREEN;
 
 	m_reg.LateUpdateBehaviors(ts);
+
+	m_reg.StepSystem(ts, m_bdeleter);
 }
 
 void DemoLevel::PreDraw() { }

@@ -6,6 +6,7 @@
 #include <ALC\Rendering\SpriteBatch.hpp>
 #include <ALC\Bullets\BulletPhysicsHandler.hpp>
 #include "../Characters/DemoChara.hpp"
+#include "../Systems/BulletDeleterSystem.hpp"
 
 class DemoLevel final : public ALC::IScene {
 public:
@@ -29,6 +30,9 @@ private:
 	ALC::Camera m_camera;
 	ALC::BulletPhysicsHandler m_bPhysics;
 	ALC::EntityID eid;
+
+	// systems
+	BulletDeleterSystem m_bdeleter;
 
 };
 
