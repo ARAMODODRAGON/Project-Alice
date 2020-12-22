@@ -5,7 +5,6 @@
 #include <ALC\Entities\EntityCreationHandler.hpp>
 #include <ALC\Rendering\SpriteBatch.hpp>
 #include <ALC\Bullets\BulletPhysicsHandler.hpp>
-#include <ALC\Bullets\BaseBulletSystem.hpp>
 #include "../Characters/DemoChara.hpp"
 
 class DemoLevel final : public ALC::IScene {
@@ -30,9 +29,6 @@ private:
 	ALC::Camera m_camera;
 	ALC::BulletPhysicsHandler m_bPhysics;
 	ALC::EntityID eid;
-
-	// systems
-	ALC::BaseBulletSystem m_baseBulletSys;
 
 };
 

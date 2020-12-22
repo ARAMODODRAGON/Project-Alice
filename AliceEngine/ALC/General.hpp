@@ -13,6 +13,7 @@
 #include <functional>
 #define GLM_FORCE_RADIANS
 #include <glm\glm.hpp>
+#include <glm/gtx/vector_angle.hpp>
 #undef assert
 #include <assert.h>
 #ifdef NDEBUG

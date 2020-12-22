@@ -1,14 +1,12 @@
 #ifndef ALICE_CHARACTERS_DEMOCHARA_HPP
 #define ALICE_CHARACTERS_DEMOCHARA_HPP
 #include <ALC\Entities\EntityCreationHandler.hpp>
-#include <ALC\Bullets\BulletPhysics.hpp>
 #include <ALC\Content\ContentManager.hpp>
-#include <ALC\Rendering\SpriteBatch.hpp>
 #include <ALC\Input\Keyboard.hpp>
-#include <glm/gtx/vector_angle.hpp>
 #include <ALC\StateMachine.hpp>
+#include <ALC\Bullets\ShooterBehavior.hpp>
 
-class DemoChara final : public ALC::Behavior {
+class DemoChara final : public ALC::ShooterBehavior {
 public:
 
 	DemoChara();

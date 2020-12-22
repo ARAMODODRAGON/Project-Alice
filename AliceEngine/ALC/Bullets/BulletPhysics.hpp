@@ -57,7 +57,7 @@ namespace ALC {
 	private:
 		vector<CollisionInfo> m_collisions;
 	public:
-		vector<CollisionInfo>& __GetColl() { return m_collisions; }
+		vector<CollisionInfo>& __GetColl() ALC_INTERNAL { return m_collisions; }
 	};
 
 }

@@ -1,5 +1,4 @@
 #include "DemoChara.hpp"
-#include <ALC\Bullets\BulletComponent.hpp>
 
 DemoChara::DemoChara()
 	: m_state(this), m_timer(0.0f), m_circleshootoffset(0.0f), m_clockwise(true), m_spinspeedmult(1.0f) {
@@ -9,6 +8,7 @@ DemoChara::DemoChara()
 	//m_state.Add(State_B, &DemoChara::StateB);
 	//m_state.Add(State_B, &DemoChara::BeginStateB);
 
+	SetDefaultVelocity(ALC::vec2(0.0f, 1.0f) * 80.0f);
 }
 
 DemoChara::~DemoChara() { }
@@ -33,19 +33,42 @@ void DemoChara::OnDestroy(ALC::Entity self) { }
 
 void DemoChara::Update(ALC::Entity self, ALC::Timestep ts) {
 	// get components
-	auto [tr, cb, spr] = self.GetComponent<ALC::Transform2D, ALC::CharacterBody, ALC::SpriteComponent>();
+	auto [cb, spr, tr] = self.GetComponent<ALC::CharacterBody, ALC::SpriteComponent, ALC::Transform2D>();
 
 	// get input
 	const auto key_up = ALC::Keyboard::GetKey(ALC::KeyCode::ArrowUp);
 	const auto key_down = ALC::Keyboard::GetKey(ALC::KeyCode::ArrowDown);
 	const auto key_left = ALC::Keyboard::GetKey(ALC::KeyCode::ArrowLeft);
 	const auto key_right = ALC::Keyboard::GetKey(ALC::KeyCode::ArrowRight);
+	const auto key_shoot = ALC::Keyboard::GetKey(ALC::KeyCode::KeyC);
 
 	// convert input into velocity
 	glm::vec2 input = glm::vec2(key_right.IsHeld() - key_left.IsHeld(), key_up.IsHeld() - key_down.IsHeld());
 
 	// apply new velocity
 	cb.velocity = input * 60.0f;
+
+	constexpr float shootdelay = 0.07f;
+	if (key_shoot.Pressed()) m_timer = shootdelay;
+	else if (key_shoot) m_timer += ts;
+
+	if (m_timer > shootdelay) {
+		m_timer -= shootdelay;
+
+		// make sure the bullet spawns *here*
+		SetDefaultPosition(tr.position);
+
+		// shoot range of bullets
+		auto texture = spr.texture;
+		ShootCircle(self, 9, [texture](ALC::Entity bullet) {
+			auto& s = bullet.GetComponent<ALC::SpriteComponent>();
+			s.bounds = ALC::rect(-3.0f, -3.0f, 3.0f, 3.0f);
+			s.texture = texture;
+			s.textureBounds = texture.GetBounds();
+			auto& bb = bullet.GetComponent<ALC::BulletBody>();
+			bb.radius = 3.0f;
+		});
+	}
 
 	// update the current state
 	//m_state(self, ts);

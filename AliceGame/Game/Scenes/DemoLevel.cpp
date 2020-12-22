@@ -1,6 +1,6 @@
 #include "DemoLevel.hpp"
 
-DemoLevel::DemoLevel() : m_baseBulletSys(m_ech) { }
+DemoLevel::DemoLevel() { }
 
 DemoLevel::~DemoLevel() { }
 
@@ -63,9 +63,6 @@ void DemoLevel::Step(ALC::Timestep t) {
 	//	//	t.position.y -= 0.1f;
 	//	//}
 	//});
-
-	m_baseBulletSys.bounds = m_camera.GetCameraSize() * 0.5f;
-	m_reg.StepSystem(ts, m_baseBulletSys);
 
 	m_bPhysics.Step(m_reg, ts);
 

@@ -102,19 +102,16 @@
     <ClInclude Include="ALC\Bullets\BulletPhysicsHandler.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ALC\Bullets\BulletComponent.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ALC\Entities\EntityID.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ALC\Bullets\BaseBulletSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ALC\Audio\AudioSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ALC\Content\Font.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ALC\Bullets\ShooterBehavior.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -170,9 +167,6 @@
     <ClCompile Include="ALC\Bullets\BulletPhysicsHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ALC\Bullets\BaseBulletSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ALC\Content\Font.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -182,6 +176,9 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="ALC\Entities\detail\EntityCreationHandler.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="ALC\Bullets\detail\ShooterBehavior.inl">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

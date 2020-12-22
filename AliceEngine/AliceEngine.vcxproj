@@ -20,10 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ALC\Audio\AudioSystem.hpp" />
-    <ClInclude Include="ALC\Bullets\BaseBulletSystem.hpp" />
-    <ClInclude Include="ALC\Bullets\BulletComponent.hpp" />
     <ClInclude Include="ALC\Bullets\BulletPhysics.hpp" />
     <ClInclude Include="ALC\Bullets\BulletPhysicsHandler.hpp" />
+    <ClInclude Include="ALC\Bullets\ShooterBehavior.hpp" />
     <ClInclude Include="ALC\Content\ContentManager.hpp" />
     <ClInclude Include="ALC\Content\detail\stb_image.h" />
     <ClInclude Include="ALC\Content\Font.hpp" />
@@ -55,7 +54,6 @@
     <ClInclude Include="ALC\StateMachine.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ALC\Bullets\BaseBulletSystem.cpp" />
     <ClCompile Include="ALC\Bullets\BulletPhysicsHandler.cpp" />
     <ClCompile Include="ALC\Content\ContentManager.cpp" />
     <ClCompile Include="ALC\Content\Font.cpp" />
@@ -76,6 +74,7 @@
     <ClCompile Include="ALC\SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ALC\Bullets\detail\ShooterBehavior.inl" />
     <None Include="ALC\Entities\detail\EntityCreationHandler.inl" />
     <None Include="ALC\Entities\detail\Registry.inl" />
   </ItemGroup>
