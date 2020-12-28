@@ -49,6 +49,7 @@
     <ClInclude Include="ALC\Physics\Transform2D.hpp" />
     <ClInclude Include="ALC\rect.hpp" />
     <ClInclude Include="ALC\Rendering\Camera.hpp" />
+    <ClInclude Include="ALC\Rendering\GUIBatch.hpp" />
     <ClInclude Include="ALC\Rendering\SpriteBatch.hpp" />
     <ClInclude Include="ALC\SceneManager.hpp" />
     <ClInclude Include="ALC\StateMachine.hpp" />

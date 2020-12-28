@@ -7,8 +7,8 @@
 
 struct BulletDeleterComponent final {
 
-	// if lifetime > 0 then itll countdown to its death
-	// if lifetime <= 0 then itll only die when outside the bounds specified in the BulletDeleterSystem
+	// if [lifetime > 0] then it will countdown to its death
+	// if [lifetime <= 0] then it will only die when outside the bounds specified in the BulletDeleterSystem
 	float lifetime = 0.0f;
 
 };

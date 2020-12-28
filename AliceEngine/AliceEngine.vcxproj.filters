@@ -114,6 +114,9 @@
     <ClInclude Include="ALC\Bullets\ShooterBehavior.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ALC\Rendering\GUIBatch.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ALC\SceneManager.cpp">
