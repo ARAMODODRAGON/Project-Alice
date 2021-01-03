@@ -1,5 +1,5 @@
-#ifndef ALC_RENDERING_GUIBATCH_HPP
-#define ALC_RENDERING_GUIBATCH_HPP
+#ifndef ALC_RENDERING_UIBATCH_HPP
+#define ALC_RENDERING_UIBATCH_HPP
 #include "../General.hpp"
 #include "../Content/Font.hpp"
 #include "../Content/Texture.hpp"
@@ -9,11 +9,11 @@ namespace ALC {
 
 	// used to draw ui to the screen
 	// draws in pixel coordinates
-	class GUIBatch final {
+	class UIBatch final {
 	public:
 
-		GUIBatch();
-		~GUIBatch();
+		UIBatch();
+		~UIBatch();
 
 		// drawing functions
 
@@ -40,11 +40,16 @@ namespace ALC {
 
 		vector<vertex> m_verticies;
 		vector<uint32> m_textures;
+		uint32 m_vao, m_vbo;
+		uint32 m_TextureCountLoc;
+		uint32 m_bufferSize;
 		Shader m_defaultShader;
 		Shader m_currentShader;
 
+		uint32 TryAddTexture(const Texture& texture);
+		void DrawCurrent();
 	};
 
 }
 
-#endif // !ALC_RENDERING_GUIBATCH_HPP
+#endif // !ALC_RENDERING_UIBATCH_HPP

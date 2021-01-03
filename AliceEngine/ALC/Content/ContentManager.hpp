@@ -25,6 +25,12 @@ namespace ALC {
 		ALC_NON_CONSTRUCTABLE(ContentManager)
 	public:
 
+		// returns the current storage
+		static ContentStorage& Current();
+		
+		// returns the non contextual default storage
+		static ContentStorage& Default();
+
 		// loads a texture and stores it in an internal storage, or the set context
 		static Texture LoadTexture(const string& path);
 

@@ -85,6 +85,8 @@ void DemoLevel::Step(ALC::Timestep t) {
 void DemoLevel::PreDraw() { }
 
 void DemoLevel::Draw() {
+
+	// draw sprites
 	m_batch.Begin(m_camera);
 
 	m_reg.ForeachComponent<ALC::Transform2D, ALC::SpriteComponent>(
@@ -93,6 +95,27 @@ void DemoLevel::Draw() {
 	});
 
 	m_batch.End();
+
+	// draw UI
+	m_ui.Begin();
+	const ALC::vec2 screensize = ALC::SceneManager::GetWindow()->GetScreenSize();
+	const ALC::vec2 halfscreensize = screensize * 0.5f;
+
+	ALC::rect levelBounds;
+	float toppos = halfscreensize.y - 15.0f;
+	constexpr float ratio = 0.88f;
+	levelBounds.top = toppos + halfscreensize.y;
+	levelBounds.bottom = -toppos + halfscreensize.y;
+	levelBounds.right = toppos * ratio + halfscreensize.x;
+	levelBounds.left = -toppos * ratio + halfscreensize.x;
+	m_ui.DrawQuad(levelBounds, ALC_COLOR_GREEN);
+
+	//const ALC::vec2 screensize = ALC::SceneManager::GetWindow()->GetScreenSize();
+	//const ALC::vec2 margin = screensize * (1.0f / 4) * 0.5f;
+	//ALC::rect position = ALC::rect(ALC::vec2(0.0f) + margin, screensize - margin);
+	//m_ui.DrawQuad(position);
+
+	m_ui.End();
 }
 
 void DemoLevel::PostDraw() {

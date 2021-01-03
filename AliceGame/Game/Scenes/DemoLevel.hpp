@@ -4,6 +4,7 @@
 #include <ALC\Entities\Registry.hpp>
 #include <ALC\Entities\EntityCreationHandler.hpp>
 #include <ALC\Rendering\SpriteBatch.hpp>
+#include <ALC\Rendering\UIBatch.hpp>
 #include <ALC\Bullets\BulletPhysicsHandler.hpp>
 #include "../Characters/DemoChara.hpp"
 #include "../Systems/BulletDeleterSystem.hpp"
@@ -27,6 +28,7 @@ private:
 	ALC::Registry m_reg;
 	ALC::EntityCreationHandler m_ech;
 	ALC::SpriteBatch m_batch;
+	ALC::UIBatch m_ui;
 	ALC::Camera m_camera;
 	ALC::BulletPhysicsHandler m_bPhysics;
 	ALC::EntityID eid;

@@ -145,7 +145,7 @@ namespace ALC {
 		// read file into string
 		string source;
 		file.seekg(0, std::ios::end);
-		source.resize(file.tellg());
+		source.resize(static_cast<size_t>(file.tellg()));
 		file.seekg(0, std::ios::beg);
 		file.read(source.data(), source.size());
 		file.close();

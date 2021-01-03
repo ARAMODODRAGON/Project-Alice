@@ -61,7 +61,6 @@ namespace ALC {
 		vector<vertex> m_verticies;
 		vector<uint32> m_textures;
 		uint32 m_vao, m_vbo;
-		int32 m_maxtextures;
 		uint32 m_TextureCountLoc;
 		uint32 m_bufferSize;
 		Camera* m_camera;

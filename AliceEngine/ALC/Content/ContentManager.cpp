@@ -11,6 +11,16 @@ namespace ALC {
 	ContentStorage ContentManager::s_genericStorage;
 	ContentStorage* ContentManager::s_contextStorage = nullptr;
 
+	ContentStorage& ContentManager::Current() {
+		if (s_contextStorage)
+			return *s_contextStorage;
+		return s_genericStorage;
+	}
+	
+	ContentStorage& ContentManager::Default() {
+		return s_genericStorage;
+	}
+
 	Texture ContentManager::LoadTexture(const string& path) {
 		if (s_contextStorage)
 			return LoadTexture(*s_contextStorage, path);

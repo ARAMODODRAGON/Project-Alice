@@ -49,7 +49,8 @@
     <ClInclude Include="ALC\Physics\Transform2D.hpp" />
     <ClInclude Include="ALC\rect.hpp" />
     <ClInclude Include="ALC\Rendering\Camera.hpp" />
-    <ClInclude Include="ALC\Rendering\GUIBatch.hpp" />
+    <ClInclude Include="ALC\Rendering\detail\SpriteShaderSource.hpp" />
+    <ClInclude Include="ALC\Rendering\UIBatch.hpp" />
     <ClInclude Include="ALC\Rendering\SpriteBatch.hpp" />
     <ClInclude Include="ALC\SceneManager.hpp" />
     <ClInclude Include="ALC\StateMachine.hpp" />
@@ -71,7 +72,9 @@
     <ClCompile Include="ALC\Physics\Collision2D.cpp" />
     <ClCompile Include="ALC\Physics\Physics2DHandler.cpp" />
     <ClCompile Include="ALC\Rendering\Camera.cpp" />
+    <ClCompile Include="ALC\Rendering\detail\SpriteShaderSource.cpp" />
     <ClCompile Include="ALC\Rendering\SpriteBatch.cpp" />
+    <ClCompile Include="ALC\Rendering\UIBatch.cpp" />
     <ClCompile Include="ALC\SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>

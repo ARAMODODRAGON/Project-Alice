@@ -114,7 +114,10 @@
     <ClInclude Include="ALC\Bullets\ShooterBehavior.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ALC\Rendering\GUIBatch.hpp">
+    <ClInclude Include="ALC\Rendering\UIBatch.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ALC\Rendering\detail\SpriteShaderSource.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -171,6 +174,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ALC\Content\Font.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ALC\Rendering\UIBatch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ALC\Rendering\detail\SpriteShaderSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
