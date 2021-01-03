@@ -108,12 +108,51 @@ void DemoLevel::Draw() {
 	levelBounds.bottom = -toppos + halfscreensize.y;
 	levelBounds.right = toppos * ratio + halfscreensize.x;
 	levelBounds.left = -toppos * ratio + halfscreensize.x;
-	m_ui.DrawQuad(levelBounds, ALC_COLOR_GREEN);
+	//m_ui.DrawQuad(levelBounds, ALC_COLOR_GREEN);
 
-	//const ALC::vec2 screensize = ALC::SceneManager::GetWindow()->GetScreenSize();
-	//const ALC::vec2 margin = screensize * (1.0f / 4) * 0.5f;
-	//ALC::rect position = ALC::rect(ALC::vec2(0.0f) + margin, screensize - margin);
-	//m_ui.DrawQuad(position);
+	// create screen to world matrix
+	ALC::mat4 screenToWorld = glm::ortho(0.0f, screensize.x, 0.0f, screensize.y);
+	screenToWorld = screenToWorld * glm::inverse(m_camera.GetTransform());
+
+	// convert level bounds from screen to world
+	ALC::vec4 deathmin, deathmax;
+	deathmin = ALC::vec4(levelBounds.min - halfscreensize, 0.0f, 1.0f) * screenToWorld;
+	deathmax = ALC::vec4(levelBounds.max - halfscreensize, 0.0f, 1.0f) * screenToWorld;
+	// set 
+	m_bdeleter.SetDeathBoundry(ALC::rect(deathmin.x, deathmin.y, deathmax.x, deathmax.y));
+
+	// draw the level boundries
+	ALC::rect r;
+	constexpr float borderWidth = 10.0f;
+	{
+		// left
+		r.bottom = levelBounds.bottom - borderWidth;
+		r.top = levelBounds.top + borderWidth;
+		r.right = levelBounds.left;
+		r.left = r.right - borderWidth;
+		m_ui.DrawQuad(r, ALC_COLOR_BLUE);
+
+		// right
+		r.bottom = levelBounds.bottom - borderWidth;
+		r.top = levelBounds.top + borderWidth;
+		r.left = levelBounds.right;
+		r.right = r.left + borderWidth;
+		m_ui.DrawQuad(r, ALC_COLOR_BLUE);
+
+		// top
+		r.left = levelBounds.left;
+		r.right = levelBounds.right;
+		r.bottom = levelBounds.top;
+		r.top = r.bottom + borderWidth;
+		m_ui.DrawQuad(r, ALC_COLOR_BLUE);
+
+		// bottom
+		r.left = levelBounds.left;
+		r.right = levelBounds.right;
+		r.top = levelBounds.bottom;
+		r.bottom = r.top - borderWidth;
+		m_ui.DrawQuad(r, ALC_COLOR_BLUE);
+	}
 
 	m_ui.End();
 }
