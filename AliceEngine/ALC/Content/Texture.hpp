@@ -12,6 +12,9 @@ namespace ALC {
 		// de initializes the texture
 		Texture(std::nullptr_t);
 
+		// initializes with the given id and size
+		Texture(const uint32 textureID, const uvec2& textureSize);
+
 		// returns true if this is a valid texture
 		bool IsValid() const;
 

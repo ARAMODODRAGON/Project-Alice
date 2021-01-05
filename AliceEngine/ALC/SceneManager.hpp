@@ -3,6 +3,8 @@
 #include "General.hpp"
 #include "Core\Game.hpp"
 #include "Content\ContentManager.hpp"
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 namespace ALC {
 
@@ -41,9 +43,12 @@ namespace ALC {
 		static IScene* s_activeScene;
 		static Game* s_activeGame;
 		static Window* s_window;
+		static FT_Library s_fontLib;
 		static bool s_isRunning;
 		static bool s_shouldQuit;
 
+	public:
+		static FT_Library __GetFTLibrary() { return s_fontLib; }
 	};
 
 	template<typename GameTy, typename Bindings, typename>

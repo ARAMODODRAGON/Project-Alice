@@ -1,6 +1,7 @@
 #ifndef ALC_CONTENT_FONT_HPP
 #define ALC_CONTENT_FONT_HPP
 #include "../General.hpp"
+#include "Texture.hpp"
 
 namespace ALC {
 
@@ -26,6 +27,9 @@ namespace ALC {
 		// returns the texture ID
 		operator uint32() const;
 
+		// returns the texture
+		Texture GetTexture() const;
+
 		// returns the texture ID
 		uint32 GetID() const;
 
@@ -41,6 +45,9 @@ namespace ALC {
 
 		// returns the character
 		const Character& operator[](const char c) const;
+
+		// returns the number of characters
+		size_t Size() const;
 
 		// compare the fonts
 		bool operator==(const Font& other) const;

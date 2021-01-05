@@ -10,6 +10,9 @@ namespace ALC {
 
 	Texture::Texture(std::nullptr_t) : Texture() { }
 
+	Texture::Texture(const uint32 textureID, const uvec2& textureSize)
+		: m_textureID(textureID), m_textureSize(textureSize) { }
+
 	bool Texture::IsValid() const {
 		return m_textureID != 0;
 	}
