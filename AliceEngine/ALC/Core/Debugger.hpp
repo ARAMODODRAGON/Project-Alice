@@ -1,10 +1,28 @@
 #ifndef _CORE_DEBUGGER_HPP
 #define _CORE_DEBUGGER_HPP
-#include "../General.hpp"
 #include <glm\glm.hpp>
 #include <glm\gtx\string_cast.hpp>
+#include <string>
+
+// disables the copy constructor and operator
+#define ALC_NO_COPY(TYPE)				\
+TYPE(const TYPE&) = delete;				\
+TYPE& operator=(const TYPE&) = delete;		
+
+// disables the move constructor and operator
+#define ALC_NO_MOVE(TYPE)				\
+TYPE(TYPE&&) = delete;					\
+TYPE& operator=(TYPE&&) = delete;
+
+// disables copy/move constructors and operators
+// and disables the default constructor and destructor
+#define ALC_NON_CONSTRUCTABLE(TYPE)		\
+ALC_NO_COPY(TYPE) ALC_NO_MOVE(TYPE)		\
+TYPE() = delete;						\
+~TYPE() = delete;
 
 namespace ALC {
+	using std::string;
 
 	class Debugger {
 		ALC_NON_CONSTRUCTABLE(Debugger);

@@ -24,7 +24,7 @@ namespace ALC {
 		void DrawQuad(rect position, vec4 color = ALC_COLOR_WHITE, rect target = rect(0.0f), Texture texture = nullptr);
 
 		// draws text to the screen
-		//void DrawText(string text, rect position, Font font);
+		void DrawText(string text, rect position, Font font, vec4 color = ALC_COLOR_WHITE);
 
 		// stops drawing and outputs to the screen
 		void End();
