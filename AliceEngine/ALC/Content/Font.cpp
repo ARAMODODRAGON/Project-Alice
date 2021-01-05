@@ -137,7 +137,7 @@ namespace ALC {
 	}
 
 	void Font::Delete(const Font& font) {
-
+		glDeleteTextures(1, &font.m_textureID);
 	}
 
 }
