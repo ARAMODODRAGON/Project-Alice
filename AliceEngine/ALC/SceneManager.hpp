@@ -20,7 +20,11 @@ namespace ALC {
 	};
 
 	using SceneBinding = IScene * (*)();
-	#define ALC_BIND_SCENE(SceneType) (::ALC::SceneBinding)[]()->::ALC::IScene* { return new SceneType(); }
+	template<class SceneType>
+	inline SceneBinding __BindScene() {
+		return []()->::ALC::IScene* { return new SceneType(); };
+	}
+	#define ALC_BIND_SCENE(SceneType) ::ALC::__BindScene<SceneType>()
 
 	class SceneManager {
 		ALC_NON_CONSTRUCTABLE(SceneManager);

@@ -25,7 +25,7 @@ namespace ALC {
 	inline Component& Entity::AddComponent(Args&&... args) {
 		if (HasComponent<Component>())
 			return m_registry->__GetReg().get<Component>(m_entity);
-		return m_registry->__GetReg().emplace<Component>(m_entity);
+		return m_registry->__GetReg().emplace_or_replace<Component>(m_entity);
 	}
 
 	template<typename... Component>
@@ -138,7 +138,7 @@ namespace ALC {
 		EntityID ID(m_entityIDCounter++);
 		entt::entity entity = m_registry.create();
 		Entity e(entity, this);
-		m_registry.emplace<EntityInfo>(entity, EntityInfo(ID));
+		m_registry.emplace_or_replace<EntityInfo>(entity, EntityInfo(ID));
 		return e;
 	}
 

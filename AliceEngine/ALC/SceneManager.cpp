@@ -18,13 +18,13 @@ namespace ALC {
 
 		// setup variables
 		s_levelToLoad = -1;
-		s_activeScene = bindings[0]();
 		s_activeGame = game_;
 		s_shouldQuit = false;
 		Timer timer;
 		s_activeGame->__Initialize(s_window, &timer);
+		s_activeScene = bindings[0]();
 		if (FT_Init_FreeType(&s_fontLib)) {
-			ALC_DEBUG_ERROR("Font library was unable to be initialized.");
+			ALC_DEBUG_ERROR("Font library did not initialized.");
 			return;
 		}
 

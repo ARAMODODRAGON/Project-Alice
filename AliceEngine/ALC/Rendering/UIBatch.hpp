@@ -21,10 +21,10 @@ namespace ALC {
 		void Begin(Shader shader = nullptr);
 
 		// draws a quad to screen
-		void DrawQuad(rect position, vec4 color = ALC_COLOR_WHITE, rect target = rect(0.0f), Texture texture = nullptr);
+		void DrawQuad(const rect& position, const vec4& color = ALC_COLOR_WHITE, const rect& target = rect(0.0f), const Texture& texture = nullptr);
 
 		// draws text to the screen
-		void DrawText(string text, rect position, Font font, vec4 color = ALC_COLOR_WHITE);
+		void DrawText(const string& text, const Font& font, const vec2& position, const vec2& scale = vec2(0.0f), const vec4& color = ALC_COLOR_WHITE);
 
 		// stops drawing and outputs to the screen
 		void End();

@@ -13,6 +13,9 @@ void DemoLevel::Init() {
 	ALC::vec2 halfcamsize = m_camera.GetCameraSize() * 0.5f;
 	m_bdeleter.SetDeathBoundry(ALC::rect(-halfcamsize, halfcamsize));
 
+	// load font
+	m_arielFont = ALC::Font::Load("Resources/Fonts/arial.ttf", 20);
+
 	// create our player
 	m_reg.Create().AddBehavior<DemoChara>();
 
@@ -30,7 +33,11 @@ void DemoLevel::Init() {
 	spr.textureBounds = spr.texture.GetBounds();
 }
 
-void DemoLevel::Exit() { }
+void DemoLevel::Exit() { 
+	// delete font
+	ALC::Font::Delete(m_arielFont);
+	m_arielFont = nullptr;
+}
 
 void DemoLevel::Step(ALC::Timestep t) {
 	// force a timestep of 1 / 60
@@ -153,6 +160,8 @@ void DemoLevel::Draw() {
 		r.bottom = r.top - borderWidth;
 		m_ui.DrawQuad(r, ALC_COLOR_BLUE);
 	}
+
+	m_ui.DrawText("Hello there General Kenobi", m_arielFont, ALC::vec2(-50.0f, -100.0f));
 
 	m_ui.End();
 }

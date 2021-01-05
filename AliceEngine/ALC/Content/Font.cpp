@@ -9,7 +9,11 @@ namespace ALC {
 
 	Font::Font() : m_textureID(0), m_textureSize(0), m_characters(nullptr) { }
 
-	Font::Font(std::nullptr_t) : Font() { }
+	Font::Font(std::nullptr_t) : m_textureID(0), m_textureSize(0), m_characters(nullptr) { }
+
+	Font::~Font() {
+
+	}
 
 	bool Font::IsValid() const {
 		return m_textureID != 0;

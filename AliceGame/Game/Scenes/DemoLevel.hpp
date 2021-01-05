@@ -32,6 +32,7 @@ private:
 	ALC::Camera m_camera;
 	ALC::BulletPhysicsHandler m_bPhysics;
 	ALC::EntityID eid;
+	ALC::Font m_arielFont;
 
 	// systems
 	BulletDeleterSystem m_bdeleter;

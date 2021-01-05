@@ -21,6 +21,8 @@ namespace ALC {
 		// de initializes the font
 		Font(std::nullptr_t);
 
+		~Font();
+
 		// returns true if this is a valid font
 		bool IsValid() const;
 

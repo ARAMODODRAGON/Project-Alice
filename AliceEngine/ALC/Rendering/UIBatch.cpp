@@ -79,7 +79,9 @@ namespace ALC {
 		glUniformMatrix4fv(currentShader.GetUniform("u_transform"), 1, GL_FALSE, &(transform[0].x));
 	}
 
-	void UIBatch::DrawQuad(rect position, vec4 color, rect target, Texture texture) {
+	void UIBatch::DrawQuad(const rect& position, const vec4& color, const rect& target, const Texture& texture) {
+		// dont draw
+		if (NearlyEqual(color.a, 0.0f)) return;
 
 		// check if should batch break
 		uint32 textureindex = TryAddTexture(texture);
@@ -131,6 +133,84 @@ namespace ALC {
 		m_verticies.push_back(verts[0]);
 		m_verticies.push_back(verts[2]);
 		m_verticies.push_back(verts[3]);
+
+		// finish
+	}
+
+	void UIBatch::DrawText(const string& text, const Font& font, const vec2& position, const vec2& scale, const vec4& color) {
+		// dont draw
+		if (NearlyEqual(color.a, 0.0f)) return;
+
+		// font must be valid
+		if (font == nullptr) {
+			ALC_DEBUG_WARNING("Font must be valid. Ignoring draw call");
+			return;
+		}
+
+		// check if should batch break
+		uint32 textureindex = TryAddTexture(font.GetTexture());
+		if (textureindex == -2) {
+			DrawCurrent();
+			m_textures.push_back(font.GetTexture());
+			textureindex = 0;
+		}
+
+		// get texture size
+		const vec2 size = font.GetSize();
+
+		// make sure our vector is big enough for all the verticies
+		m_verticies.reserve(m_verticies.size() + text.size());
+
+		// create verticies
+		vertex verts[4];
+
+		// set texture index
+		verts[0].textureIndex = verts[1].textureIndex
+			= verts[2].textureIndex = verts[3].textureIndex = textureindex;
+
+		// set color
+		verts[0].color = verts[1].color
+			= verts[2].color = verts[3].color = color;
+
+		vec2 offset(0.0f);
+		for (const char* p = text.c_str(); *p; p++) {
+			// get character
+			const Font::Character& c = font[*p];
+
+			// calculate values
+			float x2 = position.x + offset.x + c.position.x * c.bitSize.x;
+			float y2 = -position.y - offset.y - c.position.y * c.bitSize.y;
+			float w = c.bitSize.x * scale.x;
+			float h = c.bitSize.y * scale.y;
+
+			// skip character with no size
+			if (!w || !h) {
+				continue;
+			}
+
+			// move cursor to the start of the next character
+			offset += c.advance * scale;
+
+			// set uvCoords
+			verts[0].uvcoords = vec2(c.xoffset, 0.0f);
+			verts[1].uvcoords = vec2(c.xoffset + (c.bitSize.x / size.x), 0.0f);
+			verts[2].uvcoords = vec2(c.xoffset, c.bitSize.y / size.y);
+			verts[3].uvcoords = vec2(c.xoffset + (c.bitSize.x / size.x), c.bitSize.y / size.y);
+
+			// set positions
+			verts[0].position = vec2(x2, -y2);
+			verts[1].position = vec2(x2 + w, -y2);
+			verts[2].position = vec2(x2, -y2 - h);
+			verts[3].position = vec2(x2 + w, -y2 - h);
+
+			// push into vector
+			m_verticies.push_back(verts[0]);
+			m_verticies.push_back(verts[1]);
+			m_verticies.push_back(verts[2]);
+			m_verticies.push_back(verts[0]);
+			m_verticies.push_back(verts[2]);
+			m_verticies.push_back(verts[3]);
+		}
 
 		// finish
 	}
