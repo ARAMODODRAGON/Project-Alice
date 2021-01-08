@@ -45,6 +45,9 @@ namespace ALC {
 		// draw a sprite 
 		void Draw(const Transform2D& transform, const SpriteComponent& sprite);
 
+		// draw all sprite components in registry
+		void DrawComponents(Registry& reg);
+
 		// finish drawing the sprites
 		// uses the default shader if no shader is specified
 		void End();

@@ -3,6 +3,7 @@
 #include "../General.hpp"
 #include "Texture.hpp"
 #include "Shader.hpp"
+#include "Font.hpp"
 
 namespace ALC {
 
@@ -19,6 +20,7 @@ namespace ALC {
 		friend class ContentManager;
 		unordered_map<string, Texture> m_textures;
 		unordered_map<string, Shader> m_shaders;
+		unordered_map<string, Font> m_fonts;
 	};
 
 	class ContentManager final {
@@ -50,10 +52,10 @@ namespace ALC {
 		static Shader LoadShaderSource(ContentStorage& storage, const string& source);
 
 		// loads a font file and stores it in an internal storage, or the set context
-		// static Font LoadFont(const string& path);
+		static Font LoadFont(const string& path, const uint32 size);
 		
 		// loads a font file and stores it in the storage
-		// static Font LoadFont(ContentStorage& storage, const string& path);
+		static Font LoadFont(ContentStorage& storage, const string& path, const uint32 size);
 
 		// clears out and deletes the content stored in the content manager
 		static void Clear();

@@ -81,6 +81,26 @@ namespace ALC {
 		return shader;
 	}
 
+	Font ContentManager::LoadFont(const string& path, const uint32 size) {
+		if (s_contextStorage)
+			return LoadFont(*s_contextStorage, path, size);
+		return LoadFont(s_genericStorage, path, size);
+	}
+
+	Font ContentManager::LoadFont(ContentStorage& storage, const string& path, const uint32 size) {
+		// check if it already exists
+		auto it = storage.m_fonts.find(path);
+		if (it != storage.m_fonts.end())
+			return it->second;
+
+		// load the shader and add it to the map
+		Font font = Font::Load(path, size);
+		if (font) storage.m_fonts.emplace(path, font);
+
+		// return the newly loaded shader
+		return font;
+	}
+
 	void ContentManager::Clear() {
 		if (s_contextStorage)
 			Clear(*s_contextStorage);
@@ -101,11 +121,11 @@ namespace ALC {
 		}
 		storage.m_shaders.clear();
 
-		//// iterate through and delete all of the fonts
-		//for (auto& [key, font] : storage.m_fonts) {
-		//	Font::Delete(font);
-		//}
-		//storage.m_fonts.clear();
+		// iterate through and delete all of the fonts
+		for (auto& [key, font] : storage.m_fonts) {
+			Font::Delete(font);
+		}
+		storage.m_fonts.clear();
 
 	}
 
