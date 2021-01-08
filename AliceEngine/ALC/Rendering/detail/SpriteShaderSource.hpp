@@ -4,6 +4,7 @@
 
 namespace ALC {
 	namespace detail {
+		extern uint32 GetMaxTextureCount();
 		extern Shader GetSpriteShader();
 	}
 }

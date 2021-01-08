@@ -31,7 +31,7 @@ private:
 	ALC::UIBatch m_ui;
 	ALC::Camera m_camera;
 	ALC::BulletPhysicsHandler m_bPhysics;
-	ALC::EntityID eid;
+	ALC::EntityID m_eid;
 	ALC::Font m_arielFont;
 
 	// systems

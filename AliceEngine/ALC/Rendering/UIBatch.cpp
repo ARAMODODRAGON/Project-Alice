@@ -164,9 +164,9 @@ namespace ALC {
 		// create verticies
 		vertex verts[4];
 
-		// set texture index
+		// set texture index. subtract 'maxtexturecount' to tell the shader that this is a font
 		verts[0].textureIndex = verts[1].textureIndex
-			= verts[2].textureIndex = verts[3].textureIndex = textureindex;
+			= verts[2].textureIndex = verts[3].textureIndex = textureindex - detail::GetMaxTextureCount();
 
 		// set color
 		verts[0].color = verts[1].color
@@ -178,30 +178,28 @@ namespace ALC {
 			const Font::Character& c = font[*p];
 
 			// calculate values
-			float x2 = position.x + offset.x + c.position.x * c.bitSize.x;
-			float y2 = -position.y - offset.y - c.position.y * c.bitSize.y;
+			float x0 = position.x + offset.x + ((c.position.x / c.bitSize.x) * c.bitSize.x);
+			float y0 = position.y + offset.y - ((c.position.y / c.bitSize.y) * c.bitSize.y);
 			float w = c.bitSize.x * scale.x;
 			float h = c.bitSize.y * scale.y;
-
-			// skip character with no size
-			if (!w || !h) {
-				continue;
-			}
 
 			// move cursor to the start of the next character
 			offset += c.advance * scale;
 
+			// skip character with no size
+			if (!w || !h) continue;
+
 			// set uvCoords
-			verts[0].uvcoords = vec2(c.xoffset, 0.0f);
-			verts[1].uvcoords = vec2(c.xoffset + (c.bitSize.x / size.x), 0.0f);
-			verts[2].uvcoords = vec2(c.xoffset, c.bitSize.y / size.y);
-			verts[3].uvcoords = vec2(c.xoffset + (c.bitSize.x / size.x), c.bitSize.y / size.y);
+			/* bottom left  */ verts[0].uvcoords = vec2(c.xoffset, 0.0f);
+			/* top left     */ verts[1].uvcoords = vec2(c.xoffset, c.bitSize.y / size.y);
+			/* top right    */ verts[2].uvcoords = vec2(c.xoffset + c.bitSize.x / size.x, c.bitSize.y / size.y);
+			/* bottom right */ verts[3].uvcoords = vec2(c.xoffset + c.bitSize.x / size.x, 0.0f);
 
 			// set positions
-			verts[0].position = vec2(x2, -y2);
-			verts[1].position = vec2(x2 + w, -y2);
-			verts[2].position = vec2(x2, -y2 - h);
-			verts[3].position = vec2(x2 + w, -y2 - h);
+			/* bottom left  */ verts[0].position = vec2(x0, y0);
+			/* top left     */ verts[1].position = vec2(x0, y0 + h);
+			/* top right    */ verts[2].position = vec2(x0 + w, y0 + h);
+			/* bottom right */ verts[3].position = vec2(x0 + w, y0);
 
 			// push into vector
 			m_verticies.push_back(verts[0]);

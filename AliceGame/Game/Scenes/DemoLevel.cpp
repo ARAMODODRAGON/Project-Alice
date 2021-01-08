@@ -14,14 +14,14 @@ void DemoLevel::Init() {
 	m_bdeleter.SetDeathBoundry(ALC::rect(-halfcamsize, halfcamsize));
 
 	// load font
-	m_arielFont = ALC::Font::Load("Resources/Fonts/arial.ttf", 20);
+	m_arielFont = ALC::Font::Load("Resources/Fonts/arial.ttf", 50);
 
 	// create our player
 	m_reg.Create().AddBehavior<DemoChara>();
 
 	m_reg.Create();
 	auto e = m_reg.Create();
-	eid = e.GetComponent<ALC::EntityInfo>().GetID();
+	m_eid = e.GetComponent<ALC::EntityInfo>().GetID();
 	e.AddComponent<ALC::Transform2D>();
 	auto& rb = e.AddComponent<ALC::CharacterBody>();
 	rb.mask = ALC::Layermask32::ALL;
@@ -33,7 +33,7 @@ void DemoLevel::Init() {
 	spr.textureBounds = spr.texture.GetBounds();
 }
 
-void DemoLevel::Exit() { 
+void DemoLevel::Exit() {
 	// delete font
 	ALC::Font::Delete(m_arielFont);
 	m_arielFont = nullptr;
@@ -77,7 +77,7 @@ void DemoLevel::Step(ALC::Timestep t) {
 	// create all entities
 	m_ech.Cleanup(m_reg);
 
-	ALC::Entity e = m_reg.GetEntity(eid);
+	ALC::Entity e = m_reg.GetEntity(m_eid);
 	auto [rb, spr] = e.GetComponent<ALC::CharacterBody, ALC::SpriteComponent>();
 	if (rb.Count() > 0)
 		spr.color = ALC_COLOR_WHITE;
@@ -161,7 +161,7 @@ void DemoLevel::Draw() {
 		m_ui.DrawQuad(r, ALC_COLOR_BLUE);
 	}
 
-	m_ui.DrawText("Hello there General Kenobi", m_arielFont, ALC::vec2(-50.0f, -100.0f));
+	m_ui.DrawText("Hello there General Kenobi", m_arielFont, ALC::vec2(100.0f, 100.0f));
 
 	m_ui.End();
 }

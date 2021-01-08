@@ -41,9 +41,16 @@ in flat int v_textureIndex;
 
 void main() {
 
+	// no texture
 	if (v_textureIndex == -1) {
 		out_fragcolor = v_color;
-	} else {
+	} 
+	// font texture
+	else if (v_textureIndex < -1) {
+		out_fragcolor = texture(u_textures[v_textureIndex + c_TextureCount], v_uvcoords).r * v_color;
+	} 
+	// normal texture
+	else {
 		out_fragcolor = texture(u_textures[v_textureIndex], v_uvcoords) * v_color;
 	} 
 	
@@ -53,12 +60,18 @@ void main() {
 
 namespace ALC {
 	namespace detail {
+		uint32 GetMaxTextureCount() {
+			static int32 count = -1;
+			if (count == -1) {
+				glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &count);
+				ALC_DEBUG_LOG("Max textures per batch: " + VTOS(count));
+			}
+			return count;
+		}
 		Shader GetSpriteShader() {
 			static string spriteShaderSource = "";
 			if (spriteShaderSource == "") {
-				GLint maxTextureCount = -1;
-				glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureCount);
-				ALC_DEBUG_LOG("Max textures per batch: " + VTOS(maxTextureCount));
+				GLint maxTextureCount = GetMaxTextureCount();
 				if (maxTextureCount == -1) throw std::runtime_error("m_maxtextures was -1");
 				spriteShaderSource = sprbatchShaderSrc[0] + VTOS(maxTextureCount) + sprbatchShaderSrc[1];
 			}
