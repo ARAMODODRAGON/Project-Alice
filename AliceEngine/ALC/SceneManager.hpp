@@ -5,6 +5,7 @@
 #include "Content\ContentManager.hpp"
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#include "Core\Timer.hpp"
 
 namespace ALC {
 
