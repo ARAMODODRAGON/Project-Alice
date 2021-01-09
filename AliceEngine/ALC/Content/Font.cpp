@@ -121,7 +121,7 @@ namespace ALC {
 			character.bitSize.y = static_cast<float>(g->bitmap.rows);
 			character.position.x = static_cast<float>(g->bitmap_left);
 			character.position.y = static_cast<float>(g->bitmap_top);
-			character.xoffset = static_cast<float>(x / w);
+			character.xoffset = static_cast<float>(x) / static_cast<float>(w);
 
 			characters->insert(pair<char, Character>(i, character));
 			x += g->bitmap.width;

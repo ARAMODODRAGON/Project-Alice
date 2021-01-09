@@ -29,8 +29,8 @@ void BattleLevel::Draw() {
 	// draw ui
 	m_ui.Begin();
 	auto font = ALC::ContentManager::LoadFont("Resources/Fonts/arial.ttf", 50);
-	m_ui.DrawText("Hello there General Kenobi", font, ALC::vec2(100.0f, 100.0f));
 
+	m_ui.DrawText("Hello there General Kenobi", font, ALC::vec2(100.0f, 100.0f));
 	// get level boundry in world coordinates
 	ALC::mat4 worldToScreen = m_camera.GetWorldToScreen();
 	ALC::rect levelbounds = BattleManager::GetDeathBounds();
