@@ -56,6 +56,38 @@ namespace ALC {
 
 	};
 
+	// operators for multiplying with timesteps
+
+	template<typename T, glm::precision P>
+	inline glm::tvec2<T, P> operator*(const Timestep& ts, const glm::tvec2<T, P>& vec) {
+		return ts.Get() * vec;
+	}
+	
+	template<typename T, glm::precision P>
+	inline glm::tvec2<T, P> operator*(const glm::tvec2<T, P>& vec, const Timestep& ts) {
+		return vec * ts.Get();
+	}
+	
+	template<typename T, glm::precision P>
+	inline glm::tvec3<T, P> operator*(const Timestep& ts, const glm::tvec3<T, P>& vec) {
+		return ts.Get() * vec;
+	}
+	
+	template<typename T, glm::precision P>
+	inline glm::tvec3<T, P> operator*(const glm::tvec3<T, P>& vec, const Timestep& ts) {
+		return vec * ts.Get();
+	}
+	
+	template<typename T, glm::precision P>
+	inline glm::tvec4<T, P> operator*(const Timestep& ts, const glm::tvec4<T, P>& vec) {
+		return ts.Get() * vec;
+	}
+	
+	template<typename T, glm::precision P>
+	inline glm::tvec4<T, P> operator*(const glm::tvec4<T, P>& vec, const Timestep& ts) {
+		return vec * ts.Get();
+	}
+
 }
 
 #endif // !_CORE_TIMER_HPP

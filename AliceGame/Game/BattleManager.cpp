@@ -11,7 +11,7 @@ Character* BattleManager::InitAsCharacter(ALC::Entity entity) {
 	Character* character = nullptr;
 	switch (s_type) {
 		case CharaType::Alice:
-			//character = entity.AddBehavior<AliceChara>();
+			character = entity.AddBehavior<AliceChara>();
 			break;
 		case CharaType::Rui:
 			ALC_DEBUG_ERROR("Character type 'Rui' is not supported");

@@ -41,13 +41,13 @@ namespace ALC {
 
 	mat4 Camera::GetScreenToWorld() const {
 		vec2 screensize = SceneManager::GetWindow()->GetScreenSize();
-		mat4 screen = glm::ortho(0.0f, screensize.x, screensize.y, 0.0f);
+		mat4 screen = glm::ortho(0.0f, screensize.x, 0.0f, screensize.y);
 		return glm::inverse(GetTransform()) * screen;
 	}
 
 	mat4 Camera::GetWorldToScreen() const {
 		vec2 screensize = SceneManager::GetWindow()->GetScreenSize();
-		mat4 screen = glm::ortho(0.0f, screensize.x, screensize.y, 0.0f);
+		mat4 screen = glm::ortho(0.0f, screensize.x, 0.0f, screensize.y);
 		return glm::inverse(screen) * GetTransform();
 	}
 

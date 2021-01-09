@@ -121,6 +121,12 @@ namespace ALC {
 	}
 	#undef DEFAULT_PERCISION
 
+	inline float Clamp(const float t, const float min, const float max) {
+		if (t < min) return min;
+		if (t > max) return max;
+		return t;
+	}
+
 }
 
 #include "rect.hpp"

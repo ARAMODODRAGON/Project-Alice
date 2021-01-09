@@ -49,7 +49,7 @@ void BattleLevel::Draw() {
 		m_ui.DrawQuad(r, ALC_COLOR_GREEN);
 
 		// right
-		r.bottom = levelbounds.bottom - borderWidth;
+		r.bottom = levelbounds.bottom - borderWidth ;
 		r.top = levelbounds.top + borderWidth;
 		r.left = levelbounds.right;
 		r.right = r.left + borderWidth;

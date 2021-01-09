@@ -2,7 +2,8 @@
 #define ALICE_BATTLEMANAGER_HPP
 #include <ALC\General.hpp>
 #include <ALC\Bullets.hpp>
-#include "Characters\Character.hpp"
+
+class Character;
 
 enum class CharaType : ALC::uint8 {
 	None, Alice, Rui, Eden
