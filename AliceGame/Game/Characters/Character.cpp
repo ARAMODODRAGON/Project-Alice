@@ -62,16 +62,45 @@ void Character::UpdateMovement(ALC::Entity self, ALC::Timestep ts, const ALC::ve
 }
 
 void Character::Start(ALC::Entity self) {
+	// create the collider's sprite first so it is visible on top of the character
+	auto collEntity = GetRegistry().Create();
+	m_colliderEntity = collEntity.GetComponent<ALC::EntityInfo>().GetID();
+	auto& tr0 = collEntity.AddComponent<ALC::Transform2D>();
+	auto& spr0 = collEntity.AddComponent<ALC::SpriteComponent>();
+
+	using CM = ALC::ContentManager;
+	// add the required components
 	if (!self.HasComponent<ALC::CharacterBody>())	self.AddComponent<ALC::CharacterBody>();
 	if (!self.HasComponent<ALC::Transform2D>())		self.AddComponent<ALC::Transform2D>();
 	if (!self.HasComponent<ALC::SpriteComponent>())	self.AddComponent<ALC::SpriteComponent>();
 
+	// initalize components
 	auto [cb, tr, spr] = self.GetComponent<ALC::CharacterBody, ALC::Transform2D, ALC::SpriteComponent>();
 
 	cb.radius = 4.0f;
 	auto lb = BattleManager::GetDeathBounds();
 	tr.position.x = 0.0f;
 	tr.position.y = lb.min.y * 0.5f;
-	spr.bounds = ALC::rect(-8.0f, -8.0f, 8.0f, 8.0f);
+	spr.bounds = ALC::rect(8.0f);
 	spr.color = ALC_COLOR_RED;
+
+	tr0.position = tr.position; // place on top of character
+	spr0.bounds = ALC::rect(cb.radius); // match size of character collider
+	spr0.color = ALC_COLOR_YELLOW;
+	spr0.texture = CM::LoadTexture("Resources/Textures/circle.png");
+	spr0.textureBounds = spr0.texture.GetBounds();
+}
+
+void Character::UpdateColliderSprite(ALC::Entity self, ALC::Timestep ts) {
+	// update the collider entity
+	if (auto collEntity = GetRegistry().GetEntity(m_colliderEntity)) {
+		auto [cb, tr, spr] = self.GetComponent<ALC::CharacterBody, ALC::Transform2D, ALC::SpriteComponent>();
+
+		auto& tr0 = collEntity.GetComponent<ALC::Transform2D>();
+		tr0.position = tr.position; // place on top of character
+
+		auto& spr0 = collEntity.GetComponent<ALC::SpriteComponent>();
+		spr0.bounds = ALC::rect(cb.radius); // match size of character collider
+
+	} else ALC_DEBUG_WARNING("Collider entity not found");
 }

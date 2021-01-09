@@ -3,6 +3,7 @@
 #include <ALC\Bullets.hpp>
 #include <ALC\Input.hpp>
 #include <ALC\Rendering.hpp>
+#include <ALC\Content.hpp>
 #include "../BattleManager.hpp"
 
 class Character : public ALC::ShooterBehavior {
@@ -30,9 +31,13 @@ public:
 	// garuntees that this entity has a character body, transform, and spritecomponent
 	virtual void Start(ALC::Entity self);
 
+	// updates the collider sprite entity to match this characters position
+	void UpdateColliderSprite(ALC::Entity self, ALC::Timestep ts);
+
 private:
 	float m_maxSpeed;
 	float m_slowScalar;
+	ALC::EntityID m_colliderEntity;
 };
 
 #endif // !ALICE_CHARACTERS_CHARACTER_HPP

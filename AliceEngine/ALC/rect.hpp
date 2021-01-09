@@ -14,7 +14,7 @@ namespace ALC {
 		};
 
 		rect() : min(0.0f), max(0.0f) { }
-		rect(const float size_) : min(-size_), max(size_) { }
+		rect(const float halfSize_) : min(-halfSize_), max(halfSize_) { }
 		rect(const vec2& min_, const vec2& max_)
 			: min(min_), max(max_) { }
 		rect(const float left_, const float bottom_, const float right_, const float top_)

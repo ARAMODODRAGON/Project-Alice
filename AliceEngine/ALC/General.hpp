@@ -71,13 +71,26 @@ namespace ALC {
 
 	// colors
 
-	#define ALC_COLOR_CLEAR ::ALC::vec4(0.0f, 0.0f, 0.0f, 0.0f)
-	#define ALC_COLOR_BLACK ::ALC::vec4(0.0f, 0.0f, 0.0f, 1.0f)
-	#define ALC_COLOR_WHITE ::ALC::vec4(1.0f, 1.0f, 1.0f, 1.0f)
-	#define ALC_COLOR_RED	::ALC::vec4(1.0f, 0.0f, 0.0f, 1.0f)
-	#define ALC_COLOR_GREEN ::ALC::vec4(0.0f, 1.0f, 0.0f, 1.0f)
-	#define ALC_COLOR_BLUE	::ALC::vec4(0.0f, 0.0f, 1.0f, 1.0f)
+	#define ALC_COLOR_CLEAR		::ALC::vec4(0.0f, 0.0f, 0.0f, 0.0f)
+	#define ALC_COLOR_BLACK		::ALC::vec4(0.0f, 0.0f, 0.0f, 1.0f)
+	#define ALC_COLOR_WHITE		::ALC::vec4(1.0f, 1.0f, 1.0f, 1.0f)
+	#define ALC_COLOR_RED		::ALC::vec4(1.0f, 0.0f, 0.0f, 1.0f)
+	#define ALC_COLOR_GREEN		::ALC::vec4(0.0f, 1.0f, 0.0f, 1.0f)
+	#define ALC_COLOR_BLUE		::ALC::vec4(0.0f, 0.0f, 1.0f, 1.0f)
+	#define ALC_COLOR_YELLOW	::ALC::vec4(1.0f, 1.0f, 0.0f, 1.0f)
+	#define ALC_COLOR_PURPLE	::ALC::vec4(1.0f, 0.0f, 1.0f, 1.0f)
 
+	// creates a color using only the RGB values and alpha defaulted to 1.0f
+	#define ALC_COLOR_RGB(r, g, b) ::ALC::vec4(r, g, b, 1.0f);
+
+	#define _ALC_CEXPR (1.0f / 255.0f)
+
+	// creates a color where the values range from 0 to 255
+	#define ALC_COLOR_8(r, g, b, a) ::ALC::vec4(float(r) * _ALC_CEXPR, float(g) * _ALC_CEXPR, float(b) * _ALC_CEXPR, float(a) * _ALC_CEXPR)
+
+	// creates a color where the values range from 0 to 255
+	// using only the RGB values and alpha defaulted to 255
+	#define ALC_COLOR_RGB8(r, g, b) ::ALC::vec4(float(r) * _ALC_CEXPR, float(g) * _ALC_CEXPR, float(b) * _ALC_CEXPR, 1.0f)
 
 	#define DEFAULT_PERCISION 0.0001f
 	inline bool NearlyZero(const float v, const float percision = DEFAULT_PERCISION) {

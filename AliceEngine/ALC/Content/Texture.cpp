@@ -48,7 +48,10 @@ namespace ALC {
 		stbi_uc* pixels = stbi_load(path.c_str(), &width, &height, &channels, STBI_rgb_alpha);
 
 		// failed to load
-		if (pixels == nullptr) return nullptr;
+		if (pixels == nullptr) {
+			ALC_DEBUG_ERROR("Failed to load file: " + path);
+			return nullptr;
+		}
 
 		// create texture ID
 		uint32 textureID;
