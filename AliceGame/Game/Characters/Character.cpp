@@ -62,19 +62,16 @@ void Character::UpdateMovement(ALC::Entity self, ALC::Timestep ts, const ALC::ve
 }
 
 void Character::Start(ALC::Entity self) {
-	if (!self.HasComponent<ALC::CharacterBody>()) {
-		auto& cb = self.AddComponent<ALC::CharacterBody>();
-		cb.radius = 4.0f;
-	}
-	if (!self.HasComponent<ALC::Transform2D>()) {
-		auto& tr = self.AddComponent<ALC::Transform2D>();
-		auto lb = BattleManager::GetDeathBounds();
-		tr.position.x = 0.0f;
-		tr.position.y = lb.min.y * 0.5f;
-	}
-	if (!self.HasComponent<ALC::SpriteComponent>()) {
-		auto& spr = self.AddComponent<ALC::SpriteComponent>();
-		spr.bounds = ALC::rect(-8.0f, -8.0f, 8.0f, 8.0f);
-		spr.color = ALC_COLOR_RED;
-	}
+	if (!self.HasComponent<ALC::CharacterBody>())	self.AddComponent<ALC::CharacterBody>();
+	if (!self.HasComponent<ALC::Transform2D>())		self.AddComponent<ALC::Transform2D>();
+	if (!self.HasComponent<ALC::SpriteComponent>())	self.AddComponent<ALC::SpriteComponent>();
+
+	auto [cb, tr, spr] = self.GetComponent<ALC::CharacterBody, ALC::Transform2D, ALC::SpriteComponent>();
+
+	cb.radius = 4.0f;
+	auto lb = BattleManager::GetDeathBounds();
+	tr.position.x = 0.0f;
+	tr.position.y = lb.min.y * 0.5f;
+	spr.bounds = ALC::rect(-8.0f, -8.0f, 8.0f, 8.0f);
+	spr.color = ALC_COLOR_RED;
 }
