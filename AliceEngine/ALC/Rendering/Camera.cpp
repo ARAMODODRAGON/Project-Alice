@@ -33,10 +33,22 @@ namespace ALC {
 
 		// create the ortho
 		vec2 halfsize = m_size * 0.5f;
-		transform = transform * glm::ortho(-halfsize.x, halfsize.x, -halfsize.y, halfsize.y, 10.0f, -10.0f);
+		transform = transform * glm::ortho(-halfsize.x, halfsize.x, -halfsize.y, halfsize.y);
 
 		// return the transform
 		return transform;
+	}
+
+	mat4 Camera::GetScreenToWorld() const {
+		vec2 screensize = SceneManager::GetWindow()->GetScreenSize();
+		mat4 screen = glm::ortho(0.0f, screensize.x, screensize.y, 0.0f);
+		return glm::inverse(GetTransform()) * screen;
+	}
+
+	mat4 Camera::GetWorldToScreen() const {
+		vec2 screensize = SceneManager::GetWindow()->GetScreenSize();
+		mat4 screen = glm::ortho(0.0f, screensize.x, screensize.y, 0.0f);
+		return glm::inverse(screen) * GetTransform();
 	}
 
 }

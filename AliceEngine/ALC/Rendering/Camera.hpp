@@ -25,6 +25,12 @@ namespace ALC {
 		// returns the transformation matrix
 		mat4 GetTransform() const;
 
+		// returns a matrix that converts from screen to world positions
+		mat4 GetScreenToWorld() const;
+
+		// returns a matrix that converts from world to screen positions
+		mat4 GetWorldToScreen() const;
+
 	private:
 		vec2 m_position;
 		vec2 m_size;

@@ -132,6 +132,13 @@ namespace ALC {
 		// finish
 	}
 
+	void SpriteBatch::DrawComponents(Registry& reg) { 
+		reg.ForeachComponent<Transform2D, SpriteComponent>(
+			[this](auto entity, auto tr, auto spr) {
+			Draw(tr, spr);
+		});
+	}
+
 	void SpriteBatch::End() {
 
 		// draw any remaining verticies

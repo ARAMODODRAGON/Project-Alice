@@ -81,7 +81,7 @@ namespace ALC {
 
 		// get the size of the texture atlas that the font will be stored on
 		FT_GlyphSlot g = face->glyph;
-		int w = 0, h = 0;
+		unsigned int w = 0, h = 0;
 		for (int i = 32; i < 128; i++) {
 			if (FT_Load_Char(face, i, FT_LOAD_RENDER)) {
 				ALC_DEBUG_ERROR("Failed to load glyph at index: " + VTOS(i));
@@ -115,13 +115,13 @@ namespace ALC {
 			glTexSubImage2D(GL_TEXTURE_2D, 0, x, 0, g->bitmap.width, g->bitmap.rows, GL_RED, GL_UNSIGNED_BYTE, g->bitmap.buffer);
 
 			Character character{};
-			character.advance.x = g->advance.x >> 6;
-			character.advance.y = g->advance.y >> 6;
-			character.bitSize.x = g->bitmap.width;
-			character.bitSize.y = g->bitmap.rows;
-			character.position.x = g->bitmap_left;
-			character.position.y = g->bitmap_top;
-			character.xoffset = (float)x / w;
+			character.advance.x = static_cast<float>(g->advance.x >> 6);
+			character.advance.y = static_cast<float>(g->advance.y >> 6);
+			character.bitSize.x = static_cast<float>(g->bitmap.width);
+			character.bitSize.y = static_cast<float>(g->bitmap.rows);
+			character.position.x = static_cast<float>(g->bitmap_left);
+			character.position.y = static_cast<float>(g->bitmap_top);
+			character.xoffset = static_cast<float>(x / w);
 
 			characters->insert(pair<char, Character>(i, character));
 			x += g->bitmap.width;

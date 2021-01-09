@@ -14,6 +14,7 @@ namespace ALC {
 	void SceneManager::StartGame(Game* game_, const std::vector<SceneBinding> bindings) {
 		if (bindings.size() == 0) {
 			ALC_DEBUG_FATAL_ERROR("No scenes were bound");
+			return;
 		}
 
 		// setup variables

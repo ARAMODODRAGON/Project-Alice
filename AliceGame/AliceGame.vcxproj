@@ -150,8 +150,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Game\AliceGame.cpp" />
-    <ClCompile Include="Game\Characters\DemoChara.cpp" />
-    <ClCompile Include="Game\Scenes\DemoLevel.cpp" />
+    <ClCompile Include="Game\BattleManager.cpp" />
+    <ClCompile Include="Game\Scenes\BattleLevel.cpp" />
+    <ClCompile Include="Game\Scenes\BattleLevels\DemoBTL.cpp" />
     <ClCompile Include="Game\Systems\BulletDeleterSystem.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
@@ -162,8 +163,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\AliceGame.hpp" />
-    <ClInclude Include="Game\Characters\DemoChara.hpp" />
-    <ClInclude Include="Game\Scenes\DemoLevel.hpp" />
+    <ClInclude Include="Game\BattleManager.hpp" />
+    <ClInclude Include="Game\Characters\AliceChara.hpp" />
+    <ClInclude Include="Game\Characters\Character.hpp" />
+    <ClInclude Include="Game\Scenes\BattleLevel.hpp" />
+    <ClInclude Include="Game\Scenes\BattleLevels\DemoBTL.hpp" />
     <ClInclude Include="Game\Systems\BulletDeleterSystem.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

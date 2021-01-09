@@ -20,9 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ALC\Audio\AudioSystem.hpp" />
+    <ClInclude Include="ALC\Bullets.hpp" />
     <ClInclude Include="ALC\Bullets\BulletPhysics.hpp" />
     <ClInclude Include="ALC\Bullets\BulletPhysicsHandler.hpp" />
     <ClInclude Include="ALC\Bullets\ShooterBehavior.hpp" />
+    <ClInclude Include="ALC\Content.hpp" />
     <ClInclude Include="ALC\Content\ContentManager.hpp" />
     <ClInclude Include="ALC\Content\detail\stb_image.h" />
     <ClInclude Include="ALC\Content\Font.hpp" />
@@ -32,11 +34,13 @@
     <ClInclude Include="ALC\Core\Game.hpp" />
     <ClInclude Include="ALC\Core\Timer.hpp" />
     <ClInclude Include="ALC\Core\Window.hpp" />
+    <ClInclude Include="ALC\Entities.hpp" />
     <ClInclude Include="ALC\Entities\detail\RegistryDetail.hpp" />
     <ClInclude Include="ALC\Entities\EntityCreationHandler.hpp" />
     <ClInclude Include="ALC\Entities\EntityID.hpp" />
     <ClInclude Include="ALC\Entities\Registry.hpp" />
     <ClInclude Include="ALC\General.hpp" />
+    <ClInclude Include="ALC\Input.hpp" />
     <ClInclude Include="ALC\Input\Button.hpp" />
     <ClInclude Include="ALC\Input\Keyboard.hpp" />
     <ClInclude Include="ALC\Input\Mouse.hpp" />
@@ -48,6 +52,7 @@
     <ClInclude Include="ALC\Physics\Rigidbody2D.hpp" />
     <ClInclude Include="ALC\Physics\Transform2D.hpp" />
     <ClInclude Include="ALC\rect.hpp" />
+    <ClInclude Include="ALC\Rendering.hpp" />
     <ClInclude Include="ALC\Rendering\Camera.hpp" />
     <ClInclude Include="ALC\Rendering\detail\SpriteShaderSource.hpp" />
     <ClInclude Include="ALC\Rendering\UIBatch.hpp" />
