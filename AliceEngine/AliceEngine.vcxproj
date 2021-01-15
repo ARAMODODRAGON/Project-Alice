@@ -29,6 +29,7 @@
     <ClInclude Include="ALC\Content\detail\stb_image.h" />
     <ClInclude Include="ALC\Content\Font.hpp" />
     <ClInclude Include="ALC\Content\Shader.hpp" />
+    <ClInclude Include="ALC\Content\Sound\SoundSystem.hpp" />
     <ClInclude Include="ALC\Content\Texture.hpp" />
     <ClInclude Include="ALC\Core\Debugger.hpp" />
     <ClInclude Include="ALC\Core\Game.hpp" />
@@ -65,6 +66,7 @@
     <ClCompile Include="ALC\Content\ContentManager.cpp" />
     <ClCompile Include="ALC\Content\Font.cpp" />
     <ClCompile Include="ALC\Content\Shader.cpp" />
+    <ClCompile Include="ALC\Content\Sound\SoundSystem.cpp" />
     <ClCompile Include="ALC\Content\Texture.cpp" />
     <ClCompile Include="ALC\Core\Debugger.cpp" />
     <ClCompile Include="ALC\Core\Game.cpp" />

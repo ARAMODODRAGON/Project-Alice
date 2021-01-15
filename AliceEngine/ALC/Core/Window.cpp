@@ -1,6 +1,7 @@
 #include "Window.hpp"
 #include "Debugger.hpp"
 #include <SDL.h>
+#include <SDL_mixer.h>
 #include <glew.h>
 #include <stdexcept>
 
@@ -14,10 +15,15 @@ namespace ALC {
 
 		#pragma region SDL & Window initialization
 
-		// initialize sdl
+		// initialize sdl and mixer
 		if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
 			ALC_DEBUG_FATAL_ERROR("Failed to init SDL");
 			throw std::runtime_error("Failed to init SDL");
+		}
+
+		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 4, 4096) < 0) {
+			ALC_DEBUG_FATAL_ERROR("Mixer failed to initialize. Error:\n" + string(Mix_GetError()));
+			throw std::runtime_error("Mixer failed to initialize");
 		}
 
 		// set some attributes
@@ -75,6 +81,7 @@ namespace ALC {
 		SDL_GL_DeleteContext(glContext);
 		SDL_DestroyWindow(window); window = nullptr;
 
+		Mix_Quit();
 		SDL_Quit();
 	}
 
