@@ -11,6 +11,7 @@
 #include <utility>
 #include <memory>
 #include <functional>
+#include <nlohmann\json.hpp>
 #define GLM_FORCE_RADIANS
 #include <glm\glm.hpp>
 #include <glm/gtx/vector_angle.hpp>
@@ -28,6 +29,8 @@
 
 
 namespace ALC {
+
+	using nlohmann::json;
 
 	using std::string;
 	//using std::string_view;

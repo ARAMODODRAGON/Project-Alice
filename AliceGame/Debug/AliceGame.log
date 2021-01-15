@@ -1,1 +1,11 @@
-﻿  AliceGame.vcxproj -> D:\Documents\``Project Alice\Project Alice\Debug\AliceGame.exe
+﻿  AliceGame.cpp
+  BattleManager.cpp
+  AliceChara.cpp
+  Character.cpp
+  DialogueHandler.cpp
+  BattleLevel.cpp
+  DemoBTL.cpp
+  BulletDeleterSystem.cpp
+  Main.cpp
+  Generating Code...
+  AliceGame.vcxproj -> D:\Documents\``Project Alice\Project Alice\Debug\AliceGame.exe

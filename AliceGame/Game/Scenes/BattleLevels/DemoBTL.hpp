@@ -15,6 +15,7 @@ private:
 	void GameStep(ALC::Timestep t) override;
 
 	ALC::string m_musicFile;
+	DialogueHandler m_beginLevel;
 };
 
 #endif // !ALICE_SCENES_BATTLELEVELS_DEMOBTL_HPP

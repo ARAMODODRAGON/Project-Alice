@@ -5,6 +5,7 @@
 #include <ALC\Bullets.hpp>
 #include <ALC\Rendering.hpp>
 #include "../BattleManager.hpp"
+#include "../DialogueHandler.hpp"
 
 class BattleLevel : public ALC::IScene {
 public:

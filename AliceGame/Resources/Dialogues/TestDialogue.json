@@ -1,0 +1,34 @@
+{
+	"Actors": [
+		{
+			"Name": "Alice",
+			"Icon": "Resources/Textures/Whatever.png"
+		},
+		{
+			"Name": "Rui",
+			"Icon": "Resources/Textures/Whoever.png"
+		}
+	],
+	"Dialogue": [
+		{
+			"Actor": "Alice",
+			"Text": "Blah blah blah"
+		},
+		{
+			"Actor": "Rui",
+			"Text": "The fuck?"
+		},
+		{
+			"Actor": "Alice",
+			"Text": "Hey no swearing! You're too young to be saying stuff like that"
+		},
+		{
+			"Actor": "Rui",
+			"Text": "Bitch"
+		},
+		{
+			"Actor": "Alice",
+			"Text": "Rui nooooooooooooo!"
+		}
+	]
+}

@@ -39,6 +39,9 @@
     <ClCompile Include="Game\Characters\AliceChara.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Game\DialogueHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\AliceGame.hpp">
@@ -62,5 +65,11 @@
     <ClInclude Include="Game\Characters\AliceChara.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Game\DialogueHandler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Dialogues\TestDialogue.json" />
   </ItemGroup>
 </Project>
