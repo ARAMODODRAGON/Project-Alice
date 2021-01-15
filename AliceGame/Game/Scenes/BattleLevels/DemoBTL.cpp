@@ -13,8 +13,7 @@ void DemoBTL::Init() {
 	// load our music
 	if (ALC::SoundSystem::LoadMusic(m_musicFile)) {
 		// play
-		ALC::SoundSystem::PlayMusic(m_musicFile);
-		ALC::SoundSystem::PauseMusic();
+		//ALC::SoundSystem::PlayMusic(m_musicFile);
 	}
 
 	// we want to spawn alice
@@ -35,15 +34,4 @@ void DemoBTL::Exit() {
 	ALC::SoundSystem::UnloadMusic(m_musicFile);
 }
 
-void DemoBTL::GameStep(ALC::Timestep t) {
-	static bool state = false;
-	if (ALC::Keyboard::GetKey(ALC::KeyCode::KeyM).Pressed()) {
-		if (state) {
-			ALC::SoundSystem::PauseMusic();
-			state = false;
-		} else {
-			ALC::SoundSystem::ResumeMusic();
-			state = true;
-		}
-	}
-}
+void DemoBTL::GameStep(ALC::Timestep t) { }

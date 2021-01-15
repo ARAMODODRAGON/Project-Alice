@@ -5,14 +5,14 @@
 int main(int argc, char* agrv[]) {
 
 	// prepare the level boundries
-	// based on if the window is 1280x720
+	// based on if the window is 712x400
 	// 0.88f is the ratio of the level bounds in touhou
 	// 15.0f is the offset from the top of the screen
 	{
 		constexpr float ratio = 0.88f;
 		constexpr float topoffset = 15.0f;
-		constexpr float basewidth = 1280 * 0.5f;
-		constexpr float baseheight = 720.0f * 0.5f;
+		constexpr float basewidth = 712.0f * 0.5f;
+		constexpr float baseheight = 400.0f * 0.5f;
 		constexpr float scalar = 0.3f;
 
 		ALC::rect levelBounds;

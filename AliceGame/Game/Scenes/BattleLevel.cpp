@@ -10,7 +10,7 @@ void BattleLevel::Init() {
 	ALC::ContentManager::SetContext(m_storage);
 
 	// setup camera
-	m_camera.SetCameraSize(m_camera.GetCameraSize() * 0.3f);
+	m_camera.SetCameraSize(ALC::vec2(712.0f, 400.0f) * 0.3f);
 
 	// create the character
 	if (!m_character) m_character = BattleManager::InitAsCharacter(m_reg.Create());

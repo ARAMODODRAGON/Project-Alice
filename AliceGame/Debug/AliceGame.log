@@ -1,8 +1,2 @@
-﻿  BattleManager.cpp
-  AliceChara.cpp
-  Enemy.cpp
-  RuiEnemy.cpp
-  DemoBTL.cpp
-  Main.cpp
-  Generating Code...
+﻿  RuiEnemy.cpp
   AliceGame.vcxproj -> D:\Documents\``Project Alice\Project Alice\Debug\AliceGame.exe

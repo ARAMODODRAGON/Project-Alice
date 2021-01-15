@@ -22,6 +22,5 @@ void Enemy::Start(ALC::Entity self) {
 	tr.position.x = 0.0f;
 	tr.position.y = lb.max.y * 0.5f;
 	spr.bounds = ALC::rect(8.0f);
-	spr.color = ALC_COLOR_BLUE;
 
 }
