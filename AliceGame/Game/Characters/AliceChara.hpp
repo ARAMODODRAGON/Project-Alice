@@ -9,7 +9,6 @@ public:
 	~AliceChara();
 
 	virtual void Start(ALC::Entity self);
-	virtual void OnDestroy(ALC::Entity self);
 	virtual void Update(ALC::Entity self, ALC::Timestep ts);
 	virtual void LateUpdate(ALC::Entity self, ALC::Timestep ts);
 

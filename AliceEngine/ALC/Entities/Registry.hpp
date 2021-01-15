@@ -13,6 +13,8 @@ namespace ALC {
 
 		Entity();
 
+		Entity(std::nullptr_t);
+
 		// checks if this is a valid entity
 		bool IsValid() const;
 

@@ -1,11 +1,8 @@
-﻿  AliceGame.cpp
-  BattleManager.cpp
+﻿  BattleManager.cpp
   AliceChara.cpp
-  Character.cpp
-  DialogueHandler.cpp
-  BattleLevel.cpp
+  Enemy.cpp
+  RuiEnemy.cpp
   DemoBTL.cpp
-  BulletDeleterSystem.cpp
   Main.cpp
   Generating Code...
   AliceGame.vcxproj -> D:\Documents\``Project Alice\Project Alice\Debug\AliceGame.exe

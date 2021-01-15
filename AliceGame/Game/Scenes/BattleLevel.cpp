@@ -31,7 +31,7 @@ void BattleLevel::Draw() {
 
 	// get level boundry in world coordinates
 	ALC::mat4 worldToScreen = m_camera.GetWorldToScreen();
-	ALC::rect levelbounds = BattleManager::GetDeathBounds();
+	ALC::rect levelbounds = BattleManager::GetLevelBounds();
 
 	// convert to screen coordinates
 	levelbounds.min = ALC::vec2(worldToScreen * ALC::vec4(levelbounds.min, 0.0f, 1.0f));

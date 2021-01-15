@@ -1,17 +1,20 @@
 #include "DemoBTL.hpp"
+#include <ALC/Input.hpp>
 
-DemoBTL::DemoBTL() 
+DemoBTL::DemoBTL()
 	: m_musicFile("Resources/Audio/Empty_Score.mp3")
-	, m_beginLevel("Resources/Dialogues/TestDialogue.json", &GetStorage()) { }
+	, m_beginLevel("Resources/Dialogues/TestDialogue.json", &GetStorage())
+	, m_enemyBehavior(nullptr) { }
 
 DemoBTL::~DemoBTL() { }
 
-void DemoBTL::Init() { 
+void DemoBTL::Init() {
 
 	// load our music
 	if (ALC::SoundSystem::LoadMusic(m_musicFile)) {
 		// play
 		ALC::SoundSystem::PlayMusic(m_musicFile);
+		ALC::SoundSystem::PauseMusic();
 	}
 
 	// we want to spawn alice
@@ -19,9 +22,12 @@ void DemoBTL::Init() {
 
 	// alice will spawn here
 	BattleLevel::Init();
+
+	m_enemy = GetReg().Create();
+	m_enemyBehavior = m_enemy.AddBehavior<RuiEnemy>();
 }
 
-void DemoBTL::Exit() { 
+void DemoBTL::Exit() {
 	BattleLevel::Exit();
 
 	// stop and delete the music
@@ -29,4 +35,15 @@ void DemoBTL::Exit() {
 	ALC::SoundSystem::UnloadMusic(m_musicFile);
 }
 
-void DemoBTL::GameStep(ALC::Timestep t) { }
+void DemoBTL::GameStep(ALC::Timestep t) {
+	static bool state = false;
+	if (ALC::Keyboard::GetKey(ALC::KeyCode::KeyM).Pressed()) {
+		if (state) {
+			ALC::SoundSystem::PauseMusic();
+			state = false;
+		} else {
+			ALC::SoundSystem::ResumeMusic();
+			state = true;
+		}
+	}
+}

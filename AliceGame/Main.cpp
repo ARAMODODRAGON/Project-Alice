@@ -22,7 +22,7 @@ int main(int argc, char* agrv[]) {
 		levelBounds.right = toppos * ratio * scalar;
 		levelBounds.left = -toppos * ratio * scalar;
 
-		BattleManager::SetDeathBounds(levelBounds);
+		BattleManager::SetLevelBounds(levelBounds);
 	}
 
 	const ALC::vector<ALC::SceneBinding> SceneIndex = {

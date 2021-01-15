@@ -9,8 +9,6 @@ void AliceChara::Start(ALC::Entity self) {
 	Character::Start(self);
 }
 
-void AliceChara::OnDestroy(ALC::Entity self) { }
-
 void AliceChara::Update(ALC::Entity self, ALC::Timestep ts) {
 	Character::UpdateMovement(self, ts);
 }

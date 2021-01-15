@@ -13,8 +13,8 @@ class BattleManager final {
 	ALC_NON_CONSTRUCTABLE(BattleManager);
 public:
 
-	static ALC::rect GetDeathBounds() { return s_deathBounds; }
-	static void SetDeathBounds(const ALC::rect& deathBounds) { s_deathBounds = deathBounds; }
+	static ALC::rect GetLevelBounds() { return s_levelBounds; }
+	static void SetLevelBounds(const ALC::rect& levelBounds) { s_levelBounds = levelBounds; }
 
 	static CharaType GetCharacter() { return s_type; }
 	static void SetCharcter(const CharaType type) { s_type = type; }
@@ -24,7 +24,7 @@ public:
 	static Character* InitAsCharacter(ALC::Entity entity);
 
 private:
-	static ALC::rect s_deathBounds;
+	static ALC::rect s_levelBounds;
 	static CharaType s_type;
 };
 

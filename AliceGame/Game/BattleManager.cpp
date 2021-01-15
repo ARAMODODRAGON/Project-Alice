@@ -1,7 +1,7 @@
 #include "BattleManager.hpp"
 #include "Characters\AliceChara.hpp"
 
-ALC::rect BattleManager::s_deathBounds;
+ALC::rect BattleManager::s_levelBounds;
 CharaType BattleManager::s_type = CharaType::None;
 
 Character* BattleManager::InitAsCharacter(ALC::Entity entity) {

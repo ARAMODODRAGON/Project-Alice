@@ -154,6 +154,8 @@
     <ClCompile Include="Game\Characters\AliceChara.cpp" />
     <ClCompile Include="Game\Characters\Character.cpp" />
     <ClCompile Include="Game\DialogueHandler.cpp" />
+    <ClCompile Include="Game\Enemies\Enemy.cpp" />
+    <ClCompile Include="Game\Enemies\RuiEnemy.cpp" />
     <ClCompile Include="Game\Scenes\BattleLevel.cpp" />
     <ClCompile Include="Game\Scenes\BattleLevels\DemoBTL.cpp" />
     <ClCompile Include="Game\Systems\BulletDeleterSystem.cpp" />
@@ -170,6 +172,8 @@
     <ClInclude Include="Game\Characters\AliceChara.hpp" />
     <ClInclude Include="Game\Characters\Character.hpp" />
     <ClInclude Include="Game\DialogueHandler.hpp" />
+    <ClInclude Include="Game\Enemies\Enemy.hpp" />
+    <ClInclude Include="Game\Enemies\RuiEnemy.hpp" />
     <ClInclude Include="Game\Scenes\BattleLevel.hpp" />
     <ClInclude Include="Game\Scenes\BattleLevels\DemoBTL.hpp" />
     <ClInclude Include="Game\Systems\BulletDeleterSystem.hpp" />

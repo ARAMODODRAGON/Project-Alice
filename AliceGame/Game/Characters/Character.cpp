@@ -25,6 +25,10 @@ ALC::Button Character::GetSlowButton() {
 	return ALC::Keyboard::GetKey(ALC::KeyCode::LeftShift);
 }
 
+ALC::Entity Character::GetColliderSprite() {
+	return GetRegistry().GetEntity(m_colliderEntity);
+}
+
 void Character::UpdateMovement(ALC::Entity self, ALC::Timestep ts) {
 	auto inputAxis = GetInputAxis();
 	auto slowinput = GetSlowButton().IsHeld();
@@ -47,7 +51,7 @@ void Character::UpdateMovement(ALC::Entity self, ALC::Timestep ts, const ALC::ve
 	ALC::rect cb;
 	cb.min = (tr.position + body.velocity * ts) + body.radius;
 	cb.max = (tr.position + body.velocity * ts) - body.radius;
-	ALC::rect lb = BattleManager::GetDeathBounds();
+	ALC::rect lb = BattleManager::GetLevelBounds();
 
 	// outside horizontal
 	if (cb.min.x > lb.max.x || cb.max.x < lb.min.x) {
@@ -62,23 +66,33 @@ void Character::UpdateMovement(ALC::Entity self, ALC::Timestep ts, const ALC::ve
 }
 
 void Character::Start(ALC::Entity self) {
+	using CM = ALC::ContentManager;
+
+	// make sure to add the components *before* we get the components
+	// if we dont then the positions of the components in memory can change which messes things up
+
 	// create the collider's sprite first so it is visible on top of the character
 	auto collEntity = GetRegistry().Create();
 	m_colliderEntity = collEntity.GetComponent<ALC::EntityInfo>().GetID();
-	auto& tr0 = collEntity.AddComponent<ALC::Transform2D>();
-	auto& spr0 = collEntity.AddComponent<ALC::SpriteComponent>();
+	collEntity.AddComponent<ALC::Transform2D>();
+	collEntity.AddComponent<ALC::SpriteComponent>();
 
-	using CM = ALC::ContentManager;
 	// add the required components
 	if (!self.HasComponent<ALC::CharacterBody>())	self.AddComponent<ALC::CharacterBody>();
 	if (!self.HasComponent<ALC::Transform2D>())		self.AddComponent<ALC::Transform2D>();
 	if (!self.HasComponent<ALC::SpriteComponent>())	self.AddComponent<ALC::SpriteComponent>();
 
-	// initalize components
-	auto [cb, tr, spr] = self.GetComponent<ALC::CharacterBody, ALC::Transform2D, ALC::SpriteComponent>();
+	// get our components only after 'adding' them
 
-	cb.radius = 4.0f;
-	auto lb = BattleManager::GetDeathBounds();
+	auto& cb = self.GetComponent<ALC::CharacterBody>();
+	auto& tr = self.GetComponent<ALC::Transform2D>();
+	auto& spr = self.GetComponent<ALC::SpriteComponent>();
+	auto& tr0 = collEntity.GetComponent<ALC::Transform2D>();
+	auto& spr0 = collEntity.GetComponent<ALC::SpriteComponent>();
+
+	// initalize 
+	cb.radius = 2.0f;
+	auto lb = BattleManager::GetLevelBounds();
 	tr.position.x = 0.0f;
 	tr.position.y = lb.min.y * 0.5f;
 	spr.bounds = ALC::rect(8.0f);

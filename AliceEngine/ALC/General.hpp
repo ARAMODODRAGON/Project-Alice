@@ -83,6 +83,9 @@ namespace ALC {
 	#define ALC_COLOR_YELLOW	::ALC::vec4(1.0f, 1.0f, 0.0f, 1.0f)
 	#define ALC_COLOR_PURPLE	::ALC::vec4(1.0f, 0.0f, 1.0f, 1.0f)
 
+	// creates a color 
+	#define ALC_COLOR(r, g, b, a) ::ALC::vec4(r, g, b, a);
+	
 	// creates a color using only the RGB values and alpha defaulted to 1.0f
 	#define ALC_COLOR_RGB(r, g, b) ::ALC::vec4(r, g, b, 1.0f);
 

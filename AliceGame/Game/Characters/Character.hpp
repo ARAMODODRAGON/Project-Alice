@@ -21,6 +21,9 @@ public:
 	float GetSlowScalar() const { return m_slowScalar; }
 	void SetSlowScalar(const float slowScalar) { m_slowScalar = slowScalar; }
 
+	// returns the entity that the collider sprite is attached to
+	ALC::Entity GetColliderSprite();
+
 	// call this to update the characters movement
 	// and clamp them within the BattleManager::GetLevelBounds()
 	void UpdateMovement(ALC::Entity self, ALC::Timestep ts);
@@ -28,7 +31,7 @@ public:
 	// alternate call with more inputs
 	void UpdateMovement(ALC::Entity self, ALC::Timestep ts, const ALC::vec2& inputAxis, const float speed);
 
-	// garuntees that this entity has a character body, transform, and spritecomponent
+	// garuntees that this entity has a character body, transform, and spritecomponent + a collider sprite entity
 	virtual void Start(ALC::Entity self);
 
 	// updates the collider sprite entity to match this characters position

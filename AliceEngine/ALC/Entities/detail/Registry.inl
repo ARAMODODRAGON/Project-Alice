@@ -8,6 +8,9 @@ namespace ALC {
 	inline Entity::Entity()
 		: m_entity(entt::null), m_registry(nullptr) { }
 
+	inline Entity::Entity(std::nullptr_t)
+		: m_entity(entt::null), m_registry(nullptr) { }
+
 	inline bool Entity::IsValid() const {
 		return m_entity != entt::null;
 	}
