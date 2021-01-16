@@ -117,13 +117,15 @@ void Character::UpdateMovement(ALC::Entity self, ALC::Timestep ts, const ALC::ve
 
 	// outside horizontal
 	if (cb.min.x > lb.max.x || cb.max.x < lb.min.x) {
+		tr.position.x += body.velocity.x;
 		body.velocity.x = 0.0f;
-		tr.position.x = ALC::Clamp(tr.position.x, lb.min.x, lb.max.x);
+		tr.position.x = ALC::Clamp(tr.position.x, lb.min.x + body.radius, lb.max.x - body.radius);
 	}
 	// outside vertical
 	if (cb.min.y > lb.max.y || cb.max.y < lb.min.y) {
+		tr.position.y += body.velocity.y;
 		body.velocity.y = 0.0f;
-		tr.position.y = ALC::Clamp(tr.position.y, lb.min.y, lb.max.y);
+		tr.position.y = ALC::Clamp(tr.position.y, lb.min.y + body.radius, lb.max.y - body.radius);
 	}
 }
 
