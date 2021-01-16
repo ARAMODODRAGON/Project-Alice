@@ -1,4 +1,4 @@
-#include "..\Registry.hpp"
+//#include "..\Registry.hpp"
 //#include "..\Registry.hpp"
 
 namespace ALC {

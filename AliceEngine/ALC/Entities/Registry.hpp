@@ -8,7 +8,7 @@
 namespace ALC {
 
 	// represents an entity in the registry
-	// becomes invalid if the Registry::EndFrame() is called
+	// becomes invalid at the end of the frame
 	struct Entity final {
 
 		Entity();

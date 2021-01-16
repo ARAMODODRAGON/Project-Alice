@@ -1,6 +1,14 @@
 #include "Character.hpp"
 
-Character::Character() : m_maxSpeed(45.0f), m_slowScalar(0.4f) { }
+#define INVULN_FLASH_SPEED_SCALAR (1.0f / 0.06f)
+
+Character::Character()
+	: m_health(3.0f)
+	, m_invuln(0.0f)
+	, m_shouldFlashOnInvuln(true)
+	, m_invulnOnHit(1.0f)
+	, m_maxSpeed(45.0f)
+	, m_slowScalar(0.4f) { }
 
 Character::~Character() { }
 
@@ -23,6 +31,60 @@ ALC::Button Character::GetShootButton() {
 
 ALC::Button Character::GetSlowButton() {
 	return ALC::Keyboard::GetKey(ALC::KeyCode::LeftShift);
+}
+
+void Character::TakeDamage(const float damage) {
+	// call the other function, require 'self' to invoke virtual functions
+	auto self = GetRegistry().GetEntity(GetEntityID());
+	TakeDamage(self, damage);
+}
+
+void Character::TakeDamage(ALC::Entity self, const float damage) {
+	const bool wasDead = IsDead();
+	// take damage
+	OnTakeDamage(self, damage);
+
+	// on die
+	if (IsDead() && !wasDead) OnDeath(self);
+}
+
+void Character::UpdateCollisions(ALC::Entity self, ALC::Timestep ts) {
+	// character was invulnerable, ignore collisions
+	if (IsInvuln()) {
+		if (m_invuln > 0.0f) m_invuln -= ts;
+		if (m_invuln < 0.0f) m_invuln = 0.0f;
+		return;
+	}
+
+	auto& cb = self.GetComponent<ALC::CharacterBody>();
+
+	// take damage once if there was a collision
+	// then do invuln
+	if (m_invulnOnHit > 0.0f) {
+		if (cb.Count() > 0) {
+			TakeDamage(self, 1.0f);
+			if (!IsDead()) {
+				m_invuln -= ts;
+				if (m_invuln < 0.0f) m_invuln = 0.0f;
+			}
+		}
+
+		if (m_invuln > 0.0f) m_invuln -= ts;
+		if (m_invuln < 0.0f) m_invuln = 0.0f;
+	}
+
+	// take damage for each collision
+	else {
+		for (auto& cinfo : cb) {
+			TakeDamage(self, 1.0f);
+			if (IsDead()) break;
+		}
+	}
+}
+
+void Character::OnTakeDamage(ALC::Entity self, const float damage) {
+	if ((m_health -= damage) < 0.0f) m_health = 0.0f;
+	if (m_invulnOnHit > 0.0f) m_invuln = m_invulnOnHit;
 }
 
 ALC::Entity Character::GetColliderSprite() {
@@ -69,7 +131,7 @@ void Character::Start(ALC::Entity self) {
 	using CM = ALC::ContentManager;
 
 	// make sure to add the components *before* we get the components
-	// if we dont then the positions of the components in memory can change which messes things up
+	// if we dont then the positions of the components in memory can change which messes the references
 
 	// create the collider's sprite first so it is visible on top of the character
 	auto collEntity = GetRegistry().Create();
@@ -91,7 +153,7 @@ void Character::Start(ALC::Entity self) {
 	auto& spr0 = collEntity.GetComponent<ALC::SpriteComponent>();
 
 	// initalize 
-	cb.radius = 2.0f;
+	cb.radius = 1.0f;
 	auto lb = BattleManager::GetLevelBounds();
 	tr.position.x = 0.0f;
 	tr.position.y = lb.min.y * 0.5f;
@@ -104,10 +166,21 @@ void Character::Start(ALC::Entity self) {
 	spr0.textureBounds = spr0.texture.GetBounds();
 }
 
-void Character::UpdateColliderSprite(ALC::Entity self, ALC::Timestep ts) {
+void Character::UpdateSprites(ALC::Entity self, ALC::Timestep ts) {
+	auto [cb, tr, spr] = self.GetComponent<ALC::CharacterBody, ALC::Transform2D, ALC::SpriteComponent>();
+
+	if (m_shouldFlashOnInvuln) {
+		// update our sprite accordingly
+		if (m_invuln > 0.0f)
+			// [abs(tan(t) * 0.7)] produces a nice flashing animation
+			// [0.4 * abs(tan(t) * 0.7) + 0.6] scales it so it ranges from 0.6 to 1
+			spr.color.a = 0.4f * fabs(tanf(m_invuln * INVULN_FLASH_SPEED_SCALAR) * 0.7f) + 0.6f;
+		else
+			spr.color.a = 1.0f;
+	}
+
 	// update the collider entity
 	if (auto collEntity = GetRegistry().GetEntity(m_colliderEntity)) {
-		auto [cb, tr, spr] = self.GetComponent<ALC::CharacterBody, ALC::Transform2D, ALC::SpriteComponent>();
 
 		auto& tr0 = collEntity.GetComponent<ALC::Transform2D>();
 		tr0.position = tr.position; // place on top of character

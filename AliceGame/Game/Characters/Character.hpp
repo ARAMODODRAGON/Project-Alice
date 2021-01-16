@@ -18,8 +18,37 @@ public:
 
 	float GetMaxSpeed() const { return m_maxSpeed; }
 	void SetMaxSpeed(const float maxSpeed) { m_maxSpeed = maxSpeed; }
+
 	float GetSlowScalar() const { return m_slowScalar; }
 	void SetSlowScalar(const float slowScalar) { m_slowScalar = slowScalar; }
+
+	float GetHealth() const { return m_health; }
+	void SetHealth(const float health) { m_health = health; }
+	
+	float GetShouldFlashOnInvuln() const { return m_shouldFlashOnInvuln; }
+	void SetShouldFlashOnInvuln(const float shouldFlashOnInvuln) { m_shouldFlashOnInvuln = shouldFlashOnInvuln; }
+
+	float GetInvuln() const { return m_invuln; }
+	void SetInvuln(const float invuln) { m_invuln = invuln; }
+
+	// returns true if this player is dead
+	bool IsDead() const { return ALC::NearlyZero(m_health); }
+
+	// returns true if this player is invulnerable
+	bool IsInvuln() const { return m_invuln > 0.0f; }
+
+	// makes the player take damage
+	void TakeDamage(const float damage = 1.0f);
+
+	// iterates through the collisions and invokes OnTakeDamage(...) for each if the player should take damage
+	// also iterates the invulnerability counter
+	void UpdateCollisions(ALC::Entity self, ALC::Timestep ts);
+
+	// called for all damage taken, call base to update health and invuln automatically
+	virtual void OnTakeDamage(ALC::Entity self, const float damage);
+
+	// called on death, always after OnTakeDamage(...)
+	virtual void OnDeath(ALC::Entity self) { }
 
 	// returns the entity that the collider sprite is attached to
 	ALC::Entity GetColliderSprite();
@@ -35,9 +64,17 @@ public:
 	virtual void Start(ALC::Entity self);
 
 	// updates the collider sprite entity to match this characters position
-	void UpdateColliderSprite(ALC::Entity self, ALC::Timestep ts);
+	// updates this entity's sprite to match the invulnerability
+	void UpdateSprites(ALC::Entity self, ALC::Timestep ts);
 
 private:
+
+	void TakeDamage(ALC::Entity self, const float damage = 1.0f);
+
+	float m_health;
+	float m_invuln;
+	bool m_shouldFlashOnInvuln;
+	float m_invulnOnHit;
 	float m_maxSpeed;
 	float m_slowScalar;
 	ALC::EntityID m_colliderEntity;

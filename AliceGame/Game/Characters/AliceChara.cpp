@@ -10,9 +10,10 @@ void AliceChara::Start(ALC::Entity self) {
 }
 
 void AliceChara::Update(ALC::Entity self, ALC::Timestep ts) {
-	Character::UpdateMovement(self, ts);
+	UpdateMovement(self, ts);
 }
 
-void AliceChara::LateUpdate(ALC::Entity self, ALC::Timestep ts) { 
-	Character::UpdateColliderSprite(self, ts);
+void AliceChara::LateUpdate(ALC::Entity self, ALC::Timestep ts) {
+	UpdateCollisions(self, ts);
+	UpdateSprites(self, ts);
 }
