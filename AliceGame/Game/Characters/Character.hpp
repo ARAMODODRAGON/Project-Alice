@@ -14,8 +14,10 @@ public:
 	virtual ~Character() = 0;
 
 	ALC::vec2 GetInputAxis() const;
-	ALC::Button GetShootButton();
-	ALC::Button GetSlowButton();
+	ALC::Button GetShootButton() const;
+	ALC::Button GetSlowButton() const;
+	ALC::Button GetDefButton() const;
+	ALC::Button GetModButton() const;
 
 	float GetMaxSpeed() const { return m_maxSpeed; }
 	void SetMaxSpeed(const float maxSpeed) { m_maxSpeed = maxSpeed; }

@@ -8,11 +8,11 @@ struct HomingBullet {
 
 	// the rotation speed of the bullet
 	// [requires >= 0]
-	float rotationSpeed = 40.0f;
+	float rotationSpeed = 170.0f;
 
 	// the rotation acceleration per second
 	// [requires >= 0]
-	float rotationAccel = 150.0f;
+	float rotationAccel = 250.0f;
 
 	// the target is decided automatically by the system
 	ALC::uint32 GetTargetID() const { return __targetID; }

@@ -74,8 +74,8 @@ namespace ALC {
 
 			// change state
 			if (m_currentState != m_nextState) {
-				auto laststate = m_boundStates.find(m_nextState);
-				auto nextstate = m_boundStates.find(m_currentState);
+				auto laststate = m_boundStates.find(m_currentState);
+				auto nextstate = m_boundStates.find(m_nextState);
 				ALC_ASSERT(nextstate != m_boundStates.end(), "next state must be a valid state");
 
 				auto laststateV = m_currentState;

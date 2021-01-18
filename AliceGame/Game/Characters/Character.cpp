@@ -25,12 +25,20 @@ ALC::vec2 Character::GetInputAxis() const {
 	);
 }
 
-ALC::Button Character::GetShootButton() {
+ALC::Button Character::GetShootButton() const {
 	return ALC::Keyboard::GetKey(ALC::KeyCode::KeyC);
 }
 
-ALC::Button Character::GetSlowButton() {
+ALC::Button Character::GetSlowButton() const {
 	return ALC::Keyboard::GetKey(ALC::KeyCode::LeftShift);
+}
+
+ALC::Button Character::GetDefButton() const {
+	return ALC::Keyboard::GetKey(ALC::KeyCode::KeyX);
+}
+
+ALC::Button Character::GetModButton() const {
+	return ALC::Keyboard::GetKey(ALC::KeyCode::KeyZ);
 }
 
 void Character::TakeDamage(const float damage) {
