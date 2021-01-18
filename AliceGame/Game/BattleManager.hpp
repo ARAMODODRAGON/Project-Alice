@@ -13,6 +13,8 @@ class BattleManager final {
 	ALC_NON_CONSTRUCTABLE(BattleManager);
 public:
 
+	static ALC::vec2 PrefferedResolution() { return ALC::vec2(1280.0f, 720.0f); }
+
 	static ALC::rect GetLevelBounds() { return s_levelBounds; }
 	static void SetLevelBounds(const ALC::rect& levelBounds) { s_levelBounds = levelBounds; }
 

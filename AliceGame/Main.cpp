@@ -9,10 +9,11 @@ int main(int argc, char* agrv[]) {
 	// 0.88f is the ratio of the level bounds in touhou
 	// 15.0f is the offset from the top of the screen
 	{
+		ALC::vec2 prefsize = BattleManager::PrefferedResolution();
 		constexpr float ratio = 0.88f;
 		constexpr float topoffset = 15.0f;
-		constexpr float basewidth = 712.0f * 0.5f;
-		constexpr float baseheight = 400.0f * 0.5f;
+		const float basewidth = prefsize.x * 0.5f;
+		const float baseheight = prefsize.y * 0.5f;
 		constexpr float scalar = 0.3f;
 
 		ALC::rect levelBounds;

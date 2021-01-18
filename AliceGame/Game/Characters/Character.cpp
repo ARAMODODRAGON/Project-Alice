@@ -7,7 +7,7 @@ Character::Character()
 	, m_invuln(0.0f)
 	, m_shouldFlashOnInvuln(true)
 	, m_invulnOnHit(1.0f)
-	, m_maxSpeed(45.0f)
+	, m_maxSpeed(90.0f)
 	, m_slowScalar(0.4f) { }
 
 Character::~Character() { }
