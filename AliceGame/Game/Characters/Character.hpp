@@ -4,6 +4,7 @@
 #include <ALC\Input.hpp>
 #include <ALC\Rendering.hpp>
 #include <ALC\Content.hpp>
+#include <ALC\StateMachine.hpp>
 #include "../BattleManager.hpp"
 
 class Character : public ALC::ShooterBehavior {

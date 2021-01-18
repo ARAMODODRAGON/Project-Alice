@@ -21,16 +21,20 @@ namespace ALC {
 		// called during that state
 		using StateFunc = void(Class::*)(Params...);
 
-		// called when switching away from state
-		// param is the last state
+		// called when switching to a state
+		// Statetype is the last state
 		using BeginStateFunc = void(Class::*)(const Statetype, Params...);
+
+		// called when switching away from a state
+		// Statetype is the next state
+		using EndStateFunc = void(Class::*)(const Statetype, Params...);
 
 		// defaults the state to 0
 		StateMachine(Class* instance)
 			: m_instance(instance)
 			, m_currentState(static_cast<Statetype>(0))
 			, m_nextState(m_currentState) {
-			ALC_ASSERT(instance, "instance must be true");
+			ALC_ASSERT(instance, "instance must not be null");
 		}
 
 		// sets the state 
@@ -38,39 +42,23 @@ namespace ALC {
 			: m_instance(instance)
 			, m_currentState(state)
 			, m_nextState(m_currentState) {
-			ALC_ASSERT(instance, "instance must be true");
+			ALC_ASSERT(instance, "instance must not be null");
 		}
 
 		~StateMachine() { }
 
-		// adds a state to the statemachine
-		void Add(const Statetype state, StateFunc func) {
-			// bind only once
-			ALC_ASSERT(m_boundStates.find(state) == m_boundStates.end(), "state must not already be set");
-			// set the state
-			m_boundStates.emplace(state, func);
-		}
-
-		// adds a begin state to the statemachine
-		void Add(const Statetype state, BeginStateFunc func) {
-			// bind only once
-			ALC_ASSERT(m_boundBeginStates.find(state) == m_boundBeginStates.end(), "beginstate must not already be set");
-			// set the state
-			m_boundBeginStates.emplace(state, func);
-		}
-
-		// removes a state from the statemachine
-		void RemoveState(const Statetype state) {
-			auto it = m_boundStates.find(state);
-			if (it != m_boundStates.end())
-				m_boundStates.erase(it);
-		}
-
-		// removes a begin state from the statemachine
-		void RemoveBeginState(const Statetype state) {
-			auto it = m_boundBeginStates.find(state);
-			if (it != m_boundBeginStates.end())
-				m_boundBeginStates.erase(it);
+		// adds or modifies a state in the statemachine
+		// set null to unbind
+		void Bind(const Statetype state, StateFunc step, BeginStateFunc begin = nullptr, EndStateFunc end = nullptr) {
+			if (step != nullptr) {
+				// create the binding
+				StateBinding binding{ begin, step, end };
+				// set the state
+				m_boundStates.emplace(state, binding).first->second = binding;
+			} else {
+				// remove the state
+				m_boundStates.erase(m_boundStates.find(state));
+			}
 		}
 
 		// returns the current state
@@ -84,19 +72,23 @@ namespace ALC {
 		// invokes the current state
 		void operator()(Params... params) {
 
+			// change state
 			if (m_currentState != m_nextState) {
-				auto it = m_boundBeginStates.find(m_nextState);
-				// invoke change state
-				if (it != m_boundBeginStates.end())
-					(m_instance->*(it->second))(m_currentState, params...);
+				auto laststate = m_boundStates.find(m_nextState);
+				auto nextstate = m_boundStates.find(m_currentState);
+				ALC_ASSERT(nextstate != m_boundStates.end(), "next state must be a valid state");
+
+				auto laststateV = m_currentState;
 				m_currentState = m_nextState;
+
+				// end last state and begin new state
+				if (laststate->second.end) (m_instance->*(laststate->second.end))(m_currentState, params...);
+				if (nextstate->second.begin) (m_instance->*(nextstate->second.begin))(laststateV, params...);
+
 			}
 
-			// state must be bound
-			ALC_ASSERT(m_boundStates.find(m_currentState) != m_boundStates.end(), "callbacks must be set");
-
-			// call
-			(m_instance->*(m_boundStates[m_currentState]))(params...);
+			// step
+			(m_instance->*(m_boundStates[m_currentState].step))(params...);
 
 		}
 
@@ -105,10 +97,18 @@ namespace ALC {
 		Class* m_instance;
 		Statetype m_currentState;
 		Statetype m_nextState;
-		unordered_map<Statetype, StateFunc> m_boundStates;
-		unordered_map<Statetype, BeginStateFunc> m_boundBeginStates;
+
+		struct StateBinding {
+			BeginStateFunc begin;
+			StateFunc step;
+			EndStateFunc end;
+		};
+		unordered_map<Statetype, StateBinding> m_boundStates;
 
 	};
+
+	template<typename Class, typename StateTy>
+	using EntityStateMachine = StateMachine<Class, StateTy, Entity, Timestep>;
 
 }
 

@@ -8,6 +8,8 @@ namespace ALC {
 
 		EntityID() : m_ID(-1) { }
 
+		EntityID(std::nullptr_t) : m_ID(-1) { }
+
 		// returns true if this is a valid UID
 		bool IsValid() const { return m_ID != -1; }
 

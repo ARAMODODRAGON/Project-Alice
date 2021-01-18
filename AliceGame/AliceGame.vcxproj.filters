@@ -48,6 +48,9 @@
     <ClCompile Include="Game\Enemies\RuiEnemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Systems\Bullet Types\HomingBulletSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\AliceGame.hpp">
@@ -78,6 +81,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game\Enemies\RuiEnemy.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Systems\Bullet Types\HomingBulletSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

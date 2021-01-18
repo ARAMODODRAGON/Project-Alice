@@ -18,6 +18,7 @@ public:
 	ALC::Camera& GetCamera() { return m_camera; }
 	ALC::SpriteBatch& GetSpr() { return m_batch; }
 	ALC::UIBatch& GetUI() { return m_ui; }
+	ALC::EntityCreationHandler& GetECH() { return m_ech; }
 
 	float GetTimescale() const { return m_timescale; }
 	void SetTimescale(const float timescale) { m_timescale = timescale; }
@@ -32,10 +33,10 @@ protected:
 	virtual void Draw();
 	virtual void PostDraw() { }
 	virtual void PreDraw() { }
-
-private: 
-
 	void Step(ALC::Timestep t) override;
+
+private:
+
 
 	ALC::ContentStorage m_storage;
 	ALC::Registry m_reg;

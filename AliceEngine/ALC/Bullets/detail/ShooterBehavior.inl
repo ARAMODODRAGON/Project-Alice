@@ -11,7 +11,10 @@ inline void ALC::ShooterBehavior::SetDefaultPosition(const vec2& defaultPosition
 template<typename... Components>
 inline void ALC::ShooterBehavior::SetBulletTypes() {
 	if constexpr (sizeof...(Components) > 0) {
-		m_attachcomponents = [](Entity e)->void { e.AddComponent<Components...>(); };
+		m_attachcomponents = [](Entity e)->void {
+			// make tuple used to garuntee that we can create multiple components
+			auto t = std::make_tuple(e.AddComponent<Components>()...);
+		};
 	} else {
 		m_attachcomponents = nullptr;
 	}
