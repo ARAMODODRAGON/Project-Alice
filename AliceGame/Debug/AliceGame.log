@@ -1,2 +1,6 @@
-﻿  AliceChara.cpp
+﻿  Enemy.cpp
+  RuiEnemy.cpp
+  DemoBTL.cpp
+  Main.cpp
+  Generating Code...
   AliceGame.vcxproj -> D:\Documents\``Project Alice\Project Alice\Debug\AliceGame.exe
