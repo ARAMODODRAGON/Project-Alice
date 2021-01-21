@@ -2,9 +2,12 @@
 
 Enemy::Enemy() : m_health(1000.0f), m_lifetime(-1.0f) { 
 	ShooterBehavior::SetDefaultCollisionmask(BTL_PLAYERMASK);
+	BattleManager::AddEnemy(this);
 }
 
-Enemy::~Enemy() { }
+Enemy::~Enemy() { 
+	BattleManager::RemoveEnemy(this);
+}
 
 void Enemy::TakeDamage(const float damage) {
 	// call the other function, require 'self' to invoke virtual functions
@@ -26,7 +29,7 @@ void Enemy::UpdateCollisions(ALC::Entity self, ALC::Timestep ts) {
 
 	// take damage for each collision
 	for (auto& cinfo : cb) {
-		TakeDamage(self, 1.0f);
+		TakeDamage(self, cinfo.GetDamage());
 		if (m_health <= 0.0f) break;
 	}
 }
@@ -84,11 +87,11 @@ void Enemy::Start(ALC::Entity self) {
 	// initalize components
 	auto [cb, tr, spr] = self.GetComponent<ALC::CharacterBody, ALC::Transform2D, ALC::SpriteComponent>();
 
-	cb.radius = 4.0f;
+	cb.radius = 20.0f;
 	cb.mask = BTL_ENEMYMASK;
 	auto lb = BattleManager::GetLevelBounds();
 	tr.position.x = 0.0f;
 	tr.position.y = lb.max.y * 0.5f;
-	spr.bounds = ALC::rect(8.0f);
+	spr.bounds = ALC::rect(20.0f);
 
 }

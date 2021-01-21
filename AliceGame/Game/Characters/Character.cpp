@@ -8,7 +8,7 @@ Character::Character()
 	, m_shouldFlashOnInvuln(true)
 	, m_invulnOnHit(1.0f)
 	, m_maxSpeed(300.0f)
-	, m_slowScalar(0.4f) { 
+	, m_slowScalar(0.4f) {
 	ShooterBehavior::SetDefaultCollisionmask(BTL_ENEMYMASK); // only hit enemies
 }
 
@@ -86,8 +86,8 @@ void Character::UpdateCollisions(ALC::Entity self, ALC::Timestep ts) {
 	// take damage for each collision
 	else {
 		for (auto& cinfo : cb) {
-			TakeDamage(self, 1.0f);
 			if (IsDead()) break;
+			TakeDamage(self, cinfo.GetDamage());
 		}
 	}
 }

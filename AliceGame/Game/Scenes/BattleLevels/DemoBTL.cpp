@@ -5,8 +5,8 @@ DemoBTL::DemoBTL()
 	: m_musicFile("Resources/Audio/Empty_Score.mp3")
 	, m_beginLevel("Resources/Dialogues/TestDialogue.json", &GetStorage())
 	, m_enemyBehavior(nullptr)
-	, m_deleter(GetECH()) 
-	, m_homingsystem(GetReg()) { 
+	, m_deleter(GetECH())
+	, m_homingsystem(GetReg()) {
 	m_deleter.SetDeathBoundry(BattleManager::GetLevelBounds());
 }
 

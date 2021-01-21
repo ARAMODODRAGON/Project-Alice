@@ -4,6 +4,7 @@
 #include <ALC\Bullets.hpp>
 
 class Character;
+class Enemy;
 
 enum class CharaType : ALC::uint8 {
 	None, Alice, Rui, Eden
@@ -26,6 +27,10 @@ public:
 	static CharaType GetCharacter() { return s_type; }
 	static void SetCharcter(const CharaType type) { s_type = type; }
 
+	static void AddEnemy(Enemy* enemy);
+	static Enemy* GetEnemy();
+	static void RemoveEnemy(Enemy* enemy);
+
 	// initializes this entity as whatever CharaType is stored in the battlemanager
 	// returns null if entity is invalid or CharaType is None
 	static Character* InitAsCharacter(ALC::Entity entity);
@@ -33,6 +38,7 @@ public:
 private:
 	static ALC::rect s_levelBounds;
 	static CharaType s_type;
+	static Enemy* s_enemy;
 };
 
 #endif // !ALICE_BATTLEMANAGER_HPP

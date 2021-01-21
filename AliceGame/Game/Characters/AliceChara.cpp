@@ -11,7 +11,7 @@ AliceChara::AliceChara()
 	, m_basicShootSpeed(0.04f)
 	, m_homingShootSpeed(0.12f)
 	, m_rotationspeed(300.0f)
-	, m_spinspeed(1200.0f)
+	, m_spinspeed(900.0f)
 	, m_isRepositioning(false)
 	, m_activeSpell(this, Spell::Homing) {
 	// bind states
@@ -365,6 +365,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 				// update body collision
 				auto& body = e.GetComponent<ALC::BulletBody>();
 				body.radius = 4.5f;
+				body.damage = 2.0f;
 
 				// update position
 				auto& tr = e.GetComponent<ALC::Transform2D>();
@@ -387,6 +388,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 				// update body collision
 				auto& body = e.GetComponent<ALC::BulletBody>();
 				body.radius = 18.0f;
+				body.damage = 2.0f;
 
 				// update position
 				auto& tr = e.GetComponent<ALC::Transform2D>();
@@ -409,6 +411,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 				// update body collision
 				auto& body = e.GetComponent<ALC::BulletBody>();
 				body.radius = 18.0f;
+				body.damage = 2.0f;
 
 				// update position
 				auto& tr = e.GetComponent<ALC::Transform2D>();

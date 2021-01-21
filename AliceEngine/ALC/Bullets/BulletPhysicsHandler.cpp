@@ -68,7 +68,7 @@ namespace ALC {
 					}
 
 					// new entry
-					CollisionInfo cinfo(0, b0.mask | b1.mask, bi.GetID(), CollisionState::Begin);
+					BCollisionInfo cinfo(0, b0.mask & b1.mask, bi.GetID(), CollisionState::Begin, b1.damage);
 					collinfo.push_back(cinfo);
 					continue;
 				}
