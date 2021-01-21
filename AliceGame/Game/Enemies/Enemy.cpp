@@ -1,6 +1,6 @@
 #include "Enemy.hpp"
 
-Enemy::Enemy() : m_health(1000.0f), m_lifetime(-1.0f) { 
+Enemy::Enemy() : m_health(1000.0f), m_lifetime(-1.0f), m_isDone(false) { 
 	ShooterBehavior::SetDefaultCollisionmask(BTL_PLAYERMASK);
 	BattleManager::AddEnemy(this);
 }

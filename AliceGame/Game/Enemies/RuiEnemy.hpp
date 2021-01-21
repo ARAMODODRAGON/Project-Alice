@@ -8,8 +8,11 @@ public:
 	RuiEnemy();
 	~RuiEnemy();
 
-	virtual void Start(ALC::Entity self);
-	virtual void Update(ALC::Entity self, ALC::Timestep ts);
+	void Start(ALC::Entity self) override;
+	void Update(ALC::Entity self, ALC::Timestep ts) override;
+	void LateUpdate(ALC::Entity self, ALC::Timestep ts) override;
+	void OnDeath(ALC::Entity self) override;
+	void BattleBegin() override;
 
 };
 

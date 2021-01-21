@@ -20,6 +20,19 @@ void RuiEnemy::Start(ALC::Entity self) {
 
 }
 
-void RuiEnemy::Update(ALC::Entity self, ALC::Timestep ts) {
+void RuiEnemy::Update(ALC::Entity self, ALC::Timestep ts) { }
 
+void RuiEnemy::LateUpdate(ALC::Entity self, ALC::Timestep ts) {
+
+	// takes damage from all bullets, calls OnDeath when it reaches 0
+	UpdateCollisions(self, ts);
+
+	// updates the lifetime, calls OnDeath when it reaches 0
+	UpdateLifetime(self, ts);
 }
+
+void RuiEnemy::OnDeath(ALC::Entity self) { 
+	// health = 0 or lifetime = 0
+}
+
+void RuiEnemy::BattleBegin() { }

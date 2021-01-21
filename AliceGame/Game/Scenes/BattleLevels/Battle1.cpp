@@ -1,7 +1,7 @@
-#include "DemoBTL.hpp"
+#include "Battle1.hpp"
 #include <ALC/Input.hpp>
 
-DemoBTL::DemoBTL()
+Battle1::Battle1()
 	: m_musicFile("Resources/Audio/Empty_Score.mp3")
 	, m_beginLevel("Resources/Dialogues/TestDialogue.json", &GetStorage())
 	, m_enemyBehavior(nullptr)
@@ -10,9 +10,9 @@ DemoBTL::DemoBTL()
 	m_deleter.SetDeathBoundry(BattleManager::GetLevelBounds());
 }
 
-DemoBTL::~DemoBTL() { }
+Battle1::~Battle1() { }
 
-void DemoBTL::Init() {
+void Battle1::Init() {
 
 	// load our music
 	if (ALC::SoundSystem::LoadMusic(m_musicFile)) {
@@ -29,13 +29,14 @@ void DemoBTL::Init() {
 	// create enemy
 	auto enemy = GetReg().Create();
 	m_enemyBehavior = enemy.AddBehavior<RuiEnemy>();
+	m_enemyBehavior->BattleBegin();
 	m_enemy = enemy.GetComponent<ALC::EntityInfo>().GetID();
 
 	// target enemy
 	m_homingsystem.AddTarget(m_enemy);
 }
 
-void DemoBTL::Exit() {
+void Battle1::Exit() {
 	BattleLevel::Exit();
 
 	// stop and delete the music
@@ -43,9 +44,9 @@ void DemoBTL::Exit() {
 	ALC::SoundSystem::UnloadMusic(m_musicFile);
 }
 
-void DemoBTL::GameStep(ALC::Timestep ts) { }
+void Battle1::GameStep(ALC::Timestep ts) { }
 
-void DemoBTL::Step(ALC::Timestep ts) {
+void Battle1::Step(ALC::Timestep ts) {
 	BattleLevel::Step(ts);
 	auto& reg = GetReg();
 

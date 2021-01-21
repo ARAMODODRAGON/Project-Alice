@@ -1,6 +1,8 @@
 #include "BattleLevel.hpp"
 
-BattleLevel::BattleLevel() : m_timescale(1.0f), m_character(nullptr) { }
+BattleLevel::BattleLevel() : m_timescale(1.0f), m_character(nullptr) { 
+	m_ui.SetInternalScreenSize(BattleManager::PrefferedResolution());
+}
 
 BattleLevel::~BattleLevel() { }
 

@@ -1,11 +1,10 @@
 #include "Game\AliceGame.hpp"
 #include "Game\BattleManager.hpp"
-#include "Game\Scenes\BattleLevels\DemoBTL.hpp"
+#include "Game\Scenes\BattleLevels\Battle1.hpp"
 
 int main(int argc, char* agrv[]) {
 
 	// prepare the level boundries
-	// based on if the window is 712x400
 	// 0.88f is the ratio of the level bounds in touhou
 	// 15.0f is the offset from the top of the screen
 	{
@@ -27,7 +26,7 @@ int main(int argc, char* agrv[]) {
 	}
 
 	const ALC::vector<ALC::SceneBinding> SceneIndex = {
-		ALC_BIND_SCENE(DemoBTL)
+		ALC_BIND_SCENE(Battle1)
 	};
 
 	ALC::SceneManager::Start<AliceGame>("Project Alice", ALC::uvec2(1280, 720), SceneIndex);

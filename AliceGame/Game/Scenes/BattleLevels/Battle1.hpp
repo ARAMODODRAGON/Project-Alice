@@ -6,11 +6,11 @@
 #include "../../Systems/BulletDeleterSystem.hpp"
 #include "../../Systems/Bullet Types/HomingBulletSystem.hpp"
 
-class DemoBTL final : public BattleLevel {
+class Battle1 final : public BattleLevel {
 public:
 
-	DemoBTL();
-	~DemoBTL();
+	Battle1();
+	~Battle1();
 
 private:
 	void Init() override;

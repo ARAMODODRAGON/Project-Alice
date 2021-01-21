@@ -12,6 +12,12 @@ public:
 	Enemy();
 	virtual ~Enemy() = 0;
 
+	// call to mark this enemy as "done" so the post battle cutscene can start
+	void MarkDone() { m_isDone = true; }
+
+	// returns if this
+	bool IsDone() const { return m_isDone; }
+
 	float GetHealth() const { return m_health; }
 	void SetHealth(const float health) { m_health = health; }
 
@@ -36,6 +42,9 @@ public:
 	// updates lifetime, calls OnDeath(...) when timer == 0
 	void UpdateLifetime(ALC::Entity self, ALC::Timestep ts, const float scalar = 1.0f);
 
+	// called by the scene when a battle begins
+	virtual void BattleBegin() = 0;
+
 	// call this to update the characters movement
 	// and clamp them within the BattleManager::GetLevelBounds()
 	void UpdateMovement(ALC::Entity self, ALC::Timestep ts, const ALC::vec2& velocity);
@@ -49,6 +58,7 @@ private:
 
 	float m_health;
 	float m_lifetime;
+	bool m_isDone;
 };
 
 #endif // !ALICE_ENEMIES_ENEMY_HPP
