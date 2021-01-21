@@ -1,3 +1,4 @@
+//#include "..\ShooterBehavior.hpp"
 
 
 inline void ALC::ShooterBehavior::SetDefaultVelocity(const vec2& defaultVelocity) {
@@ -6,6 +7,10 @@ inline void ALC::ShooterBehavior::SetDefaultVelocity(const vec2& defaultVelocity
 
 inline void ALC::ShooterBehavior::SetDefaultPosition(const vec2& defaultPosition) {
 	m_defaultPosition = defaultPosition;
+}
+
+inline void ALC::ShooterBehavior::SetDefaultCollisionmask(const Layermask32& defaultCollisionmask) { 
+	m_defaultCollisionmask = defaultCollisionmask;
 }
 
 template<typename... Components>

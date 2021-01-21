@@ -14,7 +14,7 @@ int main(int argc, char* agrv[]) {
 		constexpr float topoffset = 15.0f;
 		const float basewidth = prefsize.x * 0.5f;
 		const float baseheight = prefsize.y * 0.5f;
-		constexpr float scalar = 0.3f;
+		constexpr float scalar = 1.0f;
 
 		ALC::rect levelBounds;
 		float toppos = baseheight - topoffset;

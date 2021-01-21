@@ -9,6 +9,11 @@ enum class CharaType : ALC::uint8 {
 	None, Alice, Rui, Eden
 };
 
+// collision with players
+#define BTL_PLAYERMASK	(1 << 0)
+// collisions with enemies
+#define BTL_ENEMYMASK	(1 << 1)
+
 class BattleManager final {
 	ALC_NON_CONSTRUCTABLE(BattleManager);
 public:

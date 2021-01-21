@@ -50,13 +50,13 @@ void AliceChara::Start(ALC::Entity self) {
 		// set relative position;
 		if (i == 0) point.rotation = 90.0f; // one quart
 		else		point.rotation = 270.0f; // three quarts
-		point.distance = 17.0f;
+		point.distance = 57.0f;
 
 		// set position
 		tr.position = point.CalcPosition(selftr.position);
 
 		// set the sprite stuff
-		spr.bounds = ALC::rect(4.0f);
+		spr.bounds = ALC::rect(10.0f);
 		spr.texture = m_bulletTexture;
 
 		if (i == 0) {
@@ -160,7 +160,7 @@ void AliceChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 		delay = m_basicShootTimer;
 		basicShoot = true;
 		ShooterBehavior::SetBulletTypes<BulletDeleterComponent>();
-		ShooterBehavior::SetDefaultVelocity(ALC::vec2(0.0f, 240.0f) * slowmult);
+		ShooterBehavior::SetDefaultVelocity(ALC::vec2(0.0f, 800.0f) * slowmult);
 	}
 
 	// get self position
@@ -192,8 +192,7 @@ void AliceChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 			ShooterBehavior::Shoot(self, 1, [i, delay, tex](ALC::Entity e) {
 				// update body collision
 				auto& body = e.GetComponent<ALC::BulletBody>();
-				body.mask = ALC::Layermask32::NONE;
-				body.radius = 4.5f;
+				body.radius = 18.0f;
 
 				// update position
 				auto& tr = e.GetComponent<ALC::Transform2D>();
@@ -201,7 +200,7 @@ void AliceChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 
 				// update sprite
 				auto& spr = e.GetComponent<ALC::SpriteComponent>();
-				spr.bounds = ALC::rect(4.0f);
+				spr.bounds = ALC::rect(14.0f);
 				spr.color.a = 0.3f;
 				spr.texture = tex;
 
@@ -223,12 +222,11 @@ void AliceChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 
 		ShooterBehavior::SetDefaultPosition(selftr.position);
 		ShooterBehavior::SetBulletTypes<BulletDeleterComponent, HomingBullet>();
-		ShooterBehavior::SetDefaultVelocity(ALC::vec2(0.0f, 240.0f) * slowmult);
+		ShooterBehavior::SetDefaultVelocity(ALC::vec2(0.0f, 800.0f) * slowmult);
 		ShooterBehavior::Shoot(self, 1, [delay, tex](ALC::Entity e) {
 			// update body collision
 			auto& body = e.GetComponent<ALC::BulletBody>();
-			body.mask = ALC::Layermask32::NONE;
-			body.radius = 4.5f;
+			body.radius = 18.0f;
 
 			// update position
 			auto& tr = e.GetComponent<ALC::Transform2D>();
@@ -236,7 +234,7 @@ void AliceChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 
 			// update sprite
 			auto& spr = e.GetComponent<ALC::SpriteComponent>();
-			spr.bounds = ALC::rect(4.0f);
+			spr.bounds = ALC::rect(14.0f);
 			spr.color.a = 0.3f;
 			spr.texture = tex;
 			spr.textureBounds = ALC::rect(16.0f, 0.0f, 31.0f, 15.0f);
@@ -298,14 +296,13 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 		m_basicShootTimer -= m_basicShootSpeed;
 		float delay = m_basicShootTimer;
 		ShooterBehavior::SetBulletTypes<BulletDeleterComponent>();
-		ShooterBehavior::SetDefaultVelocity(ALC::vec2(0.0f, 240.0f) * slowmult);
+		ShooterBehavior::SetDefaultVelocity(ALC::vec2(0.0f, 800.0f) * slowmult);
 		auto tex = m_bulletTexture;
 		ShooterBehavior::SetDefaultPosition(ALC::vec2(tr.position.x, tr.position.y + 16.5f));
 		ShooterBehavior::Shoot(self, 1, [delay, tex](ALC::Entity e) {
 			// update body collision
 			auto& body = e.GetComponent<ALC::BulletBody>();
-			body.mask = ALC::Layermask32::NONE;
-			body.radius = 4.5f;
+			body.radius = 18.0f;
 
 			// update position
 			auto& tr = e.GetComponent<ALC::Transform2D>();
@@ -313,7 +310,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 
 			// update sprite
 			auto& spr = e.GetComponent<ALC::SpriteComponent>();
-			spr.bounds = ALC::rect(4.0f);
+			spr.bounds = ALC::rect(14.0f);
 			spr.color.a = 0.3f;
 			spr.texture = tex;
 
@@ -356,7 +353,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 		#pragma region Shooting the positional bullets
 
 		ShooterBehavior::SetBulletTypes<BulletDeleterComponent>();
-		ALC::vec2 vel = ALC::vec2(0.0f, 240.0f) * slowmult;
+		ALC::vec2 vel = ALC::vec2(0.0f, 800.0f) * slowmult;
 		auto tex = m_bulletTexture;
 		ShooterBehavior::SetDefaultVelocity(vel);
 
@@ -367,7 +364,6 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 			ShooterBehavior::Shoot(self, 1, [shootA, tex](ALC::Entity e) {
 				// update body collision
 				auto& body = e.GetComponent<ALC::BulletBody>();
-				body.mask = ALC::Layermask32::NONE;
 				body.radius = 4.5f;
 
 				// update position
@@ -376,7 +372,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 
 				// update sprite
 				auto& spr = e.GetComponent<ALC::SpriteComponent>();
-				spr.bounds = ALC::rect(4.0f);
+				spr.bounds = ALC::rect(14.0f);
 				spr.color.a = 0.3f;
 				spr.texture = tex;
 				spr.textureBounds = ALC::rect(0.0f, 0.0f, 15.0f, 15.0f);
@@ -390,8 +386,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 			ShooterBehavior::Shoot(self, 1, [shootB, tex](ALC::Entity e) {
 				// update body collision
 				auto& body = e.GetComponent<ALC::BulletBody>();
-				body.mask = ALC::Layermask32::NONE;
-				body.radius = 4.5f;
+				body.radius = 18.0f;
 
 				// update position
 				auto& tr = e.GetComponent<ALC::Transform2D>();
@@ -399,7 +394,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 
 				// update sprite
 				auto& spr = e.GetComponent<ALC::SpriteComponent>();
-				spr.bounds = ALC::rect(4.0f);
+				spr.bounds = ALC::rect(14.0f);
 				spr.color.a = 0.3f;
 				spr.texture = tex;
 				spr.textureBounds = ALC::rect(0.0f, 0.0f, 15.0f, 15.0f);
@@ -413,8 +408,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 			ShooterBehavior::Shoot(self, 1, [shootC, tex](ALC::Entity e) {
 				// update body collision
 				auto& body = e.GetComponent<ALC::BulletBody>();
-				body.mask = ALC::Layermask32::NONE;
-				body.radius = 4.5f;
+				body.radius = 18.0f;
 
 				// update position
 				auto& tr = e.GetComponent<ALC::Transform2D>();
@@ -422,7 +416,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 
 				// update sprite
 				auto& spr = e.GetComponent<ALC::SpriteComponent>();
-				spr.bounds = ALC::rect(4.0f);
+				spr.bounds = ALC::rect(14.0f);
 				spr.color.a = 0.3f;
 				spr.texture = tex;
 				spr.textureBounds = ALC::rect(0.0f, 0.0f, 15.0f, 15.0f);

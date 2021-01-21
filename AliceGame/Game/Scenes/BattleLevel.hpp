@@ -20,6 +20,13 @@ public:
 	ALC::UIBatch& GetUI() { return m_ui; }
 	ALC::EntityCreationHandler& GetECH() { return m_ech; }
 
+	// return the levelbounds in screen coordinates
+	// uses the BattleManager::PreferredResolution()
+	ALC::rect GetScreenLevelBounds() const;
+
+	// return the levelbounds in screen coordinates
+	ALC::rect GetScreenLevelBounds(const ALC::vec2& screensize) const;
+	
 	float GetTimescale() const { return m_timescale; }
 	void SetTimescale(const float timescale) { m_timescale = timescale; }
 

@@ -1,6 +1,8 @@
 #include "Enemy.hpp"
 
-Enemy::Enemy() { }
+Enemy::Enemy() : m_health(1000.0f), m_lifetime(-1.0f) { 
+	ShooterBehavior::SetDefaultCollisionmask(BTL_PLAYERMASK);
+}
 
 Enemy::~Enemy() { }
 
@@ -83,6 +85,7 @@ void Enemy::Start(ALC::Entity self) {
 	auto [cb, tr, spr] = self.GetComponent<ALC::CharacterBody, ALC::Transform2D, ALC::SpriteComponent>();
 
 	cb.radius = 4.0f;
+	cb.mask = BTL_ENEMYMASK;
 	auto lb = BattleManager::GetLevelBounds();
 	tr.position.x = 0.0f;
 	tr.position.y = lb.max.y * 0.5f;

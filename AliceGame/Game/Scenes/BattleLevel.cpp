@@ -4,13 +4,30 @@ BattleLevel::BattleLevel() : m_timescale(1.0f), m_character(nullptr) { }
 
 BattleLevel::~BattleLevel() { }
 
+ALC::rect BattleLevel::GetScreenLevelBounds() const {
+	return GetScreenLevelBounds(BattleManager::PrefferedResolution());
+}
+
+ALC::rect BattleLevel::GetScreenLevelBounds(const ALC::vec2& screensize) const {
+	// get level boundry in world coordinates
+	ALC::mat4 worldToScreen = m_camera.GetWorldToScreen(screensize);
+	ALC::rect levelbounds = BattleManager::GetLevelBounds();
+
+	// convert to screen coordinates
+	levelbounds.min = ALC::vec2(worldToScreen * ALC::vec4(levelbounds.min, 0.0f, 1.0f));
+	levelbounds.max = ALC::vec2(worldToScreen * ALC::vec4(levelbounds.max, 0.0f, 1.0f));
+
+	return levelbounds;
+}
+
 void BattleLevel::Init() {
 
 	// set our content storage as the context
 	ALC::ContentManager::SetContext(m_storage);
 
-	// setup camera
-	m_camera.SetCameraSize(BattleManager::PrefferedResolution() * 0.3f);
+	// setup camera 
+	// dunno why [* 0.3f] makes things work properly but yea cool...
+	m_camera.SetCameraSize(BattleManager::PrefferedResolution());
 
 	// create the character
 	if (!m_character) m_character = BattleManager::InitAsCharacter(m_reg.Create());
@@ -29,46 +46,38 @@ void BattleLevel::Draw() {
 	// draw ui
 	m_ui.Begin();
 
-	// get level boundry in world coordinates
-	ALC::mat4 worldToScreen = m_camera.GetWorldToScreen();
-	ALC::rect levelbounds = BattleManager::GetLevelBounds();
-
-	// convert to screen coordinates
-	levelbounds.min = ALC::vec2(worldToScreen * ALC::vec4(levelbounds.min, 0.0f, 1.0f));
-	levelbounds.max = ALC::vec2(worldToScreen * ALC::vec4(levelbounds.max, 0.0f, 1.0f));
+	ALC::rect levelbounds = GetScreenLevelBounds();
 
 	// draw the level boundries
 	ALC::rect r;
 	constexpr float borderWidth = 10.0f;
-	{
-		// left
-		r.bottom = levelbounds.bottom - borderWidth;
-		r.top = levelbounds.top + borderWidth;
-		r.right = levelbounds.left;
-		r.left = r.right - borderWidth;
-		m_ui.DrawQuad(r, ALC_COLOR_GREEN);
+	// left
+	r.bottom = levelbounds.bottom - borderWidth;
+	r.top = levelbounds.top + borderWidth;
+	r.right = levelbounds.left;
+	r.left = r.right - borderWidth;
+	m_ui.DrawQuad(r, ALC_COLOR_GREEN);
 
-		// right
-		r.bottom = levelbounds.bottom - borderWidth ;
-		r.top = levelbounds.top + borderWidth;
-		r.left = levelbounds.right;
-		r.right = r.left + borderWidth;
-		m_ui.DrawQuad(r, ALC_COLOR_GREEN);
+	// right
+	r.bottom = levelbounds.bottom - borderWidth;
+	r.top = levelbounds.top + borderWidth;
+	r.left = levelbounds.right;
+	r.right = r.left + borderWidth;
+	m_ui.DrawQuad(r, ALC_COLOR_GREEN);
 
-		// top
-		r.left = levelbounds.left;
-		r.right = levelbounds.right;
-		r.bottom = levelbounds.top;
-		r.top = r.bottom + borderWidth;
-		m_ui.DrawQuad(r, ALC_COLOR_GREEN);
+	// top
+	r.left = levelbounds.left;
+	r.right = levelbounds.right;
+	r.bottom = levelbounds.top;
+	r.top = r.bottom + borderWidth;
+	m_ui.DrawQuad(r, ALC_COLOR_GREEN);
 
-		// bottom
-		r.left = levelbounds.left;
-		r.right = levelbounds.right;
-		r.top = levelbounds.bottom;
-		r.bottom = r.top - borderWidth;
-		m_ui.DrawQuad(r, ALC_COLOR_GREEN);
-	}
+	// bottom
+	r.left = levelbounds.left;
+	r.right = levelbounds.right;
+	r.top = levelbounds.bottom;
+	r.bottom = r.top - borderWidth;
+	m_ui.DrawQuad(r, ALC_COLOR_GREEN);
 
 	// end drawing UI
 	m_ui.End();

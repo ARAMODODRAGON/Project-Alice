@@ -7,8 +7,10 @@ Character::Character()
 	, m_invuln(0.0f)
 	, m_shouldFlashOnInvuln(true)
 	, m_invulnOnHit(1.0f)
-	, m_maxSpeed(90.0f)
-	, m_slowScalar(0.4f) { }
+	, m_maxSpeed(300.0f)
+	, m_slowScalar(0.4f) { 
+	ShooterBehavior::SetDefaultCollisionmask(BTL_ENEMYMASK); // only hit enemies
+}
 
 Character::~Character() { }
 
@@ -164,10 +166,11 @@ void Character::Start(ALC::Entity self) {
 
 	// initalize 
 	cb.radius = 1.0f;
+	cb.mask = BTL_PLAYERMASK;
 	auto lb = BattleManager::GetLevelBounds();
 	tr.position.x = 0.0f;
 	tr.position.y = lb.min.y * 0.5f;
-	spr.bounds = ALC::rect(8.0f);
+	spr.bounds = ALC::rect(20.0f);
 
 	tr0.position = tr.position; // place on top of character
 	spr0.bounds = ALC::rect(cb.radius); // match size of character collider

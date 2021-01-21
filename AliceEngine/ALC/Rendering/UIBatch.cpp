@@ -75,6 +75,8 @@ namespace ALC {
 
 		// set uniform data
 		vec2 screensize = SceneManager::GetWindow()->GetScreenSize();
+		if (m_screensize.x > 0.0f) screensize.x = m_screensize.x;
+		if (m_screensize.y > 0.0f) screensize.y = m_screensize.y;
 		mat4 transform = glm::ortho(0.0f, screensize.x, screensize.y, 0.0f);
 		glUniformMatrix4fv(currentShader.GetUniform("u_transform"), 1, GL_FALSE, &(transform[0].x));
 	}

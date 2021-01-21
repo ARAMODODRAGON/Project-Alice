@@ -15,6 +15,13 @@ namespace ALC {
 		UIBatch();
 		~UIBatch();
 
+		// returns the screen size used inside the ui batch
+		vec2 GetInternalScreenSize() const { return m_screensize; }
+
+		// sets the internal screen size
+		// if screensize is <= 0.0f in each dimension then it uses the real screensize
+		void SetInternalScreenSize(const vec2& screensize) { m_screensize = screensize;}
+
 		// drawing functions
 
 		// starts drawing the UI
@@ -45,6 +52,7 @@ namespace ALC {
 		uint32 m_bufferSize;
 		Shader m_defaultShader;
 		Shader m_currentShader;
+		vec2 m_screensize;
 
 		uint32 TryAddTexture(const Texture& texture);
 		void DrawCurrent();
