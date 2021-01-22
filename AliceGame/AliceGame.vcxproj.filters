@@ -51,6 +51,9 @@
     <ClCompile Include="Game\Scenes\BattleLevels\Battle1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Game\BTA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\AliceGame.hpp">
@@ -84,6 +87,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game\Scenes\BattleLevels\Battle1.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\BTA.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

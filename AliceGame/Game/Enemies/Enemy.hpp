@@ -15,11 +15,17 @@ public:
 	// call to mark this enemy as "done" so the post battle cutscene can start
 	void MarkDone() { m_isDone = true; }
 
-	// returns if this
+	// returns if this is "done" otherwise meaning that this enemy has been killed
 	bool IsDone() const { return m_isDone; }
 
 	float GetHealth() const { return m_health; }
 	void SetHealth(const float health) { m_health = health; }
+
+	// updates health and max health to the given value
+	void ResetHealth(const float health) {
+		m_health = m_maxHealth = health;
+	}
+	float GetMaxHealth() const { return m_maxHealth; }
 
 	float GetLifetime() const { return m_lifetime; }
 	void SetLifetime(const float lifetime) { m_lifetime = lifetime; }
@@ -57,6 +63,7 @@ private:
 	void TakeDamage(ALC::Entity self, const float damage = 1.0f);
 
 	float m_health;
+	float m_maxHealth;
 	float m_lifetime;
 	bool m_isDone;
 };

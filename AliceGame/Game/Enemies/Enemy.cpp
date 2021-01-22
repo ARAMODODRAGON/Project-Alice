@@ -1,11 +1,11 @@
 #include "Enemy.hpp"
 
-Enemy::Enemy() : m_health(1000.0f), m_lifetime(-1.0f), m_isDone(false) { 
+Enemy::Enemy() : m_health(1000.0f), m_maxHealth(1000.0f), m_lifetime(-1.0f), m_isDone(false) {
 	ShooterBehavior::SetDefaultCollisionmask(BTL_PLAYERMASK);
 	BattleManager::AddEnemy(this);
 }
 
-Enemy::~Enemy() { 
+Enemy::~Enemy() {
 	BattleManager::RemoveEnemy(this);
 }
 
@@ -29,8 +29,11 @@ void Enemy::UpdateCollisions(ALC::Entity self, ALC::Timestep ts) {
 
 	// take damage for each collision
 	for (auto& cinfo : cb) {
-		TakeDamage(self, cinfo.GetDamage());
-		if (m_health <= 0.0f) break;
+		// only take damage on begin collision
+		if (cinfo.GetState() == ALC::CollisionState::Begin) {
+			TakeDamage(self, cinfo.GetDamage());
+			if (m_health <= 0.0f) break;
+		}
 	}
 }
 

@@ -151,6 +151,7 @@
   <ItemGroup>
     <ClCompile Include="Game\AliceGame.cpp" />
     <ClCompile Include="Game\BattleManager.cpp" />
+    <ClCompile Include="Game\BTA.cpp" />
     <ClCompile Include="Game\Characters\AliceChara.cpp" />
     <ClCompile Include="Game\Characters\Character.cpp" />
     <ClCompile Include="Game\DialogueHandler.cpp" />
@@ -170,6 +171,7 @@
   <ItemGroup>
     <ClInclude Include="Game\AliceGame.hpp" />
     <ClInclude Include="Game\BattleManager.hpp" />
+    <ClInclude Include="Game\BTA.hpp" />
     <ClInclude Include="Game\Characters\AliceChara.hpp" />
     <ClInclude Include="Game\Characters\Character.hpp" />
     <ClInclude Include="Game\DialogueHandler.hpp" />

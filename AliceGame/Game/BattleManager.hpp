@@ -33,12 +33,17 @@ public:
 
 	// initializes this entity as whatever CharaType is stored in the battlemanager
 	// returns null if entity is invalid or CharaType is None
+	// sets the internal player character pointer
 	static Character* InitAsCharacter(ALC::Entity entity);
+
+	// returns the current player
+	static Character* GetCurrentCharacter();
 
 private:
 	static ALC::rect s_levelBounds;
 	static CharaType s_type;
 	static Enemy* s_enemy;
+	static Character* s_player;
 };
 
 #endif // !ALICE_BATTLEMANAGER_HPP

@@ -4,6 +4,7 @@
 ALC::rect BattleManager::s_levelBounds;
 CharaType BattleManager::s_type = CharaType::None;
 Enemy* BattleManager::s_enemy = nullptr;
+Character* BattleManager::s_player = nullptr;
 
 void BattleManager::AddEnemy(Enemy* enemy) { 
 	s_enemy = enemy;
@@ -21,10 +22,10 @@ Character* BattleManager::InitAsCharacter(ALC::Entity entity) {
 	// return if invalid entity 
 	if (!entity) return nullptr;
 
-	Character* character = nullptr;
+	s_player = nullptr;
 	switch (s_type) {
 		case CharaType::Alice:
-			character = entity.AddBehavior<AliceChara>();
+			s_player = entity.AddBehavior<AliceChara>();
 			break;
 		case CharaType::Rui:
 			ALC_DEBUG_ERROR("Character type 'Rui' is not supported");
@@ -34,5 +35,9 @@ Character* BattleManager::InitAsCharacter(ALC::Entity entity) {
 			break;
 		default: break;
 	}
-	return character;
+	return s_player;
+}
+
+Character* BattleManager::GetCurrentCharacter() {
+	return s_player;
 }

@@ -2,6 +2,7 @@
 #include <glm\gtx\rotate_vector.hpp>
 #include "../Systems/BulletDeleterSystem.hpp"
 #include "../Systems/Bullet Types/HomingBulletSystem.hpp"
+#include "../BTA.hpp"
 
 #define VEC3_DOWN ALC::vec3(0.0f, -1.0f, 0.0f)
 
