@@ -9,13 +9,11 @@ void AliceGame::Init() { }
 void AliceGame::Exit() { }
 
 void AliceGame::Step(ALC::Timestep t) { 
-	using KB = ALC::Keyboard;
-	using KC = ALC::KeyCode;
 
-	auto lc = KB::GetKey(KC::LeftCtrl);
-	auto R = KB::GetKey(KC::KeyR);
+	auto lc = ALC::Keyboard::GetKey(ALC::KeyCode::LeftCtrl);
+	auto R = ALC::Keyboard::GetKey(ALC::KeyCode::KeyR);
 
-	if (lc && R.Pressed() || lc.Pressed() && R) {
+	if (lc.IsHeld() && R.Pressed() || lc.Pressed() && R.IsHeld()) {
 		ALC::SceneManager::LoadLevel(ALC::SceneManager::GetActiveSceneBuildIndex());
 	}
 }
