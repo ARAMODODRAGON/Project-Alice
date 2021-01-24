@@ -4,6 +4,7 @@
 #include <ALC\Entities.hpp>
 #include <ALC\Bullets.hpp>
 #include <ALC\Rendering.hpp>
+#include <ALC\Input.hpp>
 #include "../BattleManager.hpp"
 #include "../DialogueHandler.hpp"
 
@@ -56,7 +57,12 @@ private:
 	ALC::BulletPhysicsHandler m_bPhysics;
 	Character* m_character;
 	float m_timescale;
+
+	// debug stuff
 	bool m_debug;
+	float m_lastFPS;
+	ALC::uint32 m_counter;
+	ALC::Font m_debugFont;
 
 };
 

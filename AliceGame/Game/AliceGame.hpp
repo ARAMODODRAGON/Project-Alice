@@ -20,11 +20,6 @@ public:
 
 private:
 
-	bool m_showDebug;
-	float m_lastFPS;
-	ALC::uint32 m_counter;
-	ALC::Font m_debugFont;
-	ALC::UIBatch m_ui;
 };
 
 #endif // !ALICE_ALICEGAME_HPP

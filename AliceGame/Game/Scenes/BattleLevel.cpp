@@ -1,7 +1,10 @@
 #include "BattleLevel.hpp"
 
+#define DEBUG_FONT_SIZE 20
+#define DEBUG_FPS_UPDATE_RATE 17
+
 BattleLevel::BattleLevel()
-	: m_timescale(1.0f), m_character(nullptr), m_debug(_DEBUG) {
+	: m_timescale(1.0f), m_character(nullptr), m_debug(_DEBUG), m_lastFPS(0.0f), m_counter(-1) {
 	m_ui.SetInternalScreenSize(BattleManager::PrefferedResolution());
 }
 
@@ -24,6 +27,9 @@ ALC::rect BattleLevel::GetScreenLevelBounds(const ALC::vec2& screensize) const {
 }
 
 void BattleLevel::Init() {
+	using CM = ALC::ContentManager;
+	// load the font and make sure its not tied to a context
+	m_debugFont = CM::LoadFont(CM::Default(), "Resources/Fonts/arial.ttf", DEBUG_FONT_SIZE);
 
 	// set our content storage as the context
 	ALC::ContentManager::SetContext(m_storage);
@@ -96,12 +102,31 @@ void BattleLevel::Draw() {
 		m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIOverlay);
 	}
 
+	// draw debug stuff like fps
+	if (m_debug) {
+		m_ui.DrawText("FPS: " + VTOS(m_lastFPS), m_debugFont, ALC::vec2(0.0f, DEBUG_FONT_SIZE));
+	}
+
 	// end drawing UI
 	m_ui.End();
 
 }
 
 void BattleLevel::Step(ALC::Timestep t) {
+	++m_counter;
+
+	using ALC::Keyboard;
+	using ALC::KeyCode;
+
+	if ((m_counter % DEBUG_FPS_UPDATE_RATE) == 0)
+		m_lastFPS = t.GetFPS();
+
+	auto ctrl = Keyboard::GetKey(KeyCode::LeftCtrl);
+	auto keyw = Keyboard::GetKey(KeyCode::KeyW);
+	if ((ctrl && keyw.Pressed()) || (ctrl.Pressed() && keyw)) {
+		m_debug = !m_debug;
+	}
+
 	// prepare our fixed timestep
 	ALC::Timestep fixedts((1.0 / 60.0) * m_timescale);
 

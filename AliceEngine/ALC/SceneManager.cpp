@@ -5,6 +5,7 @@ namespace ALC {
 
 	uint32 SceneManager::s_levelToLoad = -1;
 	IScene* SceneManager::s_activeScene = nullptr;
+	uint32 SceneManager::s_currentSceneIndex = -1;
 	Game* SceneManager::s_activeGame = nullptr;
 	Window* SceneManager::s_window = nullptr;
 	FT_Library SceneManager::s_fontLib = nullptr;
@@ -23,6 +24,7 @@ namespace ALC {
 		s_shouldQuit = false;
 		Timer timer;
 		s_activeGame->__Initialize(s_window, &timer);
+		s_currentSceneIndex = 0;
 		s_activeScene = bindings[0]();
 		if (FT_Init_FreeType(&s_fontLib)) {
 			ALC_DEBUG_ERROR("Font library did not initialized.");
@@ -48,6 +50,7 @@ namespace ALC {
 				if (s_levelToLoad < bindings.size()) {
 					s_activeScene->Exit();
 					delete s_activeScene;
+					s_currentSceneIndex = s_levelToLoad;
 					s_activeScene = bindings[s_levelToLoad]();
 					s_activeScene->Init();
 				}

@@ -35,6 +35,7 @@ namespace ALC {
 		static void Start(const string& title_, const uvec2& windowSize_, Bindings&& bindings);
 
 		static void LoadLevel(const uint32 index) { s_levelToLoad = index; }
+		static uint32 GetActiveSceneBuildIndex() { return s_currentSceneIndex; }
 		static bool IsRunning() { return s_isRunning; }
 		static void Quit() { s_shouldQuit = true; }
 		static IScene* GetActiveScene() { return s_activeScene; }
@@ -46,6 +47,7 @@ namespace ALC {
 		static void StartGame(Game* game_, const std::vector<SceneBinding> bindings);
 		static uint32 s_levelToLoad;
 		static IScene* s_activeScene;
+		static uint32 s_currentSceneIndex;
 		static Game* s_activeGame;
 		static Window* s_window;
 		static FT_Library s_fontLib;
