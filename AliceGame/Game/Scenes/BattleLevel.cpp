@@ -1,6 +1,7 @@
 #include "BattleLevel.hpp"
 
-BattleLevel::BattleLevel() : m_timescale(1.0f), m_character(nullptr) { 
+BattleLevel::BattleLevel()
+	: m_timescale(1.0f), m_character(nullptr), m_debug(_DEBUG) {
 	m_ui.SetInternalScreenSize(BattleManager::PrefferedResolution());
 }
 
@@ -48,38 +49,52 @@ void BattleLevel::Draw() {
 	// draw ui
 	m_ui.Begin();
 
-	ALC::rect levelbounds = GetScreenLevelBounds();
+	// draw debug level boundries
+	if (m_debug) {
+		ALC::rect levelbounds = GetScreenLevelBounds();
 
-	// draw the level boundries
-	ALC::rect r;
-	constexpr float borderWidth = 10.0f;
-	// left
-	r.bottom = levelbounds.bottom - borderWidth;
-	r.top = levelbounds.top + borderWidth;
-	r.right = levelbounds.left;
-	r.left = r.right - borderWidth;
-	m_ui.DrawQuad(r, ALC_COLOR_GREEN);
+		// draw the level boundries
+		ALC::rect r;
+		constexpr float borderWidth = 10.0f;
+		// left
+		r.bottom = levelbounds.bottom - borderWidth;
+		r.top = levelbounds.top + borderWidth;
+		r.right = levelbounds.left;
+		r.left = r.right - borderWidth;
+		m_ui.DrawQuad(r, ALC_COLOR_GREEN);
 
-	// right
-	r.bottom = levelbounds.bottom - borderWidth;
-	r.top = levelbounds.top + borderWidth;
-	r.left = levelbounds.right;
-	r.right = r.left + borderWidth;
-	m_ui.DrawQuad(r, ALC_COLOR_GREEN);
+		// right
+		r.bottom = levelbounds.bottom - borderWidth;
+		r.top = levelbounds.top + borderWidth;
+		r.left = levelbounds.right;
+		r.right = r.left + borderWidth;
+		m_ui.DrawQuad(r, ALC_COLOR_GREEN);
 
-	// top
-	r.left = levelbounds.left;
-	r.right = levelbounds.right;
-	r.bottom = levelbounds.top;
-	r.top = r.bottom + borderWidth;
-	m_ui.DrawQuad(r, ALC_COLOR_GREEN);
+		// top
+		r.left = levelbounds.left;
+		r.right = levelbounds.right;
+		r.bottom = levelbounds.top;
+		r.top = r.bottom + borderWidth;
+		m_ui.DrawQuad(r, ALC_COLOR_GREEN);
 
-	// bottom
-	r.left = levelbounds.left;
-	r.right = levelbounds.right;
-	r.top = levelbounds.bottom;
-	r.bottom = r.top - borderWidth;
-	m_ui.DrawQuad(r, ALC_COLOR_GREEN);
+		// bottom
+		r.left = levelbounds.left;
+		r.right = levelbounds.right;
+		r.top = levelbounds.bottom;
+		r.bottom = r.top - borderWidth;
+		m_ui.DrawQuad(r, ALC_COLOR_GREEN);
+	}
+
+	// draw ui overlay but only if it has been set
+	if (m_UIOverlay) {
+		ALC::rect pos(0.0f);
+		pos.max = m_ui.GetInternalScreenSize();
+
+		ALC::rect target(0.0f);
+		target.max = m_UIOverlay.GetSize();
+
+		m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIOverlay);
+	}
 
 	// end drawing UI
 	m_ui.End();

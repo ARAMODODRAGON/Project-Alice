@@ -10,7 +10,7 @@ int main(int argc, char* agrv[]) {
 	{
 		ALC::vec2 prefsize = BattleManager::PrefferedResolution();
 		constexpr float ratio = 0.88f;
-		constexpr float topoffset = 15.0f;
+		constexpr float topoffset = 30.0f;
 		const float basewidth = prefsize.x * 0.5f;
 		const float baseheight = prefsize.y * 0.5f;
 		constexpr float scalar = 1.0f;

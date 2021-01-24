@@ -165,7 +165,7 @@ void Character::Start(ALC::Entity self) {
 	auto& spr0 = collEntity.GetComponent<ALC::SpriteComponent>();
 
 	// initalize 
-	cb.radius = 1.0f;
+	cb.radius = 4.0f;
 	cb.mask = BTL_PLAYERMASK;
 	auto lb = BattleManager::GetLevelBounds();
 	tr.position.x = 0.0f;

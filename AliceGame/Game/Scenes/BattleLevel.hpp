@@ -20,6 +20,8 @@ public:
 	ALC::UIBatch& GetUI() { return m_ui; }
 	ALC::EntityCreationHandler& GetECH() { return m_ech; }
 
+	void SetUIOverlay(ALC::Texture UIOverlay) { m_UIOverlay = UIOverlay; }
+
 	// return the levelbounds in screen coordinates
 	// uses the BattleManager::PreferredResolution()
 	ALC::rect GetScreenLevelBounds() const;
@@ -44,7 +46,7 @@ protected:
 
 private:
 
-
+	ALC::Texture m_UIOverlay;
 	ALC::ContentStorage m_storage;
 	ALC::Registry m_reg;
 	ALC::EntityCreationHandler m_ech;
@@ -54,6 +56,7 @@ private:
 	ALC::BulletPhysicsHandler m_bPhysics;
 	Character* m_character;
 	float m_timescale;
+	bool m_debug;
 
 };
 

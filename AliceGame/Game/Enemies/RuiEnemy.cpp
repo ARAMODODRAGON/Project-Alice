@@ -73,18 +73,15 @@ void RuiEnemy::Phase0Begin(const Phase lastphase, ALC::Entity self, ALC::Timeste
 	ResetHealth(100.0f);
 	SetLifetime(30.0f);
 	m_state = State::Shoot3;
-}
-void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 	// make sure our bullets spawn with this component
 	ShooterBehavior::SetBulletTypes<BulletDeleterComponent>();
-
+}
+void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 	// get our components
-	auto& transform = self.GetComponent<ALC::Transform2D>();
-	auto& cbody = self.GetComponent<ALC::CharacterBody>();
+	auto [transform, cbody] = self.GetComponent<ALC::Transform2D, ALC::CharacterBody>();
 
 	ALC::vec2 pos = transform.position - 8.0f;
 	float speed = 10.0f;
-	auto& state = m_state;
 
 	auto* playerb = BattleManager::GetCurrentCharacter();
 	auto& playerTransform = playerb->GetEntity().GetComponent<ALC::Transform2D>();
@@ -93,7 +90,7 @@ void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 	ALC::vec2 targetdir = playerTransform.position - transform.position;
 	if (glm::length2(targetdir) > 0.0f) targetdir = glm::normalize(targetdir);
 
-	if (state == State::Shoot3) {
+	if (m_state == State::Shoot3) {
 		// set value
 		ShooterBehavior::SetDefaultPosition(transform.position);
 		ShooterBehavior::SetDefaultVelocity(targetdir * 300.0f);
@@ -108,13 +105,13 @@ void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 			auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
 			sprite.bounds = ALC::rect(14.0f);
 			// this should be loaded ahead of time
-			sprite.texture = ALC::ContentManager::LoadTexture("Resources/Grey Orb Flashing.png");
+			sprite.texture = ALC::ContentManager::LoadTexture("Resources/Textures/Grey Orb Flashing.png");
 			sprite.textureBounds = ALC::rect(0.0f, 0.0f, 15.0f, 15.0f);
 		});
 
 		// change state
-		state = State::Move;
-	} else if (state == State::Move) {
+		m_state = State::Move;
+	} else if (m_state == State::Move) {
 
 		// move
 		auto result = BTA::MoveTo(&cbody.velocity, transform.position, ALC::vec2(-100, 100), 400.0f, speed * 20.0f, ts);
@@ -132,21 +129,21 @@ void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 				auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
 				sprite.bounds = ALC::rect(14.0f);
 				// this should be loaded ahead of time
-				sprite.texture = ALC::ContentManager::LoadTexture("Resources/Grey Orb Flashing.png");
+				sprite.texture = ALC::ContentManager::LoadTexture("Resources/Textures/Grey Orb Flashing.png");
 				sprite.textureBounds = ALC::rect(0.0f, 0.0f, 15.0f, 15.0f);
 			});
 
 			// change state
-			state = State::Center;
+			m_state = State::Center;
 		}
 	}
 
-	else if (state == State::Center) {
+	else if (m_state == State::Center) {
 
 		BTA::Result result = BTA::MoveTo(&cbody.velocity, transform.position, ALC::vec2(0, 0), 400.0f, speed * 20, ts);
 
 		if (result == BTA::Result::Arrived) {
-			state = State::Shoot3;
+			m_state = State::Shoot3;
 		}
 	}
 }
