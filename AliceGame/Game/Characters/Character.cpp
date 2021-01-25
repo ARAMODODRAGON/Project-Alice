@@ -35,7 +35,7 @@ ALC::Button Character::GetSlowButton() const {
 	return ALC::Keyboard::GetKey(ALC::KeyCode::LeftShift);
 }
 
-ALC::Button Character::GetDefButton() const {
+ALC::Button Character::GetBurstButton() const {
 	return ALC::Keyboard::GetKey(ALC::KeyCode::KeyX);
 }
 

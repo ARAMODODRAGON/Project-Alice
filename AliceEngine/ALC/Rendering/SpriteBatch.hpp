@@ -10,6 +10,9 @@ namespace ALC {
 
 	struct SpriteComponent final {
 
+		// disables the spritecomponent from drawing
+		bool shouldDraw = true;
+
 		// the offset from the Entity's center
 		vec2 offset = vec2(0.0f);
 

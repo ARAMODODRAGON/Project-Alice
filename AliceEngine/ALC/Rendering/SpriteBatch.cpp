@@ -82,6 +82,9 @@ namespace ALC {
 	}
 
 	void SpriteBatch::Draw(const Transform2D& transform, const SpriteComponent& sprite) {
+		// quit if should not draw
+		if (!sprite.shouldDraw)
+			return;
 
 		// check if should batch break
 		uint32 textureindex = TryAddTexture(sprite.texture);

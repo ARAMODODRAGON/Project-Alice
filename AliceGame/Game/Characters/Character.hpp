@@ -16,7 +16,7 @@ public:
 	ALC::vec2 GetInputAxis() const;
 	ALC::Button GetShootButton() const;
 	ALC::Button GetSlowButton() const;
-	ALC::Button GetDefButton() const;
+	ALC::Button GetBurstButton() const;
 	ALC::Button GetModButton() const;
 
 	float GetMaxSpeed() const { return m_maxSpeed; }

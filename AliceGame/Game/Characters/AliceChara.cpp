@@ -14,15 +14,26 @@ AliceChara::AliceChara()
 	, m_rotationspeed(300.0f)
 	, m_spinspeed(900.0f)
 	, m_isRepositioning(false)
-	, m_activeSpell(this, Spell::Homing) {
+	, m_activeSpell(this, Spell::Homing)
+	, m_lastSpell(Spell::Homing)
+	, m_shieldCharge(100.0f)
+	, m_shieldChargeRate(2.0f) {
 	// bind states
 	m_activeSpell.Bind(Spell::Homing, &AliceChara::StateStepHoming, &AliceChara::StateBeginHoming);
 	m_activeSpell.Bind(Spell::Spinning, &AliceChara::StateStepSpinning, &AliceChara::StateBeginSpinning);
+	m_activeSpell.Bind(Spell::Shield, &AliceChara::StateStepShield, &AliceChara::StateBeginShield, &AliceChara::StateEndShield);
 }
 
 AliceChara::~AliceChara() { }
 
 void AliceChara::Start(ALC::Entity self) {
+	// create shield and add sprite
+	auto shield = GetRegistry().Create();
+	if (shield) {
+		shield.AddComponent<ALC::Transform2D>();
+		shield.AddComponent<ALC::SpriteComponent>();
+	}
+
 	// call base
 	Character::Start(self);
 	using CM = ALC::ContentManager;
@@ -67,6 +78,20 @@ void AliceChara::Start(ALC::Entity self) {
 		}
 
 	}
+
+	// create the shield sprite object
+	if (shield) {
+		m_shieldEntity = shield.GetComponent<ALC::EntityInfo>().GetID();
+
+		auto& transform = shield.GetComponent<ALC::Transform2D>();
+		auto& sprite = shield.GetComponent<ALC::SpriteComponent>();
+
+		sprite.bounds = ALC::rect(25.0f);
+		sprite.texture = m_bulletTexture;
+		sprite.textureBounds = ALC::rect(32.0f, 0.0f, 111.0f, 79.0f);
+		sprite.shouldDraw = false;
+
+	}
 }
 
 void AliceChara::Update(ALC::Entity self, ALC::Timestep ts) {
@@ -82,6 +107,19 @@ void AliceChara::Update(ALC::Entity self, ALC::Timestep ts) {
 				m_activeSpell.ChangeState(Spell::Homing);
 				break;
 			default: ALC_DEBUG_WARNING("failed to switch states"); break;
+		}
+	}
+
+	// update charge
+	if (m_activeSpell.GetState() != Spell::Shield) {
+		// update and then check if the player activated it
+		m_shieldCharge += m_shieldChargeRate * ts;
+		if (m_shieldCharge >= 100.0f && GetBurstButton().Pressed()) {
+			m_shieldCharge = 0.0f;
+
+			// switch states
+			m_lastSpell = m_activeSpell.GetState();
+			m_activeSpell.ChangeState(Spell::Shield);
 		}
 	}
 
@@ -115,6 +153,8 @@ float AliceChara::RotateTowards(float curangle, const float target, const float 
 		curangle += speed;
 	return curangle;
 }
+
+#pragma region Homing State
 
 void AliceChara::StateBeginHoming(const Spell laststate, ALC::Entity self, ALC::Timestep ts) {
 	m_isRepositioning = false;
@@ -243,6 +283,10 @@ void AliceChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 	}
 
 }
+
+#pragma endregion
+
+#pragma region Spinning State
 
 void AliceChara::StateBeginSpinning(const Spell laststate, ALC::Entity self, ALC::Timestep ts) {
 	m_basicShootTimer = 0.0f;
@@ -432,6 +476,55 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 	}
 
 }
+
+#pragma endregion
+
+#pragma region Shield State
+
+void AliceChara::StateBeginShield(const Spell laststate, ALC::Entity self, ALC::Timestep ts) {
+	// we have some invulnerability
+	SetInvuln(7.0f);
+	SetShouldFlashOnInvuln(false);
+	// reuse this timer
+	m_basicShootTimer = 0.0f;
+	// visibility
+	auto shield = GetRegistry().GetEntity(m_shieldEntity);
+	auto& sprite = shield.GetComponent<ALC::SpriteComponent>();
+	sprite.shouldDraw = true;
+}
+void AliceChara::StateEndShield(const Spell nextstate, ALC::Entity self, ALC::Timestep ts) {
+	// visibility
+	auto shield = GetRegistry().GetEntity(m_shieldEntity);
+	auto& sprite = shield.GetComponent<ALC::SpriteComponent>();
+	sprite.shouldDraw = false;
+}
+void AliceChara::StateStepShield(ALC::Entity self, ALC::Timestep ts) {
+	auto shield = GetRegistry().GetEntity(m_shieldEntity);
+	auto [transform, sprite] = shield.GetComponent<ALC::Transform2D, ALC::SpriteComponent>();
+
+	// should shield state end?
+	if (!IsInvuln()) m_activeSpell.ChangeState(m_lastSpell);
+
+	// update shield size
+
+	m_basicShootTimer += ts * 5.0f;
+
+	ALC::rect bounds(25.0f);
+
+	// (sin(timer) + 1.0f) * 0.5f	// generates a nuber from 0 to 1
+	// * 5.0f						// scales it from 0 to 5
+	bounds.min.x = -(bounds.max.x += (sin(m_basicShootTimer) + 1.0f) * 0.5f * 5.0f);
+	bounds.min.y = -(bounds.max.y += (cos(m_basicShootTimer) + 1.0f) * 0.5f * 5.0f);
+
+	sprite.bounds = bounds;
+
+	// update pos
+	auto& selfTransform = self.GetComponent<ALC::Transform2D>();
+	transform.position = selfTransform.position;
+
+}
+
+#pragma endregion
 
 ALC::vec2 AliceChara::PointShooter::CalcPosition(const ALC::vec2& playerpos) {
 	// set position
