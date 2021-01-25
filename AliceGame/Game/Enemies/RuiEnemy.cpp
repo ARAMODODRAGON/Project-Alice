@@ -20,6 +20,8 @@ RuiEnemy::~RuiEnemy() { }
 void RuiEnemy::Start(ALC::Entity self) {
 	Enemy::Start(self); // must be called to initialize
 
+	m_bulletTexture = ALC::ContentManager::LoadTexture("Resources/Textures/Spells.png");
+
 	auto& spr = self.GetComponent<ALC::SpriteComponent>();
 	spr.texture = ALC::ContentManager::LoadTexture("Resources/Textures/Enemies/Rui-Facing-Forward.png");
 	spr.textureBounds = spr.texture.GetBounds();
@@ -95,9 +97,11 @@ void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 		ShooterBehavior::SetDefaultPosition(transform.position);
 		ShooterBehavior::SetDefaultVelocity(targetdir * 300.0f);
 
+		auto tex = m_bulletTexture;
+
 		// uses default velocity to shoot a range
 		// if default is [0, 1] then it will shoot in a range from (-45.0f / 2) to (+45.0f / 2)
-		ShooterBehavior::ShootRange(self, 3, 45.0f, [](ALC::Entity bullet) {
+		ShooterBehavior::ShootRange(self, 3, 45.0f, [tex](ALC::Entity bullet) {
 			// update body collision
 			auto& body = bullet.GetComponent<ALC::BulletBody>();
 			body.radius = 4.0f;
@@ -105,8 +109,8 @@ void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 			auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
 			sprite.bounds = ALC::rect(14.0f);
 			// this should be loaded ahead of time
-			sprite.texture = ALC::ContentManager::LoadTexture("Resources/Textures/Grey Orb Flashing.png");
-			sprite.textureBounds = ALC::rect(0.0f, 0.0f, 15.0f, 15.0f);
+			sprite.texture = tex;
+			sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
 		});
 
 		// change state
@@ -121,7 +125,9 @@ void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 			ShooterBehavior::SetDefaultPosition(transform.position);
 			ShooterBehavior::SetDefaultVelocity(targetdir * 300.0f);
 
-			ShooterBehavior::ShootRange(self, 3, 45.0f, [](ALC::Entity bullet) {
+			auto tex = m_bulletTexture;
+
+			ShooterBehavior::ShootRange(self, 3, 45.0f, [tex](ALC::Entity bullet) {
 				// update body collision
 				auto& body = bullet.GetComponent<ALC::BulletBody>();
 				body.radius = 4.0f;
@@ -129,8 +135,8 @@ void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 				auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
 				sprite.bounds = ALC::rect(14.0f);
 				// this should be loaded ahead of time
-				sprite.texture = ALC::ContentManager::LoadTexture("Resources/Textures/Grey Orb Flashing.png");
-				sprite.textureBounds = ALC::rect(0.0f, 0.0f, 15.0f, 15.0f);
+				sprite.texture = tex;
+				sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
 			});
 
 			// change state

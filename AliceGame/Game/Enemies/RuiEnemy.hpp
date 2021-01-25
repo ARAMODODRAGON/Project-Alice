@@ -40,6 +40,7 @@ private:
 	ALC::EntityStateMachine<RuiEnemy, Phase> m_phases;
 	// state that depends on the current phase
 	State m_state;
+	ALC::Texture m_bulletTexture;
 
 	// phases
 

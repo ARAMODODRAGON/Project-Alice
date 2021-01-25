@@ -15,10 +15,9 @@ public:
 private:
 
 	enum class Spell : ALC::uint8 {
-		Homing,
-		Spinning,
-		Shield
+		Homing, Spinning, Shield
 	};
+
 	void StateBeginHoming(const Spell laststate, ALC::Entity self, ALC::Timestep ts);
 	void StateStepHoming(ALC::Entity self, ALC::Timestep ts);
 	void StateBeginSpinning(const Spell laststate, ALC::Entity self, ALC::Timestep ts);

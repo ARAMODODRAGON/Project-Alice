@@ -39,7 +39,7 @@ void AliceChara::Start(ALC::Entity self) {
 	using CM = ALC::ContentManager;
 
 	// get textures
-	m_bulletTexture = CM::LoadTexture("Resources/Textures/Alice-Spells.png");
+	m_bulletTexture = CM::LoadTexture("Resources/Textures/Spells.png");
 
 	// create our point shooters
 	for (size_t i = 0; i < m_pointShooters.size(); i++) {
