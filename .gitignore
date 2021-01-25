@@ -7,6 +7,8 @@
 *.rsuser
 *.suo
 *.user
+.vs/Project-Alice/v16/
+*.db
 *.userosscache
 *.sln.docstates
 
@@ -351,3 +353,4 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+.vs/Project-Alice/v16/.suo
