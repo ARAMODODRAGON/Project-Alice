@@ -48,6 +48,10 @@ namespace ALC {
 		// draw a sprite 
 		void Draw(const Transform2D& transform, const SpriteComponent& sprite);
 
+		// draws a sprite with given values
+		void Draw(const vec2& position, const rect& bounds, const rect& textureBounds, 
+				  const Texture& texture = nullptr, const vec4& color = ALC_COLOR_WHITE);
+
 		// draw all sprite components in registry
 		void DrawComponents(Registry& reg);
 

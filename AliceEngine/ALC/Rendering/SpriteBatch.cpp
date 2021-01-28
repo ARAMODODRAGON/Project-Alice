@@ -83,24 +83,29 @@ namespace ALC {
 
 	void SpriteBatch::Draw(const Transform2D& transform, const SpriteComponent& sprite) {
 		// quit if should not draw
-		if (!sprite.shouldDraw)
-			return;
+		if (!sprite.shouldDraw) return;
+
+		// draw the sprite
+		Draw(transform.position + sprite.offset, sprite.bounds, sprite.textureBounds, sprite.texture, sprite.color);
+	}
+
+	void SpriteBatch::Draw(const vec2& position, const rect& bounds,
+						   const rect& textureBounds, const Texture& texture, const vec4& color) {
 
 		// check if should batch break
-		uint32 textureindex = TryAddTexture(sprite.texture);
+		uint32 textureindex = TryAddTexture(texture);
 		if (textureindex == -2) {
 			DrawCurrent();
-			m_textures.push_back(sprite.texture);
+			m_textures.push_back(texture);
 			textureindex = 0;
 		}
 
-		const vec2 position = transform.position + sprite.offset;
-		const vec2 min = position + sprite.bounds.min;
-		const vec2 max = position + sprite.bounds.max;
-		vec2 size = sprite.texture.GetSize();
+		const vec2 min = position + bounds.min;
+		const vec2 max = position + bounds.max;
+		vec2 size = texture.GetSize();
 		if (NearlyZero(size)) size = vec2(1.0f);
-		const vec2 texmin = sprite.textureBounds.min / size;
-		const vec2 texmax = sprite.textureBounds.max / size;
+		const vec2 texmin = textureBounds.min / size;
+		const vec2 texmax = textureBounds.max / size;
 
 		// create verticies
 		vertex verts[4];
@@ -112,7 +117,7 @@ namespace ALC {
 
 		// set color
 		verts[0].color = verts[1].color
-			= verts[2].color = verts[3].color = sprite.color;
+			= verts[2].color = verts[3].color = color;
 
 		// set texture index
 		verts[0].textureIndex = verts[1].textureIndex
@@ -135,7 +140,7 @@ namespace ALC {
 		// finish
 	}
 
-	void SpriteBatch::DrawComponents(Registry& reg) { 
+	void SpriteBatch::DrawComponents(Registry& reg) {
 		reg.ForeachComponent<Transform2D, SpriteComponent>(
 			[this](auto entity, auto tr, auto spr) {
 			Draw(tr, spr);
