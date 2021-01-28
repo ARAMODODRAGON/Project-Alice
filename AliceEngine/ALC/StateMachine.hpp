@@ -33,7 +33,8 @@ namespace ALC {
 		StateMachine(Class* instance)
 			: m_instance(instance)
 			, m_currentState(static_cast<Statetype>(0))
-			, m_nextState(m_currentState) {
+			, m_nextState(m_currentState)
+			, m_begin(true) {
 			ALC_ASSERT(instance, "instance must not be null");
 		}
 
@@ -41,7 +42,8 @@ namespace ALC {
 		StateMachine(Class* instance, Statetype state)
 			: m_instance(instance)
 			, m_currentState(state)
-			, m_nextState(m_currentState) {
+			, m_nextState(m_currentState)
+			, m_begin(true) {
 			ALC_ASSERT(instance, "instance must not be null");
 		}
 
@@ -87,6 +89,14 @@ namespace ALC {
 
 			}
 
+			// called first
+			if (m_begin) {
+				m_begin = false;
+				auto state = m_boundStates.find(m_currentState);
+				ALC_ASSERT(state != m_boundStates.end(), "current state must be a valid state");
+				if (state->second.begin) (m_instance->*(state->second.begin))(m_currentState, params...);
+			}
+
 			// step
 			(m_instance->*(m_boundStates[m_currentState].step))(params...);
 
@@ -97,6 +107,7 @@ namespace ALC {
 		Class* m_instance;
 		Statetype m_currentState;
 		Statetype m_nextState;
+		bool m_begin;
 
 		struct StateBinding {
 			BeginStateFunc begin;

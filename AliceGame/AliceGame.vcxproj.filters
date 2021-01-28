@@ -95,5 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Dialogues\TestDialogue.json" />
+    <None Include="Resources\Tilemaps\Test0.json" />
+    <None Include="Resources\Tilemaps\Test1.json" />
   </ItemGroup>
 </Project>

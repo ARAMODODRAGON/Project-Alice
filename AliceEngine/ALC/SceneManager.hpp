@@ -14,7 +14,7 @@ namespace ALC {
 		virtual ~IScene() = 0 { }
 		virtual void Init() = 0;
 		virtual void Exit() = 0;
-		virtual void Step(ALC::Timestep t) = 0;
+		virtual void Step(ALC::Timestep ts) = 0;
 		virtual void PreDraw() = 0;
 		virtual void Draw() = 0;
 		virtual void PostDraw() = 0;

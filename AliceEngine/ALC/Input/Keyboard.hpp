@@ -57,6 +57,7 @@ namespace ALC {
 		ArrowDown,
 		ArrowLeft,
 		ArrowRight,
+		None,
 		__SIZE__
 	};
 	constexpr size_t KEYCODE_COUNT = static_cast<size_t>(KeyCode::__SIZE__);
@@ -68,6 +69,7 @@ namespace ALC {
 		/// getters
 		static Button GetKey(KeyCode key);
 		static string KeyToString(KeyCode key);
+		static KeyCode GetLastKeypress() { return s_lastkey; }
 
 	public:
 		static void __ClearChangedBits();
@@ -79,6 +81,7 @@ namespace ALC {
 			KeyValue() : isPressed(false), hasChanged(false) { }
 		};
 		static array<KeyValue, KEYCODE_COUNT> keyValues;
+		static KeyCode s_lastkey;
 	};
 
 }

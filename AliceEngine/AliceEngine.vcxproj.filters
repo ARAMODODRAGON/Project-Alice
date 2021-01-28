@@ -138,6 +138,12 @@
     <ClInclude Include="ALC\Content\Sound\SoundSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ALC\2D\Tilemap.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ALC\Tools\TilemapEditorScene.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ALC\SceneManager.cpp">
@@ -201,6 +207,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ALC\Content\Sound\SoundSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ALC\Tools\TilemapEditorScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ALC\2D\Tilemap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

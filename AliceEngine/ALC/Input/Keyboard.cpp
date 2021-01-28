@@ -3,6 +3,7 @@
 namespace ALC {
 
 	array<Keyboard::KeyValue, KEYCODE_COUNT> Keyboard::keyValues;
+	KeyCode Keyboard::s_lastkey = KeyCode::None;
 
 	// returns a uint index for accessing keys in the array
 	#define KEY_INDEX(key) static_cast<int32>(key)
@@ -76,6 +77,7 @@ namespace ALC {
 		// loop through and set every other bit to false
 		for (size_t i = 0; i < keyValues.size(); ++i)
 			keyValues[i].hasChanged = false;
+		s_lastkey = KeyCode::None;
 	}
 
 	void Keyboard::__SetKey(KeyCode key, bool value) {
@@ -91,6 +93,7 @@ namespace ALC {
 		// if the state changed then we should record that too
 		if (old_state != value) keyval.hasChanged = true;
 
+		s_lastkey = key;
 	}
 
 }
