@@ -61,6 +61,7 @@ private:
 	// debug stuff
 	bool m_debug;
 	float m_lastFPS;
+	double m_delta;
 	ALC::uint32 m_counter;
 	ALC::Font m_debugFont;
 

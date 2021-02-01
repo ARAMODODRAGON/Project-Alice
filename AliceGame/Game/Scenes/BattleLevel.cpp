@@ -1,10 +1,11 @@
 #include "BattleLevel.hpp"
+#include "../Enemies/Enemy.hpp"
 
-#define DEBUG_FONT_SIZE 20
-#define DEBUG_FPS_UPDATE_RATE 17
+#define DEBUG_FONT_SIZE 18
+#define DEBUG_FPS_UPDATE_RATE 5
 
 BattleLevel::BattleLevel()
-	: m_timescale(1.0f), m_character(nullptr), m_debug(_DEBUG), m_lastFPS(0.0f), m_counter(-1) {
+	: m_timescale(1.0f), m_character(nullptr), m_debug(_DEBUG), m_lastFPS(0.0f), m_delta(0.0), m_counter(-1) {
 	m_ui.SetInternalScreenSize(BattleManager::PrefferedResolution());
 }
 
@@ -104,7 +105,12 @@ void BattleLevel::Draw() {
 
 	// draw debug stuff like fps
 	if (m_debug) {
-		m_ui.DrawText("FPS: " + VTOS(m_lastFPS), m_debugFont, ALC::vec2(0.0f, DEBUG_FONT_SIZE));
+		m_ui.DrawText("Current FPS: " + VTOS((int)m_lastFPS), m_debugFont, ALC::vec2(0.0f, DEBUG_FONT_SIZE));
+		m_ui.DrawText("Delta Time: " + VTOS(m_delta), m_debugFont, ALC::vec2(0.0f, (DEBUG_FONT_SIZE * 2) + 2));
+		m_ui.DrawText("Timescale: " + VTOS(m_timescale) + " (Target FPS is " + VTOS((int)(60.0f * m_timescale)) + ")", m_debugFont, ALC::vec2(0.0f, (DEBUG_FONT_SIZE * 3) + 4));
+
+		m_ui.DrawText("Total Entities: " + VTOS(GetReg().__GetReg().size()), m_debugFont, ALC::vec2(0.0f, (DEBUG_FONT_SIZE * 5) + 8));
+		m_ui.DrawText("Enemy Health: " + VTOS((int)BattleManager::GetEnemy()->GetHealth()) + " / " + VTOS((int)BattleManager::GetEnemy()->GetMaxHealth()), m_debugFont, ALC::vec2(0.0f, (DEBUG_FONT_SIZE * 6) + 10));
 	}
 
 	// end drawing UI
@@ -120,6 +126,8 @@ void BattleLevel::Step(ALC::Timestep t) {
 
 	if ((m_counter % DEBUG_FPS_UPDATE_RATE) == 0)
 		m_lastFPS = t.GetFPS();
+
+	m_delta = t.GetDouble();
 
 	auto ctrl = Keyboard::GetKey(KeyCode::LeftCtrl);
 	auto keyw = Keyboard::GetKey(KeyCode::KeyW);
