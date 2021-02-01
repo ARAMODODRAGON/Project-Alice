@@ -9,7 +9,7 @@ namespace ALC {
 	void BulletPhysicsHandler::Step(Registry& registry, Timestep t) {
 
 		auto& reg = registry.__GetReg();
-		auto charas = reg.view<CharacterBody, Transform2D>(entt::exclude_t<BulletBody>());
+		auto charas = reg.view<CharacterBody, Transform2D, EntityInfo>(entt::exclude_t<BulletBody>());
 		auto bullets = reg.view<BulletBody, Transform2D, EntityInfo>(entt::exclude_t<CharacterBody>());
 
 		// update motion
@@ -36,12 +36,13 @@ namespace ALC {
 		// bullets
 		bullets.each([&](BulletBody& bb, Transform2D& tr, EntityInfo& ei) {
 			tr.position += bb.velocity * t.Get();
+			bb.__SetCol(nullptr);
 		});
 
 		// update collisions
 		for (const auto c : charas) {
 			// characters
-			auto [b0, t0] = charas.get<CharacterBody, Transform2D>(c);
+			auto [b0, t0, ci] = charas.get<CharacterBody, Transform2D, EntityInfo>(c);
 			if (!b0.isSimulated || b0.radius < 0.0001f) continue;
 
 			for (const auto b : bullets) {
@@ -70,6 +71,9 @@ namespace ALC {
 					// new entry
 					BCollisionInfo cinfo(0, b0.mask & b1.mask, bi.GetID(), CollisionState::Begin, b1.damage);
 					collinfo.push_back(cinfo);
+
+					// mark the bullet so it knows it collided with this character
+					b1.__SetCol(ci.GetID());
 					continue;
 				}
 			} // inner loop

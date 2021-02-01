@@ -56,6 +56,13 @@ namespace ALC {
 		// the damage output of this bullet
 		float damage = 1.0f;
 
+		// returns the last character that this bullet collided with
+		EntityID GetLastCollision() const { return m_lastCollision; }
+
+	private:
+		EntityID m_lastCollision = nullptr;
+	public:
+		void __SetCol(EntityID id) { m_lastCollision = id; }
 	};
 
 	struct CharacterBody final {

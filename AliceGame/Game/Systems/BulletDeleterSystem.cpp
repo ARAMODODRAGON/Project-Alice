@@ -8,10 +8,15 @@ void BulletDeleterSystem::SetDeathBoundry(const ALC::rect& deathBoundry) {
 	m_deathBoundry = deathBoundry;
 }
 
-void BulletDeleterSystem::Step(ALC::Timestep ts, ALC::Entity e, BulletDeleterComponent& bdc) {
+void BulletDeleterSystem::Step(ALC::Timestep ts, ALC::Entity e, BulletDeleterComponent& bdc, ALC::BulletBody& bb) {
 
+	// kill by collision
+	auto ci = bb.GetLastCollision();
+	if (bdc.deleteOnContact && ci) {
+		m_ech.Destroy(e);
+	}
 	// kill by boundry
-	if (bdc.lifetime <= 0.0f) {
+	else if (bdc.lifetime <= 0.0f) {
 		// ignore if the boundry is 0 in size
 		if (ALC::NearlyEqual(m_deathBoundry.min, m_deathBoundry.max))
 			return;
