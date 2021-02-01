@@ -35,6 +35,10 @@ namespace ALC {
 		// shoots n number of bullets
 		template<typename Callable>
 		void Shoot(Entity self, const uint32 n, Callable callable);
+		
+		// shoots n number of bullets with angle offset
+		template<typename Callable>
+		void Shoot(Entity self, const uint32 n, const float angleInDegrees, Callable callable);
 
 		// shoots n number of bullets in a circle
 		template<typename Callable>

@@ -28,7 +28,7 @@ void Battle1::Init() {
 	}
 
 	// we want to spawn alice
-	BattleManager::SetCharcter(CharaType::Alice);
+	BattleManager::SetCharacter(CharaType::Alice);
 
 	// alice will spawn here
 	BattleLevel::Init();

@@ -1,6 +1,7 @@
 #include "Game\AliceGame.hpp"
 #include "Game\BattleManager.hpp"
 #include "Game\Scenes\BattleLevels\Battle1.hpp"
+#include "Game\Scenes\BattleLevels\Battle2.hpp"
 #include <ALC/Tools/TilemapEditorScene.hpp>
 
 int main(int argc, char* agrv[]) {
@@ -27,8 +28,8 @@ int main(int argc, char* agrv[]) {
 	}
 
 	const ALC::vector<ALC::SceneBinding> SceneIndex = {
-		//ALC_BIND_SCENE(ALC::TOOLS::TilemapEditorScene),
-		ALC_BIND_SCENE(Battle1)
+		ALC_BIND_SCENE(Battle2),
+		ALC_BIND_SCENE(Battle1),
 	};
 
 	ALC::SceneManager::Start<AliceGame>("Project Alice", ALC::uvec2(1280, 720), SceneIndex);

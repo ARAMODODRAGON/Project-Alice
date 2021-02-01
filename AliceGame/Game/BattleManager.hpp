@@ -25,7 +25,7 @@ public:
 	static void SetLevelBounds(const ALC::rect& levelBounds) { s_levelBounds = levelBounds; }
 
 	static CharaType GetCharacter() { return s_type; }
-	static void SetCharcter(const CharaType type) { s_type = type; }
+	static void SetCharacter(const CharaType type) { s_type = type; }
 
 	static void AddEnemy(Enemy* enemy);
 	static Enemy* GetEnemy();

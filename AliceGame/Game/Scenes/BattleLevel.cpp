@@ -43,7 +43,10 @@ void BattleLevel::Init() {
 
 }
 
-void BattleLevel::Exit() { }
+void BattleLevel::Exit() { 
+	// unset the player selection
+	BattleManager::SetCharacter(CharaType::None);
+}
 
 void BattleLevel::Draw() {
 

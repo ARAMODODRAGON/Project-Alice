@@ -154,11 +154,14 @@
     <ClCompile Include="Game\BTA.cpp" />
     <ClCompile Include="Game\Characters\AliceChara.cpp" />
     <ClCompile Include="Game\Characters\Character.cpp" />
+    <ClCompile Include="Game\Characters\RuiChara.cpp" />
     <ClCompile Include="Game\DialogueHandler.cpp" />
+    <ClCompile Include="Game\Enemies\EdenEnemy.cpp" />
     <ClCompile Include="Game\Enemies\Enemy.cpp" />
     <ClCompile Include="Game\Enemies\RuiEnemy.cpp" />
     <ClCompile Include="Game\Scenes\BattleLevel.cpp" />
     <ClCompile Include="Game\Scenes\BattleLevels\Battle1.cpp" />
+    <ClCompile Include="Game\Scenes\BattleLevels\Battle2.cpp" />
     <ClCompile Include="Game\Systems\Bullet Types\HomingBulletSystem.cpp" />
     <ClCompile Include="Game\Systems\BulletDeleterSystem.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -174,11 +177,14 @@
     <ClInclude Include="Game\BTA.hpp" />
     <ClInclude Include="Game\Characters\AliceChara.hpp" />
     <ClInclude Include="Game\Characters\Character.hpp" />
+    <ClInclude Include="Game\Characters\RuiChara.hpp" />
     <ClInclude Include="Game\DialogueHandler.hpp" />
+    <ClInclude Include="Game\Enemies\EdenEnemy.hpp" />
     <ClInclude Include="Game\Enemies\Enemy.hpp" />
     <ClInclude Include="Game\Enemies\RuiEnemy.hpp" />
     <ClInclude Include="Game\Scenes\BattleLevel.hpp" />
     <ClInclude Include="Game\Scenes\BattleLevels\Battle1.hpp" />
+    <ClInclude Include="Game\Scenes\BattleLevels\Battle2.hpp" />
     <ClInclude Include="Game\Systems\Bullet Types\HomingBulletSystem.hpp" />
     <ClInclude Include="Game\Systems\BulletDeleterSystem.hpp" />
   </ItemGroup>

@@ -90,6 +90,40 @@ inline void ALC::ShooterBehavior::Shoot(Entity self, const uint32 n, Callable ca
 }
 
 template<typename Callable>
+inline void ALC::ShooterBehavior::Shoot(Entity self, const uint32 n, const float angleInDegrees, Callable callable) {
+	// make sure we get the create component
+	if (!self.HasComponent<EntityCreatorComponent>())
+		self.AddComponent<EntityCreatorComponent>();
+	auto& creator = self.GetComponent<EntityCreatorComponent>();
+
+	// we need the components to attach
+	auto comps = m_attachcomponents;
+	vec2 vel = glm::rotate(m_defaultVelocity, glm::radians(angleInDegrees));
+	vec2 pos = m_defaultPosition;
+	auto mask = m_defaultCollisionmask;
+
+	// loop to instance each entity
+	for (size_t i = 0; i < n; i++) {
+		creator.Create([comps, callable, vel, pos, mask](ALC::Entity bullet) {
+			// attach the required bullet body and sprite
+			auto& bb = bullet.AddComponent<BulletBody>();
+			bullet.AddComponent<SpriteComponent>();
+			auto& tr = bullet.AddComponent<Transform2D>();
+
+			bb.velocity = vel;
+			bb.mask = mask;
+			tr.position = pos;
+
+			// set the extra components if there are any
+			if (comps) comps(bullet);
+
+			// call the callable
+			callable(bullet);
+		});
+	}
+}
+
+template<typename Callable>
 inline void ALC::ShooterBehavior::ShootCircle(Entity self, const uint32 n, Callable callable) {
 	// make sure we get the create component
 	if (!self.HasComponent<EntityCreatorComponent>())

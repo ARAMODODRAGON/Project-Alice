@@ -1,5 +1,6 @@
 #include "BattleManager.hpp"
 #include "Characters\AliceChara.hpp"
+#include "Characters\RuiChara.hpp"
 
 ALC::rect BattleManager::s_levelBounds;
 CharaType BattleManager::s_type = CharaType::None;
@@ -28,7 +29,7 @@ Character* BattleManager::InitAsCharacter(ALC::Entity entity) {
 			s_player = entity.AddBehavior<AliceChara>();
 			break;
 		case CharaType::Rui:
-			ALC_DEBUG_ERROR("Character type 'Rui' is not supported");
+			s_player = entity.AddBehavior<RuiChara>();
 			break;
 		case CharaType::Eden:
 			ALC_DEBUG_ERROR("Character type 'Eden' is not supported");
