@@ -70,6 +70,15 @@ public:
 	// updates this entity's sprite to match the invulnerability
 	void UpdateSprites(ALC::Entity self, ALC::Timestep ts);
 
+	// returns the target rect for the current attack spell
+	virtual ALC::rect GetAttackTargetRect() const = 0;
+	
+	// returns the target rect for the current defence spell
+	virtual ALC::rect GetDefenceTargetRect() const = 0;
+	
+	// returns the target rect for the heart texture
+	virtual ALC::rect GetHeartTargetRect() const = 0;
+
 private:
 
 	void TakeDamage(ALC::Entity self, const float damage = 1.0f);

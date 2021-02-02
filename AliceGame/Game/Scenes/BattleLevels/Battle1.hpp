@@ -17,7 +17,6 @@ private:
 	void Exit() override;
 	void GameStep(ALC::Timestep ts) override;
 	void Step(ALC::Timestep ts) override;
-	void PreDraw() override;
 
 	ALC::string m_musicFile;
 	DialogueHandler m_beginLevel;
@@ -26,10 +25,6 @@ private:
 	BulletDeleterSystem m_deleter;
 	HomingBulletSystem m_homingsystem;
 
-	// scrolling background 
-	ALC::Texture m_background;
-	float m_backgroundPos;
-	float m_scrollspeed;
 };
 
 #endif // !ALICE_SCENES_BATTLELEVELS_DEMOBTL_HPP

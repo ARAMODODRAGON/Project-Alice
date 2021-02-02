@@ -144,6 +144,25 @@ void AliceChara::LateUpdate(ALC::Entity self, ALC::Timestep ts) {
 	UpdateSprites(self, ts);
 }
 
+ALC::rect AliceChara::GetAttackTargetRect() const {
+	Spell s = (m_activeSpell.GetState() == Spell::Shield ? m_lastSpell : m_activeSpell.GetState());
+	switch (s) {
+		case Spell::Homing: return ALC::rect(64.0f, 8.0f, 91.0f, 27.0f);
+		case Spell::Spinning: return ALC::rect(36.0f, 4.0f, 59.0f, 27.0f);
+		default: break;
+	}
+	return ALC::rect(4.0f, 4.0f, 27.0f, 27.0f);
+}
+
+ALC::rect AliceChara::GetDefenceTargetRect() const {
+	return ALC::rect(4.0f, 36.0f, 27.0f, 59.0f);
+}
+
+ALC::rect AliceChara::GetHeartTargetRect() const {
+	if (IsInvuln()) return ALC::rect(97.0f, 7.0f, 105.0f, 14.0f);
+	else			return ALC::rect(97.0f, 18.0f, 105.0f, 25.0f);
+}
+
 float AliceChara::RotateTowards(float curangle, const float target, const float speed) {
 	if (ALC::NearlyEqual(curangle, target, speed))
 		curangle = target;

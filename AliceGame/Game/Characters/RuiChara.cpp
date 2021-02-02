@@ -44,6 +44,21 @@ void RuiChara::LateUpdate(ALC::Entity self, ALC::Timestep ts) {
 	Character::UpdateSprites(self, ts);
 }
 
+ALC::rect RuiChara::GetAttackTargetRect() const {
+	ALC_DEBUG_WARNING("function not implemented");
+	return ALC::rect(4.0f, 4.0f, 27.0f, 27.0f);
+}
+
+ALC::rect RuiChara::GetDefenceTargetRect() const {
+	ALC_DEBUG_WARNING("function not implemented");
+	return ALC::rect(4.0f, 4.0f, 27.0f, 27.0f);
+}
+
+ALC::rect RuiChara::GetHeartTargetRect() const {
+	if (IsInvuln()) return ALC::rect(117.0f, 7.0f, 125.0f, 14.0f);
+	else			return ALC::rect(117.0f, 18.0f, 125.0f, 25.0f);
+}
+
 void RuiChara::StateBeginHoming(const Spell last, ALC::Entity self, ALC::Timestep ts) {
 	m_homingShootTimer = 0.0f;
 	m_homingfireIndex = 0;

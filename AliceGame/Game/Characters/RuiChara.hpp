@@ -12,6 +12,10 @@ public:
 	virtual void Update(ALC::Entity self, ALC::Timestep ts);
 	virtual void LateUpdate(ALC::Entity self, ALC::Timestep ts);
 
+	ALC::rect GetAttackTargetRect() const override;
+	ALC::rect GetDefenceTargetRect() const override;
+	ALC::rect GetHeartTargetRect() const override;
+
 private:
 
 	enum class Spell : ALC::uint8 {
