@@ -8,12 +8,16 @@ Battle2::Battle2()
 Battle2::~Battle2() { }
 
 void Battle2::Init() {
+	using CM = ALC::ContentManager;
 
 	// default player
 	if (BattleManager::GetCharacter() == CharaType::None)
 		BattleManager::SetCharacter(CharaType::Rui);
 
 	BattleLevel::Init();
+
+	auto uioverlay = CM::LoadTexture(GetStorage(), "Resources/Textures/Battle UI & Backgrounds/Eden_Battle_UI.png");
+	BattleLevel::SetUIOverlay(uioverlay);
 
 	auto eenemy = GetReg().Create();
 	m_enemy = eenemy.AddBehavior<EdenEnemy>();
@@ -28,6 +32,8 @@ void Battle2::Exit() {
 void Battle2::GameStep(ALC::Timestep ts) { 
 
 	GetReg().StepSystem(ts, m_homingsys);
+
+	m_deletersys.SetDeathBoundry(BattleManager::GetLevelBounds());
 	GetReg().StepSystem(ts, m_deletersys);
 
 }

@@ -12,7 +12,7 @@ void BulletDeleterSystem::Step(ALC::Timestep ts, ALC::Entity e, BulletDeleterCom
 
 	// kill by collision
 	auto ci = bb.GetLastCollision();
-	if (bdc.deleteOnContact && ci) {
+	if (bdc.deleteOnContact && ci.IsValid()) {
 		m_ech.Destroy(e);
 	}
 	// kill by boundry

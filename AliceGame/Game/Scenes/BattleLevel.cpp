@@ -112,7 +112,7 @@ void BattleLevel::Draw() {
 		m_ui.DrawText("Delta Time: " + VTOS(m_delta), m_debugFont, ALC::vec2(0.0f, (DEBUG_FONT_SIZE * 2) + 2));
 		m_ui.DrawText("Timescale: " + VTOS(m_timescale) + " (Target FPS is " + VTOS((int)(60.0f * m_timescale)) + ")", m_debugFont, ALC::vec2(0.0f, (DEBUG_FONT_SIZE * 3) + 4));
 
-		m_ui.DrawText("Total Entities: " + VTOS(GetReg().__GetReg().size()), m_debugFont, ALC::vec2(0.0f, (DEBUG_FONT_SIZE * 5) + 8));
+		m_ui.DrawText("Total Entities: " + VTOS(GetReg().__GetReg().size<ALC::EntityInfo>()), m_debugFont, ALC::vec2(0.0f, (DEBUG_FONT_SIZE * 5) + 8));
 		m_ui.DrawText("Enemy Health: " + VTOS((int)BattleManager::GetEnemy()->GetHealth()) + " / " + VTOS((int)BattleManager::GetEnemy()->GetMaxHealth()), m_debugFont, ALC::vec2(0.0f, (DEBUG_FONT_SIZE * 6) + 10));
 	}
 
