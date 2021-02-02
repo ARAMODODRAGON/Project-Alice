@@ -25,6 +25,7 @@ private:
 	ALC::uint8 m_homingfireIndex;
 	float m_homingShootTimer;
 	float m_homingShootSpeed;
+	ALC::Texture m_spelltex;
 
 };
 

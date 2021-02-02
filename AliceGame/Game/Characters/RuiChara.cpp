@@ -57,18 +57,20 @@ void RuiChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 		m_homingfireIndex = 0;
 	}
 
+	// shoot as much as required
 	while (m_homingShootTimer > m_homingShootSpeed) {
 		m_homingShootTimer -= m_homingShootSpeed;
 
 		SetBulletTypes<BulletDeleterComponent, HomingBullet>();
+
+		// gets the next angle to shoot at
 		const float angle = shoot_angle[shoot_pattern[m_homingfireIndex++ % shoot_pattern_size]];
-		const ALC::vec2 vel = glm::rotate(ALC::vec2(0.0f, 660.0f), glm::radians(angle));
+		const ALC::vec2 vel = glm::rotate(ALC::vec2(0.0f, 760.0f), glm::radians(angle));
 
 		SetDefaultPosition(transform.position + vel * m_homingShootTimer);
 		SetDefaultVelocity(vel);
 
-		// gets the next angle to shoot at
-
+		// shoot bitch
 		Shoot(self, 1, [](ALC::Entity bullet) {
 			auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
 			sprite.bounds = ALC::rect(10.0f);
