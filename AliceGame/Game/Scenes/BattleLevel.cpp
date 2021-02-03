@@ -145,10 +145,10 @@ void BattleLevel::Step(ALC::Timestep t) {
 	GameStep(fixedts);
 
 	// update behaviors
-	m_reg.UpdateBehaviors(t);
+	m_reg.UpdateBehaviors(fixedts);
 
 	// update physics
-	m_bPhysics.Step(m_reg, t);
+	m_bPhysics.Step(m_reg, fixedts);
 
 	// create all entities
 	m_ech.Cleanup(m_reg);
