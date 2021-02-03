@@ -1,3 +1,4 @@
+
 #ifndef ALICE_ENEMIES_RUIENEMY_HPP
 #define ALICE_ENEMIES_RUIENEMY_HPP
 #include "Enemy.hpp"
@@ -41,6 +42,8 @@ private:
 	// state that depends on the current phase
 	State m_state;
 	ALC::Texture m_bulletTexture;
+	float m_timer;
+	ALC::uint8 dirIndex;// an index to the direction array
 
 	// phases
 

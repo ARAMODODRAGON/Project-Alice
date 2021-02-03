@@ -2,3 +2,5 @@ D:\Documents\``Project Alice\Project Alice\Debug\AliceEngine.pdb
 D:\Documents\``Project Alice\Project Alice\AliceEngine\Debug\AliceEngine.pdb
 E:\Visual Studio Projects\Project-Alice\Debug\AliceEngine.pdb
 E:\Visual Studio Projects\Project-Alice\AliceEngine\Debug\AliceEngine.pdb
+C:\Users\andre\Desktop\Project-Alice\Debug\AliceEngine.pdb
+C:\Users\andre\Desktop\Project-Alice\AliceEngine\Debug\AliceEngine.pdb

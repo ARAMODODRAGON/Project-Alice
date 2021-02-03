@@ -157,6 +157,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\GameDev\FMOD 2.01\inc;C:\GameDev\FreeType\include;C:\GameDev\glfw-3.3.2.bin.WIN32\include;C:\GameDev\nlohmann-json\include;C:\GameDev\OpenGL\include;C:\GameDev\RTTR\Include;C:\GameDev\SDL\include;C:\GameDev\SDL2_mixer-2.0.4\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\GameDev\FMOD 2.01\lib\x64;C:\GameDev\glfw-3.3.2.bin.WIN32\lib-vc2019;C:\GameDev\OpenGL\lib;C:\GameDev\RTTR\Libs;C:\GameDev\SDL\lib;C:\GameDev\SDL2_mixer-2.0.4\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

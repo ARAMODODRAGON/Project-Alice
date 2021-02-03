@@ -160,6 +160,7 @@ inline void ALC::ShooterBehavior::ShootCircle(Entity self, const uint32 n, Calla
 	}
 }
 
+
 template<typename Callable>
 inline void ALC::ShooterBehavior::ShootRange(Entity self, const uint32 n, const float rangeInDegrees, Callable callable) {
 	// make sure we get the create component
