@@ -43,6 +43,7 @@ private:
 	State m_state;
 	ALC::Texture m_bulletTexture;
 	float m_timer;
+	float stateTimer;
 	ALC::uint8 dirIndex;// an index to the direction array
 
 	// phases
