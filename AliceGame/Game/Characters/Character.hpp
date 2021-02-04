@@ -27,6 +27,9 @@ public:
 
 	float GetHealth() const { return m_health; }
 	void SetHealth(const float health) { m_health = health; }
+
+	float GetMaxHealth() const { return m_maxHealth; }
+	float SetMaxHealth(const float maxHealth) { m_maxHealth = maxHealth; }
 	
 	float GetShouldFlashOnInvuln() const { return m_shouldFlashOnInvuln; }
 	void SetShouldFlashOnInvuln(const float shouldFlashOnInvuln) { m_shouldFlashOnInvuln = shouldFlashOnInvuln; }
@@ -75,6 +78,7 @@ public:
 	
 	// returns the target rect for the current defence spell
 	virtual ALC::rect GetDefenceTargetRect() const = 0;
+	virtual ALC::rect GetDefenceTargetRectCooldown() const = 0;
 	
 	// returns the target rect for the heart texture
 	virtual ALC::rect GetHeartTargetRect() const = 0;
@@ -84,6 +88,7 @@ private:
 	void TakeDamage(ALC::Entity self, const float damage = 1.0f);
 
 	float m_health;
+	float m_maxHealth;
 	float m_invuln;
 	bool m_shouldFlashOnInvuln;
 	float m_invulnOnHit;

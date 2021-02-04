@@ -4,6 +4,7 @@
 
 Character::Character()
 	: m_health(3.0f)
+	, m_maxHealth(m_health)
 	, m_invuln(0.0f)
 	, m_shouldFlashOnInvuln(true)
 	, m_invulnOnHit(1.0f)

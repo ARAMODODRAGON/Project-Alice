@@ -115,6 +115,15 @@ ALC::rect RuiChara::GetDefenceTargetRect() const {
 	ALC_DEBUG_WARNING("function not implemented");
 	return ALC::rect(4.0f, 4.0f, 27.0f, 27.0f);
 }
+ALC::rect RuiChara::GetDefenceTargetRectCooldown() const {
+	ALC_DEBUG_WARNING("function not implemented");
+	return ALC::rect(4.0f, 4.0f, 27.0f, 27.0f);
+	// FORMULA FOR THIS ONE WILL BE:
+	//
+	//		(m_rapidDelay - m_rapidTimer) / m_rapidDelay
+	//
+}
+
 ALC::rect RuiChara::GetHeartTargetRect() const {
 	if (IsInvuln()) return ALC::rect(117.0f, 7.0f, 125.0f, 14.0f);
 	else			return ALC::rect(117.0f, 18.0f, 125.0f, 25.0f);

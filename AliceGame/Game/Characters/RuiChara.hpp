@@ -14,6 +14,7 @@ public:
 
 	ALC::rect GetAttackTargetRect() const override;
 	ALC::rect GetDefenceTargetRect() const override;
+	ALC::rect GetDefenceTargetRectCooldown() const override;
 	ALC::rect GetHeartTargetRect() const override;
 
 	ALC::Entity GetFlower();
