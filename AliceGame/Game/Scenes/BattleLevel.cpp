@@ -49,7 +49,7 @@ void BattleLevel::Init() {
 
 }
 
-void BattleLevel::Exit() { 
+void BattleLevel::Exit() {
 	// unset the player selection
 	BattleManager::SetCharacter(CharaType::None);
 }
@@ -58,7 +58,12 @@ void BattleLevel::Draw() {
 
 	// draw sprites
 	m_batch.Begin(m_camera);
-	m_batch.DrawComponents(m_reg);
+
+	// draw all SPRL layers
+	for (ALC::int32 i = 0; i < SPRL::_COUNT; i++) {
+		m_batch.DrawComponents(m_reg, i);
+	}
+
 	m_batch.End();
 
 	// draw ui
@@ -124,8 +129,7 @@ void BattleLevel::Draw() {
 		uint32_t health = (uint32_t)glm::ceil(BattleManager::GetCurrentCharacter()->GetHealth());
 		uint32_t maxHealth = (uint32_t)glm::ceil(BattleManager::GetCurrentCharacter()->GetMaxHealth());
 		for (uint32_t i = 0; i < maxHealth; i++) {
-			if (health > i) { m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIElements); }
-			else { m_ui.DrawQuad(pos, ALC_COLOR_BLACK, target, m_UIElements); }
+			if (health > i) { m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIElements); } else { m_ui.DrawQuad(pos, ALC_COLOR_BLACK, target, m_UIElements); }
 			pos.min.x += 45.0f;
 			pos.max.x += 45.0f;
 		}
@@ -154,7 +158,7 @@ void BattleLevel::Draw() {
 
 		// Finally, display the tracker at the bottom of the screen to show the enemy's horizontal position on the screen
 		ALC::Transform2D& enemyTransform = BattleManager::GetEnemy()->GetEntity().GetComponent<ALC::Transform2D>();
-		ALC::mat4 worldToScreen = m_camera.GetWorldToScreen();
+		ALC::mat4 worldToScreen = m_camera.GetWorldToScreen(m_ui.GetInternalScreenSize());
 		float enemyX = ALC::vec2(worldToScreen * ALC::vec4(enemyTransform.position, 0.0f, 1.0f)).x;
 
 		pos.min = ALC::vec2(enemyX - 26.0f, 700.0f);

@@ -70,6 +70,7 @@ void AliceChara::Start(ALC::Entity self) {
 		// set the sprite stuff
 		spr.bounds = ALC::rect(10.0f);
 		spr.texture = m_bulletTexture;
+		spr.layer = SPRL::PLAYER_COLLIDER;
 
 		if (i == 0) {
 			spr.textureBounds = ALC::rect(ALC::vec2(16.0f, 32.0f), ALC::vec2(32.0f, 48.0f));

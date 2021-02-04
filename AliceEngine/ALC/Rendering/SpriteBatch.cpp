@@ -147,6 +147,14 @@ namespace ALC {
 		});
 	}
 
+	void SpriteBatch::DrawComponents(Registry& reg, int32 layer) {
+		reg.ForeachComponent<Transform2D, SpriteComponent>(
+			[this, layer](auto entity, auto tr, auto spr) {
+			if (spr.layer == layer)
+				Draw(tr, spr);
+		});
+	}
+
 	void SpriteBatch::End() {
 
 		// draw any remaining verticies
