@@ -22,6 +22,7 @@ public:
 	ALC::EntityCreationHandler& GetECH() { return m_ech; }
 
 	void SetUIOverlay(ALC::Texture UIOverlay) { m_UIOverlay = UIOverlay; }
+	void SetUIElements(ALC::Texture UIElements) { m_UIElements = UIElements; }
 
 	// return the levelbounds in screen coordinates
 	// uses the BattleManager::PreferredResolution()
@@ -48,6 +49,7 @@ protected:
 private:
 
 	ALC::Texture m_UIOverlay;
+	ALC::Texture m_UIElements;
 	ALC::ContentStorage m_storage;
 	ALC::Registry m_reg;
 	ALC::EntityCreationHandler m_ech;
