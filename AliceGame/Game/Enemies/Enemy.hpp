@@ -5,6 +5,7 @@
 #include <ALC\Rendering.hpp>
 #include <ALC\Content.hpp>
 #include "../BattleManager.hpp"
+#include "../BTA.hpp"
 
 class Enemy : public ALC::ShooterBehavior {
 public:
@@ -66,6 +67,9 @@ private:
 	float m_maxHealth;
 	float m_lifetime;
 	bool m_isDone;
+
+
+
 };
 
 #endif // !ALICE_ENEMIES_ENEMY_HPP

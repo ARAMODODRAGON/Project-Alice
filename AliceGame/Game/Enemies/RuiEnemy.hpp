@@ -30,17 +30,23 @@ private:
 
 	enum class State : ALC::uint8 {
 		None,
-		Shoot4,
-		Shoot3,
 		Move,
 		Center,
-		ShootCircleAndTarget
+		Right,
+		Left,
+		Up,
+		Down,
+		Shoot4,
+		Shoot3,
+		ShootCircleAndTarget,
+		TwinSpin,
 	};
 
 	// contains the current phase
 	ALC::EntityStateMachine<RuiEnemy, Phase> m_phases;
 	// state that depends on the current phase
 	State m_state;
+	State m_prevState;
 	ALC::Texture m_bulletTexture;
 	float m_timer;
 	float stateTimer;

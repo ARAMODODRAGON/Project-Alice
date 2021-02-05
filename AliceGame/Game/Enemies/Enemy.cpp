@@ -24,6 +24,7 @@ void Enemy::TakeDamage(ALC::Entity self, const float damage) {
 	if ((m_health <= 0.0f) && !wasDead) OnDeath(self);
 }
 
+
 void Enemy::UpdateCollisions(ALC::Entity self, ALC::Timestep ts) {
 	auto& cb = self.GetComponent<ALC::CharacterBody>();
 
