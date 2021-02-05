@@ -25,6 +25,9 @@ namespace ALC {
 		// sets the default layermask for the bullet
 		void SetDefaultCollisionmask(const Layermask32& defaultLayermask);
 
+		// sets the default sprite layer
+		void SetDefaultSpriteLayer(const int32 layer);
+
 		// sets the components of the bullets to be fired
 		template<typename... Components>
 		void SetBulletTypes();
@@ -52,6 +55,7 @@ namespace ALC {
 		void(*m_attachcomponents)(Entity);
 		vec2 m_defaultVelocity;
 		vec2 m_defaultPosition;
+		int32 m_defaultSprlayer;
 		Layermask32 m_defaultCollisionmask;
 	};
 

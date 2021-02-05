@@ -4,13 +4,14 @@
 
 Character::Character()
 	: m_health(3.0f)
-	, m_maxHealth(m_health)
+	, m_maxHealth(6.0f)
 	, m_invuln(0.0f)
 	, m_shouldFlashOnInvuln(true)
 	, m_invulnOnHit(1.0f)
 	, m_maxSpeed(300.0f)
 	, m_slowScalar(0.4f) {
 	ShooterBehavior::SetDefaultCollisionmask(BTL_ENEMYMASK); // only hit enemies
+	ShooterBehavior::SetDefaultSpriteLayer(SPRL::PLAYER_BULLET); // should be under player and enemy
 }
 
 Character::~Character() { }
@@ -172,12 +173,14 @@ void Character::Start(ALC::Entity self) {
 	tr.position.x = 0.0f;
 	tr.position.y = lb.min.y * 0.5f;
 	spr.bounds = ALC::rect(20.0f);
+	spr.layer = SPRL::PLAYER;
 
 	tr0.position = tr.position; // place on top of character
 	spr0.bounds = ALC::rect(cb.radius); // match size of character collider
 	spr0.color = ALC_COLOR_BLUE;
 	spr0.texture = CM::LoadTexture("Resources/Textures/circle.png");
 	spr0.textureBounds = spr0.texture.GetBounds();
+	spr0.layer = SPRL::PLAYER_COLLIDER;
 }
 
 void Character::UpdateSprites(ALC::Entity self, ALC::Timestep ts) {

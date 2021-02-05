@@ -32,6 +32,9 @@ namespace ALC {
 		// if no texture then the sprite is a solid color
 		vec4 color = ALC_COLOR_WHITE;
 
+		// a layer value that can be used to specifically draw a set of sprites
+		int32 layer = 0;
+
 	};
 
 
@@ -54,6 +57,9 @@ namespace ALC {
 
 		// draw all sprite components in registry
 		void DrawComponents(Registry& reg);
+		
+		// draw all sprite components in registry with the given layer value
+		void DrawComponents(Registry& reg, int32 layer);
 
 		// finish drawing the sprites
 		// uses the default shader if no shader is specified

@@ -1,3 +1,4 @@
+#include "..\ShooterBehavior.hpp"
 //#include "..\ShooterBehavior.hpp"
 
 
@@ -11,6 +12,10 @@ inline void ALC::ShooterBehavior::SetDefaultPosition(const vec2& defaultPosition
 
 inline void ALC::ShooterBehavior::SetDefaultCollisionmask(const Layermask32& defaultCollisionmask) {
 	m_defaultCollisionmask = defaultCollisionmask;
+}
+
+inline void ALC::ShooterBehavior::SetDefaultSpriteLayer(const int32 layer) { 
+	m_defaultSprlayer = layer;
 }
 
 template<typename... Components>
@@ -36,18 +41,20 @@ inline void ALC::ShooterBehavior::Shoot(Entity self, const uint32 n) {
 	vec2 vel = m_defaultVelocity;
 	vec2 pos = m_defaultPosition;
 	auto mask = m_defaultCollisionmask;
+	auto layer = m_defaultSprlayer;
 
 	// loop to instance each entity
 	for (size_t i = 0; i < n; i++) {
-		creator.Create([comps, vel, pos, mask](ALC::Entity bullet) {
+		creator.Create([comps, vel, pos, mask, layer](ALC::Entity bullet) {
 			// attach the required bullet body and sprite
 			auto& bb = bullet.AddComponent<BulletBody>();
-			bullet.AddComponent<SpriteComponent>();
+			auto& spr = bullet.AddComponent<SpriteComponent>();
 			auto& tr = bullet.AddComponent<Transform2D>();
 
 			bb.velocity = vel;
 			bb.mask = mask;
 			tr.position = pos;
+			spr.layer = layer;
 
 			// set the extra components if there are any
 			if (comps) comps(bullet);
@@ -67,18 +74,20 @@ inline void ALC::ShooterBehavior::Shoot(Entity self, const uint32 n, Callable ca
 	vec2 vel = m_defaultVelocity;
 	vec2 pos = m_defaultPosition;
 	auto mask = m_defaultCollisionmask;
+	auto layer = m_defaultSprlayer;
 
 	// loop to instance each entity
 	for (size_t i = 0; i < n; i++) {
-		creator.Create([comps, callable, vel, pos, mask](ALC::Entity bullet) {
+		creator.Create([comps, callable, vel, pos, mask, layer](ALC::Entity bullet) {
 			// attach the required bullet body and sprite
 			auto& bb = bullet.AddComponent<BulletBody>();
-			bullet.AddComponent<SpriteComponent>();
+			auto& spr = bullet.AddComponent<SpriteComponent>();
 			auto& tr = bullet.AddComponent<Transform2D>();
 
 			bb.velocity = vel;
 			bb.mask = mask;
 			tr.position = pos;
+			spr.layer = layer;
 
 			// set the extra components if there are any
 			if (comps) comps(bullet);
@@ -101,18 +110,20 @@ inline void ALC::ShooterBehavior::Shoot(Entity self, const uint32 n, const float
 	vec2 vel = glm::rotate(m_defaultVelocity, glm::radians(angleInDegrees));
 	vec2 pos = m_defaultPosition;
 	auto mask = m_defaultCollisionmask;
+	auto layer = m_defaultSprlayer;
 
 	// loop to instance each entity
 	for (size_t i = 0; i < n; i++) {
-		creator.Create([comps, callable, vel, pos, mask](ALC::Entity bullet) {
+		creator.Create([comps, callable, vel, pos, mask, layer](ALC::Entity bullet) {
 			// attach the required bullet body and sprite
 			auto& bb = bullet.AddComponent<BulletBody>();
-			bullet.AddComponent<SpriteComponent>();
+			auto& spr = bullet.AddComponent<SpriteComponent>();
 			auto& tr = bullet.AddComponent<Transform2D>();
 
 			bb.velocity = vel;
 			bb.mask = mask;
 			tr.position = pos;
+			spr.layer = layer;
 
 			// set the extra components if there are any
 			if (comps) comps(bullet);
@@ -134,6 +145,7 @@ inline void ALC::ShooterBehavior::ShootCircle(Entity self, const uint32 n, Calla
 	auto comps = m_attachcomponents;
 	vec2 pos = m_defaultPosition;
 	auto mask = m_defaultCollisionmask;
+	auto layer = m_defaultSprlayer;
 
 	// loop to instance each entity
 	for (size_t i = 0; i < n; i++) {
@@ -141,15 +153,16 @@ inline void ALC::ShooterBehavior::ShootCircle(Entity self, const uint32 n, Calla
 		vec2 vel = glm::rotate(m_defaultVelocity,
 							   glm::radians(360.0f / static_cast<float>(n)) * static_cast<float>(i));
 
-		creator.Create([comps, callable, i, vel, pos, mask](ALC::Entity bullet) {
+		creator.Create([comps, callable, i, vel, pos, mask, layer](ALC::Entity bullet) {
 			// attach the required bullet body and sprite
 			auto& bb = bullet.AddComponent<BulletBody>();
-			bullet.AddComponent<SpriteComponent>();
+			auto& spr = bullet.AddComponent<SpriteComponent>();
 			auto& tr = bullet.AddComponent<Transform2D>();
 
 			bb.velocity = vel;
 			bb.mask = mask;
 			tr.position = pos;
+			spr.layer = layer;
 
 			// set the extra components if there are any
 			if (comps) comps(bullet);
@@ -174,21 +187,23 @@ inline void ALC::ShooterBehavior::ShootRange(Entity self, const uint32 n, const 
 	float interval = static_cast<float>(rangeInDegrees) / static_cast<float>(n);
 	vec2 pos = m_defaultPosition;
 	auto mask = m_defaultCollisionmask;
+	auto layer = m_defaultSprlayer;
 
 	// loop to instance each entity
 	for (size_t i = 0; i < n; i++) {
 		vec2 vel = glm::rotate(m_defaultVelocity, initrange +
 							   glm::radians(interval * static_cast<float>(i) /* tmp fix -> */ + interval * 0.5f));
 
-		creator.Create([comps, callable, vel, pos, mask](ALC::Entity bullet) {
+		creator.Create([comps, callable, vel, pos, mask, layer](ALC::Entity bullet) {
 			// attach the required bullet body and sprite
 			auto& bb = bullet.AddComponent<BulletBody>();
-			bullet.AddComponent<SpriteComponent>();
+			auto& spr = bullet.AddComponent<SpriteComponent>();
 			auto& tr = bullet.AddComponent<Transform2D>();
 
 			bb.velocity = vel;
 			bb.mask = mask;
 			tr.position = pos;
+			spr.layer = layer;
 
 			// set the extra components if there are any
 			if (comps) comps(bullet);

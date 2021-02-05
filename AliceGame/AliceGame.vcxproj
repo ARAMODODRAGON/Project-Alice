@@ -188,6 +188,7 @@
     <ClInclude Include="Game\Scenes\BattleLevel.hpp" />
     <ClInclude Include="Game\Scenes\BattleLevels\Battle1.hpp" />
     <ClInclude Include="Game\Scenes\BattleLevels\Battle2.hpp" />
+    <ClInclude Include="Game\SpriteLayers.hpp" />
     <ClInclude Include="Game\Systems\Bullet Types\HomingBulletSystem.hpp" />
     <ClInclude Include="Game\Systems\BulletDeleterSystem.hpp" />
   </ItemGroup>

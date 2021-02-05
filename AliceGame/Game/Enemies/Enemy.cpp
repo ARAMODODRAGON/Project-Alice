@@ -2,6 +2,7 @@
 
 Enemy::Enemy() : m_health(1000.0f), m_maxHealth(1000.0f), m_lifetime(-1.0f), m_isDone(false) {
 	ShooterBehavior::SetDefaultCollisionmask(BTL_PLAYERMASK);
+	ShooterBehavior::SetDefaultSpriteLayer(SPRL::ENEMY_BULLET);
 	BattleManager::AddEnemy(this);
 }
 
@@ -97,5 +98,6 @@ void Enemy::Start(ALC::Entity self) {
 	tr.position.x = 0.0f;
 	tr.position.y = lb.max.y * 0.5f;
 	spr.bounds = ALC::rect(20.0f);
+	spr.layer = SPRL::ENEMY;
 
 }
