@@ -2,13 +2,15 @@
 #define ALICE_SPRITELAYERS_HPP
 
 namespace SPRL {
+	// do not mess with the values of each enum
 	enum {
 		PLAYER_BULLET,
 		PLAYER,
 		ENEMY_BULLET,
 		PLAYER_COLLIDER,
+		PLAYER_SHIELD,
 		ENEMY,
-		_COUNT
+		_COUNT // must be at end
 	};
 }
 

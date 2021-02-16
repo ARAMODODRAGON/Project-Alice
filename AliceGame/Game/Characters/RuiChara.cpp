@@ -18,7 +18,7 @@ static constexpr float shoot_angle[] = {
 };
 
 RuiChara::RuiChara()
-	: m_spell(this, Spell::Basic)
+	: m_spell(this, State::Basic)
 	, m_fireIndex(0)
 	, m_homingShootTimer(0.0f)
 	, m_homingShootSpeed(0.01f)
@@ -36,8 +36,8 @@ RuiChara::RuiChara()
 	, m_flowerPop(false)
 	, m_flowerMoveSpeed(380.0f) {
 	// bind states
-	m_spell.Bind(Spell::Basic, &RuiChara::StateStepBasic, &RuiChara::StateBeginBasic);
-	m_spell.Bind(Spell::Rapid, &RuiChara::StateStepRapid, &RuiChara::StateBeginRapid);
+	m_spell.Bind(State::Basic, &RuiChara::StateStepBasic, &RuiChara::StateBeginBasic);
+	m_spell.Bind(State::Rapid, &RuiChara::StateStepRapid, &RuiChara::StateBeginRapid);
 	SetSlowScalar(0.3f);
 }
 
@@ -65,7 +65,7 @@ void RuiChara::Start(ALC::Entity self) {
 }
 
 void RuiChara::Update(ALC::Entity self, ALC::Timestep ts) {
-	if (m_spell.GetState() != Spell::Rapid)
+	if (m_spell.GetState() != State::Rapid)
 		UpdateMovement(self, ts);
 	else
 		UpdateMovement(self, ts, GetInputAxis(), GetMaxSpeed() * m_rapidMoveMultiplier);
@@ -132,7 +132,7 @@ ALC::Entity RuiChara::GetFlower() {
 	return GetRegistry().GetEntity(m_flowerEntity);
 }
 
-void RuiChara::StateBeginBasic(const Spell last, ALC::Entity self, ALC::Timestep ts) {
+void RuiChara::StateBeginBasic(const State last, ALC::Entity self, ALC::Timestep ts) {
 	m_homingShootTimer = 0.0f;
 	m_shootTimer = 0.0f;
 	m_fireIndex = 0;
@@ -147,7 +147,7 @@ void RuiChara::StateStepBasic(ALC::Entity self, ALC::Timestep ts) {
 
 	m_rapidTimer -= ts;
 	if (m_rapidTimer < 0.0f && GetModButton().Pressed()) {
-		m_spell.ChangeState(Spell::Rapid);
+		m_spell.ChangeState(State::Rapid);
 	}
 
 	// shoot normal bullets
@@ -206,7 +206,7 @@ void RuiChara::StateStepBasic(ALC::Entity self, ALC::Timestep ts) {
 
 }
 
-void RuiChara::StateBeginRapid(const Spell last, ALC::Entity self, ALC::Timestep ts) {
+void RuiChara::StateBeginRapid(const State last, ALC::Entity self, ALC::Timestep ts) {
 	m_homingShootTimer = 0.0f;
 	m_fireIndex = 0;
 	m_rapidTimer = m_rapidLength;
@@ -221,7 +221,7 @@ void RuiChara::StateStepRapid(ALC::Entity self, ALC::Timestep ts) {
 
 	m_rapidTimer -= ts;
 	if (m_rapidTimer < 0.0f) {
-		m_spell.ChangeState(Spell::Basic);
+		m_spell.ChangeState(State::Basic);
 		m_rapidTimer = m_rapidDelay;
 		return;
 	}

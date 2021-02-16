@@ -5,6 +5,7 @@
 #include "../BTA.hpp"
 
 #define VEC3_DOWN ALC::vec3(0.0f, -1.0f, 0.0f)
+#define VEC2_DOWN ALC::vec2(0.0f, -1.0f)
 
 AliceChara::AliceChara()
 	: m_basicShootTimer(0.0f)
@@ -14,32 +15,26 @@ AliceChara::AliceChara()
 	, m_rotationspeed(300.0f)
 	, m_spinspeed(900.0f)
 	, m_isRepositioning(false)
-	, m_activeSpell(this, Spell::Homing)
-	, m_lastSpell(Spell::Homing)
+	, m_activeSpell(this, State::Homing)
+	, m_lastSpell(State::Homing)
 	, m_shieldCharge(100.0f)
 	, m_shieldChargeRate(2.0f) {
 	// bind states
-	m_activeSpell.Bind(Spell::Homing, &AliceChara::StateStepHoming, &AliceChara::StateBeginHoming);
-	m_activeSpell.Bind(Spell::Spinning, &AliceChara::StateStepSpinning, &AliceChara::StateBeginSpinning);
-	m_activeSpell.Bind(Spell::Shield, &AliceChara::StateStepShield, &AliceChara::StateBeginShield, &AliceChara::StateEndShield);
+	m_activeSpell.Bind(State::Homing, &AliceChara::StateStepHoming, &AliceChara::StateBeginHoming);
+	m_activeSpell.Bind(State::Spinning, &AliceChara::StateStepSpinning, &AliceChara::StateBeginSpinning);
+	m_activeSpell.Bind(State::Shield, &AliceChara::StateStepShield, &AliceChara::StateBeginShield, &AliceChara::StateEndShield);
+	//m_activeSpell.Bind(State::Death, &AliceChara::StateStepDeath, &AliceChara::StateBeginDeath);
 }
 
 AliceChara::~AliceChara() { }
 
 void AliceChara::Start(ALC::Entity self) {
-	// create shield and add sprite
-	auto shield = GetRegistry().Create();
-	if (shield) {
-		shield.AddComponent<ALC::Transform2D>();
-		shield.AddComponent<ALC::SpriteComponent>();
-	}
-
 	// call base
 	Character::Start(self);
 	using CM = ALC::ContentManager;
 
 	// get textures
-	m_bulletTexture = CM::LoadTexture("Resources/Textures/Spells.png");
+	m_spellsTexture = CM::LoadTexture("Resources/Textures/Spells.png");
 
 	// create our point shooters
 	for (size_t i = 0; i < m_pointShooters.size(); i++) {
@@ -69,7 +64,7 @@ void AliceChara::Start(ALC::Entity self) {
 
 		// set the sprite stuff
 		spr.bounds = ALC::rect(10.0f);
-		spr.texture = m_bulletTexture;
+		spr.texture = m_spellsTexture;
 		spr.layer = SPRL::PLAYER_COLLIDER;
 
 		if (i == 0) {
@@ -81,65 +76,147 @@ void AliceChara::Start(ALC::Entity self) {
 	}
 
 	// create the shield sprite object
-	if (shield) {
+	{
+		auto shield = GetRegistry().Create();
 		m_shieldEntity = shield.GetComponent<ALC::EntityInfo>().GetID();
 
-		auto& transform = shield.GetComponent<ALC::Transform2D>();
-		auto& sprite = shield.GetComponent<ALC::SpriteComponent>();
+		auto& transform = shield.AddComponent<ALC::Transform2D>();
+		auto& sprite = shield.AddComponent<ALC::SpriteComponent>();
 
 		sprite.bounds = ALC::rect(25.0f);
-		sprite.texture = m_bulletTexture;
+		sprite.texture = m_spellsTexture;
 		sprite.textureBounds = ALC::rect(32.0f, 0.0f, 111.0f, 79.0f);
 		sprite.shouldDraw = false;
+		sprite.layer = SPRL::PLAYER_SHIELD;
+	}
+
+	// create death projectiles
+	for (size_t i = 0; i < m_deathProjectiles.size(); ++i) {
+		auto& deathp = m_deathProjectiles[i];
+
+		auto entity = GetRegistry().Create();
+		deathp.entityID = entity.GetComponent<ALC::EntityInfo>().GetID();
+		deathp.velocity = glm::rotate(VEC2_DOWN, glm::radians(float(i) * 45.0f)) * 500.0f;
+
+		auto& sprite = entity.AddComponent<ALC::SpriteComponent>();
+		auto& transform = entity.AddComponent<ALC::Transform2D>();
+
+		sprite.texture = m_spellsTexture;
+		sprite.layer = SPRL::PLAYER_SHIELD;
+		sprite.bounds = ALC::rect(20.0f);
+		sprite.shouldDraw = false;
+
+		if (i % 2)	sprite.textureBounds = ALC::rect(0.0f, 128.0f, 15.0f, 143.0f);
+		else		sprite.textureBounds = ALC::rect(0.0f, 144.0f, 15.0f, 159.0f);
 
 	}
 }
 
 void AliceChara::Update(ALC::Entity self, ALC::Timestep ts) {
-	UpdateMovement(self, ts);
 
-	// toggle state
-	if (GetModButton().Pressed()) {
-		switch (m_activeSpell.GetState()) {
-			case Spell::Homing:
-				m_activeSpell.ChangeState(Spell::Spinning);
-				break;
-			case Spell::Spinning:
-				m_activeSpell.ChangeState(Spell::Homing);
-				break;
-			default: ALC_DEBUG_WARNING("failed to switch states"); break;
+	if (ALC::Keyboard::GetKey(ALC::KeyCode::KeyF).Pressed())
+		TakeDamage();
+
+	// is not dead
+	if (!IsDead()) {
+		UpdateMovement(self, ts);
+
+		// toggle state
+		if (GetModButton().Pressed()) {
+			switch (m_activeSpell.GetState()) {
+				case State::Homing:
+					m_activeSpell.ChangeState(State::Spinning);
+					break;
+				case State::Spinning:
+					m_activeSpell.ChangeState(State::Homing);
+					break;
+				default: ALC_DEBUG_WARNING("failed to switch states"); break;
+			}
 		}
+
+		// update charge
+		if (m_activeSpell.GetState() != State::Shield) {
+			// update and then check if the player activated it
+			m_shieldCharge += m_shieldChargeRate * ts;
+			if (m_shieldCharge >= 100.0f) {
+				m_shieldCharge = 100.0f; // Caps at 100.0f otherwise weird things happen with the cooldown texture and it's just a mess lmao
+				if (GetBurstButton().Pressed()) {
+					m_shieldCharge = 0.0f;
+
+					// switch states
+					m_lastSpell = m_activeSpell.GetState();
+					m_activeSpell.ChangeState(State::Shield);
+				}
+			}
+		}
+
+		// update state
+		m_activeSpell(self, ts);
+
+		auto& selftr = self.GetComponent<ALC::Transform2D>();
+		auto& reg = GetRegistry();
+		for (auto& point : m_pointShooters) {
+			auto entity = reg.GetEntity(point.entityID);
+			if (!entity) {
+				ALC_DEBUG_WARNING("point shooter entity is missing");
+				continue;
+			}
+			auto& tr = entity.GetComponent<ALC::Transform2D>();
+			tr.position = point.CalcPosition(selftr.position);
+		}
+
 	}
 
-	// update charge
-	if (m_activeSpell.GetState() != Spell::Shield) {
-		// update and then check if the player activated it
-		m_shieldCharge += m_shieldChargeRate * ts;
-		if (m_shieldCharge >= 100.0f) {
-			m_shieldCharge = 100.0f; // Caps at 100.0f otherwise weird things happen with the cooldown texture and it's just a mess lmao
-			if (GetBurstButton().Pressed()) {
-				m_shieldCharge = 0.0f;
+	// is dead
+	else {
+		for (size_t i = 0; i < m_deathProjectiles.size(); i++) {
+			auto& deathp = m_deathProjectiles[i];
+			auto entity = GetRegistry().GetEntity(deathp.entityID);
+			auto& transform = entity.GetComponent<ALC::Transform2D>();
+			auto& sprite = entity.GetComponent<ALC::SpriteComponent>();
 
-				// switch states
-				m_lastSpell = m_activeSpell.GetState();
-				m_activeSpell.ChangeState(Spell::Shield);
+			// slowly become invisible
+			sprite.color.a *= 0.9f;
+
+			// move but also slow down overtime
+			transform.position += (deathp.velocity *= 0.9f) * ts;
+
+			// stop
+			if (ALC::NearlyZero(deathp.velocity, (0.1f * 500.0f) * ts)) {
+				sprite.shouldDraw = false;
+				deathp.velocity = ALC::vec2(0.0f);
 			}
 		}
 	}
+}
 
-	// update state
-	m_activeSpell(self, ts);
+void AliceChara::OnDeath(ALC::Entity self) {
+	auto [selftr, selfspr] = self.GetComponent<ALC::Transform2D, ALC::SpriteComponent>();
 
-	auto& selftr = self.GetComponent<ALC::Transform2D>();
-	auto& reg = GetRegistry();
+	// hide player
+	selfspr.shouldDraw = false;
+
+	// hide collider
+	auto& colspr = GetColliderSprite().GetComponent<ALC::SpriteComponent>();
+	colspr.shouldDraw = false;
+
+	// show the death projectiles
+	for (size_t i = 0; i < m_deathProjectiles.size(); i++) {
+		auto& deathp = m_deathProjectiles[i];
+		auto entity = GetRegistry().GetEntity(deathp.entityID);
+
+		auto& sprite = entity.GetComponent<ALC::SpriteComponent>();
+		sprite.shouldDraw = true;
+
+		auto& transform = entity.GetComponent<ALC::Transform2D>();
+		transform.position = selftr.position;
+	}
+
+	// hide point shooters
 	for (auto& point : m_pointShooters) {
-		auto entity = reg.GetEntity(point.entityID);
-		if (!entity) {
-			ALC_DEBUG_WARNING("point shooter entity is missing");
-			continue;
-		}
-		auto& tr = entity.GetComponent<ALC::Transform2D>();
-		tr.position = point.CalcPosition(selftr.position);
+		auto entity = GetRegistry().GetEntity(point.entityID);
+		auto& sprite = entity.GetComponent<ALC::SpriteComponent>();
+		sprite.shouldDraw = false;
 	}
 }
 
@@ -149,10 +226,10 @@ void AliceChara::LateUpdate(ALC::Entity self, ALC::Timestep ts) {
 }
 
 ALC::rect AliceChara::GetAttackTargetRect() const {
-	Spell s = (m_activeSpell.GetState() == Spell::Shield ? m_lastSpell : m_activeSpell.GetState());
+	State s = (m_activeSpell.GetState() == State::Shield ? m_lastSpell : m_activeSpell.GetState());
 	switch (s) {
-		case Spell::Homing: return ALC::rect(68.0f, 4.0f, 92.0f, 28.0f);
-		case Spell::Spinning: return ALC::rect(36.0f, 4.0f, 60.0f, 28.0f);
+		case State::Homing: return ALC::rect(68.0f, 4.0f, 92.0f, 28.0f);
+		case State::Spinning: return ALC::rect(36.0f, 4.0f, 60.0f, 28.0f);
 		default: break;
 	}
 	return ALC::rect(4.0f, 4.0f, 28.0f, 28.0f);
@@ -183,7 +260,7 @@ float AliceChara::RotateTowards(float curangle, const float target, const float 
 
 #pragma region Homing State
 
-void AliceChara::StateBeginHoming(const Spell laststate, ALC::Entity self, ALC::Timestep ts) {
+void AliceChara::StateBeginHoming(const State laststate, ALC::Entity self, ALC::Timestep ts) {
 	m_isRepositioning = false;
 	for (size_t i = 0; i < m_pointShooters.size(); i++) {
 		auto& point = m_pointShooters[i];
@@ -255,7 +332,7 @@ void AliceChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 
 		// shoot
 		if (basicShoot) {
-			auto tex = m_bulletTexture;
+			auto tex = m_spellsTexture;
 			ShooterBehavior::SetDefaultPosition(tr.position);
 			ShooterBehavior::Shoot(self, 1, [i, delay, tex](ALC::Entity e) {
 				// update body collision
@@ -286,7 +363,7 @@ void AliceChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 		m_homingShootTimer -= m_homingShootSpeed;
 		delay = m_homingShootTimer;
 		auto& selftr = self.GetComponent<ALC::Transform2D>();
-		auto tex = m_bulletTexture;
+		auto tex = m_spellsTexture;
 
 		ShooterBehavior::SetDefaultPosition(selftr.position);
 		ShooterBehavior::SetBulletTypes<BulletDeleterComponent, HomingBullet>();
@@ -315,7 +392,7 @@ void AliceChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 
 #pragma region Spinning State
 
-void AliceChara::StateBeginSpinning(const Spell laststate, ALC::Entity self, ALC::Timestep ts) {
+void AliceChara::StateBeginSpinning(const State laststate, ALC::Entity self, ALC::Timestep ts) {
 	m_basicShootTimer = 0.0f;
 
 	m_isRepositioning = false;
@@ -369,7 +446,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 		float delay = m_basicShootTimer;
 		ShooterBehavior::SetBulletTypes<BulletDeleterComponent>();
 		ShooterBehavior::SetDefaultVelocity(ALC::vec2(0.0f, 800.0f) * slowmult);
-		auto tex = m_bulletTexture;
+		auto tex = m_spellsTexture;
 		ShooterBehavior::SetDefaultPosition(ALC::vec2(tr.position.x, tr.position.y + 16.5f));
 		ShooterBehavior::Shoot(self, 1, [delay, tex](ALC::Entity e) {
 			// update body collision
@@ -426,7 +503,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 
 		ShooterBehavior::SetBulletTypes<BulletDeleterComponent>();
 		ALC::vec2 vel = ALC::vec2(0.0f, 800.0f) * slowmult;
-		auto tex = m_bulletTexture;
+		auto tex = m_spellsTexture;
 		ShooterBehavior::SetDefaultVelocity(vel);
 
 		if (shootA > 0.0f) {
@@ -508,7 +585,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 
 #pragma region Shield State
 
-void AliceChara::StateBeginShield(const Spell laststate, ALC::Entity self, ALC::Timestep ts) {
+void AliceChara::StateBeginShield(const State laststate, ALC::Entity self, ALC::Timestep ts) {
 	// we have some invulnerability
 	SetInvuln(7.0f);
 	SetShouldFlashOnInvuln(false);
@@ -519,7 +596,7 @@ void AliceChara::StateBeginShield(const Spell laststate, ALC::Entity self, ALC::
 	auto& sprite = shield.GetComponent<ALC::SpriteComponent>();
 	sprite.shouldDraw = true;
 }
-void AliceChara::StateEndShield(const Spell nextstate, ALC::Entity self, ALC::Timestep ts) {
+void AliceChara::StateEndShield(const State nextstate, ALC::Entity self, ALC::Timestep ts) {
 	// visibility
 	auto shield = GetRegistry().GetEntity(m_shieldEntity);
 	auto& sprite = shield.GetComponent<ALC::SpriteComponent>();
@@ -552,6 +629,17 @@ void AliceChara::StateStepShield(ALC::Entity self, ALC::Timestep ts) {
 }
 
 #pragma endregion
+
+//#pragma region Death State
+//
+//void AliceChara::StateBeginDeath(const State laststate, ALC::Entity self, ALC::Timestep ts) {
+//
+//}
+//void AliceChara::StateStepDeath(ALC::Entity self, ALC::Timestep ts) {
+//
+//}
+//
+//#pragma endregion
 
 ALC::vec2 AliceChara::PointShooter::CalcPosition(const ALC::vec2& playerpos) {
 	// set position

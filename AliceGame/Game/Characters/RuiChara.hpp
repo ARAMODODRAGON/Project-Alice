@@ -21,16 +21,16 @@ public:
 
 private:
 
-	enum class Spell : ALC::uint8 {
+	enum class State : ALC::uint8 {
 		Basic, Rapid
 	};
 
-	void StateBeginBasic(const Spell last, ALC::Entity self, ALC::Timestep ts);
+	void StateBeginBasic(const State last, ALC::Entity self, ALC::Timestep ts);
 	void StateStepBasic(ALC::Entity self, ALC::Timestep ts);
-	void StateBeginRapid(const Spell last, ALC::Entity self, ALC::Timestep ts);
+	void StateBeginRapid(const State last, ALC::Entity self, ALC::Timestep ts);
 	void StateStepRapid(ALC::Entity self, ALC::Timestep ts);
 
-	ALC::EntityStateMachine<RuiChara, Spell> m_spell;
+	ALC::EntityStateMachine<RuiChara, State> m_spell;
 	ALC::uint8 m_fireIndex;
 	float m_homingShootTimer;
 	float m_homingShootSpeed;
