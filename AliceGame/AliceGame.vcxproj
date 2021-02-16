@@ -167,6 +167,7 @@
     <ClCompile Include="Game\Scenes\BattleLevels\Battle2.cpp" />
     <ClCompile Include="Game\Systems\Bullet Types\HomingBulletSystem.cpp" />
     <ClCompile Include="Game\Systems\BulletDeleterSystem.cpp" />
+    <ClCompile Include="Game\Systems\MoveStates.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +192,7 @@
     <ClInclude Include="Game\SpriteLayers.hpp" />
     <ClInclude Include="Game\Systems\Bullet Types\HomingBulletSystem.hpp" />
     <ClInclude Include="Game\Systems\BulletDeleterSystem.hpp" />
+    <ClInclude Include="Game\Systems\MoveStates.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Dialogues\TestDialogue.json" />

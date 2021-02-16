@@ -6,6 +6,11 @@
 #include <ALC\Content.hpp>
 #include "../BattleManager.hpp"
 #include "../BTA.hpp"
+#include "../Systems/MoveStates.hpp"
+
+
+
+
 
 class Enemy : public ALC::ShooterBehavior {
 public:
@@ -30,6 +35,12 @@ public:
 
 	float GetLifetime() const { return m_lifetime; }
 	void SetLifetime(const float lifetime) { m_lifetime = lifetime; }
+
+	void SetSpeed(float _speed) { m_speed = _speed; }
+	float GetSpeed() { return m_speed; }
+
+	void SetAccel(float _accel) { m_acceleration = _accel; }
+	float GetAccel() { return m_acceleration; }
 
 	// returns true if this enemy is dead
 	bool IsDead() const { return ALC::NearlyZero(m_health) || ALC::NearlyZero(m_lifetime); }
@@ -59,6 +70,11 @@ public:
 	// garuntees that this entity has a character body, transform, and spritecomponent
 	virtual void Start(ALC::Entity self);
 
+
+	
+
+
+
 private:
 
 	void TakeDamage(ALC::Entity self, const float damage = 1.0f);
@@ -66,9 +82,11 @@ private:
 	float m_health;
 	float m_maxHealth;
 	float m_lifetime;
+	float m_acceleration;
+	float m_speed;
 	bool m_isDone;
-
-
+protected:
+	MoveStates m_moveState;
 
 };
 
