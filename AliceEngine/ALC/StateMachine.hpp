@@ -69,6 +69,7 @@ namespace ALC {
 		// sets the next state to be called
 		void ChangeState(const Statetype state) {
 			m_nextState = state;
+			if (m_begin) m_currentState = m_nextState;
 		}
 
 		// invokes the current state
