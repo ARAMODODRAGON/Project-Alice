@@ -19,17 +19,21 @@ public:
 
 private:
 
-	enum class Spell : ALC::uint8 {
+	void OnDeath(ALC::Entity self) override;
+
+	enum class State : ALC::uint8 {
 		Homing, Spinning, Shield
 	};
 
-	void StateBeginHoming(const Spell laststate, ALC::Entity self, ALC::Timestep ts);
+	void StateBeginHoming(const State laststate, ALC::Entity self, ALC::Timestep ts);
 	void StateStepHoming(ALC::Entity self, ALC::Timestep ts);
-	void StateBeginSpinning(const Spell laststate, ALC::Entity self, ALC::Timestep ts);
+	void StateBeginSpinning(const State laststate, ALC::Entity self, ALC::Timestep ts);
 	void StateStepSpinning(ALC::Entity self, ALC::Timestep ts);
-	void StateBeginShield(const Spell laststate, ALC::Entity self, ALC::Timestep ts);
-	void StateEndShield(const Spell nextstate, ALC::Entity self, ALC::Timestep ts);
+	void StateBeginShield(const State laststate, ALC::Entity self, ALC::Timestep ts);
+	void StateEndShield(const State nextstate, ALC::Entity self, ALC::Timestep ts);
 	void StateStepShield(ALC::Entity self, ALC::Timestep ts);
+	//void StateBeginDeath(const State laststate, ALC::Entity self, ALC::Timestep ts);
+	//void StateStepDeath(ALC::Entity self, ALC::Timestep ts);
 
 	struct PointShooter {
 		ALC::EntityID entityID;
@@ -39,6 +43,11 @@ private:
 		ALC::vec2 CalcPosition(const ALC::vec2& playerpos);
 	};
 
+	struct DeathObject {
+		ALC::EntityID entityID;
+		ALC::vec2 velocity;
+	};
+
 	float m_basicShootTimer;
 	float m_homingShootTimer;
 	float m_basicShootSpeed;
@@ -46,13 +55,14 @@ private:
 	float m_rotationspeed;
 	float m_spinspeed;
 	bool m_isRepositioning;
-	ALC::EntityStateMachine<AliceChara, Spell> m_activeSpell;
+	ALC::EntityStateMachine<AliceChara, State> m_activeSpell;
 	ALC::array<PointShooter, 2> m_pointShooters;
-	ALC::Texture m_bulletTexture;
-	Spell m_lastSpell;
+	ALC::Texture m_spellsTexture;
+	State m_lastSpell;
 	float m_shieldCharge;
 	float m_shieldChargeRate;
 	ALC::EntityID m_shieldEntity;
+	ALC::array<DeathObject, 8> m_deathProjectiles;
 
 	static float RotateTowards(float curangle, const float target, const float speed);
 };
