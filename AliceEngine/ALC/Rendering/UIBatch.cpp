@@ -189,7 +189,13 @@ namespace ALC {
 			offset += c.advance * scale;
 
 			// skip character with no size
-			if (!w || !h) continue;
+			if ((!w || !h) && *p != '\n') continue;
+
+			if (*p == '\n') { // Newline text
+				offset[0] = 0.0f; // Reset the x offset of the text
+				offset[1] += (font.GetSize().y + 2.0f) * scale.y;
+				continue;
+			}
 
 			// set uvCoords
 			/* bottom left  */ verts[0].uvcoords = vec2(c.xoffset, 0.0f);

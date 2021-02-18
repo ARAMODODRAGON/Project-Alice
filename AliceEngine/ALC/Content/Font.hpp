@@ -23,6 +23,9 @@ namespace ALC {
 
 		~Font();
 
+		// String manipulation function(s)
+		string StringSplitLines(const string& text, const float maxStringWidth); // Splits a single-line block of text into multiple lines dynamically
+
 		// returns true if this is a valid font
 		bool IsValid() const;
 
@@ -69,6 +72,8 @@ namespace ALC {
 		uint32 m_textureID;
 		uvec2 m_textureSize;
 		Ref<unordered_map<char, Character>> m_characters;
+
+		float yOffset;
 	};
 
 }

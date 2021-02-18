@@ -67,6 +67,9 @@ private:
 	ALC::uint32 m_counter;
 	ALC::Font m_debugFont;
 
+	// TESTING
+	ALC::string multiLineText;
+
 };
 
 #endif // !ALICE_SCENES_BATTLELEVEL_HPP

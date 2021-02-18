@@ -7,12 +7,52 @@
 
 namespace ALC {
 
-	Font::Font() : m_textureID(0), m_textureSize(0), m_characters(nullptr) { }
+	Font::Font() : m_textureID(0), m_textureSize(0), m_characters(nullptr), yOffset(0.0f) { }
 
-	Font::Font(std::nullptr_t) : m_textureID(0), m_textureSize(0), m_characters(nullptr) { }
+	Font::Font(std::nullptr_t) : m_textureID(0), m_textureSize(0), m_characters(nullptr), yOffset(0.0f) { }
 
 	Font::~Font() {
 
+	}
+
+	string Font::StringSplitLines(const string& text, const float maxStringWidth) {
+		string curWord = "", curLine = "", result = "";
+		float wordWidth = 0.0f, lineWidth = 0.0f;
+
+		int index = 0, length = text.size() - 2; // Minus two because the index will be the length minus two upon reaching the final character
+		for (const char* p = text.c_str(); *p; p++) {
+			const Font::Character& c = At(*p);
+
+			if (*p == ' ') { // Attempt to add the string to the current line; adding it to a new line if it exceeds the max string width
+				if (wordWidth + lineWidth > maxStringWidth) {
+					lineWidth = 0.0f; // Resets the current line's width
+					// Add the line to the final result string; reset the current line in the process
+					result += curLine + '\n';
+					curLine = "";
+				}
+				lineWidth += wordWidth + c.bitSize.x; // Add the word's width and the space's width to the line width
+				wordWidth = 0.0f;
+				// Add the word to the current line and move to the next word
+				curLine += curWord + " ";
+				curWord = "";
+				continue;
+			}
+			// Add the next character to the current word and increase the word width by the character's width
+			curWord += *p;
+			wordWidth += c.bitSize.x;
+
+			// Increment the character position counter
+			index++;
+		}
+		// Add the final line and word to the result
+		result += curLine;
+		if (lineWidth + wordWidth > maxStringWidth) { // The word will exceed the width; place it on one final line
+			result += '\n' + curWord;
+		} else { // It will fit on the current line; add it
+			result += curWord;
+		}
+
+		return result;
 	}
 
 	bool Font::IsValid() const {
