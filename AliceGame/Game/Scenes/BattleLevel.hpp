@@ -66,6 +66,15 @@ private:
 	double m_delta;
 	ALC::uint32 m_counter;
 	ALC::Font m_debugFont;
+	bool m_isPaused;
+	bool m_isFadingIn;
+	float m_fadeInTransition;
+	float m_fadeInMaxTransitionTime;
+	float m_pauseTransition;
+	float m_pauseMaxTransitionTime;
+	float m_deathTransition;
+	float m_deathMaxTransitionTime;
+	float m_reloadDelay;
 
 	// TESTING
 	ALC::string multiLineText;
