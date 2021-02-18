@@ -34,7 +34,10 @@ void BattleLevel::Init() {
 	m_debugFont = CM::LoadFont(CM::Default(), "Resources/Fonts/arial.ttf", DEBUG_FONT_SIZE);
 
 	if (m_debugFont) {
-		multiLineText = m_debugFont.StringSplitLines("This is a test to see if the string will be split into multiple lines! This will probably hopefully be multiple lines!", 10.0f);
+		ALC::string testString("This is a test to see if the string will be split into multiple lines! This will probably hopefully be multiple lines!");
+
+		multiLineText = m_debugFont.StringSplitLines(testString, 240.0f);
+		stringDimensions = m_debugFont.StringDimensions(multiLineText);
 	}
 
 	// set our content storage as the context
@@ -181,6 +184,9 @@ void BattleLevel::Draw() {
 			+ "\n\nTotal Entities: " + VTOS(GetReg().__GetReg().size<ALC::EntityInfo>())
 			+ "\nEnemy Health: " + VTOS((int)BattleManager::GetEnemy()->GetHealth()) + " / " + VTOS((int)BattleManager::GetEnemy()->GetMaxHealth())
 			, m_debugFont, ALC::vec2(0.0f, DEBUG_FONT_SIZE));
+		
+		ALC::rect r(ALC::vec2(0.0f, 200.0f - m_debugFont.GetSize().y), ALC::vec2(0.0f, 200.0f - m_debugFont.GetSize().y) + stringDimensions);
+		m_ui.DrawQuad(r, ALC_COLOR_BLUE);
 
 		m_ui.DrawText(multiLineText, m_debugFont, ALC::vec2(0.0f, 200.0f));
 	}

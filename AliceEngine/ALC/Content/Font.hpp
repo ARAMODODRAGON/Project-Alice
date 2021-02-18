@@ -24,6 +24,7 @@ namespace ALC {
 		~Font();
 
 		// String manipulation function(s)
+		uvec2 StringDimensions(const string& text) const; // Gets both the width and the height of the provided string in pixels on the screen
 		string StringSplitLines(const string& text, const float maxStringWidth); // Splits a single-line block of text into multiple lines dynamically
 
 		// returns true if this is a valid font

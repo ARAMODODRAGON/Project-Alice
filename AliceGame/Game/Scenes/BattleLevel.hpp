@@ -69,6 +69,7 @@ private:
 
 	// TESTING
 	ALC::string multiLineText;
+	ALC::vec2 stringDimensions;
 
 };
 

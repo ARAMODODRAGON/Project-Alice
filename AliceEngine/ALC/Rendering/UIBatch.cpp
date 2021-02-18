@@ -176,6 +176,7 @@ namespace ALC {
 
 		vec2 offset(0.0f);
 		for (const char* p = text.c_str(); *p; p++) {
+			if (*p < 32 && *p != '\n') continue;
 			// get character
 			const Font::Character& c = font[*p];
 

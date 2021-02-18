@@ -15,12 +15,52 @@ namespace ALC {
 
 	}
 
+	// STRING MANIPULATION FUNCTIONS /////////////////////////////////////////////////////////////////////////////////////
+
+	uvec2 Font::StringDimensions(const string& text) const {
+		uvec2 dimensions(0.0f);
+		float curWidth = 0.0f;
+
+		if (m_characters == nullptr) {
+			ALC_DEBUG_ERROR("Invalid font has been used! No calculations will be processed.");
+			return dimensions;
+		}
+
+		for (const char* p = text.c_str(); *p; p++) {
+			if (*p == '\n') {
+				dimensions[1] += GetSize().y + 2.0f;
+				curWidth = 0.0f; // Reset the width of the current line
+				continue;
+			}
+
+			if (*p < 32) continue;
+			const Font::Character& c = At(*p);
+
+			// Add up the line's width without altering the dimension value that will be returned unless the line's width exceeds the current known "width"
+			curWidth += c.bitSize.x;
+			if (curWidth > dimensions[0]) {
+				dimensions[0] = curWidth;
+			}
+		}
+		// Make sure to add the last line's height to the string after the loop
+		if (text != "") {
+			dimensions[1] += GetSize().y + 2.0f;
+		}
+
+		return dimensions;
+	}
+
 	string Font::StringSplitLines(const string& text, const float maxStringWidth) {
 		string curWord = "", curLine = "", result = "";
 		float wordWidth = 0.0f, lineWidth = 0.0f;
 
-		int index = 0, length = text.size() - 2; // Minus two because the index will be the length minus two upon reaching the final character
+		if (m_characters == nullptr) {
+			ALC_DEBUG_ERROR("Invalid font has been used! No calculations will be processed.");
+			return "";
+		}
+
 		for (const char* p = text.c_str(); *p; p++) {
+			if (*p < 32) continue;
 			const Font::Character& c = At(*p);
 
 			if (*p == ' ') { // Attempt to add the string to the current line; adding it to a new line if it exceeds the max string width
@@ -29,31 +69,32 @@ namespace ALC {
 					// Add the line to the final result string; reset the current line in the process
 					result += curLine + '\n';
 					curLine = "";
+				} else if (curLine != "") { // Add a space between the words currently in the line
+					curLine += " ";
 				}
 				lineWidth += wordWidth + c.bitSize.x; // Add the word's width and the space's width to the line width
 				wordWidth = 0.0f;
 				// Add the word to the current line and move to the next word
-				curLine += curWord + " ";
+				curLine += curWord;
 				curWord = "";
 				continue;
 			}
 			// Add the next character to the current word and increase the word width by the character's width
 			curWord += *p;
 			wordWidth += c.bitSize.x;
-
-			// Increment the character position counter
-			index++;
 		}
 		// Add the final line and word to the result
 		result += curLine;
 		if (lineWidth + wordWidth > maxStringWidth) { // The word will exceed the width; place it on one final line
 			result += '\n' + curWord;
-		} else { // It will fit on the current line; add it
-			result += curWord;
+		} else { // It will fit on the current line; add it and a space beforehand
+			result += " " + curWord;
 		}
 
 		return result;
 	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	bool Font::IsValid() const {
 		return m_textureID != 0;
