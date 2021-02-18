@@ -13,8 +13,14 @@ BattleLevel::BattleLevel()
 	, m_delta(0.0)
 	, m_counter(-1)
 	, m_isPaused(false)
+	, m_isFadingIn(true)
+	, m_fadeInTransition(0.0f)
+	, m_fadeInMaxTransitionTime(1.0f)
 	, m_pauseTransition(0.0f)
-	, m_maxTransitionTime(0.3f) {
+	, m_pauseMaxTransitionTime(0.3f)
+	, m_deathTransition(0.0f)
+	, m_deathMaxTransitionTime(1.0f)
+	, m_reloadDelay(0.1f) {
 	m_ui.SetInternalScreenSize(BattleManager::PrefferedResolution());
 }
 
@@ -184,12 +190,26 @@ void BattleLevel::Draw() {
 		if (m_isPaused) {
 
 			// cover the screen with a semi transparent black texture to darken the background
-			const float alpha = (m_pauseTransition / m_maxTransitionTime) * 0.8f;
-			ALC::rect quad(0.0f);
-			quad.max = m_ui.GetInternalScreenSize();
+			const float alpha = (m_pauseTransition / m_pauseMaxTransitionTime) * 0.8f;
+			ALC::rect quad(ALC::vec2(0.0f), m_ui.GetInternalScreenSize());
 			m_ui.DrawQuad(quad, ALC::vec4(0.0f, 0.0f, 0.0f, alpha));
 
+		}
 
+		// draw death fade
+		if (!ALC::NearlyZero(m_deathTransition)) {
+			// cover the screen with a semi transparent black texture
+			const float alpha = (m_deathTransition / m_deathMaxTransitionTime);
+			ALC::rect quad(ALC::vec2(0.0f), m_ui.GetInternalScreenSize());
+			m_ui.DrawQuad(quad, ALC::vec4(0.0f, 0.0f, 0.0f, alpha));
+		}
+
+		// draw start fade
+		if (m_isFadingIn) {
+			// cover the screen with a semi transparent black texture
+			const float alpha = 1.0f - (m_fadeInTransition / m_fadeInMaxTransitionTime);
+			ALC::rect quad(ALC::vec2(0.0f), m_ui.GetInternalScreenSize());
+			m_ui.DrawQuad(quad, ALC::vec4(0.0f, 0.0f, 0.0f, alpha));
 		}
 
 	}
@@ -228,32 +248,57 @@ void BattleLevel::Step(ALC::Timestep ts) {
 		m_debug = !m_debug;
 	}
 
+	// fade in
+	if (m_isFadingIn) {
+		m_fadeInTransition += ts;
+		if (m_fadeInTransition > m_fadeInMaxTransitionTime) {
+			m_isFadingIn = false;
+		}
+	}
+
 	// pause / unpause
-	if (!m_character->IsDead()) {
+	if (!m_character->IsDead() && !m_isFadingIn) {
 		auto esc = Keyboard::GetKey(KeyCode::Escape);
-		const bool canPause = ALC::NearlyZero(m_pauseTransition, ts) || ALC::NearlyEqual(m_pauseTransition, m_maxTransitionTime, ts);
+		const bool canPause = ALC::NearlyZero(m_pauseTransition, ts) || ALC::NearlyEqual(m_pauseTransition, m_pauseMaxTransitionTime, ts);
 		if (esc.Pressed() && canPause) m_isPaused = !m_isPaused;
 	}
 	if (m_isPaused) m_pauseTransition += ts;
 	else			m_pauseTransition = 0.0f;
-	m_pauseTransition = glm::clamp(m_pauseTransition, 0.0f, m_maxTransitionTime);
+	m_pauseTransition = glm::clamp(m_pauseTransition, 0.0f, m_pauseMaxTransitionTime);
+
+	// fade out
+	if (m_character->IsDead()) {
+		m_deathTransition += ts;
+		m_deathTransition = glm::clamp(m_deathTransition, 0.0f, m_deathMaxTransitionTime);
+		m_timescale = 1.0f - (m_deathTransition / m_deathMaxTransitionTime);
+
+		// reset scene
+		if (ALC::NearlyEqual(m_deathTransition, m_deathMaxTransitionTime, ts)) {
+			// TODO: built in reset functionality
+			ALC::SceneManager::LoadLevel(ALC::SceneManager::GetActiveSceneBuildIndex()); // reset scene
+		}
+	}
 
 	// prepare our fixed timestep. it should be 0 if paused
-	ALC::Timestep fixedts(m_isPaused ? 0.0 : ((1.0 / 60.0) * m_timescale));
+	ALC::Timestep fixedts((m_isPaused) ? 0.0 : ((1.0 / 60.0) * m_timescale));
 
 	// call gamestep
 	GameStep(fixedts);
 
-	// update behaviors
-	m_reg.UpdateBehaviors(fixedts);
+	// dont update anything other than the level during the fade in sequence
+	if (!m_isFadingIn) {
+		// update behaviors
+		m_reg.UpdateBehaviors(fixedts);
 
-	// update physics
-	m_bPhysics.Step(m_reg, fixedts);
+		// update physics
+		m_bPhysics.Step(m_reg, fixedts);
 
-	// create all entities
-	m_ech.Cleanup(m_reg);
+		// create all entities
+		m_ech.Cleanup(m_reg);
 
-	// late update the registry
-	m_reg.LateUpdateBehaviors(fixedts);
+		// late update the registry
+		m_reg.LateUpdateBehaviors(fixedts);
+	}
+
 
 }
