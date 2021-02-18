@@ -6,7 +6,15 @@
 #define DEBUG_FPS_UPDATE_RATE 5
 
 BattleLevel::BattleLevel()
-	: m_timescale(1.0f), m_character(nullptr), m_debug(_DEBUG), m_lastFPS(0.0f), m_delta(0.0), m_counter(-1) {
+	: m_timescale(1.0f)
+	, m_character(nullptr)
+	, m_debug(_DEBUG)
+	, m_lastFPS(0.0f)
+	, m_delta(0.0)
+	, m_counter(-1)
+	, m_isPaused(false)
+	, m_pauseTransition(0.0f)
+	, m_maxTransitionTime(0.3f) {
 	m_ui.SetInternalScreenSize(BattleManager::PrefferedResolution());
 }
 
@@ -171,16 +179,29 @@ void BattleLevel::Draw() {
 		target = ALC::rect(97.0f, 28.0f, 110.0f, 32.0f);
 
 		m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIElements);
+
+		// draw pause menu
+		if (m_isPaused) {
+
+			// cover the screen with a semi transparent black texture to darken the background
+			const float alpha = (m_pauseTransition / m_maxTransitionTime) * 0.8f;
+			ALC::rect quad(0.0f);
+			quad.max = m_ui.GetInternalScreenSize();
+			m_ui.DrawQuad(quad, ALC::vec4(0.0f, 0.0f, 0.0f, alpha));
+
+
+		}
+
 	}
 
 	// draw debug stuff like fps
 	if (m_debug) {
 		m_ui.DrawText("Current FPS: " + VTOS((int)m_lastFPS) // SINGLE CALL NOW WOOOOOOOOOOOOOOOOO
-			+ "\nDelta Time : " + VTOS(m_delta)
-			+ "\nTimescale: " + VTOS(m_timescale) + " (Target FPS is " + VTOS((int)(60.0f * m_timescale)) + ")"
-			+ "\n\nTotal Entities: " + VTOS(GetReg().__GetReg().size<ALC::EntityInfo>())
-			+ "\nEnemy Health: " + VTOS((int)BattleManager::GetEnemy()->GetHealth()) + " / " + VTOS((int)BattleManager::GetEnemy()->GetMaxHealth())
-			, m_debugFont, ALC::vec2(0.0f, DEBUG_FONT_SIZE));
+					  + "\nDelta Time : " + VTOS(m_delta)
+					  + "\nTimescale: " + VTOS(m_timescale) + " (Target FPS is " + VTOS((int)(60.0f * m_timescale)) + ")"
+					  + "\n\nTotal Entities: " + VTOS(GetReg().__GetReg().size<ALC::EntityInfo>())
+					  + "\nEnemy Health: " + VTOS((int)BattleManager::GetEnemy()->GetHealth()) + " / " + VTOS((int)BattleManager::GetEnemy()->GetMaxHealth())
+					  , m_debugFont, ALC::vec2(0.0f, DEBUG_FONT_SIZE));
 
 		m_ui.DrawText(multiLineText, m_debugFont, ALC::vec2(0.0f, 200.0f));
 	}
@@ -190,16 +211,16 @@ void BattleLevel::Draw() {
 
 }
 
-void BattleLevel::Step(ALC::Timestep t) {
+void BattleLevel::Step(ALC::Timestep ts) {
 	++m_counter;
 
 	using ALC::Keyboard;
 	using ALC::KeyCode;
 
 	if ((m_counter % DEBUG_FPS_UPDATE_RATE) == 0)
-		m_lastFPS = t.GetFPS();
+		m_lastFPS = ts.GetFPS();
 
-	m_delta = t.GetDouble();
+	m_delta = ts.GetDouble();
 
 	auto ctrl = Keyboard::GetKey(KeyCode::LeftCtrl);
 	auto keyw = Keyboard::GetKey(KeyCode::KeyW);
@@ -207,8 +228,18 @@ void BattleLevel::Step(ALC::Timestep t) {
 		m_debug = !m_debug;
 	}
 
-	// prepare our fixed timestep
-	ALC::Timestep fixedts((1.0 / 60.0) * m_timescale);
+	// pause / unpause
+	if (!m_character->IsDead()) {
+		auto esc = Keyboard::GetKey(KeyCode::Escape);
+		const bool canPause = ALC::NearlyZero(m_pauseTransition, ts) || ALC::NearlyEqual(m_pauseTransition, m_maxTransitionTime, ts);
+		if (esc.Pressed() && canPause) m_isPaused = !m_isPaused;
+	}
+	if (m_isPaused) m_pauseTransition += ts;
+	else			m_pauseTransition = 0.0f;
+	m_pauseTransition = glm::clamp(m_pauseTransition, 0.0f, m_maxTransitionTime);
+
+	// prepare our fixed timestep. it should be 0 if paused
+	ALC::Timestep fixedts(m_isPaused ? 0.0 : ((1.0 / 60.0) * m_timescale));
 
 	// call gamestep
 	GameStep(fixedts);
