@@ -23,14 +23,15 @@ void RuiEnemy::Start(ALC::Entity self) {
 	m_bulletTexture = ALC::ContentManager::LoadTexture("Resources/Textures/Spells.png");
 
 	auto& spr = self.GetComponent<ALC::SpriteComponent>();
-	spr.texture = ALC::ContentManager::LoadTexture("Resources/Textures/Enemies/Rui-Facing-Forward.png");
+	spr.texture = ALC::ContentManager::LoadTexture("Resources/Textures/Enemies/Rui-Enemy.png");
 	spr.textureBounds = spr.texture.GetBounds();
+	spr.bounds = spr.texture.GetCenteredBounds();
 
 	// match the ratio 
-	float ratio = spr.textureBounds.Height() / spr.textureBounds.Width();
-	float newHeight = spr.bounds.Width() * ratio;
-	spr.bounds.top = newHeight * 0.5f;
-	spr.bounds.bottom = -newHeight * 0.5f;
+	//float ratio = spr.textureBounds.Height() / spr.textureBounds.Width();
+	//float newHeight = spr.bounds.Width() * ratio;
+	//spr.bounds.top = newHeight * 0.5f;
+	//spr.bounds.bottom = -newHeight * 0.5f;
 
 
 }
@@ -107,10 +108,10 @@ void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 			body.radius = 4.0f;
 
 			auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
-			sprite.bounds = ALC::rect(14.0f);
 			// this should be loaded ahead of time
 			sprite.texture = tex;
 			sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
+			sprite.bounds = sprite.textureBounds.Centered();
 		});
 
 		// change state
@@ -133,10 +134,10 @@ void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 				body.radius = 4.0f;
 
 				auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
-				sprite.bounds = ALC::rect(14.0f);
 				// this should be loaded ahead of time
 				sprite.texture = tex;
 				sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
+				sprite.bounds = sprite.textureBounds.Centered();
 			});
 
 			// change state
@@ -211,10 +212,10 @@ void RuiEnemy::Phase1Step(ALC::Entity self, ALC::Timestep ts) {
 				body.radius = 4.0f;
 
 				auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
-				sprite.bounds = ALC::rect(14.0f);
 				// this should be loaded ahead of time
 				sprite.texture = tex;
 				sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
+				sprite.bounds = sprite.textureBounds.Centered();
 				});
 
 			if (dirIndex < 3) {
@@ -238,10 +239,10 @@ void RuiEnemy::Phase1Step(ALC::Entity self, ALC::Timestep ts) {
 				body.radius = 4.0f;
 
 				auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
-				sprite.bounds = ALC::rect(14.0f);
 				// this should be loaded ahead of time
 				sprite.texture = tex;
 				sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
+				sprite.bounds = sprite.textureBounds.Centered();
 				});
 
 
