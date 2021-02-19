@@ -176,6 +176,7 @@ namespace ALC {
 
 		vec2 offset(0.0f);
 		for (const char* p = text.c_str(); *p; p++) {
+			if (*p < 32 && *p != '\n') continue;
 			// get character
 			const Font::Character& c = font[*p];
 
@@ -186,10 +187,16 @@ namespace ALC {
 			float h = c.bitSize.y * scale.y;
 
 			// move cursor to the start of the next character
-			offset += c.advance * scale;
+			offset.x += c.advance.x * scale.x;
 
 			// skip character with no size
-			if (!w || !h) continue;
+			if ((!w || !h) && *p != '\n') continue;
+
+			if (*p == '\n') { // Newline text
+				offset[0] = 0.0f; // Reset the x offset of the text
+				offset[1] += (font.GetSize().y + 2.0f) * scale.y;
+				continue;
+			}
 
 			// set uvCoords
 			/* bottom left  */ verts[0].uvcoords = vec2(c.xoffset, 0.0f);

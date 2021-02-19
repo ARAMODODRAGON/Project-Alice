@@ -30,6 +30,9 @@ namespace ALC {
 		// returns a rect with the min set to 0,0 and max set to GetSize()
 		rect GetBounds() const;
 
+		// returns a rect with extents equal to half GetSize()
+		rect GetCenteredBounds() const;
+
 		// compare the textures
 		bool operator==(const Texture& other) const;
 

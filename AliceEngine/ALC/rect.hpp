@@ -23,6 +23,14 @@ namespace ALC {
 		float Width() const { return fabs(right - left); }
 		float Height() const { return fabs(top - bottom); }
 
+		// returns a centered copy of this rect
+		rect Centered() const { 
+			rect centered;
+			centered.min = vec2(-Width() * 0.5f, -Height() * 0.5f);
+			centered.max = -centered.min;
+			return centered;
+		}
+			
 		static bool Intersects(const rect& r0, const rect& r1) {
 			if (r0.min.x > r1.max.x || r0.max.x < r1.min.x) return false;
 			if (r0.min.y > r1.max.y || r0.max.y < r1.min.y) return false;

@@ -33,6 +33,10 @@ namespace ALC {
 		return rect(vec2(0.0f), m_textureSize);
 	}
 
+	rect Texture::GetCenteredBounds() const {
+		return rect(-vec2(m_textureSize) * 0.5f, vec2(m_textureSize) * 0.5f);
+	}
+
 	bool Texture::operator==(const Texture& other) const {
 		return m_textureID == other.m_textureID;
 	}

@@ -6,7 +6,24 @@
 #define DEBUG_FPS_UPDATE_RATE 5
 
 BattleLevel::BattleLevel()
-	: m_timescale(1.0f), m_character(nullptr), m_debug(_DEBUG), m_lastFPS(0.0f), m_delta(0.0), m_counter(-1) {
+	: m_timescale(1.0f)
+	, m_character(nullptr)
+	, m_debug(_DEBUG)
+	, m_lastFPS(0.0f)
+	, m_delta(0.0)
+	, m_itemsOffset(20.0f)
+	, m_itemFillspeed(0.1f)
+	, m_pauseSelected(0)
+	, m_counter(-1)
+	, m_playerWasDead(false)
+	, m_isPaused(false)
+	, m_isFading(true)
+	, m_shouldFadeIn(true)
+	, m_fadeTransition(0.0f)
+	, m_fadeMaxTransitionTime(1.0f)
+	, m_pauseTransition(0.0f)
+	, m_pauseMaxTransitionTime(0.3f)
+	, m_reloadDelay(0.1f) {
 	m_ui.SetInternalScreenSize(BattleManager::PrefferedResolution());
 }
 
@@ -33,11 +50,17 @@ void BattleLevel::Init() {
 	// load the font and make sure its not tied to a context
 	m_debugFont = CM::LoadFont(CM::Default(), "Resources/Fonts/arial.ttf", DEBUG_FONT_SIZE);
 
+	if (m_debugFont) {
+		ALC::string testString("This is a test to see if the string will be split into multiple lines! This will probably hopefully be multiple lines!");
+
+		multiLineText = m_debugFont.StringSplitLines(testString, 240.0f);
+		stringDimensions = m_debugFont.StringDimensions(multiLineText);
+	}
+
 	// set our content storage as the context
 	ALC::ContentManager::SetContext(m_storage);
 
 	// setup camera 
-	// dunno why [* 0.3f] makes things work properly but yea cool...
 	m_camera.SetCameraSize(BattleManager::PrefferedResolution());
 
 	// load all textures for the UI (Spells, hearts, etc.)
@@ -46,6 +69,34 @@ void BattleLevel::Init() {
 
 	// create the character
 	if (!m_character) m_character = BattleManager::InitAsCharacter(m_reg.Create());
+
+	// setup the pause menu stuff
+	ALC::vec2 screenCenter = BattleManager::PrefferedResolution() / 2.0f;
+
+	auto PauseFont = CM::LoadFont(CM::Default(), "Resources/Fonts/Roboto-BoldItalic.ttf", 50);
+	auto SelectionFont = CM::LoadFont(CM::Default(), "Resources/Fonts/Roboto-Medium.ttf", 20);
+
+	m_itemPaused.text = "Paused";
+	m_itemPaused.position = screenCenter + ALC::vec2(0.0f, -100.0f);
+	m_itemPaused.font = PauseFont;
+	m_itemPaused.dimensions = m_itemPaused.font.StringDimensions(m_itemPaused.text);
+	m_itemPaused.position.x -= m_itemPaused.dimensions.x * 0.5f;
+
+	auto& continueItem = m_pauseSelection[0];
+	continueItem.text = "Continue";
+	continueItem.position = m_itemPaused.position;
+	continueItem.position.y += m_itemPaused.dimensions.y + m_itemsOffset;
+	continueItem.font = SelectionFont;
+	continueItem.dimensions = continueItem.font.StringDimensions(continueItem.text);
+	continueItem.func = &BattleLevel::OnContinue;
+
+	auto& RestartItem = m_pauseSelection[1];
+	RestartItem.text = "Restart";
+	RestartItem.position = continueItem.position;
+	RestartItem.position.y += continueItem.dimensions.y + m_itemsOffset;
+	RestartItem.font = SelectionFont;
+	RestartItem.dimensions = RestartItem.font.StringDimensions(RestartItem.text);
+	RestartItem.func = &BattleLevel::OnRestart;
 
 }
 
@@ -167,16 +218,68 @@ void BattleLevel::Draw() {
 		target = ALC::rect(97.0f, 28.0f, 110.0f, 32.0f);
 
 		m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIElements);
+
+		// draw pause menu
+		if (m_isPaused) {
+
+			// cover the screen with a semi transparent black texture to darken the background
+			const float alpha = (m_pauseTransition / m_pauseMaxTransitionTime) * 0.8f;
+			ALC::rect quad(ALC::vec2(0.0f), m_ui.GetInternalScreenSize());
+			m_ui.DrawQuad(quad, ALC::vec4(0.0f, 0.0f, 0.0f, alpha));
+
+			constexpr float margin = 7.0f;
+
+			// draw text
+			m_ui.DrawText(m_itemPaused.text, m_itemPaused.font, m_itemPaused.position);
+			for (size_t i = 0; i < m_pauseSelection.size(); ++i) {
+				UIItem& item = m_pauseSelection[i];
+
+				// selection box
+				quad.min = item.position;
+				quad.max = quad.min;
+				quad.min.y -= item.font.GetSize().y;
+				quad.max.x += item.dimensions.x;
+
+				quad.min.x -= margin;
+				quad.min.y -= (margin - 6.0f);
+				quad.max.x += margin;
+				quad.max.y += margin;
+
+				quad.max.x = (quad.max.x - quad.min.x) * (item.fillamount / m_itemFillspeed) + quad.min.x;
+
+				m_ui.DrawQuad(quad, ALC::vec4(ALC::vec3(0.5f), 1.0f));
+
+				// text
+				m_ui.DrawText(item.text, item.font, item.position);
+			}
+
+		}
+
+		// draw start fade
+		if (m_isFading) {
+			// cover the screen with a semi transparent black texture
+			const float alpha = 1.0f - (m_fadeTransition / m_fadeMaxTransitionTime);
+			ALC::rect quad(ALC::vec2(0.0f), m_ui.GetInternalScreenSize());
+			m_ui.DrawQuad(quad, ALC::vec4(0.0f, 0.0f, 0.0f, alpha));
+		}
+
 	}
 
 	// draw debug stuff like fps
 	if (m_debug) {
-		m_ui.DrawText("Current FPS: " + VTOS((int)m_lastFPS), m_debugFont, ALC::vec2(0.0f, DEBUG_FONT_SIZE));
-		m_ui.DrawText("Delta Time: " + VTOS(m_delta), m_debugFont, ALC::vec2(0.0f, (DEBUG_FONT_SIZE * 2) + 2));
-		m_ui.DrawText("Timescale: " + VTOS(m_timescale) + " (Target FPS is " + VTOS((int)(60.0f * m_timescale)) + ")", m_debugFont, ALC::vec2(0.0f, (DEBUG_FONT_SIZE * 3) + 4));
+		m_ui.DrawText("Current FPS: " + VTOS((int)m_lastFPS) // SINGLE CALL NOW WOOOOOOOOOOOOOOOOO
+					  + "\nDelta Time : " + VTOS(m_delta)
+					  + "\nTimescale: " + VTOS(m_timescale) + " (Target FPS is " + VTOS((int)(60.0f * m_timescale)) + ")"
+					  + "\n\nTotal Entities: " + VTOS(GetReg().__GetReg().size<ALC::EntityInfo>())
+					  + "\nEnemy Health: " + VTOS((int)BattleManager::GetEnemy()->GetHealth()) + " / " + VTOS((int)BattleManager::GetEnemy()->GetMaxHealth())
+					  , m_debugFont, ALC::vec2(0.0f, DEBUG_FONT_SIZE));
 
-		m_ui.DrawText("Total Entities: " + VTOS(GetReg().__GetReg().size<ALC::EntityInfo>()), m_debugFont, ALC::vec2(0.0f, (DEBUG_FONT_SIZE * 5) + 8));
-		m_ui.DrawText("Enemy Health: " + VTOS((int)BattleManager::GetEnemy()->GetHealth()) + " / " + VTOS((int)BattleManager::GetEnemy()->GetMaxHealth()), m_debugFont, ALC::vec2(0.0f, (DEBUG_FONT_SIZE * 6) + 10));
+		ALC::rect r;
+		r.min = ALC::vec2(0.0f, 204.0f - m_debugFont.GetSize().y);
+		r.max = r.min + stringDimensions;
+		m_ui.DrawQuad(r, ALC_COLOR_BLUE);
+
+		m_ui.DrawText(multiLineText, m_debugFont, ALC::vec2(0.0f, 200.0f));
 	}
 
 	// end drawing UI
@@ -184,16 +287,16 @@ void BattleLevel::Draw() {
 
 }
 
-void BattleLevel::Step(ALC::Timestep t) {
+void BattleLevel::Step(ALC::Timestep ts) {
 	++m_counter;
 
 	using ALC::Keyboard;
 	using ALC::KeyCode;
 
 	if ((m_counter % DEBUG_FPS_UPDATE_RATE) == 0)
-		m_lastFPS = t.GetFPS();
+		m_lastFPS = ts.GetFPS();
 
-	m_delta = t.GetDouble();
+	m_delta = ts.GetDouble();
 
 	auto ctrl = Keyboard::GetKey(KeyCode::LeftCtrl);
 	auto keyw = Keyboard::GetKey(KeyCode::KeyW);
@@ -201,22 +304,117 @@ void BattleLevel::Step(ALC::Timestep t) {
 		m_debug = !m_debug;
 	}
 
-	// prepare our fixed timestep
-	ALC::Timestep fixedts((1.0 / 60.0) * m_timescale);
+	// fade in
+	if (m_isFading) {
+		if (m_shouldFadeIn) {
+			m_fadeTransition += ts;
+			if (m_fadeTransition > m_fadeMaxTransitionTime) {
+				m_isFading = false;
+				m_fadeTransition = m_fadeMaxTransitionTime;
+			}
+		} else {
+			m_fadeTransition -= ts;
+			if (m_fadeTransition < 0.0f) {
+				m_isFading = false;
+				m_fadeTransition = 0.0f;
+			}
+		}
+	}
+
+	// pause / unpause
+	if (!m_character->IsDead() && !m_isFading) {
+		auto esc = Keyboard::GetKey(KeyCode::Escape);
+		const bool canPause = ALC::NearlyZero(m_pauseTransition, ts) || ALC::NearlyEqual(m_pauseTransition, m_pauseMaxTransitionTime, ts);
+		const bool wasPaused = m_isPaused;
+		if (esc.Pressed() && canPause) m_isPaused = !m_isPaused;
+		if (wasPaused  && !m_isPaused) OnContinue();
+	}
+	if (m_isPaused) m_pauseTransition += ts;
+	else			m_pauseTransition = 0.0f;
+	m_pauseTransition = glm::clamp(m_pauseTransition, 0.0f, m_pauseMaxTransitionTime);
+
+	// pause menu selection
+	if (m_isPaused) {
+		auto Up = Keyboard::GetKey(KeyCode::ArrowUp);
+		auto Down = Keyboard::GetKey(KeyCode::ArrowDown);
+
+		if (Up.Pressed() != Down.Pressed()) {
+			if (Up.Pressed()) {
+				m_pauseSelected--;
+				m_pauseSelected %= m_pauseSelection.size();
+			}
+			if (Down.Pressed()) {
+				m_pauseSelected++;
+				m_pauseSelected %= m_pauseSelection.size();
+			}
+		}
+
+		if (Keyboard::GetKey(KeyCode::KeyC).Pressed()) {
+			auto func = m_pauseSelection[m_pauseSelected].func;
+			(this->*func)();
+		}
+
+		for (size_t i = 0; i < m_pauseSelection.size(); i++) {
+			auto& item = m_pauseSelection[i];
+			if (i == m_pauseSelected)
+				item.fillamount += ts;
+			else
+				item.fillamount -= ts;
+			item.fillamount = glm::clamp(item.fillamount, 0.0f, m_itemFillspeed);
+		}
+	}
+
+	// fade out
+	if (m_character->IsDead()) {
+		//m_timescale = 1.0f - (m_fadeTransition / m_fadeMaxTransitionTime);
+
+		// reset scene
+		if (ALC::NearlyZero(m_fadeTransition, ts)) {
+			// TODO: built in reset functionality
+			ALC::SceneManager::LoadLevel(ALC::SceneManager::GetActiveSceneBuildIndex()); // reset scene
+		}
+	}
+	if (m_character->IsDead() != m_playerWasDead) {
+		m_isFading = true;
+		m_shouldFadeIn = false;
+	}
+	m_playerWasDead = m_character->IsDead();
+
+	// prepare our fixed timestep. it should be 0 if paused
+	ALC::Timestep fixedts((m_isPaused) ? 0.0 : ((1.0 / 60.0) * m_timescale));
 
 	// call gamestep
 	GameStep(fixedts);
 
-	// update behaviors
-	m_reg.UpdateBehaviors(fixedts);
+	// dont update anything other than the level when fading
+	if (!(m_isFading && m_shouldFadeIn) && !m_isPaused) { // tmp fix to make the death animation run
+		// update behaviors
+		m_reg.UpdateBehaviors(fixedts);
 
-	// update physics
-	m_bPhysics.Step(m_reg, fixedts);
+		// update physics
+		m_bPhysics.Step(m_reg, fixedts);
 
-	// create all entities
-	m_ech.Cleanup(m_reg);
+		// cleanup all entities
+		m_ech.Cleanup(m_reg);
 
-	// late update the registry
-	m_reg.LateUpdateBehaviors(fixedts);
+		// late update the registry
+		m_reg.LateUpdateBehaviors(fixedts);
+	} else {
+		// cleanup all entities
+		m_ech.Cleanup(m_reg);
+	}
 
+}
+
+void BattleLevel::OnContinue() {
+	m_pauseSelected = 0;
+	m_isPaused = false;
+	for (auto& item : m_pauseSelection) {
+		item.fillamount = 0.0f;
+	}
+}
+
+void BattleLevel::OnRestart() {
+	OnContinue();
+	m_character->TakeDamage(1000.0f);
 }

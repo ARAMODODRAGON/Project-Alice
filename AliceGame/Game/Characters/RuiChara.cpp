@@ -38,7 +38,8 @@ RuiChara::RuiChara()
 	// bind states
 	m_spell.Bind(State::Basic, &RuiChara::StateStepBasic, &RuiChara::StateBeginBasic);
 	m_spell.Bind(State::Rapid, &RuiChara::StateStepRapid, &RuiChara::StateBeginRapid);
-	SetSlowScalar(0.3f);
+	SetMaxSpeed(380.0f);
+	SetSlowScalar(0.4f);
 }
 
 RuiChara::~RuiChara() { }
@@ -60,7 +61,7 @@ void RuiChara::Start(ALC::Entity self) {
 
 	fspr.texture = m_spelltex;
 	fspr.textureBounds = ALC::rect(64.0f, 80.0f, 79.0f, 95.0f);
-	fspr.bounds = ALC::rect(10.0f);
+	fspr.bounds = fspr.textureBounds.Centered();
 
 }
 
@@ -125,8 +126,8 @@ ALC::rect RuiChara::GetDefenceTargetRectCooldown() const {
 }
 
 ALC::rect RuiChara::GetHeartTargetRect() const {
-	if (IsInvuln()) return ALC::rect(117.0f, 7.0f, 125.0f, 14.0f);
-	else			return ALC::rect(117.0f, 18.0f, 125.0f, 25.0f);
+	if (IsInvuln()) return ALC::rect(117.0f, 7.0f, 126.0f, 15.0f);
+	else			return ALC::rect(117.0f, 18.0f, 126.0f, 26.0f);
 }
 ALC::Entity RuiChara::GetFlower() {
 	return GetRegistry().GetEntity(m_flowerEntity);
@@ -167,9 +168,9 @@ void RuiChara::StateStepBasic(ALC::Entity self, ALC::Timestep ts) {
 
 		Shoot(self, 1, [tex](ALC::Entity bullet) {
 			auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
-			sprite.bounds = ALC::rect(10.0f);
 			sprite.texture = tex;
 			sprite.textureBounds = ALC::rect(32.0f, 96.0f, 47.0f, 111.0f);
+			sprite.bounds = sprite.textureBounds.Centered();
 			sprite.color.a = 0.3f;
 		});
 
@@ -186,7 +187,7 @@ void RuiChara::StateStepBasic(ALC::Entity self, ALC::Timestep ts) {
 		m_flowerPop = !m_flowerPop;
 
 		// shoots left then right
-		ALC::vec2 vel(400.0f * (m_fireIndex % 2 ? -1.0f : 1.0f), shoot_angle[shoot_pattern[m_fireIndex % shoot_pattern_size]]);
+		ALC::vec2 vel(800.0f * (m_fireIndex % 2 ? -1.0f : 1.0f), shoot_angle[shoot_pattern[m_fireIndex % shoot_pattern_size]]);
 		m_fireIndex++;
 		auto tex = m_spelltex;
 
@@ -196,10 +197,14 @@ void RuiChara::StateStepBasic(ALC::Entity self, ALC::Timestep ts) {
 
 		Shoot(self, 1, [tex](ALC::Entity bullet) {
 			auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
-			sprite.bounds = ALC::rect(10.0f);
 			sprite.texture = tex;
 			sprite.textureBounds = ALC::rect(32.0f, 80.0f, 47.0f, 95.0f);
+			sprite.bounds = sprite.textureBounds.Centered();
 			sprite.color.a = 0.3f;
+			auto& bdel = bullet.GetComponent<BulletDeleterComponent>();
+			bdel.lifetime = 10.0f;
+			auto& homing = bullet.GetComponent<HomingBullet>();
+			homing.rotationAccel = 1850.0f;
 		});
 
 	}
@@ -245,14 +250,14 @@ void RuiChara::StateStepRapid(ALC::Entity self, ALC::Timestep ts) {
 		// shoot bitch
 		Shoot(self, 1, [tex](ALC::Entity bullet) {
 			auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
-			sprite.bounds = ALC::rect(10.0f);
+			sprite.texture = tex;
+			sprite.textureBounds = ALC::rect(32.0f, 80.0f, 47.0f, 95.0f);
+			sprite.bounds = sprite.textureBounds.Centered();
+			sprite.color.a = 0.3f;
 			auto& homing = bullet.GetComponent<HomingBullet>();
 			homing.rotationSpeed = 270.0f;
 			auto& del = bullet.GetComponent<BulletDeleterComponent>();
 			del.lifetime = 2.0f;
-			sprite.texture = tex;
-			sprite.textureBounds = ALC::rect(32.0f, 80.0f, 47.0f, 95.0f);
-			sprite.color.a = 0.3f;
 		});
 
 	}

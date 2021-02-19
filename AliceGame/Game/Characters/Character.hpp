@@ -53,8 +53,8 @@ public:
 	// called for all damage taken, call base to update health and invuln automatically
 	virtual void OnTakeDamage(ALC::Entity self, const float damage);
 
-	// called on death, always after OnTakeDamage(...)
-	virtual void OnDeath(ALC::Entity self) { }
+	// call it to instantly kill the player
+	void Kill();
 
 	// returns the entity that the collider sprite is attached to
 	ALC::Entity GetColliderSprite();
@@ -82,6 +82,11 @@ public:
 	
 	// returns the target rect for the heart texture
 	virtual ALC::rect GetHeartTargetRect() const = 0;
+
+protected:
+
+	// called on death, always after OnTakeDamage(...)
+	virtual void OnDeath(ALC::Entity self) { }
 
 private:
 

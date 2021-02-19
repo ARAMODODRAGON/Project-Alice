@@ -26,14 +26,15 @@ void RuiEnemy::Start(ALC::Entity self) {
 	m_bulletTexture = ALC::ContentManager::LoadTexture("Resources/Textures/Spells.png");
 
 	auto& spr = self.GetComponent<ALC::SpriteComponent>();
-	spr.texture = ALC::ContentManager::LoadTexture("Resources/Textures/Enemies/Rui-Facing-Forward.png");
+	spr.texture = ALC::ContentManager::LoadTexture("Resources/Textures/Enemies/Rui-Enemy.png");
 	spr.textureBounds = spr.texture.GetBounds();
+	spr.bounds = spr.texture.GetCenteredBounds();
 
 	// match the ratio 
-	float ratio = spr.textureBounds.Height() / spr.textureBounds.Width();
-	float newHeight = spr.bounds.Width() * ratio;
-	spr.bounds.top = newHeight * 0.5f;
-	spr.bounds.bottom = -newHeight * 0.5f;
+	//float ratio = spr.textureBounds.Height() / spr.textureBounds.Width();
+	//float newHeight = spr.bounds.Width() * ratio;
+	//spr.bounds.top = newHeight * 0.5f;
+	//spr.bounds.bottom = -newHeight * 0.5f;
 
 }
 
@@ -111,17 +112,48 @@ void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 			// uses default velocity to shoot a range
 			// if default is [0, 1] then it will shoot in a range from (-45.0f / 2) to (+45.0f / 2)
 			ShooterBehavior::ShootRange(self, 3, 45.0f, [tex](ALC::Entity bullet) {
+
+		// uses default velocity to shoot a range
+		// if default is [0, 1] then it will shoot in a range from (-45.0f / 2) to (+45.0f / 2)
+		ShooterBehavior::ShootRange(self, 3, 45.0f, [tex](ALC::Entity bullet) {
+			// update body collision
+			auto& body = bullet.GetComponent<ALC::BulletBody>();
+			body.radius = 4.0f;
+
+			auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
+			// this should be loaded ahead of time
+			sprite.texture = tex;
+			sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
+			sprite.bounds = sprite.textureBounds.Centered();
+		});
+
+		// change state
+		m_state = State::Move;
+	} else if (m_state == State::Move) {
+
+		// move
+		auto result = BTA::MoveTo(&cbody.velocity, transform.position, ALC::vec2(-100, 100), 400.0f, speed * 20.0f, ts);
+
+		if (result == BTA::Result::Arrived) {
+			// set value
+			ShooterBehavior::SetDefaultPosition(transform.position);
+			ShooterBehavior::SetDefaultVelocity(targetdir * 300.0f);
+
+			auto tex = m_bulletTexture;
+
+			ShooterBehavior::ShootRange(self, 10, 45.0f, [tex](ALC::Entity bullet) {
 				// update body collision
 				auto& body = bullet.GetComponent<ALC::BulletBody>();
 				body.radius = 4.0f;
 
 				auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
-				sprite.bounds = ALC::rect(14.0f);
 				// this should be loaded ahead of time
 				sprite.texture = tex;
 				sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
 				});
 		}
+				sprite.bounds = sprite.textureBounds.Centered();
+			});
 
 		if (m_timer >= .2f) {
 			m_timer = 0.0f;
@@ -205,6 +237,12 @@ void RuiEnemy::Phase1Step(ALC::Entity self, ALC::Timestep ts) {
 					auto& body = bullet.GetComponent<ALC::BulletBody>();
 					body.radius = 4.0f;
 					body.velocity = tmpVec;
+				auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
+				// this should be loaded ahead of time
+				sprite.texture = tex;
+				sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
+				sprite.bounds = sprite.textureBounds.Centered();
+				});
 
 					auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
 					sprite.bounds = ALC::rect(14.0f);
@@ -281,6 +319,12 @@ void RuiEnemy::Phase1Step(ALC::Entity self, ALC::Timestep ts) {
 					sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
 					});
 			}
+				auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
+				// this should be loaded ahead of time
+				sprite.texture = tex;
+				sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
+				sprite.bounds = sprite.textureBounds.Centered();
+				});
 
 			ALC::uint8 tmpState = static_cast<ALC::uint8>(m_state);
 			m_moveState.PerformMoveState(this, moveStates[0], &tmpState, ts, 0.0f, static_cast<ALC::uint8>(State::TwinSpin));

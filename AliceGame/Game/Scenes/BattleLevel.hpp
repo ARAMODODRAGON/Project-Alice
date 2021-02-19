@@ -30,7 +30,7 @@ public:
 
 	// return the levelbounds in screen coordinates
 	ALC::rect GetScreenLevelBounds(const ALC::vec2& screensize) const;
-	
+
 	float GetTimescale() const { return m_timescale; }
 	void SetTimescale(const float timescale) { m_timescale = timescale; }
 
@@ -66,6 +66,46 @@ private:
 	double m_delta;
 	ALC::uint32 m_counter;
 	ALC::Font m_debugFont;
+
+	// ui stuff
+
+	//enum class UIState : ALC::uint8 {
+	//	PauseMenu,
+	//	SettingsMenu
+	//};
+
+	struct UIItem final {
+		float fillamount = 0.0f;
+		ALC::vec2 dimensions;
+		ALC::vec2 position;
+		ALC::string text;
+		ALC::Font font;
+		void(BattleLevel::*func)() = nullptr;
+	};
+
+	float m_itemsOffset;
+	float m_itemFillspeed;
+	UIItem m_itemPaused;
+	ALC::array<UIItem, 2> m_pauseSelection;
+	ALC::int32 m_pauseSelected;
+
+	void OnContinue();
+	void OnRestart();
+
+	bool m_shouldRestart;
+	bool m_playerWasDead;
+	bool m_isPaused;
+	bool m_isFading;
+	bool m_shouldFadeIn;
+	float m_fadeTransition;
+	float m_fadeMaxTransitionTime;
+	float m_pauseTransition;
+	float m_pauseMaxTransitionTime;
+	float m_reloadDelay;
+
+	// TESTING
+	ALC::string multiLineText;
+	ALC::vec2 stringDimensions;
 
 };
 

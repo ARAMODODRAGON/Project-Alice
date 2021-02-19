@@ -63,7 +63,6 @@ void AliceChara::Start(ALC::Entity self) {
 		tr.position = point.CalcPosition(selftr.position);
 
 		// set the sprite stuff
-		spr.bounds = ALC::rect(10.0f);
 		spr.texture = m_spellsTexture;
 		spr.layer = SPRL::PLAYER_COLLIDER;
 
@@ -72,6 +71,7 @@ void AliceChara::Start(ALC::Entity self) {
 		} else {
 			spr.textureBounds = ALC::rect(ALC::vec2(0.0f, 48.0f), ALC::vec2(15.0f, 63.0f));
 		}
+		spr.bounds = spr.textureBounds.Centered();
 
 	}
 
@@ -83,9 +83,9 @@ void AliceChara::Start(ALC::Entity self) {
 		auto& transform = shield.AddComponent<ALC::Transform2D>();
 		auto& sprite = shield.AddComponent<ALC::SpriteComponent>();
 
-		sprite.bounds = ALC::rect(25.0f);
 		sprite.texture = m_spellsTexture;
 		sprite.textureBounds = ALC::rect(32.0f, 0.0f, 111.0f, 79.0f);
+		sprite.bounds = sprite.textureBounds.Centered();
 		sprite.shouldDraw = false;
 		sprite.layer = SPRL::PLAYER_SHIELD;
 	}
@@ -103,11 +103,11 @@ void AliceChara::Start(ALC::Entity self) {
 
 		sprite.texture = m_spellsTexture;
 		sprite.layer = SPRL::PLAYER_SHIELD;
-		sprite.bounds = ALC::rect(20.0f);
 		sprite.shouldDraw = false;
 
 		if (i % 2)	sprite.textureBounds = ALC::rect(0.0f, 128.0f, 15.0f, 143.0f);
 		else		sprite.textureBounds = ALC::rect(0.0f, 144.0f, 15.0f, 159.0f);
+		sprite.bounds = sprite.textureBounds.Centered();
 
 	}
 }
@@ -345,12 +345,12 @@ void AliceChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 
 				// update sprite
 				auto& spr = e.GetComponent<ALC::SpriteComponent>();
-				spr.bounds = ALC::rect(14.0f);
 				spr.color.a = 0.3f;
 				spr.texture = tex;
 
 				if (i == 0) spr.textureBounds = ALC::rect(0.0f, 16.0f, 15.0f, 31.0f);
 				else		spr.textureBounds = ALC::rect(16.0f, 16.0f, 31.0f, 31.0f);
+				spr.bounds = spr.textureBounds.Centered();
 			});
 		}
 
@@ -379,10 +379,10 @@ void AliceChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 
 			// update sprite
 			auto& spr = e.GetComponent<ALC::SpriteComponent>();
-			spr.bounds = ALC::rect(14.0f);
 			spr.color.a = 0.3f;
 			spr.texture = tex;
 			spr.textureBounds = ALC::rect(16.0f, 0.0f, 31.0f, 15.0f);
+			spr.bounds = spr.textureBounds.Centered();
 		});
 	}
 
@@ -459,12 +459,12 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 
 			// update sprite
 			auto& spr = e.GetComponent<ALC::SpriteComponent>();
-			spr.bounds = ALC::rect(14.0f);
 			spr.color.a = 0.3f;
 			spr.texture = tex;
 
 			//spr.textureBounds = ALC::rect(0.0f, 16.0f, 15.0f, 31.0f);
 			spr.textureBounds = ALC::rect(16.0f, 16.0f, 31.0f, 31.0f);
+			spr.bounds = spr.textureBounds.Centered();
 		});
 	}
 
@@ -522,10 +522,10 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 
 				// update sprite
 				auto& spr = e.GetComponent<ALC::SpriteComponent>();
-				spr.bounds = ALC::rect(14.0f);
 				spr.color.a = 0.3f;
 				spr.texture = tex;
 				spr.textureBounds = ALC::rect(0.0f, 0.0f, 15.0f, 15.0f);
+				spr.bounds = spr.textureBounds.Centered();
 			});
 		}
 
@@ -545,10 +545,10 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 
 				// update sprite
 				auto& spr = e.GetComponent<ALC::SpriteComponent>();
-				spr.bounds = ALC::rect(14.0f);
 				spr.color.a = 0.3f;
 				spr.texture = tex;
 				spr.textureBounds = ALC::rect(0.0f, 0.0f, 15.0f, 15.0f);
+				spr.bounds = spr.textureBounds.Centered();
 			});
 		}
 
@@ -568,10 +568,10 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 
 				// update sprite
 				auto& spr = e.GetComponent<ALC::SpriteComponent>();
-				spr.bounds = ALC::rect(14.0f);
 				spr.color.a = 0.3f;
 				spr.texture = tex;
 				spr.textureBounds = ALC::rect(0.0f, 0.0f, 15.0f, 15.0f);
+				spr.bounds = spr.textureBounds.Centered();
 			});
 		}
 
@@ -613,7 +613,7 @@ void AliceChara::StateStepShield(ALC::Entity self, ALC::Timestep ts) {
 
 	m_basicShootTimer += ts * 5.0f;
 
-	ALC::rect bounds(25.0f);
+	ALC::rect bounds = sprite.textureBounds.Centered();
 
 	// (sin(timer) + 1.0f) * 0.5f	// generates a nuber from 0 to 1
 	// * 5.0f						// scales it from 0 to 5

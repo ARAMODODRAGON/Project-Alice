@@ -7,13 +7,116 @@
 
 namespace ALC {
 
-	Font::Font() : m_textureID(0), m_textureSize(0), m_characters(nullptr) { }
+	Font::Font() : m_textureID(0), m_textureSize(0), m_characters(nullptr), yOffset(0.0f) { }
 
-	Font::Font(std::nullptr_t) : m_textureID(0), m_textureSize(0), m_characters(nullptr) { }
+	Font::Font(std::nullptr_t) : m_textureID(0), m_textureSize(0), m_characters(nullptr), yOffset(0.0f) { }
 
 	Font::~Font() {
 
 	}
+
+	// STRING MANIPULATION FUNCTIONS /////////////////////////////////////////////////////////////////////////////////////
+
+	uvec2 Font::StringDimensions(const string& text) const {
+		uvec2 dimensions(0.0f);
+		float offset = 0.0f;
+		
+		// If no character set has been loaded for the font; don't attempt to calculate anything
+		if (m_characters == nullptr) {
+			ALC_DEBUG_ERROR("Invalid font has been used! No calculations will be processed.");
+			return dimensions;
+		}
+
+		for (const char* p = text.c_str(); *p; p++) {
+			if (*p < 32 && *p != '\n') continue;
+
+			if (*p == '\n') { // Newline text
+				offset = 0.0f; // Reset the x offset of the text
+				dimensions[1] += (GetSize().y + 2.0f);
+				continue;
+			}
+
+			const Font::Character& c = m_characters.get()->at(*p);
+
+			float x0 = offset + ((c.position.x / c.bitSize.x) * c.bitSize.x);
+			float w = c.bitSize.x;
+
+			// move cursor to the start of the next character
+			offset += c.advance.x;
+
+			if (dimensions.x < offset) { dimensions[0] = offset; }
+		}
+
+		// Add the height for the line of text that isn't hit within the loop
+		if (!text.empty()) {
+			dimensions[1] += GetSize().y;
+		}
+
+		return dimensions;
+	}
+
+	string Font::StringSplitLines(const string& text, const float maxStringWidth) {
+		string curWord = "", curLine = "", result = "";
+		float wordStartPos = 0.0f, wordWidth = 0.0f, offset = 0.0f;
+
+		// If no character set has been loaded for the font; don't attempt to calculate anything
+		if (m_characters == nullptr) {
+			ALC_DEBUG_ERROR("Invalid font has been used! No calculations will be processed.");
+			return "";
+		}
+
+		for (const char* p = text.c_str(); *p; p++) {
+			if (*p < 32) continue;
+			const Font::Character& c = m_characters.get()->at(*p);
+
+			// Get the position of the quad on-screen, but unaltered by scale or translation
+			float x0 = offset + ((c.position.x / c.bitSize.x) * c.bitSize.x);
+			float w = c.bitSize.x;
+
+			// move cursor to the start of the next character
+			offset += c.advance.x;
+
+			if (*p == ' ') { // A space has been found; see if the word can fit onto the current line or needs to be part of a new line
+				wordWidth = offset - wordStartPos;
+
+				// The word isn't able to fit onto the current line; place it on a new line and start adding other words to that new line as well
+				if (offset + wordWidth > maxStringWidth) {
+
+					result += curLine + '\n';
+					offset = wordWidth;
+
+					curLine = curWord;
+					curWord = "";
+
+					continue;
+				}
+
+				// The word can fit onto the current line; add a space in between words as well
+				if (!curLine.empty()) { curLine += " "; }
+				curLine += curWord;
+				curWord = "";
+
+			} else { // Continue adding characters to the word until a space is reached
+
+				if (curWord.empty()) { wordStartPos = x0; }
+				curWord += *p;
+
+			}
+		}
+		
+		// Finally, add the last line and final word into the string; checking if the word will surpass the maximum alloted width or not -- like how it works within the loop
+		wordWidth = offset - wordStartPos;
+		if (offset + wordWidth > maxStringWidth) { // The final word is placed onto a new and final line
+			result += curLine + '\n' + curWord;
+		} else { // The final line and word both fit on the same line; combine them
+			result += curLine + " " + curWord;
+		}
+
+
+		return result;
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	bool Font::IsValid() const {
 		return m_textureID != 0;
