@@ -81,6 +81,7 @@ namespace ALC {
 	#define ALC_COLOR_GREEN		::ALC::vec4(0.0f, 1.0f, 0.0f, 1.0f)
 	#define ALC_COLOR_BLUE		::ALC::vec4(0.0f, 0.0f, 1.0f, 1.0f)
 	#define ALC_COLOR_YELLOW	::ALC::vec4(1.0f, 1.0f, 0.0f, 1.0f)
+	#define ALC_COLOR_ORANGE	::ALC::vec4(1.0f, (165.0f / 255.0f), 0.0f, 1.0f)
 	#define ALC_COLOR_PURPLE	::ALC::vec4(1.0f, 0.0f, 1.0f, 1.0f)
 
 	// creates a color 

@@ -18,7 +18,10 @@ AliceChara::AliceChara()
 	, m_activeSpell(this, State::Homing)
 	, m_lastSpell(State::Homing)
 	, m_shieldCharge(100.0f)
-	, m_shieldChargeRate(2.0f) {
+	, m_shieldChargeRate(2.0f)
+	, m_spriteAnimationTimer(0.0f)
+	, m_spriteAnimationSpeed(0.1f)
+	, m_curSpriteAnimation(0) {
 	// bind states
 	m_activeSpell.Bind(State::Homing, &AliceChara::StateStepHoming, &AliceChara::StateBeginHoming);
 	m_activeSpell.Bind(State::Spinning, &AliceChara::StateStepSpinning, &AliceChara::StateBeginSpinning);
@@ -33,6 +36,11 @@ void AliceChara::Start(ALC::Entity self) {
 	Character::Start(self);
 	using CM = ALC::ContentManager;
 
+	// set character texture
+	auto& selfSpr = self.GetComponent<ALC::SpriteComponent>();
+	selfSpr.texture = CM::LoadTexture("Resources/Textures/Characters/Alice-Character-Sheet.png");
+	selfSpr.textureBounds = ALC::rect(0.0f, 0.0f, 47.0f, 79.0f);
+	selfSpr.bounds = selfSpr.textureBounds.Centered();
 	// get textures
 	m_spellsTexture = CM::LoadTexture("Resources/Textures/Spells.png");
 
@@ -57,7 +65,7 @@ void AliceChara::Start(ALC::Entity self) {
 		// set relative position;
 		if (i == 0) point.rotation = 90.0f; // one quart
 		else		point.rotation = 270.0f; // three quarts
-		point.distance = 57.0f;
+		point.distance = 33.0f;
 
 		// set position
 		tr.position = point.CalcPosition(selftr.position);
@@ -223,6 +231,16 @@ void AliceChara::OnDeath(ALC::Entity self) {
 void AliceChara::LateUpdate(ALC::Entity self, ALC::Timestep ts) {
 	UpdateCollisions(self, ts);
 	UpdateSprites(self, ts);
+
+	m_spriteAnimationTimer += ts;
+	while (m_spriteAnimationTimer > m_spriteAnimationSpeed) {
+		m_spriteAnimationTimer -= m_spriteAnimationSpeed;
+		m_curSpriteAnimation = (m_curSpriteAnimation + 1) % 2;
+
+		auto& selfSpr = self.GetComponent<ALC::SpriteComponent>();
+		if (m_curSpriteAnimation == 0)	selfSpr.textureBounds = ALC::rect(0.0f, 0.0f, 47.0f, 79.0f);
+		else							selfSpr.textureBounds = ALC::rect(48.0f, 0.0f, 95.0f, 79.0f);
+	}
 }
 
 ALC::rect AliceChara::GetAttackTargetRect() const {

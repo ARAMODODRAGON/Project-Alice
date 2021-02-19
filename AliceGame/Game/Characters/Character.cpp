@@ -184,7 +184,7 @@ void Character::Start(ALC::Entity self) {
 
 	tr0.position = tr.position; // place on top of character
 	spr0.bounds = ALC::rect(cb.radius); // match size of character collider
-	spr0.color = ALC_COLOR_BLUE;
+	spr0.color = ALC_COLOR_GREEN;
 	spr0.texture = CM::LoadTexture("Resources/Textures/circle.png");
 	spr0.textureBounds = spr0.texture.GetBounds();
 	spr0.layer = SPRL::PLAYER_COLLIDER;
