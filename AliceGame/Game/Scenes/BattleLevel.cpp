@@ -12,6 +12,7 @@ BattleLevel::BattleLevel()
 	, m_lastFPS(0.0f)
 	, m_delta(0.0)
 	, m_itemsOffset(20.0f)
+	, m_itemFillspeed(0.1f)
 	, m_pauseSelected(0)
 	, m_counter(-1)
 	, m_playerWasDead(false)
@@ -226,7 +227,7 @@ void BattleLevel::Draw() {
 			ALC::rect quad(ALC::vec2(0.0f), m_ui.GetInternalScreenSize());
 			m_ui.DrawQuad(quad, ALC::vec4(0.0f, 0.0f, 0.0f, alpha));
 
-			constexpr float margin = 3.0f;
+			constexpr float margin = 7.0f;
 
 			// draw text
 			m_ui.DrawText(m_itemPaused.text, m_itemPaused.font, m_itemPaused.position);
@@ -236,15 +237,17 @@ void BattleLevel::Draw() {
 				// selection box
 				quad.min = item.position;
 				quad.max = quad.min;
-				quad.min.y -= item.dimensions.y;
+				quad.min.y -= item.font.GetSize().y;
 				quad.max.x += item.dimensions.x;
 
 				quad.min.x -= margin;
+				quad.min.y -= (margin - 6.0f);
 				quad.max.x += margin;
 				quad.max.y += margin;
 
-				if (i == m_pauseSelected)
-					m_ui.DrawQuad(quad, ALC::vec4(ALC::vec3(0.5f), 1.0f));
+				quad.max.x = (quad.max.x - quad.min.x) * (item.fillamount / m_itemFillspeed) + quad.min.x;
+
+				m_ui.DrawQuad(quad, ALC::vec4(ALC::vec3(0.5f), 1.0f));
 
 				// text
 				m_ui.DrawText(item.text, item.font, item.position);
@@ -322,7 +325,9 @@ void BattleLevel::Step(ALC::Timestep ts) {
 	if (!m_character->IsDead() && !m_isFading) {
 		auto esc = Keyboard::GetKey(KeyCode::Escape);
 		const bool canPause = ALC::NearlyZero(m_pauseTransition, ts) || ALC::NearlyEqual(m_pauseTransition, m_pauseMaxTransitionTime, ts);
+		const bool wasPaused = m_isPaused;
 		if (esc.Pressed() && canPause) m_isPaused = !m_isPaused;
+		if (wasPaused  && !m_isPaused) OnContinue();
 	}
 	if (m_isPaused) m_pauseTransition += ts;
 	else			m_pauseTransition = 0.0f;
@@ -347,6 +352,15 @@ void BattleLevel::Step(ALC::Timestep ts) {
 		if (Keyboard::GetKey(KeyCode::KeyC).Pressed()) {
 			auto func = m_pauseSelection[m_pauseSelected].func;
 			(this->*func)();
+		}
+
+		for (size_t i = 0; i < m_pauseSelection.size(); i++) {
+			auto& item = m_pauseSelection[i];
+			if (i == m_pauseSelected)
+				item.fillamount += ts;
+			else
+				item.fillamount -= ts;
+			item.fillamount = glm::clamp(item.fillamount, 0.0f, m_itemFillspeed);
 		}
 	}
 
@@ -395,6 +409,9 @@ void BattleLevel::Step(ALC::Timestep ts) {
 void BattleLevel::OnContinue() {
 	m_pauseSelected = 0;
 	m_isPaused = false;
+	for (auto& item : m_pauseSelection) {
+		item.fillamount = 0.0f;
+	}
 }
 
 void BattleLevel::OnRestart() {

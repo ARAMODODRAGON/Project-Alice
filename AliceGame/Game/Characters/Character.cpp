@@ -99,6 +99,13 @@ void Character::OnTakeDamage(ALC::Entity self, const float damage) {
 	if (m_invulnOnHit > 0.0f) m_invuln = m_invulnOnHit;
 }
 
+void Character::Kill() {
+	m_health = 0.0f;
+	// call the other function, require 'self' to invoke virtual functions
+	auto self = GetRegistry().GetEntity(GetEntityID());
+	OnDeath(self);
+}
+
 ALC::Entity Character::GetColliderSprite() {
 	return GetRegistry().GetEntity(m_colliderEntity);
 }

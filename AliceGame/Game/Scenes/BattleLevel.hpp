@@ -69,10 +69,10 @@ private:
 
 	// ui stuff
 
-	enum class UIState : ALC::uint8 {
-		PauseMenu,
-		SettingsMenu
-	};
+	//enum class UIState : ALC::uint8 {
+	//	PauseMenu,
+	//	SettingsMenu
+	//};
 
 	struct UIItem final {
 		float fillamount = 0.0f;
@@ -84,6 +84,7 @@ private:
 	};
 
 	float m_itemsOffset;
+	float m_itemFillspeed;
 	UIItem m_itemPaused;
 	ALC::array<UIItem, 2> m_pauseSelection;
 	ALC::int32 m_pauseSelected;
