@@ -9,11 +9,13 @@ void BulletDeleterSystem::SetDeathBoundry(const ALC::rect& deathBoundry) {
 }
 
 void BulletDeleterSystem::Step(ALC::Timestep ts, ALC::Entity e, BulletDeleterComponent& bdc, ALC::BulletBody& bb) {
+	if (!bb.isSimulated) return;
 
 	// kill by collision
 	auto ci = bb.GetLastCollision();
 	if (bdc.deleteOnContact && ci.IsValid()) {
-		m_ech.Destroy(e);
+		//m_ech.Destroy(e);
+		bb.isSimulated = false;
 	}
 	// kill by boundry
 	else if (bdc.lifetime <= 0.0f) {
@@ -31,7 +33,8 @@ void BulletDeleterSystem::Step(ALC::Timestep ts, ALC::Entity e, BulletDeleterCom
 
 			// delete if its out of bounds
 			if (!ALC::rect::Intersects(bounds, m_deathBoundry)) {
-				m_ech.Destroy(e);
+				//m_ech.Destroy(e);
+				bb.isSimulated = false;
 			}
 		}
 	}
@@ -39,7 +42,8 @@ void BulletDeleterSystem::Step(ALC::Timestep ts, ALC::Entity e, BulletDeleterCom
 	else if (bdc.lifetime > 0.0f) {
 		bdc.lifetime -= ts;
 		if (bdc.lifetime <= 0.0f) {
-			m_ech.Destroy(e);
+			//m_ech.Destroy(e);
+			bb.isSimulated = false;
 		}
 	}
 

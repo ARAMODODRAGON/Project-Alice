@@ -7,13 +7,17 @@
 
 namespace ALC {
 
+	// used to specify the types to use when fireing bullets
+	template<typename... Components>
+	struct BulletTypes {};
+
 	// class used to contextualize the shooting behavior of 
 	// characters in the game
 	// requires the EntityCreationHandler to be used
 	class ShooterBehavior : public Behavior {
 	public:
 
-		ShooterBehavior() : m_attachcomponents(nullptr), m_defaultVelocity(0.0f) { }
+		ShooterBehavior() : m_defaultVelocity(0.0f) { }
 		virtual ~ShooterBehavior() = 0 { }
 
 		// sets the default velocity of the bullet
@@ -28,31 +32,26 @@ namespace ALC {
 		// sets the default sprite layer
 		void SetDefaultSpriteLayer(const int32 layer);
 
-		// sets the components of the bullets to be fired
-		template<typename... Components>
-		void SetBulletTypes();
-
 		// shoots n number of bullets
-		void Shoot(Entity self, const uint32 n);
+		template<typename Callable, typename... Components>
+		void Shoot(Entity self, const uint32 n, Callable callable, BulletTypes<Components...> = BulletTypes<>());
 
-		// shoots n number of bullets
-		template<typename Callable>
-		void Shoot(Entity self, const uint32 n, Callable callable);
-		
 		// shoots n number of bullets with angle offset
-		template<typename Callable>
-		void Shoot(Entity self, const uint32 n, const float angleInDegrees, Callable callable);
+		template<typename Callable, typename... Components>
+		void Shoot(Entity self, const uint32 n, const float angleInDegrees, Callable callable, BulletTypes<Components...> = BulletTypes<>());
 
 		// shoots n number of bullets in a circle
-		template<typename Callable>
-		void ShootCircle(Entity self, const uint32 n, Callable callable);
+		template<typename Callable, typename... Components>
+		void ShootCircle(Entity self, const uint32 n, Callable callable, BulletTypes<Components...> = BulletTypes<>());
 
 		// shoots n number of bullets in a range
-		template<typename Callable>
-		void ShootRange(Entity self, const uint32 n, const float rangeInDegrees, Callable callable);
+		template<typename Callable, typename... Components>
+		void ShootRange(Entity self, const uint32 n, const float rangeInDegrees, Callable callable, BulletTypes<Components...> = BulletTypes<>());
 
 	private:
-		void(*m_attachcomponents)(Entity);
+
+		void InitBullet(Transform2D& tr, BulletBody& bb, SpriteComponent& spr);
+
 		vec2 m_defaultVelocity;
 		vec2 m_defaultPosition;
 		int32 m_defaultSprlayer;

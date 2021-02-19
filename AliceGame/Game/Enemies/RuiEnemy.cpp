@@ -4,7 +4,7 @@
 #include "../Characters/Character.hpp"
 
 RuiEnemy::RuiEnemy()
-	: m_phases(this, Phase::PreBattle), m_state(State::None),m_timer(0.0f),stateTimer(0.0f) {
+	: m_phases(this, Phase::PreBattle), m_state(State::None), m_timer(0.0f), stateTimer(0.0f) {
 	// bind phases
 	m_phases.Bind(Phase::PreBattle, &RuiEnemy::PreBattleStep, &RuiEnemy::PreBattleBegin);
 	m_phases.Bind(Phase::Phase0, &RuiEnemy::Phase0Step, &RuiEnemy::Phase0Begin);
@@ -76,8 +76,6 @@ void RuiEnemy::Phase0Begin(const Phase lastphase, ALC::Entity self, ALC::Timeste
 	ResetHealth(100.0f);
 	SetLifetime(30.0f);
 	m_state = State::Shoot3;
-	// make sure our bullets spawn with this component
-	ShooterBehavior::SetBulletTypes<BulletDeleterComponent>();
 }
 void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 	// get our components
@@ -112,7 +110,7 @@ void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 			sprite.texture = tex;
 			sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
 			sprite.bounds = sprite.textureBounds.Centered();
-		});
+		}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
 
 		// change state
 		m_state = State::Move;
@@ -138,7 +136,7 @@ void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 				sprite.texture = tex;
 				sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
 				sprite.bounds = sprite.textureBounds.Centered();
-			});
+			}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
 
 			// change state
 			m_state = State::Center;
@@ -159,8 +157,6 @@ void RuiEnemy::Phase1Begin(const Phase lastphase, ALC::Entity self, ALC::Timeste
 	ResetHealth(100.0f);
 	SetLifetime(30.0f);
 	m_state = State::Shoot3;
-	// make sure our bullets spawn with this component
-	ShooterBehavior::SetBulletTypes<BulletDeleterComponent>();
 }
 void RuiEnemy::Phase1Step(ALC::Entity self, ALC::Timestep ts) {
 
@@ -188,15 +184,14 @@ void RuiEnemy::Phase1Step(ALC::Entity self, ALC::Timestep ts) {
 
 		if (m_timer <= ts.Get()) {
 
-			
+
 			if (dirIndex < 3) {
 				tmpVec = glm::rotate(((dir[dirIndex] + dir[dirIndex + 1]) / 2.0f) * 400.0f,
 
-					glm::radians(360.0f / static_cast<float>(numOfBuillets)) * static_cast<float>(i));
-			}
-			else if (dirIndex == 3) {
+									 glm::radians(360.0f / static_cast<float>(numOfBuillets)) * static_cast<float>(i));
+			} else if (dirIndex == 3) {
 				tmpVec = glm::rotate(((dir[dirIndex] + dir[0]) / 2.0f) * 400.0f,
-					glm::radians(360.0f / static_cast<float>(numOfBuillets)) * static_cast<float>(i));
+									 glm::radians(360.0f / static_cast<float>(numOfBuillets)) * static_cast<float>(i));
 			}
 
 			ShooterBehavior::SetDefaultPosition(transform.position);
@@ -216,15 +211,14 @@ void RuiEnemy::Phase1Step(ALC::Entity self, ALC::Timestep ts) {
 				sprite.texture = tex;
 				sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
 				sprite.bounds = sprite.textureBounds.Centered();
-				});
+			}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
 
 			if (dirIndex < 3) {
 				tmpVec = glm::rotate(((dir[dirIndex] + dir[dirIndex + 1]) / (2.0f * -1.0f)) * 400.0f,
-					glm::radians(360.0f / static_cast<float>(numOfBuillets)) * static_cast<float>(i));
-			}
-			else if (dirIndex == 3) {
+									 glm::radians(360.0f / static_cast<float>(numOfBuillets)) * static_cast<float>(i));
+			} else if (dirIndex == 3) {
 				tmpVec = glm::rotate(((dir[dirIndex] + dir[0]) / (2.0f * -1.0f)) * 400.0f,
-					glm::radians(360.0f / static_cast<float>(numOfBuillets)) * static_cast<float>(i));
+									 glm::radians(360.0f / static_cast<float>(numOfBuillets)) * static_cast<float>(i));
 			}
 
 			ShooterBehavior::SetDefaultPosition(transform.position);
@@ -243,10 +237,10 @@ void RuiEnemy::Phase1Step(ALC::Entity self, ALC::Timestep ts) {
 				sprite.texture = tex;
 				sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
 				sprite.bounds = sprite.textureBounds.Centered();
-				});
+			}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
 
 
-	
+
 		}
 
 		if (m_timer >= 10.5f) {
@@ -259,7 +253,7 @@ void RuiEnemy::Phase1Step(ALC::Entity self, ALC::Timestep ts) {
 			}
 
 		}
-	} 
+	}
 
 	if (stateTimer >= 5.0f) {
 		m_phases.ChangeState(Phase::Phase0);

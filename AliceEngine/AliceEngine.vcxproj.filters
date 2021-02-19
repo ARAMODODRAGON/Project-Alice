@@ -144,6 +144,9 @@
     <ClInclude Include="ALC\Tools\TilemapEditorScene.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ALC\Bullets\BulletSpawnerSystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ALC\SceneManager.cpp">

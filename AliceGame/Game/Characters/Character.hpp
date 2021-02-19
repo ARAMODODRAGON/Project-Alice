@@ -7,6 +7,10 @@
 #include <ALC\StateMachine.hpp>
 #include "../BattleManager.hpp"
 
+struct NormalBullet {
+private: bool _;
+};
+
 class Character : public ALC::ShooterBehavior {
 public:
 
@@ -30,7 +34,7 @@ public:
 
 	float GetMaxHealth() const { return m_maxHealth; }
 	float SetMaxHealth(const float maxHealth) { m_maxHealth = maxHealth; }
-	
+
 	float GetShouldFlashOnInvuln() const { return m_shouldFlashOnInvuln; }
 	void SetShouldFlashOnInvuln(const float shouldFlashOnInvuln) { m_shouldFlashOnInvuln = shouldFlashOnInvuln; }
 
@@ -75,11 +79,11 @@ public:
 
 	// returns the target rect for the current attack spell
 	virtual ALC::rect GetAttackTargetRect() const = 0;
-	
+
 	// returns the target rect for the current defence spell
 	virtual ALC::rect GetDefenceTargetRect() const = 0;
 	virtual ALC::rect GetDefenceTargetRectCooldown() const = 0;
-	
+
 	// returns the target rect for the heart texture
 	virtual ALC::rect GetHeartTargetRect() const = 0;
 

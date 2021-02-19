@@ -112,7 +112,16 @@ void BattleLevel::Draw() {
 
 	// draw all SPRL layers
 	for (ALC::int32 i = 0; i < SPRL::_COUNT; i++) {
-		m_batch.DrawComponents(m_reg, i);
+		m_reg.ForeachComponent<ALC::Transform2D, ALC::SpriteComponent>(
+			[this, i](auto entity, auto tr, auto spr) {
+			if (spr.layer == i) {
+				if (entity.HasComponent<ALC::BulletBody>()) {
+					if (!entity.GetComponent<ALC::BulletBody>().isSimulated)
+						return;
+				}
+				m_batch.Draw(tr, spr);
+			}
+		});
 	}
 
 	m_batch.End();

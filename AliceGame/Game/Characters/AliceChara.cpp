@@ -322,7 +322,6 @@ void AliceChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 		m_basicShootTimer -= m_basicShootSpeed;
 		delay = m_basicShootTimer;
 		basicShoot = true;
-		ShooterBehavior::SetBulletTypes<BulletDeleterComponent>();
 		ShooterBehavior::SetDefaultVelocity(ALC::vec2(0.0f, 800.0f) * slowmult);
 	}
 
@@ -369,7 +368,7 @@ void AliceChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 				if (i == 0) spr.textureBounds = ALC::rect(0.0f, 16.0f, 15.0f, 31.0f);
 				else		spr.textureBounds = ALC::rect(16.0f, 16.0f, 31.0f, 31.0f);
 				spr.bounds = spr.textureBounds.Centered();
-			});
+			}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
 		}
 
 	}
@@ -384,7 +383,6 @@ void AliceChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 		auto tex = m_spellsTexture;
 
 		ShooterBehavior::SetDefaultPosition(selftr.position);
-		ShooterBehavior::SetBulletTypes<BulletDeleterComponent, HomingBullet>();
 		ShooterBehavior::SetDefaultVelocity(ALC::vec2(0.0f, 800.0f) * slowmult);
 		ShooterBehavior::Shoot(self, 1, [delay, tex](ALC::Entity e) {
 			// update body collision
@@ -401,7 +399,8 @@ void AliceChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 			spr.texture = tex;
 			spr.textureBounds = ALC::rect(16.0f, 0.0f, 31.0f, 15.0f);
 			spr.bounds = spr.textureBounds.Centered();
-		});
+
+		}, ALC::BulletTypes<BulletDeleterComponent, HomingBullet>());
 	}
 
 }
@@ -462,7 +461,6 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 	while (m_basicShootTimer > m_basicShootSpeed) {
 		m_basicShootTimer -= m_basicShootSpeed;
 		float delay = m_basicShootTimer;
-		ShooterBehavior::SetBulletTypes<BulletDeleterComponent>();
 		ShooterBehavior::SetDefaultVelocity(ALC::vec2(0.0f, 800.0f) * slowmult);
 		auto tex = m_spellsTexture;
 		ShooterBehavior::SetDefaultPosition(ALC::vec2(tr.position.x, tr.position.y + 16.5f));
@@ -483,7 +481,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 			//spr.textureBounds = ALC::rect(0.0f, 16.0f, 15.0f, 31.0f);
 			spr.textureBounds = ALC::rect(16.0f, 16.0f, 31.0f, 31.0f);
 			spr.bounds = spr.textureBounds.Centered();
-		});
+		}, ALC::BulletTypes<BulletDeleterComponent>());
 	}
 
 	// spin the point shooters
@@ -519,7 +517,6 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 
 		#pragma region Shooting the positional bullets
 
-		ShooterBehavior::SetBulletTypes<BulletDeleterComponent>();
 		ALC::vec2 vel = ALC::vec2(0.0f, 800.0f) * slowmult;
 		auto tex = m_spellsTexture;
 		ShooterBehavior::SetDefaultVelocity(vel);
@@ -544,7 +541,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 				spr.texture = tex;
 				spr.textureBounds = ALC::rect(0.0f, 0.0f, 15.0f, 15.0f);
 				spr.bounds = spr.textureBounds.Centered();
-			});
+			}, ALC::BulletTypes<BulletDeleterComponent>());
 		}
 
 		if (shootB > 0.0f) {
@@ -567,7 +564,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 				spr.texture = tex;
 				spr.textureBounds = ALC::rect(0.0f, 0.0f, 15.0f, 15.0f);
 				spr.bounds = spr.textureBounds.Centered();
-			});
+			}, ALC::BulletTypes<BulletDeleterComponent>());
 		}
 
 		if (shootC > 0.0f) {
@@ -590,7 +587,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 				spr.texture = tex;
 				spr.textureBounds = ALC::rect(0.0f, 0.0f, 15.0f, 15.0f);
 				spr.bounds = spr.textureBounds.Centered();
-			});
+			}, ALC::BulletTypes<BulletDeleterComponent>());
 		}
 
 		#pragma endregion

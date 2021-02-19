@@ -164,7 +164,6 @@ void RuiChara::StateStepBasic(ALC::Entity self, ALC::Timestep ts) {
 
 		SetDefaultPosition(transform.position + vel * m_shootTimer);
 		SetDefaultVelocity(vel);
-		SetBulletTypes<BulletDeleterComponent>();
 
 		Shoot(self, 1, [tex](ALC::Entity bullet) {
 			auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
@@ -172,7 +171,7 @@ void RuiChara::StateStepBasic(ALC::Entity self, ALC::Timestep ts) {
 			sprite.textureBounds = ALC::rect(32.0f, 96.0f, 47.0f, 111.0f);
 			sprite.bounds = sprite.textureBounds.Centered();
 			sprite.color.a = 0.3f;
-		});
+		}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
 
 	}
 
@@ -193,7 +192,6 @@ void RuiChara::StateStepBasic(ALC::Entity self, ALC::Timestep ts) {
 
 		SetDefaultPosition(flowerpos + vel * m_homingShootTimer);
 		SetDefaultVelocity(vel);
-		SetBulletTypes<BulletDeleterComponent, HomingBullet>();
 
 		Shoot(self, 1, [tex](ALC::Entity bullet) {
 			auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
@@ -205,7 +203,7 @@ void RuiChara::StateStepBasic(ALC::Entity self, ALC::Timestep ts) {
 			bdel.lifetime = 10.0f;
 			auto& homing = bullet.GetComponent<HomingBullet>();
 			homing.rotationAccel = 1850.0f;
-		});
+		}, ALC::BulletTypes<BulletDeleterComponent, HomingBullet>());
 
 	}
 
@@ -237,8 +235,6 @@ void RuiChara::StateStepRapid(ALC::Entity self, ALC::Timestep ts) {
 		m_homingShootTimer -= m_homingShootSpeed;
 		m_flowerPop = !m_flowerPop;
 
-		SetBulletTypes<BulletDeleterComponent, HomingBullet>();
-
 		// gets the next angle to shoot at
 		const float angle = shoot_angle[shoot_pattern[m_fireIndex++ % shoot_pattern_size]];
 		const ALC::vec2 vel = glm::rotate(ALC::vec2(0.0f, 760.0f), glm::radians(angle));
@@ -258,7 +254,7 @@ void RuiChara::StateStepRapid(ALC::Entity self, ALC::Timestep ts) {
 			homing.rotationSpeed = 270.0f;
 			auto& del = bullet.GetComponent<BulletDeleterComponent>();
 			del.lifetime = 2.0f;
-		});
+		}, ALC::BulletTypes<BulletDeleterComponent, HomingBullet>());
 
 	}
 

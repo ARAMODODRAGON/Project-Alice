@@ -137,7 +137,7 @@ namespace ALC {
 	inline Registry::~Registry() { DestroyAll(); }
 
 	inline Entity Registry::Create() {
-		ALC_ASSERT(m_validState, "cannot create while iterating through the registry");
+		//ALC_ASSERT(m_validState, "cannot create while iterating through the registry");
 		EntityID ID(m_entityIDCounter++);
 		entt::entity entity = m_registry.create();
 		Entity e(entity, this);
@@ -170,7 +170,7 @@ namespace ALC {
 	}
 
 	inline void Registry::DestroyAll() {
-		ALC_ASSERT(m_validState, "cannot destroy while iterating through the registry");
+		//ALC_ASSERT(m_validState, "cannot destroy while iterating through the registry");
 		m_validState = false;
 		m_registry.view<detail::BehaviorList>().each(
 			[this](entt::entity e, detail::BehaviorList& bl) {
@@ -186,7 +186,7 @@ namespace ALC {
 	}
 
 	inline void Registry::UpdateBehaviors(Timestep t) {
-		ALC_ASSERT(m_validState, "cannot have multiple levels of iteration");
+		//ALC_ASSERT(m_validState, "cannot have multiple levels of iteration");
 		m_validState = false;
 		m_registry.view<detail::BehaviorList>().each(
 			[this, t](entt::entity e, detail::BehaviorList& bl) {
@@ -199,7 +199,7 @@ namespace ALC {
 	}
 
 	inline void Registry::LateUpdateBehaviors(Timestep t) {
-		ALC_ASSERT(m_validState, "cannot have multiple levels of iteration");
+		//ALC_ASSERT(m_validState, "cannot have multiple levels of iteration");
 		m_validState = false;
 		m_registry.view<detail::BehaviorList>().each(
 			[this, t](entt::entity e, detail::BehaviorList& bl) {
@@ -212,7 +212,7 @@ namespace ALC {
 	}
 
 	inline void ALC::Registry::Cleanup() {
-		ALC_ASSERT(m_validState, "cannot destroy while iterating through registry");
+		//ALC_ASSERT(m_validState, "cannot destroy while iterating through registry");
 		m_validState = false;
 		// destroy behaviors
 		for (auto pr : m_behaviorsToDestroy) {
@@ -248,7 +248,7 @@ namespace ALC {
 
 	template<typename ...T>
 	inline void Registry::StepSystem(Timestep ts, ISystem<T...>& system) {
-		ALC_ASSERT(m_validState, "cannot have multiple levels of iteration");
+		//ALC_ASSERT(m_validState, "cannot have multiple levels of iteration");
 		m_validState = false;
 
 		// foreach entity with matching components in systems
@@ -277,7 +277,7 @@ namespace ALC {
 
 	template<typename... Components, typename Callable>
 	inline void Registry::ForeachComponent(Callable callable) {
-		ALC_ASSERT(m_validState, "cannot have multiple levels of iteration");
+		//ALC_ASSERT(m_validState, "cannot have multiple levels of iteration");
 		m_validState = false;
 		m_registry.view<Components...>().each(
 			[callable, this](entt::entity e, Components&... comps) {
@@ -289,7 +289,7 @@ namespace ALC {
 
 	template<typename Callable>
 	inline void Registry::ForeachBehavior(Callable callable) {
-		ALC_ASSERT(m_validState, "cannot have multiple levels of iteration");
+		//ALC_ASSERT(m_validState, "cannot have multiple levels of iteration");
 		m_validState = false;
 		m_registry.view<detail::BehaviorList>()
 			.each([callable, this](entt::entity e, detail::BehaviorList& bl) {
