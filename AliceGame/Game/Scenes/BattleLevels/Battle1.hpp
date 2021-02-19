@@ -5,6 +5,7 @@
 #include "../../Enemies/RuiEnemy.hpp"
 #include "../../Systems/BulletDeleterSystem.hpp"
 #include "../../Systems/Bullet Types/HomingBulletSystem.hpp"
+#include "../../Systems/GravityBulletSystem.hpp"
 
 class Battle1 final : public BattleLevel {
 public:
@@ -24,6 +25,7 @@ private:
 	RuiEnemy* m_enemyBehavior;
 	BulletDeleterSystem m_deleter;
 	HomingBulletSystem m_homingsystem;
+	GravityBulletSystem m_gravitySystem;
 
 };
 

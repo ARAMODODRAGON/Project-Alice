@@ -6,8 +6,10 @@ Battle1::Battle1()
 	, m_beginLevel("Resources/Dialogues/TestDialogue.json", &GetStorage())
 	, m_enemyBehavior(nullptr)
 	, m_deleter(GetECH())
-	, m_homingsystem(GetReg()) {
+	, m_homingsystem(GetReg())
+	, m_gravitySystem(){
 	m_deleter.SetDeathBoundry(BattleManager::GetLevelBounds());
+	m_gravitySystem.SetGravity(ALC::vec2(0.0f, -40.0f));
 }
 
 Battle1::~Battle1() { }
@@ -55,7 +57,7 @@ void Battle1::Step(ALC::Timestep ts) {
 	auto& reg = GetReg();
 
 	reg.StepSystem(ts, m_homingsystem);
-
+	reg.StepSystem(ts, m_gravitySystem);
 	reg.StepSystem(ts, m_deleter);
 
 }

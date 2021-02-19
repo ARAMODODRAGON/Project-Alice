@@ -9,7 +9,6 @@ void BulletDeleterSystem::SetDeathBoundry(const ALC::rect& deathBoundry) {
 }
 
 void BulletDeleterSystem::Step(ALC::Timestep ts, ALC::Entity e, BulletDeleterComponent& bdc, ALC::BulletBody& bb) {
-
 	// kill by collision
 	auto ci = bb.GetLastCollision();
 	if (bdc.deleteOnContact && ci.IsValid()) {
