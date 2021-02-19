@@ -9,7 +9,7 @@ namespace ALC {
 
 	// used to specify the types to use when fireing bullets
 	template<typename... Components>
-	struct BulletTypes {};
+	struct BulletTypes { };
 
 	// class used to contextualize the shooting behavior of 
 	// characters in the game
@@ -17,7 +17,7 @@ namespace ALC {
 	class ShooterBehavior : public Behavior {
 	public:
 
-		ShooterBehavior() : m_defaultVelocity(0.0f) { }
+		ShooterBehavior() : m_defaults{} { }
 		virtual ~ShooterBehavior() = 0 { }
 
 		// sets the default velocity of the bullet
@@ -50,12 +50,15 @@ namespace ALC {
 
 	private:
 
-		void InitBullet(Transform2D& tr, BulletBody& bb, SpriteComponent& spr);
+		struct Default {
+			vec2 velocity;
+			vec2 position;
+			int32 sprlayer;
+			Layermask32 collisionmask;
+		} m_defaults;
 
-		vec2 m_defaultVelocity;
-		vec2 m_defaultPosition;
-		int32 m_defaultSprlayer;
-		Layermask32 m_defaultCollisionmask;
+		void InitBullet(Default def, Transform2D& tr, BulletBody& bb, SpriteComponent& spr);
+
 	};
 
 }

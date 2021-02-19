@@ -336,7 +336,7 @@ void BattleLevel::Step(ALC::Timestep ts) {
 		const bool canPause = ALC::NearlyZero(m_pauseTransition, ts) || ALC::NearlyEqual(m_pauseTransition, m_pauseMaxTransitionTime, ts);
 		const bool wasPaused = m_isPaused;
 		if (esc.Pressed() && canPause) m_isPaused = !m_isPaused;
-		if (wasPaused  && !m_isPaused) OnContinue();
+		if (wasPaused && !m_isPaused) OnContinue();
 	}
 	if (m_isPaused) m_pauseTransition += ts;
 	else			m_pauseTransition = 0.0f;
@@ -400,11 +400,11 @@ void BattleLevel::Step(ALC::Timestep ts) {
 		// update behaviors
 		m_reg.UpdateBehaviors(fixedts);
 
-		// update physics
-		m_bPhysics.Step(m_reg, fixedts);
-
 		// cleanup all entities
 		m_ech.Cleanup(m_reg);
+
+		// update physics
+		m_bPhysics.Step(m_reg, fixedts);
 
 		// late update the registry
 		m_reg.LateUpdateBehaviors(fixedts);
