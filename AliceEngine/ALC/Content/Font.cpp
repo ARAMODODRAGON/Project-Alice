@@ -19,32 +19,37 @@ namespace ALC {
 
 	uvec2 Font::StringDimensions(const string& text) const {
 		uvec2 dimensions(0.0f);
-		float curWidth = 0.0f;
-
+		float offset = 0.0f;
+		
+		// If no character set has been loaded for the font; don't attempt to calculate anything
 		if (m_characters == nullptr) {
 			ALC_DEBUG_ERROR("Invalid font has been used! No calculations will be processed.");
 			return dimensions;
 		}
 
 		for (const char* p = text.c_str(); *p; p++) {
-			if (*p == '\n') {
-				dimensions[1] += GetSize().y + 2.0f;
-				curWidth = 0.0f; // Reset the width of the current line
+			if (*p < 32 && *p != '\n') continue;
+
+			if (*p == '\n') { // Newline text
+				offset = 0.0f; // Reset the x offset of the text
+				dimensions[1] += (GetSize().y + 2.0f);
 				continue;
 			}
 
-			if (*p < 32) continue;
-			const Font::Character& c = At(*p);
+			const Font::Character& c = m_characters.get()->at(*p);
 
-			// Add up the line's width without altering the dimension value that will be returned unless the line's width exceeds the current known "width"
-			curWidth += c.bitSize.x;
-			if (curWidth > dimensions[0]) {
-				dimensions[0] = curWidth;
-			}
+			float x0 = offset + ((c.position.x / c.bitSize.x) * c.bitSize.x);
+			float w = c.bitSize.x;
+
+			// move cursor to the start of the next character
+			offset += c.advance.x;
+
+			if (dimensions.x < offset) { dimensions[0] = offset; }
 		}
-		// Make sure to add the last line's height to the string after the loop
-		if (text != "") {
-			dimensions[1] += GetSize().y + 2.0f;
+
+		// Add the height for the line of text that isn't hit within the loop
+		if (!text.empty()) {
+			dimensions[1] += GetSize().y;
 		}
 
 		return dimensions;
@@ -52,8 +57,9 @@ namespace ALC {
 
 	string Font::StringSplitLines(const string& text, const float maxStringWidth) {
 		string curWord = "", curLine = "", result = "";
-		float wordWidth = 0.0f, lineWidth = 0.0f;
+		float wordStartPos = 0.0f, wordWidth = 0.0f, offset = 0.0f;
 
+		// If no character set has been loaded for the font; don't attempt to calculate anything
 		if (m_characters == nullptr) {
 			ALC_DEBUG_ERROR("Invalid font has been used! No calculations will be processed.");
 			return "";
@@ -61,35 +67,51 @@ namespace ALC {
 
 		for (const char* p = text.c_str(); *p; p++) {
 			if (*p < 32) continue;
-			const Font::Character& c = At(*p);
+			const Font::Character& c = m_characters.get()->at(*p);
 
-			if (*p == ' ') { // Attempt to add the string to the current line; adding it to a new line if it exceeds the max string width
-				if (wordWidth + lineWidth > maxStringWidth) {
-					lineWidth = 0.0f; // Resets the current line's width
-					// Add the line to the final result string; reset the current line in the process
+			// Get the position of the quad on-screen, but unaltered by scale or translation
+			float x0 = offset + ((c.position.x / c.bitSize.x) * c.bitSize.x);
+			float w = c.bitSize.x;
+
+			// move cursor to the start of the next character
+			offset += c.advance.x;
+
+			if (*p == ' ') { // A space has been found; see if the word can fit onto the current line or needs to be part of a new line
+				wordWidth = offset - wordStartPos;
+
+				// The word isn't able to fit onto the current line; place it on a new line and start adding other words to that new line as well
+				if (offset + wordWidth > maxStringWidth) {
+
 					result += curLine + '\n';
-					curLine = "";
-				} else if (curLine != "") { // Add a space between the words currently in the line
-					curLine += " ";
+					offset = wordWidth;
+
+					curLine = curWord;
+					curWord = "";
+
+					continue;
 				}
-				lineWidth += wordWidth + c.bitSize.x; // Add the word's width and the space's width to the line width
-				wordWidth = 0.0f;
-				// Add the word to the current line and move to the next word
+
+				// The word can fit onto the current line; add a space in between words as well
+				if (!curLine.empty()) { curLine += " "; }
 				curLine += curWord;
 				curWord = "";
-				continue;
+
+			} else { // Continue adding characters to the word until a space is reached
+
+				if (curWord.empty()) { wordStartPos = x0; }
+				curWord += *p;
+
 			}
-			// Add the next character to the current word and increase the word width by the character's width
-			curWord += *p;
-			wordWidth += c.bitSize.x;
 		}
-		// Add the final line and word to the result
-		result += curLine;
-		if (lineWidth + wordWidth > maxStringWidth) { // The word will exceed the width; place it on one final line
-			result += '\n' + curWord;
-		} else { // It will fit on the current line; add it and a space beforehand
-			result += " " + curWord;
+		
+		// Finally, add the last line and final word into the string; checking if the word will surpass the maximum alloted width or not -- like how it works within the loop
+		wordWidth = offset - wordStartPos;
+		if (offset + wordWidth > maxStringWidth) { // The final word is placed onto a new and final line
+			result += curLine + '\n' + curWord;
+		} else { // The final line and word both fit on the same line; combine them
+			result += curLine + " " + curWord;
 		}
+
 
 		return result;
 	}

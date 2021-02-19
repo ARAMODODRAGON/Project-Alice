@@ -187,7 +187,7 @@ namespace ALC {
 			float h = c.bitSize.y * scale.y;
 
 			// move cursor to the start of the next character
-			offset += c.advance * scale;
+			offset.x += c.advance.x * scale.x;
 
 			// skip character with no size
 			if ((!w || !h) && *p != '\n') continue;

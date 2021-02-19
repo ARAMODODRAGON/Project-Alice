@@ -226,7 +226,9 @@ void BattleLevel::Draw() {
 			+ "\nEnemy Health: " + VTOS((int)BattleManager::GetEnemy()->GetHealth()) + " / " + VTOS((int)BattleManager::GetEnemy()->GetMaxHealth())
 			, m_debugFont, ALC::vec2(0.0f, DEBUG_FONT_SIZE));
 		
-		ALC::rect r(ALC::vec2(0.0f, 200.0f - m_debugFont.GetSize().y), ALC::vec2(0.0f, 200.0f - m_debugFont.GetSize().y) + stringDimensions);
+		ALC::rect r;
+		r.min = ALC::vec2(0.0f, 204.0f - m_debugFont.GetSize().y);
+		r.max = r.min + stringDimensions;
 		m_ui.DrawQuad(r, ALC_COLOR_BLUE);
 
 		m_ui.DrawText(multiLineText, m_debugFont, ALC::vec2(0.0f, 200.0f));
