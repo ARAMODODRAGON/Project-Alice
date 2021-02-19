@@ -64,6 +64,10 @@ private:
 	ALC::EntityID m_shieldEntity;
 	ALC::array<DeathObject, 8> m_deathProjectiles;
 
+	float m_spriteAnimationTimer;
+	float m_spriteAnimationSpeed;
+	ALC::uint32 m_curSpriteAnimation;
+
 	static float RotateTowards(float curangle, const float target, const float speed);
 };
 

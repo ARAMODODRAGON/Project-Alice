@@ -24,6 +24,7 @@
     <ClInclude Include="ALC\Bullets.hpp" />
     <ClInclude Include="ALC\Bullets\BulletPhysics.hpp" />
     <ClInclude Include="ALC\Bullets\BulletPhysicsHandler.hpp" />
+    <ClInclude Include="ALC\Bullets\BulletSpawnerSystem.hpp" />
     <ClInclude Include="ALC\Bullets\ShooterBehavior.hpp" />
     <ClInclude Include="ALC\Content.hpp" />
     <ClInclude Include="ALC\Content\ContentManager.hpp" />
