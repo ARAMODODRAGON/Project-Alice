@@ -25,7 +25,7 @@ public:
 	bool GetIsComplete() { return isComplete; }
 
 	void PerformMoveState(Enemy* enemy, States moveState, ALC::uint8 *_curntState, ALC::Timestep ts, 
-		                  float moveTime = NULL, ALC::uint8 nextState = 0,ALC::vec2 dest = ALC::vec2());
+		                  float moveTime = NULL, ALC::uint8 nextState = 0,ALC::vec2 dest = ALC::vec2(0,0));
 
 private:
 

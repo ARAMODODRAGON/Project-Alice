@@ -5,7 +5,7 @@
 #include "../BattleManager.hpp"
 #include "../Enemies/Enemy.hpp"
 
-//TODO:: add a way so so the state knows its done before moving on to the next state either in this class or the enemy with a list or vector
+
 void MoveStates::PerformMoveState(Enemy* enemy,States moveState, ALC::uint8 *_curntState, ALC::Timestep ts, 
 	                              float moveTime, ALC::uint8 nextState,ALC::vec2 dest)
 {
@@ -17,9 +17,8 @@ void MoveStates::PerformMoveState(Enemy* enemy,States moveState, ALC::uint8 *_cu
 		return;
 	} 
 	
-	if (dest == ALC::vec2(0,0)) {
-		dest = ALC::vec2((lvlBounds.top / 2), (lvlBounds.left / 2));
-	}
+	//no destination given and move state is move just go to centre
+	
 
 	if (moveTime > 0.0f) {
 		timer += ts.Get();
@@ -41,6 +40,10 @@ void MoveStates::PerformMoveState(Enemy* enemy,States moveState, ALC::uint8 *_cu
 	switch (static_cast<ALC::uint8>(moveState)) {
 
 	case 1:
+
+		if (dest == ALC::vec2(0, 0) && moveState == States::Move) {
+			dest = ALC::vec2( (lvlBounds.left + lvlBounds.right),(lvlBounds.top / 2));
+		}
 
 		result = BTA::MoveTo(&eBody.velocity, trans.position, dest, e_acceleration, e_speed, ts);
 

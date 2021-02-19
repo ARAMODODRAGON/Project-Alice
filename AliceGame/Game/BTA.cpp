@@ -17,7 +17,7 @@ namespace BTA {
 		const float currentSpeed = glm::length(*outVelocity);
 
 		// check if arrived
-		if (ALC::NearlyEqual(currentpos, destination, currentSpeed * ts + 0.7f)) {
+		if (ALC::NearlyEqual(currentpos, destination, currentSpeed * ts + 1.5f)) {
 			// stop and move to the *exact* position
 			*outVelocity = ALC::vec2(0.0f);
 			currentpos = destination;
