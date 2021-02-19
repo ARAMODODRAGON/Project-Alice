@@ -140,7 +140,7 @@ inline void ALC::ShooterBehavior::ShootCircle(Entity self, const uint32 n, Calla
 	});
 
 	while (count < n) {
-		creator.Create([this, &count, callable, def](Entity e) {
+		creator.Create([this, &count, n, callable, def](Entity e) {
 			auto& tr = e.AddComponent<Transform2D>();
 			auto& bb = e.AddComponent<BulletBody>();
 			auto& spr = e.AddComponent<SpriteComponent>();
