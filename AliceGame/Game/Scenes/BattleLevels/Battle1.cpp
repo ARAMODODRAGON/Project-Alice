@@ -7,7 +7,7 @@ Battle1::Battle1()
 	, m_enemyBehavior(nullptr)
 	, m_deleter(GetECH())
 	, m_homingsystem(GetReg())
-	, m_gravitySystem(){
+	, m_gravitySystem() {
 	m_deleter.SetDeathBoundry(BattleManager::GetLevelBounds());
 	m_gravitySystem.SetGravity(ALC::vec2(0.0f, -40.0f));
 }
@@ -50,14 +50,14 @@ void Battle1::Exit() {
 	ALC::SoundSystem::UnloadMusic(m_musicFile);
 }
 
-void Battle1::GameStep(ALC::Timestep ts) { }
-
-void Battle1::Step(ALC::Timestep ts) {
-	BattleLevel::Step(ts);
+void Battle1::GameStep(ALC::Timestep ts) {
 	auto& reg = GetReg();
 
 	reg.StepSystem(ts, m_homingsystem);
 	reg.StepSystem(ts, m_gravitySystem);
 	reg.StepSystem(ts, m_deleter);
+}
 
+void Battle1::Step(ALC::Timestep ts) {
+	BattleLevel::Step(ts);
 }

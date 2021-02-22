@@ -164,8 +164,12 @@ inline void ALC::ShooterBehavior::ShootRange(Entity self, const uint32 n, const 
 
 	uint32 count = 0;
 	Default def = m_defaults;
-	float initrange = glm::radians(-rangeInDegrees * 0.5f);
-	float interval = static_cast<float>(rangeInDegrees) / static_cast<float>(n);
+	float initrange = 0.0f;
+	float interval = 0.0f;
+	if (n > 1) {
+		initrange = glm::radians(-rangeInDegrees * 0.5f);
+		interval = static_cast<float>(rangeInDegrees) / static_cast<float>(n - 1);
+	}
 
 	// get n bullets with the given components
 	GetRegistry().ForeachComponent<BulletBody, Transform2D, SpriteComponent, Components...>(
@@ -174,7 +178,7 @@ inline void ALC::ShooterBehavior::ShootRange(Entity self, const uint32 n, const 
 			Detail::ReconstructEach(bb, spr, comps...);
 			InitBullet(def, tr, bb, spr);
 			bb.velocity = glm::rotate(def.velocity, initrange +
-									  glm::radians(interval * static_cast<float>(count) /* tmp fix -> */ + interval * 0.5f));
+									  glm::radians(interval * static_cast<float>(count)));
 			callable(e);
 			count++;
 		}
@@ -187,7 +191,7 @@ inline void ALC::ShooterBehavior::ShootRange(Entity self, const uint32 n, const 
 			auto& spr = e.AddComponent<SpriteComponent>();
 			InitBullet(def, tr, bb, spr);
 			bb.velocity = glm::rotate(def.velocity, initrange +
-									  glm::radians(interval * static_cast<float>(count) /* tmp fix -> */ + interval * 0.5f));
+									  glm::radians(interval * static_cast<float>(count)));
 			(e.AddComponent<Components>(), ...);
 			callable(e);
 		});
