@@ -8,7 +8,7 @@
 struct GravityBullet {
     // some data here (you need something to make this struct a valid component, even if you dont use the value)
     float timeToFall = 0.0f;
-    bool randomvariable;
+    bool playerTracer;
 };
 
 struct GravityBulletSystem final : public ALC::ISystem<ALC::BulletBody,GravityBullet> {
