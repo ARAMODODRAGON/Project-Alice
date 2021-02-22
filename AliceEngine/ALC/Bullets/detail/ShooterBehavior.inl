@@ -181,7 +181,7 @@ inline void ALC::ShooterBehavior::ShootRange(Entity self, const uint32 n, const 
 	});
 
 	while (count < n) {
-		creator.Create([this, &count, callable, initrange, interval, def](Entity e) {
+		creator.Create([this, count, callable, initrange, interval, def](Entity e) {
 			auto& tr = e.AddComponent<Transform2D>();
 			auto& bb = e.AddComponent<BulletBody>();
 			auto& spr = e.AddComponent<SpriteComponent>();
