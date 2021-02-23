@@ -140,7 +140,7 @@ inline void ALC::ShooterBehavior::ShootCircle(Entity self, const uint32 n, Calla
 	});
 
 	while (count < n) {
-		creator.Create([this, &count, n, callable, def](Entity e) {
+		creator.Create([this, count, n, callable, def](Entity e) {
 			auto& tr = e.AddComponent<Transform2D>();
 			auto& bb = e.AddComponent<BulletBody>();
 			auto& spr = e.AddComponent<SpriteComponent>();
@@ -164,21 +164,25 @@ inline void ALC::ShooterBehavior::ShootRange(Entity self, const uint32 n, const 
 
 	uint32 count = 0;
 	Default def = m_defaults;
-	float initrange = glm::radians(-rangeInDegrees * 0.5f);
-	float interval = static_cast<float>(rangeInDegrees) / static_cast<float>(n);
+	float initrange = 0.0f;
+	float interval = 0.0f;
+	if (n > 1) {
+		initrange = glm::radians(-rangeInDegrees * 0.5f);
+		interval = static_cast<float>(rangeInDegrees) / static_cast<float>(n - 1);
+	}
 
 	// get n bullets with the given components
 	GetRegistry().ForeachComponent<BulletBody, Transform2D, SpriteComponent, Components...>(
 		[this, &count, n, callable, initrange, interval, def](Entity e, BulletBody& bb, Transform2D& tr, SpriteComponent& spr, Components&... comps) {
-			if (!bb.isSimulated && count != n) {
-				Detail::ReconstructEach(bb, spr, comps...);
-				InitBullet(def, tr, bb, spr);
-				bb.velocity = glm::rotate(def.velocity, initrange +
-					glm::radians(interval * static_cast<float>(count) /* tmp fix -> */ + interval * 0.5f));
-				callable(e);
-				count++;
-			}
-		});
+		if (!bb.isSimulated && count != n) {
+			Detail::ReconstructEach(bb, spr, comps...);
+			InitBullet(def, tr, bb, spr);
+			bb.velocity = glm::rotate(def.velocity, initrange +
+									  glm::radians(interval * static_cast<float>(count)));
+			callable(e);
+			count++;
+		}
+	});
 
 	while (count < n) {
 		creator.Create([this, count, callable, initrange, interval, def](Entity e) {
@@ -187,7 +191,7 @@ inline void ALC::ShooterBehavior::ShootRange(Entity self, const uint32 n, const 
 			auto& spr = e.AddComponent<SpriteComponent>();
 			InitBullet(def, tr, bb, spr);
 			bb.velocity = glm::rotate(def.velocity, initrange +
-				glm::radians(interval * static_cast<float>(count) /* tmp fix -> */ + interval * 0.5f));
+									  glm::radians(interval * static_cast<float>(count)));
 			(e.AddComponent<Components>(), ...);
 			callable(e);
 			});
