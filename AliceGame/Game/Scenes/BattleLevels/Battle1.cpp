@@ -7,7 +7,9 @@ Battle1::Battle1()
 	, m_enemyBehavior(nullptr)
 	, m_deleter(GetECH())
 	, m_homingsystem(GetReg())
-	, m_gravitySystem() {
+	, m_gravitySystem()
+	, m_cirlceBombSystem()
+	, m_ZzBulletSystem() {
 	m_deleter.SetDeathBoundry(BattleManager::GetLevelBounds());
 	m_gravitySystem.SetGravity(ALC::vec2(0.0f, -40.0f));
 }
@@ -55,6 +57,8 @@ void Battle1::GameStep(ALC::Timestep ts) {
 
 	reg.StepSystem(ts, m_homingsystem);
 	reg.StepSystem(ts, m_gravitySystem);
+	reg.StepSystem(ts, m_cirlceBombSystem);
+	reg.StepSystem(ts, m_ZzBulletSystem);
 	reg.StepSystem(ts, m_deleter);
 }
 

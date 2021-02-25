@@ -28,8 +28,8 @@ void BulletDeleterSystem::Step(ALC::Timestep ts, ALC::Entity e, BulletDeleterCom
 			auto [ts, spr] = e.GetComponent<ALC::Transform2D, ALC::SpriteComponent>();
 			// get the bounds of the bullet
 			ALC::rect bounds = spr.bounds;
-			bounds.min += ts.position;
-			bounds.max += ts.position;
+			bounds.min += ts.position / 2.0f;
+			bounds.max += ts.position / 2.0f;
 
 			// delete if its out of bounds
 			if (!ALC::rect::Intersects(bounds, m_deathBoundry)) {

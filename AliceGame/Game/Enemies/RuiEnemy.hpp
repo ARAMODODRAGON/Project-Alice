@@ -31,10 +31,10 @@ private:
 	enum class State : ALC::uint8 {
 		None,
 		Moving,
-		Shoot4,
-		Shoot3,
-		ShootCircleAndTarget,
-		TwinSpin
+		TwinSpin,
+		RainBullets,
+		CircleBombs,
+		ZigZagShot
 	};
 
 	// contains the current phase
@@ -45,6 +45,7 @@ private:
 	ALC::Texture m_bulletTexture;
 	ALC::vector<MoveStates::States> moveStates;
 	float m_timer;
+	float m_secondTimer; // yet another timer 
 	float stateTimer;
 	ALC::uint8 dirIndex;// an index to the direction array
 
@@ -54,7 +55,6 @@ private:
 	ALC::vec2(0,-1),  //down
 	ALC::vec2(-1,0)	 //left
 	};
-
 
 	// phases
 
@@ -82,6 +82,8 @@ private:
 	//move To Enemy?
 	void ChangeDirectionState(State curntState);
 	void ChangeState(State nextState);
+
+	void ResteTimer() { m_timer = m_secondTimer = 0.0f; }
 
 };
 

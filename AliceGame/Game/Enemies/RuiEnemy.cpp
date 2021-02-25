@@ -1,6 +1,8 @@
 #include "RuiEnemy.hpp"
 #include "../Systems/BulletDeleterSystem.hpp"
 #include "../Systems/GravityBulletSystem.hpp"
+#include "../Systems/CircleBombSystem.hpp"
+#include "../Systems/ZigZagBulletSystem.hpp"
 #include"../Systems/Bullet Types/HomingBulletSystem.hpp"
 #include "../BTA.hpp"
 #include "../Characters/Character.hpp"
@@ -70,7 +72,7 @@ void RuiEnemy::OnDeath(ALC::Entity self) {
 
 void RuiEnemy::BattleBegin() {
 	// we start by changing phases
-	m_phases.ChangeState(Phase::Phase0);
+	m_phases.ChangeState(Phase::Phase3);
 }
 
 void RuiEnemy::PreBattleBegin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) { }
@@ -78,7 +80,7 @@ void RuiEnemy::PreBattleStep(ALC::Entity self, ALC::Timestep ts) { }
 
 void RuiEnemy::Phase0Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
 	ResetHealth(100.0f);
-	SetLifetime(300000.0f);
+	SetLifetime(5000000.0f);
 
 	if (m_state != State::None) {
 		m_prevState = m_state;
@@ -86,40 +88,57 @@ void RuiEnemy::Phase0Begin(const Phase lastphase, ALC::Entity self, ALC::Timeste
 
 	if (!moveStates.empty()) { moveStates.clear(); }
 
-	moveStates.push_back(MoveStates::States::Up);
 	moveStates.push_back(MoveStates::States::DownLeft);
 	moveStates.push_back(MoveStates::States::UpRight);
 	moveStates.push_back(MoveStates::States::Left);
 	moveStates.push_back(MoveStates::States::Move);
 
-
-
-	m_state = State::Shoot3; 
+	m_state = State::RainBullets; 
 }
-
 void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {	  
 
 	auto [transform, cbody] = self.GetComponent<ALC::Transform2D, ALC::CharacterBody>();
+	auto tex = m_bulletTexture;
 
-	if (m_state == State::Shoot3) {
+	if (m_state == State::RainBullets) {
 		// set value
 		ShooterBehavior::SetDefaultPosition(transform.position);
+		auto* playerb = BattleManager::GetCurrentCharacter();
+		auto& playerTransform = playerb->GetEntity().GetComponent<ALC::Transform2D>();
+
+		// target the players position by using this in velocity
+		ALC::vec2 targetdir = playerTransform.position - transform.position;
+		if (glm::length2(targetdir) > 0.0f) { targetdir = glm::normalize(targetdir); }
+		ShooterBehavior::SetDefaultVelocity(targetdir * 300.0f);
+
+		if (transform.position.y <= playerTransform.position.y) {
+			if (m_timer <= ts.Get()) {
+				ShooterBehavior::ShootRange(self, 5, 45.0f, [tex](ALC::Entity bullet) {
+					// update body collision
+					auto& body = bullet.GetComponent<ALC::BulletBody>();
+					body.radius = 4.0f;
+					auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
+					// this should be loaded ahead of time
+					sprite.texture = tex;
+					sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
+					sprite.bounds = sprite.textureBounds.Centered();
+
+					}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
+			}
+		}
 
 		ShooterBehavior::SetDefaultVelocity(dir[0] * 300.0f);
 
-		auto tex = m_bulletTexture;
-		auto dir_ = dir;
-
 		m_timer += ts.Get();
+		stateTimer += ts.Get();
 
 		if (m_timer <= ts.Get()) {
 			// uses default velocity to shoot a range
 			// if default is [0, 1] then it will shoot in a range from (-45.0f / 2) to (+45.0f / 2)
-			ShooterBehavior::ShootRange(self, 5, 45.0f, [tex,dir_](ALC::Entity bullet) {
+			ShooterBehavior::ShootRange(self, 5, 45.0f, [tex](ALC::Entity bullet) {
 				// update body collision
 				auto& body = bullet.GetComponent<ALC::BulletBody>();
 				body.radius = 4.0f;
-				//body.velocity = dir_[0] * 300.0f;
 				auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
 				// this should be loaded ahead of time
 				sprite.texture = tex;
@@ -135,13 +154,69 @@ void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 
 		m_prevState = m_state;
 
-	} 
+		if (stateTimer >= 5.0f) {
+			ChangeState(State::Moving);
+			stateTimer = 0.0f;
+		}
+	}
+
+	else if (m_state == State::Moving) {
+
+		if (!moveStates.empty()) {
+
+			ShooterBehavior::SetDefaultPosition(transform.position);
+			auto* playerb = BattleManager::GetCurrentCharacter();
+			auto& playerTransform = playerb->GetEntity().GetComponent<ALC::Transform2D>();
+
+			// target the players position by using this in velocity
+			ALC::vec2 targetdir = playerTransform.position - transform.position;
+			if (glm::length2(targetdir) > 0.0f) { targetdir = glm::normalize(targetdir); }
+			ShooterBehavior::SetDefaultVelocity(targetdir * 300.0f);
+
+			m_timer += ts.Get();
+
+			if (m_timer <= ts.Get()) {
+
+				ShooterBehavior::ShootRange(self, 4, 45.0f, [tex](ALC::Entity bullet) {
+					// update body collision
+					auto& body = bullet.GetComponent<ALC::BulletBody>();
+					body.radius = 4.0f;
+					auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
+					// this should be loaded ahead of time
+					sprite.texture = tex;
+					sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
+					sprite.bounds = sprite.textureBounds.Centered();
+
+					}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
+			}
+
+
+			ALC::uint8 tmpState = static_cast<ALC::uint8>(m_state);
+			m_moveState.PerformMoveState(this, moveStates[0], &tmpState, ts, 0.0f, static_cast<ALC::uint8>(State::RainBullets));
+
+
+			if (m_moveState.GetIsComplete()) {
+				moveStates.erase(moveStates.begin());
+
+				m_state = static_cast<State>(tmpState);
+				m_timer = 0.0f;
+			}
+
+			if (m_timer >= .4f) {
+				m_timer = 0.0f;
+			}
+		}
+
+		else {
+			m_phases.ChangeState(Phase::Phase1);
+		}
+	}
 
 }
 
 void RuiEnemy::Phase1Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
 	ResetHealth(1000.0f);
-	SetLifetime(1000000000000.0f);
+	SetLifetime(500000.0f);
 
 	if (m_state != State::None) {
 		m_prevState = m_state;
@@ -151,7 +226,6 @@ void RuiEnemy::Phase1Begin(const Phase lastphase, ALC::Entity self, ALC::Timeste
 		moveStates.clear();
 	}
 
-
 	moveStates.push_back(MoveStates::States::Down);
 	moveStates.push_back(MoveStates::States::DownRight);
 	moveStates.push_back(MoveStates::States::Up);
@@ -159,7 +233,6 @@ void RuiEnemy::Phase1Begin(const Phase lastphase, ALC::Entity self, ALC::Timeste
 
 	m_state = State::TwinSpin;
 }
-
 void RuiEnemy::Phase1Step(ALC::Entity self, ALC::Timestep ts) {
 
 	// get our components
@@ -281,61 +354,183 @@ void RuiEnemy::Phase1Step(ALC::Entity self, ALC::Timestep ts) {
 
 			if (m_timer <= ts.Get()) {
 
-				ShooterBehavior::ShootCircle(self, 30, [tex](ALC::Entity bullet) {
+				ShooterBehavior::ShootCircle(self, 40, [tex](ALC::Entity bullet) {
 					// update body collision
 					auto& body = bullet.GetComponent<ALC::BulletBody>();
 					body.radius = 4.0f;
 					auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
-					body.isSimulated = false;
 					// this should be loaded ahead of time
 					sprite.texture = tex;
 					sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
 					sprite.bounds = sprite.textureBounds.Centered();
 				}, ALC::BulletTypes<BulletDeleterComponent,NormalBullet>());
-
 			}
-
 
 			ALC::uint8 tmpState = static_cast<ALC::uint8>(m_state);
 			m_moveState.PerformMoveState(this, moveStates[0], &tmpState, ts, 0.0f, static_cast<ALC::uint8>(State::TwinSpin));
 
-
 			if (m_moveState.GetIsComplete()) {
 				moveStates.erase(moveStates.begin());
-
-				ShooterBehavior::ShootCircle(self, 20, [tex](ALC::Entity bullet) {
-					// update body collision
-					auto& body = bullet.GetComponent<ALC::BulletBody>();
-					body.radius = 4.0f;
-
-					auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
-					//sprite.bounds = ALC::rect(14.0f);
-					// this should be loaded ahead of time
-					sprite.texture = tex;
-					sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
-					sprite.bounds = sprite.textureBounds.Centered();
-				}, ALC::BulletTypes<BulletDeleterComponent,NormalBullet>());
-
 				m_state = static_cast<State>(tmpState);
-				m_timer = 0.0f;
+				ResteTimer();
 			}
 
-			if (m_timer >= .5f) {
+			if (m_timer >= .3f) {
 				m_timer = 0.0f;
 			}
 		}
 
 		else {
-			m_phases.ChangeState(Phase::Phase2);
+			ResteTimer();
+			m_phases.ChangeState(Phase::Phase0);
 		}
 	}
 }
 
-void RuiEnemy::Phase2Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) { }
-void RuiEnemy::Phase2Step(ALC::Entity self, ALC::Timestep ts) { }
+void RuiEnemy::Phase2Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
 
-void RuiEnemy::Phase3Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) { }
-void RuiEnemy::Phase3Step(ALC::Entity self, ALC::Timestep ts) { }
+	ResetHealth(100.0f);
+	SetLifetime(45.0f);
+
+	if (m_state != State::None) {
+		m_prevState = m_state;
+	}
+
+	if (!moveStates.empty()) { moveStates.clear(); }
+
+	moveStates.push_back(MoveStates::States::DownLeft);
+	moveStates.push_back(MoveStates::States::UpRight);
+	moveStates.push_back(MoveStates::States::Left);
+	moveStates.push_back(MoveStates::States::Move);
+
+	m_state = State::CircleBombs;
+}
+void RuiEnemy::Phase2Step(ALC::Entity self, ALC::Timestep ts) {
+
+	auto [transform, cbody] = self.GetComponent<ALC::Transform2D, ALC::CharacterBody>();
+	auto tex = m_bulletTexture;
+	bool shot = false;
+
+
+	if (m_state == State::CircleBombs) {
+		ShooterBehavior::SetDefaultPosition(transform.position);
+		ShooterBehavior::SetDefaultVelocity(dir[0] * 300.0f);
+
+		ShooterBehavior::ShootCircle(self, 40, [tex](ALC::Entity bullet) {
+			// update body collision
+			auto& body = bullet.GetComponent<ALC::BulletBody>();
+			body.radius = 4.0f;
+			auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
+			// this should be loaded ahead of time
+			sprite.texture = tex;
+			sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
+			sprite.bounds = sprite.textureBounds.Centered();
+			}, ALC::BulletTypes<BulletDeleterComponent, CircleBomb>());
+
+		shot = true;
+
+		if (shot) {
+			m_state = State::Moving;
+		}
+	}
+	
+	else if (m_state == State::Moving) {
+
+		float fireRate = 0.5f;
+		int numOfBullets = 40;
+
+		if (GetHealth() < (GetMaxHealth() / 2)) { fireRate = 0.4f; numOfBullets = 55; }
+
+		if (!moveStates.empty()) {
+
+			ALC::uint8 tmpState = static_cast<ALC::uint8>(m_state);
+			m_moveState.PerformMoveState(this, moveStates[0], &tmpState, ts, 0.0f, static_cast<ALC::uint8>(State::CircleBombs));
+			
+			m_timer += ts.Get();
+
+			if (m_timer <= ts.Get()) {
+				ShooterBehavior::ShootCircle(self, numOfBullets, [tex](ALC::Entity bullet) {
+					// update body collision
+					auto& body = bullet.GetComponent<ALC::BulletBody>();
+					body.radius = 4.0f;
+					auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
+					// this should be loaded ahead of time
+					sprite.texture = tex;
+					sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
+					sprite.bounds = sprite.textureBounds.Centered();
+					}, ALC::BulletTypes<BulletDeleterComponent, CircleBomb>());
+			}
+
+			if (m_moveState.GetIsComplete()) {
+				moveStates.push_back(moveStates[0]);
+				moveStates.erase(moveStates.begin());
+				m_state = static_cast<State>(tmpState);
+				m_timer = 0.0f;
+			}
+
+			if (m_timer >= fireRate) {
+				m_timer = 0.0f;
+			}
+		}
+	}
+}
+
+void RuiEnemy::Phase3Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
+	ResetHealth(100.0f);
+	SetLifetime(5000000.0f);
+
+	if (m_state != State::None) {
+		m_prevState = m_state;
+	}
+
+	if (!moveStates.empty()) { moveStates.clear(); }
+
+	moveStates.push_back(MoveStates::States::DownLeft);
+	moveStates.push_back(MoveStates::States::UpRight);
+	moveStates.push_back(MoveStates::States::Left);
+	moveStates.push_back(MoveStates::States::Move);
+
+	//m_state = State::RainBullets;
+}
+void RuiEnemy::Phase3Step(ALC::Entity self, ALC::Timestep ts) {
+	auto [transform, cbody] = self.GetComponent<ALC::Transform2D, ALC::CharacterBody>();
+	auto tex = m_bulletTexture;\
+
+	auto* playerb = BattleManager::GetCurrentCharacter();
+	auto& playerTransform = playerb->GetEntity().GetComponent<ALC::Transform2D>();
+
+	// target the players position by using this in velocity
+	ALC::vec2 targetdir = playerTransform.position - transform.position;
+	if (glm::length2(targetdir) > 0.0f) { targetdir = glm::normalize(targetdir); }
+
+	ShooterBehavior::SetDefaultPosition(transform.position);
+	ShooterBehavior::SetDefaultVelocity(targetdir * 300.0f);
+
+	m_timer += ts.Get();
+	stateTimer += ts.Get();
+
+	if (m_timer <= ts.Get()) {
+
+		ShooterBehavior::ShootRange(self, 20,125.0f ,[tex](ALC::Entity bullet) {
+			// update body collision
+			auto& body = bullet.GetComponent<ALC::BulletBody>();
+			body.radius = 4.0f;
+			auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
+			// this should be loaded ahead of time
+			sprite.texture = tex;
+			sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
+			sprite.bounds = sprite.textureBounds.Centered();
+			}, ALC::BulletTypes<BulletDeleterComponent, ZigZagBullets>());
+	}
+
+	if (m_timer >= 0.3f) {
+		m_timer = 0.0f;
+	}
+
+	if (stateTimer >= 10.0f) {
+		m_state = State::Moving;
+	}
+}
 
 void RuiEnemy::Phase4Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) { }
 void RuiEnemy::Phase4Step(ALC::Entity self, ALC::Timestep ts) { }

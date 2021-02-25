@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Systems\CircleBombSystem.cpp" />
     <ClCompile Include="Game\AliceGame.cpp" />
     <ClCompile Include="Game\BattleManager.cpp" />
     <ClCompile Include="Game\BTA.cpp" />
@@ -170,6 +171,7 @@
     <ClCompile Include="Game\Systems\GravityBulletSystem.cpp" />
     <ClCompile Include="Game\Systems\MoveStates.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Game\Systems\ZigZagBulletSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AliceEngine\AliceEngine.vcxproj">
@@ -177,6 +179,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Systems\CircleBombSystem.hpp" />
     <ClInclude Include="Game\AliceGame.hpp" />
     <ClInclude Include="Game\BattleManager.hpp" />
     <ClInclude Include="Game\BTA.hpp" />
@@ -195,6 +198,7 @@
     <ClInclude Include="Game\Systems\BulletDeleterSystem.hpp" />
     <ClInclude Include="Game\Systems\GravityBulletSystem.hpp" />
     <ClInclude Include="Game\Systems\MoveStates.hpp" />
+    <ClInclude Include="Game\Systems\ZigZagBulletSystem.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Dialogues\TestDialogue.json" />
