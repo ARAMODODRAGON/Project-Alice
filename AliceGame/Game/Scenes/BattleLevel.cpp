@@ -3,6 +3,7 @@
 #include "../Characters/Character.hpp"
 
 #define DEBUG_FONT_SIZE 18
+#define DEBUG_VERT_SPACING 2
 #define DEBUG_FPS_UPDATE_RATE 5
 
 BattleLevel::BattleLevel()
@@ -48,7 +49,7 @@ ALC::rect BattleLevel::GetScreenLevelBounds(const ALC::vec2& screensize) const {
 void BattleLevel::Init() {
 	using CM = ALC::ContentManager;
 	// load the font and make sure its not tied to a context
-	m_debugFont = CM::LoadFont(CM::Default(), "Resources/Fonts/arial.ttf", DEBUG_FONT_SIZE, 2);
+	m_debugFont = CM::LoadFont(CM::Default(), "Resources/Fonts/arial.ttf", DEBUG_FONT_SIZE, DEBUG_VERT_SPACING);
 
 	if (m_debugFont) {
 		ALC::string testString("This is a test to see if the string will be split into multiple lines! This will probably hopefully be multiple lines!");
@@ -266,7 +267,7 @@ void BattleLevel::Draw() {
 
 		// draw start fade
 		if (m_isFading) {
-			// cover the screen with a semi transparent black texture
+			// cover the screen with a semi transparent black texture 
 			const float alpha = 1.0f - (m_fadeTransition / m_fadeMaxTransitionTime);
 			ALC::rect quad(ALC::vec2(0.0f), m_ui.GetInternalScreenSize());
 			m_ui.DrawQuad(quad, ALC::vec4(0.0f, 0.0f, 0.0f, alpha));
@@ -276,19 +277,20 @@ void BattleLevel::Draw() {
 
 	// draw debug stuff like fps
 	if (m_debug) {
-		m_ui.DrawText("Current FPS: " + VTOS((int)m_lastFPS) // SINGLE CALL NOW WOOOOOOOOOOOOOOOOO
-					  + "\nDelta Time : " + VTOS(m_delta)
-					  + "\nTimescale: " + VTOS(m_timescale) + " (Target FPS is " + VTOS((int)(60.0f * m_timescale)) + ")"
-					  + "\n\nTotal Entities: " + VTOS(GetReg().__GetReg().size<ALC::EntityInfo>())
-					  + "\nEnemy Health: " + VTOS((int)BattleManager::GetEnemy()->GetHealth()) + " / " + VTOS((int)BattleManager::GetEnemy()->GetMaxHealth())
-					  , m_debugFont, ALC::vec2(0.0f, 0.0f));
+		m_ui.DrawText("Current FPS:\nDelta Time:\nTimescale:\n\nTotal Entities:\nEnemy Health:", m_debugFont, ALC::vec2(0.0f, 0.0f));
+		m_ui.DrawText(VTOS(static_cast<int>(m_lastFPS)) 
+					+ "\n" + VTOS(m_delta) +
+					+ "\n" + VTOS(m_timescale)
+					+ "\n\n" + VTOS(GetReg().__GetReg().size<ALC::EntityInfo>())
+					+ "\n" + VTOS((int)BattleManager::GetEnemy()->GetHealth()) + " / " + VTOS((int)BattleManager::GetEnemy()->GetMaxHealth())
+				, m_debugFont, ALC::vec2(240.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), ALC::H_Align::Right);
 
-		ALC::rect r;
+		/*ALC::rect r;
 		r.min = ALC::vec2(0.0f, 204.0f);
 		r.max = r.min + stringDimensions;
 		m_ui.DrawQuad(r, ALC_COLOR_BLUE);
 
-		m_ui.DrawText(multiLineText, m_debugFont, ALC::vec2(roundf(stringDimensions.x / 2.0f), 200.0f), ALC::vec4(1.0f), ALC::H_Align::Center);
+		m_ui.DrawText(multiLineText, m_debugFont, ALC::vec2(roundf(stringDimensions.x / 2.0f), 200.0f), ALC::vec4(1.0f), ALC::H_Align::Center);*/
 	}
 
 	// end drawing UI
