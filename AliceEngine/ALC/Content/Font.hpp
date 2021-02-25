@@ -53,6 +53,9 @@ namespace ALC {
 		// returns the texture ID
 		uint32 GetID() const;
 
+		// Returns the font's size
+		uint32 GetFontSize() const;
+
 		// returns the texture size
 		uvec2 GetSize() const;
 
@@ -85,10 +88,9 @@ namespace ALC {
 
 	private:
 		uint32 m_textureID;
+		uint32 m_fontSize;
 		uvec2 m_textureSize;
 		Ref<unordered_map<char, Character>> m_characters;
-
-		float yOffset;
 
 		// Private string manipulation functions
 		float StringGetOffsetX(string substr, uint32 hAlign) const;

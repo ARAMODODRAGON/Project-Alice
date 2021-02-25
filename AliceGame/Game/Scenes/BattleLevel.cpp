@@ -281,10 +281,10 @@ void BattleLevel::Draw() {
 					  + "\nTimescale: " + VTOS(m_timescale) + " (Target FPS is " + VTOS((int)(60.0f * m_timescale)) + ")"
 					  + "\n\nTotal Entities: " + VTOS(GetReg().__GetReg().size<ALC::EntityInfo>())
 					  + "\nEnemy Health: " + VTOS((int)BattleManager::GetEnemy()->GetHealth()) + " / " + VTOS((int)BattleManager::GetEnemy()->GetMaxHealth())
-					  , m_debugFont, ALC::vec2(0.0f, DEBUG_FONT_SIZE));
+					  , m_debugFont, ALC::vec2(0.0f, 0.0f));
 
 		ALC::rect r;
-		r.min = ALC::vec2(0.0f, 204.0f - m_debugFont.GetSize().y);
+		r.min = ALC::vec2(0.0f, 204.0f);
 		r.max = r.min + stringDimensions;
 		m_ui.DrawQuad(r, ALC_COLOR_BLUE);
 

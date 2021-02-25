@@ -7,28 +7,15 @@
 
 namespace ALC {
 
-	Font::Font() : m_textureID(0), m_textureSize(0), m_characters(nullptr), yOffset(0.0f) { }
+	Font::Font() : m_textureID(0), m_textureSize(0), m_characters(nullptr), m_fontSize(0.0f) { }
 
-	Font::Font(std::nullptr_t) : m_textureID(0), m_textureSize(0), m_characters(nullptr), yOffset(0.0f) { }
+	Font::Font(std::nullptr_t) : m_textureID(0), m_textureSize(0), m_characters(nullptr), m_fontSize(0.0f) { }
 
 	Font::~Font() {
 
 	}
 
 	// STRING MANIPULATION FUNCTIONS /////////////////////////////////////////////////////////////////////////////////////
-
-	/*float Font::StringHeight(string text) const {
-		float height = 0.0f;
-
-		size_t pos = 0;
-		while ((pos = text.find('\n')) != string::npos) {
-			height += GetSize().y + 2.0f;
-			text.erase(0, pos + string("\n").length());
-		}
-		height += GetSize().y + 2.0f;
-
-		return height;
-	}*/
 
 	uvec2 Font::StringDimensions(const string& text) const {
 		uvec2 dimensions(0.0f);
@@ -45,7 +32,7 @@ namespace ALC {
 
 			if (*p == '\n') { // Newline text
 				offset = 0.0f; // Reset the x offset of the text
-				dimensions[1] += (GetSize().y + 2.0f);
+				dimensions[1] += (GetFontSize() + 2.0f);
 				continue;
 			}
 
@@ -62,7 +49,7 @@ namespace ALC {
 
 		// Add the height for the line of text that isn't hit within the loop
 		if (!text.empty()) {
-			dimensions[1] += GetSize().y;
+			dimensions[1] += GetFontSize();
 		}
 
 		return dimensions;
@@ -156,10 +143,10 @@ namespace ALC {
 
 		size_t pos = 0;
 		while ((pos = text.find('\n')) != string::npos) {
-			height += GetSize().y + 2.0f;
+			height += GetFontSize() + 2.0f;
 			text.erase(0, pos + string("\n").length());
 		}
-		height += GetSize().y;
+		height += GetFontSize();
 
 		if (vAlign == V_Align::Middle) { // Cut the offset value in half
 			return roundf((height * scale.y) / 2.0f);
@@ -195,6 +182,10 @@ namespace ALC {
 
 	uint32 Font::GetID() const {
 		return m_textureID;
+	}
+
+	uint32 Font::GetFontSize() const {
+		return m_fontSize;
 	}
 
 	uvec2 Font::GetSize() const {
@@ -303,6 +294,7 @@ namespace ALC {
 		font.m_textureSize = uvec2(w, h);
 		font.m_textureID = textureID;
 		font.m_characters = std::move(characters);
+		font.m_fontSize = size;
 		return font;
 	}
 

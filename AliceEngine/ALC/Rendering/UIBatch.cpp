@@ -177,7 +177,7 @@ namespace ALC {
 		vector<float> offsets = font.StringAlignOffsetX(text, hAlign, scale);
 		uint32 curLine = 0;
 
-		vec2 offset(-offsets[0], -font.StringAlignOffsetY(text, vAlign, scale));
+		vec2 offset(-offsets[0], -font.StringAlignOffsetY(text, vAlign, scale) + font.GetFontSize());
 		for (const char* p = text.c_str(); *p; p++) {
 			if (*p < 32 && *p != '\n') continue;
 			// get character
@@ -198,7 +198,7 @@ namespace ALC {
 			if (*p == '\n') { // Newline text
 				curLine++; // Move to the next offset position for the text
 				offset.x = -offsets[curLine]; // Reset the x offset of the text to the horizontal alignment
-				offset.y += (font.GetSize().y + 2.0f) * scale.y;
+				offset.y += (font.GetFontSize() + 2.0f) * scale.y;
 				continue;
 			}
 
