@@ -17,6 +17,19 @@ namespace ALC {
 
 	// STRING MANIPULATION FUNCTIONS /////////////////////////////////////////////////////////////////////////////////////
 
+	/*float Font::StringHeight(string text) const {
+		float height = 0.0f;
+
+		size_t pos = 0;
+		while ((pos = text.find('\n')) != string::npos) {
+			height += GetSize().y + 2.0f;
+			text.erase(0, pos + string("\n").length());
+		}
+		height += GetSize().y + 2.0f;
+
+		return height;
+	}*/
+
 	uvec2 Font::StringDimensions(const string& text) const {
 		uvec2 dimensions(0.0f);
 		float offset = 0.0f;
@@ -114,6 +127,56 @@ namespace ALC {
 
 
 		return result;
+	}
+
+	vector<float> Font::StringAlignOffsetX(string text, const uint32 hAlign, const vec2& scale) const {
+		vector<float> offsets;
+		offsets.reserve(3);
+
+		if (text.empty()) { // Return an empty vector if an empty string is attempting to be aligned
+			return vector<float>();
+		}
+
+		size_t pos = 0;
+		while ((pos = text.find('\n')) != string::npos) {
+			offsets.push_back(StringGetOffsetX(text.substr(0, pos), hAlign) * scale.x);
+			text.erase(0, pos + string("\n").length());
+		}
+		offsets.push_back(StringGetOffsetX(text.substr(0, pos), hAlign) * scale.x);
+
+		return offsets;
+	}
+
+	float Font::StringAlignOffsetY(string text, const uint32 vAlign, const vec2& scale) const {
+		float height = 0.0f;
+
+		if (vAlign == V_Align::Top || text.empty()) { // No offset necessary
+			return 0.0f;
+		}
+
+		size_t pos = 0;
+		while ((pos = text.find('\n')) != string::npos) {
+			height += GetSize().y + 2.0f;
+			text.erase(0, pos + string("\n").length());
+		}
+		height += GetSize().y;
+
+		if (vAlign == V_Align::Middle) { // Cut the offset value in half
+			return roundf((height * scale.y) / 2.0f);
+		}
+
+		return height * scale.y;
+	}
+
+	// A private member that only returns the x offset of the line of text relative to the alignment that was set
+	float Font::StringGetOffsetX(string substr, uint32 hAlign) const {
+		if (hAlign == H_Align::Center) { // Cut the offset in half based on the line's width
+			return roundf(StringDimensions(substr).x / 2.0f);
+		} else if (hAlign == H_Align::Right) { // Make the offset the full length of the line's width
+			return StringDimensions(substr).x;
+		} else { // No offset necessary
+			return 0.0f;
+		}
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -246,5 +309,4 @@ namespace ALC {
 	void Font::Delete(const Font& font) {
 		glDeleteTextures(1, &font.m_textureID);
 	}
-
 }

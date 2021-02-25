@@ -31,7 +31,7 @@ namespace ALC {
 		void DrawQuad(const rect& position, const vec4& color = ALC_COLOR_WHITE, const rect& target = rect(0.0f), const Texture& texture = nullptr);
 
 		// draws text to the screen
-		void DrawText(const string& text, const Font& font, const vec2& position, const vec2& scale = vec2(1.0f), const vec4& color = ALC_COLOR_WHITE);
+		void DrawText(const string& text, const Font& font, const vec2& position, const vec4& color = ALC_COLOR_WHITE, const uint32 hAlign = H_Align::Left, const uint32 vAlign = V_Align::Top, const vec2& scale = vec2(1.0f));
 
 		// stops drawing and outputs to the screen
 		void End();

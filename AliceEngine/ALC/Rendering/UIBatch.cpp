@@ -139,7 +139,7 @@ namespace ALC {
 		// finish
 	}
 
-	void UIBatch::DrawText(const string& text, const Font& font, const vec2& position, const vec2& scale, const vec4& color) {
+	void UIBatch::DrawText(const string& text, const Font& font, const vec2& position, const vec4& color, const uint32 hAlign, const uint32 vAlign, const vec2& scale) {
 		// dont draw
 		if (NearlyEqual(color.a, 0.0f)) return;
 
@@ -174,7 +174,10 @@ namespace ALC {
 		verts[0].color = verts[1].color
 			= verts[2].color = verts[3].color = color;
 
-		vec2 offset(0.0f);
+		vector<float> offsets = font.StringAlignOffsetX(text, hAlign, scale);
+		uint32 curLine = 0;
+
+		vec2 offset(-offsets[0], -font.StringAlignOffsetY(text, vAlign, scale));
 		for (const char* p = text.c_str(); *p; p++) {
 			if (*p < 32 && *p != '\n') continue;
 			// get character
@@ -193,8 +196,9 @@ namespace ALC {
 			if ((!w || !h) && *p != '\n') continue;
 
 			if (*p == '\n') { // Newline text
-				offset[0] = 0.0f; // Reset the x offset of the text
-				offset[1] += (font.GetSize().y + 2.0f) * scale.y;
+				curLine++; // Move to the next offset position for the text
+				offset.x = -offsets[curLine]; // Reset the x offset of the text to the horizontal alignment
+				offset.y += (font.GetSize().y + 2.0f) * scale.y;
 				continue;
 			}
 

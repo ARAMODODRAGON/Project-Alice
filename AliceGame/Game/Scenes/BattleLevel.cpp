@@ -288,7 +288,7 @@ void BattleLevel::Draw() {
 		r.max = r.min + stringDimensions;
 		m_ui.DrawQuad(r, ALC_COLOR_BLUE);
 
-		m_ui.DrawText(multiLineText, m_debugFont, ALC::vec2(0.0f, 200.0f));
+		m_ui.DrawText(multiLineText, m_debugFont, ALC::vec2(0.0f, 200.0f), ALC::vec4(1.0f));
 	}
 
 	// end drawing UI
