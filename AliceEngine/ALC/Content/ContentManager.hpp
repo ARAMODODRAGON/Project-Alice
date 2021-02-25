@@ -52,10 +52,10 @@ namespace ALC {
 		static Shader LoadShaderSource(ContentStorage& storage, const string& source);
 
 		// loads a font file and stores it in an internal storage, or the set context
-		static Font LoadFont(const string& path, const uint32 size);
+		static Font LoadFont(const string& path, const uint32 size, const uint32 vSpacing = 1U);
 		
 		// loads a font file and stores it in the storage
-		static Font LoadFont(ContentStorage& storage, const string& path, const uint32 size);
+		static Font LoadFont(ContentStorage& storage, const string& path, const uint32 size, const uint32 vSpacing = 1U);
 
 		// clears out and deletes the content stored in the content manager
 		static void Clear();

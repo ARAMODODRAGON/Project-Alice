@@ -53,11 +53,14 @@ namespace ALC {
 		// returns the texture ID
 		uint32 GetID() const;
 
+		// returns the texture size
+		uvec2 GetSize() const;
+
 		// Returns the font's size
 		uint32 GetFontSize() const;
 
-		// returns the texture size
-		uvec2 GetSize() const;
+		// return's the font's vertical spacing
+		uint32 GetVerticalSpacing() const;
 
 		// checks if it contains the given character
 		bool Contains(const char c) const;
@@ -81,16 +84,17 @@ namespace ALC {
 		// functions for loading and deleting fonts
 
 		// loads a font based on the path
-		static Font Load(const string& path, const uint32 size);
+		static Font Load(const string& path, const uint32 size, const uint32 vSpacing);
 
 		// deletes a font
 		static void Delete(const Font& font);
 
 	private:
 		uint32 m_textureID;
-		uint32 m_fontSize;
 		uvec2 m_textureSize;
 		Ref<unordered_map<char, Character>> m_characters;
+		uint32 m_fontSize;
+		uint32 m_verticalSpacing;
 
 		// Private string manipulation functions
 		float StringGetOffsetX(string substr, uint32 hAlign) const;

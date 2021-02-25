@@ -7,9 +7,9 @@
 
 namespace ALC {
 
-	Font::Font() : m_textureID(0), m_textureSize(0), m_characters(nullptr), m_fontSize(0.0f) { }
+	Font::Font() : m_textureID(0), m_textureSize(0), m_characters(nullptr), m_fontSize(0), m_verticalSpacing(0) { }
 
-	Font::Font(std::nullptr_t) : m_textureID(0), m_textureSize(0), m_characters(nullptr), m_fontSize(0.0f) { }
+	Font::Font(std::nullptr_t) : m_textureID(0), m_textureSize(0), m_characters(nullptr), m_fontSize(0), m_verticalSpacing(0) { }
 
 	Font::~Font() {
 
@@ -32,7 +32,7 @@ namespace ALC {
 
 			if (*p == '\n') { // Newline text
 				offset = 0.0f; // Reset the x offset of the text
-				dimensions[1] += (GetFontSize() + 2.0f);
+				dimensions[1] += (float) (GetFontSize() + GetVerticalSpacing());
 				continue;
 			}
 
@@ -112,7 +112,6 @@ namespace ALC {
 			result += curLine + " " + curWord;
 		}
 
-
 		return result;
 	}
 
@@ -143,7 +142,7 @@ namespace ALC {
 
 		size_t pos = 0;
 		while ((pos = text.find('\n')) != string::npos) {
-			height += GetFontSize() + 2.0f;
+			height += GetFontSize() + (float) GetVerticalSpacing();
 			text.erase(0, pos + string("\n").length());
 		}
 		height += GetFontSize();
@@ -184,12 +183,16 @@ namespace ALC {
 		return m_textureID;
 	}
 
+	uvec2 Font::GetSize() const {
+		return m_textureSize;
+	}
+
 	uint32 Font::GetFontSize() const {
 		return m_fontSize;
 	}
 
-	uvec2 Font::GetSize() const {
-		return m_textureSize;
+	uint32 Font::GetVerticalSpacing() const {
+		return m_verticalSpacing;
 	}
 
 	bool Font::Contains(const char c) const {
@@ -222,7 +225,7 @@ namespace ALC {
 		return m_textureID != other.m_textureID;
 	}
 
-	Font Font::Load(const string& path, const uint32 size) {
+	Font Font::Load(const string& path, const uint32 size, const uint32 vSpacing) {
 		// get the library
 		FT_Library lib = SceneManager::__GetFTLibrary();
 
@@ -295,6 +298,7 @@ namespace ALC {
 		font.m_textureID = textureID;
 		font.m_characters = std::move(characters);
 		font.m_fontSize = size;
+		font.m_verticalSpacing = vSpacing;
 		return font;
 	}
 

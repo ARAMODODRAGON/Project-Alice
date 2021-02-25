@@ -48,7 +48,7 @@ ALC::rect BattleLevel::GetScreenLevelBounds(const ALC::vec2& screensize) const {
 void BattleLevel::Init() {
 	using CM = ALC::ContentManager;
 	// load the font and make sure its not tied to a context
-	m_debugFont = CM::LoadFont(CM::Default(), "Resources/Fonts/arial.ttf", DEBUG_FONT_SIZE);
+	m_debugFont = CM::LoadFont(CM::Default(), "Resources/Fonts/arial.ttf", DEBUG_FONT_SIZE, 2);
 
 	if (m_debugFont) {
 		ALC::string testString("This is a test to see if the string will be split into multiple lines! This will probably hopefully be multiple lines!");
@@ -288,7 +288,7 @@ void BattleLevel::Draw() {
 		r.max = r.min + stringDimensions;
 		m_ui.DrawQuad(r, ALC_COLOR_BLUE);
 
-		m_ui.DrawText(multiLineText, m_debugFont, ALC::vec2(0.0f, 200.0f), ALC::vec4(1.0f));
+		m_ui.DrawText(multiLineText, m_debugFont, ALC::vec2(roundf(stringDimensions.x / 2.0f), 200.0f), ALC::vec4(1.0f), ALC::H_Align::Center);
 	}
 
 	// end drawing UI

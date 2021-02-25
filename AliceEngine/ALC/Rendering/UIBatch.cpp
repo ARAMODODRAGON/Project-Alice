@@ -198,7 +198,7 @@ namespace ALC {
 			if (*p == '\n') { // Newline text
 				curLine++; // Move to the next offset position for the text
 				offset.x = -offsets[curLine]; // Reset the x offset of the text to the horizontal alignment
-				offset.y += (font.GetFontSize() + 2.0f) * scale.y;
+				offset.y += (float) (font.GetFontSize() + font.GetVerticalSpacing()) * scale.y;
 				continue;
 			}
 
