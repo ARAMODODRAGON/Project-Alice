@@ -4,11 +4,17 @@
 
 #define DEBUG_FONT_SIZE 18
 #define DEBUG_FPS_UPDATE_RATE 5
+#ifdef _DEBUG
+#define DEBUG true
+#else
+#define DEBUG false
+#endif
+
 
 BattleLevel::BattleLevel()
 	: m_timescale(1.0f)
 	, m_character(nullptr)
-	, m_debug(_DEBUG)
+	, m_debug(DEBUG)
 	, m_lastFPS(0.0f)
 	, m_delta(0.0)
 	, m_itemsOffset(20.0f)

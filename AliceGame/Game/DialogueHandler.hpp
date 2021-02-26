@@ -5,7 +5,7 @@
 
 struct DHActor final {
 	ALC::string name;
-	ALC::Texture icon;
+	ALC::Texture icon; // ignore this
 };
 
 struct DHDialogue final {

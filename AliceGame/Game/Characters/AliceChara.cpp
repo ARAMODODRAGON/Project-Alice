@@ -1,4 +1,4 @@
-           #include "AliceChara.hpp"
+#include "AliceChara.hpp"
 #include <glm\gtx\rotate_vector.hpp>
 #include "../Systems/BulletDeleterSystem.hpp"
 #include "../Systems/Bullet Types/HomingBulletSystem.hpp"
@@ -481,7 +481,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 			//spr.textureBounds = ALC::rect(0.0f, 16.0f, 15.0f, 31.0f);
 			spr.textureBounds = ALC::rect(16.0f, 16.0f, 31.0f, 31.0f);
 			spr.bounds = spr.textureBounds.Centered();
-		}, ALC::BulletTypes<BulletDeleterComponent>());
+		}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
 	}
 
 	// spin the point shooters
@@ -541,7 +541,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 				spr.texture = tex;
 				spr.textureBounds = ALC::rect(0.0f, 0.0f, 15.0f, 15.0f);
 				spr.bounds = spr.textureBounds.Centered();
-			}, ALC::BulletTypes<BulletDeleterComponent>());
+			}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
 		}
 
 		if (shootB > 0.0f) {
@@ -564,7 +564,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 				spr.texture = tex;
 				spr.textureBounds = ALC::rect(0.0f, 0.0f, 15.0f, 15.0f);
 				spr.bounds = spr.textureBounds.Centered();
-			}, ALC::BulletTypes<BulletDeleterComponent>());
+			}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
 		}
 
 		if (shootC > 0.0f) {
@@ -587,7 +587,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 				spr.texture = tex;
 				spr.textureBounds = ALC::rect(0.0f, 0.0f, 15.0f, 15.0f);
 				spr.bounds = spr.textureBounds.Centered();
-			}, ALC::BulletTypes<BulletDeleterComponent>());
+			}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
 		}
 
 		#pragma endregion
