@@ -7,9 +7,9 @@
 
 namespace ALC {
 
-	Font::Font() : m_textureID(0), m_textureSize(0), m_characters(nullptr), yOffset(0.0f) { }
+	Font::Font() : m_textureID(0), m_textureSize(0), m_characters(nullptr), m_fontSize(0), m_verticalSpacing(0) { }
 
-	Font::Font(std::nullptr_t) : m_textureID(0), m_textureSize(0), m_characters(nullptr), yOffset(0.0f) { }
+	Font::Font(std::nullptr_t) : m_textureID(0), m_textureSize(0), m_characters(nullptr), m_fontSize(0), m_verticalSpacing(0) { }
 
 	Font::~Font() {
 
@@ -32,7 +32,7 @@ namespace ALC {
 
 			if (*p == '\n') { // Newline text
 				offset = 0.0f; // Reset the x offset of the text
-				dimensions[1] += (GetSize().y + 2.0f);
+				dimensions[1] += (float) (GetFontSize() + GetVerticalSpacing());
 				continue;
 			}
 
@@ -49,7 +49,7 @@ namespace ALC {
 
 		// Add the height for the line of text that isn't hit within the loop
 		if (!text.empty()) {
-			dimensions[1] += GetSize().y;
+			dimensions[1] += GetFontSize();
 		}
 
 		return dimensions;
@@ -112,8 +112,57 @@ namespace ALC {
 			result += curLine + " " + curWord;
 		}
 
-
 		return result;
+	}
+
+	vector<float> Font::StringAlignOffsetX(string text, const uint32 hAlign, const vec2& scale) const {
+		vector<float> offsets;
+		offsets.reserve(3);
+
+		if (text.empty()) { // Return an empty vector if an empty string is attempting to be aligned
+			return vector<float>();
+		}
+
+		size_t pos = 0;
+		while ((pos = text.find('\n')) != string::npos) {
+			offsets.push_back(StringGetOffsetX(text.substr(0, pos), hAlign) * scale.x);
+			text.erase(0, pos + string("\n").length());
+		}
+		offsets.push_back(StringGetOffsetX(text.substr(0, pos), hAlign) * scale.x);
+
+		return offsets;
+	}
+
+	float Font::StringAlignOffsetY(string text, const uint32 vAlign, const vec2& scale) const {
+		float height = 0.0f;
+
+		if (vAlign == V_Align::Top || text.empty()) { // No offset necessary
+			return 0.0f;
+		}
+
+		size_t pos = 0;
+		while ((pos = text.find('\n')) != string::npos) {
+			height += GetFontSize() + (float) GetVerticalSpacing();
+			text.erase(0, pos + string("\n").length());
+		}
+		height += GetFontSize();
+
+		if (vAlign == V_Align::Middle) { // Cut the offset value in half
+			return roundf((height * scale.y) / 2.0f);
+		}
+
+		return height * scale.y;
+	}
+
+	// A private member that only returns the x offset of the line of text relative to the alignment that was set
+	float Font::StringGetOffsetX(string substr, uint32 hAlign) const {
+		if (hAlign == H_Align::Center) { // Cut the offset in half based on the line's width
+			return roundf(StringDimensions(substr).x / 2.0f);
+		} else if (hAlign == H_Align::Right) { // Make the offset the full length of the line's width
+			return StringDimensions(substr).x;
+		} else { // No offset necessary
+			return 0.0f;
+		}
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -136,6 +185,14 @@ namespace ALC {
 
 	uvec2 Font::GetSize() const {
 		return m_textureSize;
+	}
+
+	uint32 Font::GetFontSize() const {
+		return m_fontSize;
+	}
+
+	uint32 Font::GetVerticalSpacing() const {
+		return m_verticalSpacing;
 	}
 
 	bool Font::Contains(const char c) const {
@@ -168,7 +225,7 @@ namespace ALC {
 		return m_textureID != other.m_textureID;
 	}
 
-	Font Font::Load(const string& path, const uint32 size) {
+	Font Font::Load(const string& path, const uint32 size, const uint32 vSpacing) {
 		// get the library
 		FT_Library lib = SceneManager::__GetFTLibrary();
 
@@ -240,11 +297,12 @@ namespace ALC {
 		font.m_textureSize = uvec2(w, h);
 		font.m_textureID = textureID;
 		font.m_characters = std::move(characters);
+		font.m_fontSize = size;
+		font.m_verticalSpacing = vSpacing;
 		return font;
 	}
 
 	void Font::Delete(const Font& font) {
 		glDeleteTextures(1, &font.m_textureID);
 	}
-
 }

@@ -5,6 +5,18 @@
 
 namespace ALC {
 
+	enum H_Align {
+		Left,
+		Center,
+		Right
+	};
+
+	enum V_Align {
+		Top,
+		Middle,
+		Bottom
+	};
+
 	struct Font final {
 
 		// struct containing character data
@@ -26,6 +38,8 @@ namespace ALC {
 		// String manipulation function(s)
 		uvec2 StringDimensions(const string& text) const; // Gets both the width and the height of the provided string in pixels on the screen
 		string StringSplitLines(const string& text, const float maxStringWidth); // Splits a single-line block of text into multiple lines dynamically
+		vector<float> StringAlignOffsetX(string text, const uint32 hAlign, const vec2& scale) const; // Finds the horizontal offset for the alignment of the string relative to its origin
+		float StringAlignOffsetY(string text, const uint32 vAlign, const vec2& scale) const; // Finds the vertical offset for the alignment of the string relative to its origin
 
 		// returns true if this is a valid font
 		bool IsValid() const;
@@ -41,6 +55,12 @@ namespace ALC {
 
 		// returns the texture size
 		uvec2 GetSize() const;
+
+		// Returns the font's size
+		uint32 GetFontSize() const;
+
+		// return's the font's vertical spacing
+		uint32 GetVerticalSpacing() const;
 
 		// checks if it contains the given character
 		bool Contains(const char c) const;
@@ -64,7 +84,7 @@ namespace ALC {
 		// functions for loading and deleting fonts
 
 		// loads a font based on the path
-		static Font Load(const string& path, const uint32 size);
+		static Font Load(const string& path, const uint32 size, const uint32 vSpacing);
 
 		// deletes a font
 		static void Delete(const Font& font);
@@ -73,8 +93,11 @@ namespace ALC {
 		uint32 m_textureID;
 		uvec2 m_textureSize;
 		Ref<unordered_map<char, Character>> m_characters;
+		uint32 m_fontSize;
+		uint32 m_verticalSpacing;
 
-		float yOffset;
+		// Private string manipulation functions
+		float StringGetOffsetX(string substr, uint32 hAlign) const;
 	};
 
 }

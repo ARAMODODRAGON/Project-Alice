@@ -81,20 +81,20 @@ namespace ALC {
 		return shader;
 	}
 
-	Font ContentManager::LoadFont(const string& path, const uint32 size) {
+	Font ContentManager::LoadFont(const string& path, const uint32 size, const uint32 vSpacing) {
 		if (s_contextStorage)
-			return LoadFont(*s_contextStorage, path, size);
-		return LoadFont(s_genericStorage, path, size);
+			return LoadFont(*s_contextStorage, path, size, vSpacing);
+		return LoadFont(s_genericStorage, path, size, vSpacing);
 	}
 
-	Font ContentManager::LoadFont(ContentStorage& storage, const string& path, const uint32 size) {
+	Font ContentManager::LoadFont(ContentStorage& storage, const string& path, const uint32 size, const uint32 vSpacing) {
 		// check if it already exists
 		auto it = storage.m_fonts.find(path);
 		if (it != storage.m_fonts.end())
 			return it->second;
 
 		// load the shader and add it to the map
-		Font font = Font::Load(path, size);
+		Font font = Font::Load(path, size, vSpacing);
 		if (font) storage.m_fonts.emplace(path, font);
 
 		// return the newly loaded shader
