@@ -5,13 +5,13 @@
 
 namespace ALC {
 
-	enum H_Align {
+	enum class HAlign : ALC::uint8 {
 		Left,
 		Center,
 		Right
 	};
 
-	enum V_Align {
+	enum class VAlign : ALC::uint8 {
 		Top,
 		Middle,
 		Bottom
@@ -38,8 +38,8 @@ namespace ALC {
 		// String manipulation function(s)
 		uvec2 StringDimensions(const string& text) const; // Gets both the width and the height of the provided string in pixels on the screen
 		string StringSplitLines(const string& text, const float maxStringWidth); // Splits a single-line block of text into multiple lines dynamically
-		vector<float> StringAlignOffsetX(string text, const uint32 hAlign, const vec2& scale) const; // Finds the horizontal offset for the alignment of the string relative to its origin
-		float StringAlignOffsetY(string text, const uint32 vAlign, const vec2& scale) const; // Finds the vertical offset for the alignment of the string relative to its origin
+		vector<float> StringAlignOffsetX(string text, const HAlign hAlign, const vec2& scale) const; // Finds the horizontal offset for the alignment of the string relative to its origin
+		float StringAlignOffsetY(string text, const VAlign vAlign, const vec2& scale) const; // Finds the vertical offset for the alignment of the string relative to its origin
 
 		// returns true if this is a valid font
 		bool IsValid() const;
@@ -97,7 +97,7 @@ namespace ALC {
 		uint32 m_verticalSpacing;
 
 		// Private string manipulation functions
-		float StringGetOffsetX(string substr, uint32 hAlign) const;
+		float StringGetOffsetX(string substr, HAlign hAlign) const;
 	};
 
 }

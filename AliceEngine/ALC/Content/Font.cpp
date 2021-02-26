@@ -115,7 +115,7 @@ namespace ALC {
 		return result;
 	}
 
-	vector<float> Font::StringAlignOffsetX(string text, const uint32 hAlign, const vec2& scale) const {
+	vector<float> Font::StringAlignOffsetX(string text, const HAlign hAlign, const vec2& scale) const {
 		vector<float> offsets;
 		offsets.reserve(3);
 
@@ -133,10 +133,10 @@ namespace ALC {
 		return offsets;
 	}
 
-	float Font::StringAlignOffsetY(string text, const uint32 vAlign, const vec2& scale) const {
+	float Font::StringAlignOffsetY(string text, const VAlign vAlign, const vec2& scale) const {
 		float height = 0.0f;
 
-		if (vAlign == V_Align::Top || text.empty()) { // No offset necessary
+		if (vAlign == VAlign::Top || text.empty()) { // No offset necessary
 			return 0.0f;
 		}
 
@@ -147,7 +147,7 @@ namespace ALC {
 		}
 		height += GetFontSize();
 
-		if (vAlign == V_Align::Middle) { // Cut the offset value in half
+		if (vAlign == VAlign::Middle) { // Cut the offset value in half
 			return roundf((height * scale.y) / 2.0f);
 		}
 
@@ -155,10 +155,10 @@ namespace ALC {
 	}
 
 	// A private member that only returns the x offset of the line of text relative to the alignment that was set
-	float Font::StringGetOffsetX(string substr, uint32 hAlign) const {
-		if (hAlign == H_Align::Center) { // Cut the offset in half based on the line's width
+	float Font::StringGetOffsetX(string substr, HAlign hAlign) const {
+		if (hAlign == HAlign::Center) { // Cut the offset in half based on the line's width
 			return roundf(StringDimensions(substr).x / 2.0f);
-		} else if (hAlign == H_Align::Right) { // Make the offset the full length of the line's width
+		} else if (hAlign == HAlign::Right) { // Make the offset the full length of the line's width
 			return StringDimensions(substr).x;
 		} else { // No offset necessary
 			return 0.0f;

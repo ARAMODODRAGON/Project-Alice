@@ -19,7 +19,7 @@ Battle1::~Battle1() { }
 void Battle1::Init() {
 
 	// load all textures
-	auto UIOverlay = ALC::ContentManager::LoadTexture(GetStorage(), "Resources/Textures/Battle UI & Backgrounds/Rui_Battle_UI.png");
+	auto UIOverlay = ALC::ContentManager::LoadTexture(GetStorage(), "Resources/Textures/UI/Rui_Battle_UI.png");
 	SetUIOverlay(UIOverlay);
 
 	// load our music

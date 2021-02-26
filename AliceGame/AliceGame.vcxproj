@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Scenes\MainMenuScene.cpp" />
     <ClCompile Include="Game\Systems\CircleBombSystem.cpp" />
     <ClCompile Include="Game\AliceGame.cpp" />
     <ClCompile Include="Game\BattleManager.cpp" />
@@ -179,6 +180,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Scenes\MainMenuScene.hpp" />
     <ClInclude Include="Game\Systems\CircleBombSystem.hpp" />
     <ClInclude Include="Game\AliceGame.hpp" />
     <ClInclude Include="Game\BattleManager.hpp" />

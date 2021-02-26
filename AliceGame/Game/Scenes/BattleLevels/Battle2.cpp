@@ -16,7 +16,7 @@ void Battle2::Init() {
 
 	BattleLevel::Init();
 
-	auto uioverlay = CM::LoadTexture(GetStorage(), "Resources/Textures/Battle UI & Backgrounds/Eden_Battle_UI.png");
+	auto uioverlay = CM::LoadTexture(GetStorage(), "Resources/Textures/UI/Eden_Battle_UI.png");
 	BattleLevel::SetUIOverlay(uioverlay);
 
 	auto eenemy = GetReg().Create();

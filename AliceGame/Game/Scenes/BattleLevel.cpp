@@ -71,7 +71,7 @@ void BattleLevel::Init() {
 	m_camera.SetCameraSize(BattleManager::PrefferedResolution());
 
 	// load all textures for the UI (Spells, hearts, etc.)
-	auto UIElements = ALC::ContentManager::LoadTexture(GetStorage(), "Resources/Textures/Battle UI & Backgrounds/UI_Textures.png");
+	auto UIElements = ALC::ContentManager::LoadTexture(GetStorage(), "Resources/Textures/UI/UI_Textures.png");
 	SetUIElements(UIElements);
 
 	// create the character
@@ -253,8 +253,8 @@ void BattleLevel::Draw() {
 				// selection box
 				quad.min = item.position;
 				quad.max = quad.min;
-				quad.min.y -= item.font.GetSize().y;
-				quad.max.x += item.dimensions.x;
+				//quad.min.y -= item.font.GetSize().y;
+				quad.max += item.dimensions;
 
 				quad.min.x -= margin;
 				quad.min.y -= (margin - 6.0f);
@@ -289,7 +289,7 @@ void BattleLevel::Draw() {
 					+ "\n" + VTOS(m_timescale)
 					+ "\n\n" + VTOS(GetReg().__GetReg().size<ALC::EntityInfo>())
 					+ "\n" + VTOS((int)BattleManager::GetEnemy()->GetHealth()) + " / " + VTOS((int)BattleManager::GetEnemy()->GetMaxHealth())
-				, m_debugFont, ALC::vec2(240.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), ALC::H_Align::Right);
+				, m_debugFont, ALC::vec2(240.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), ALC::HAlign::Right);
 
 		/*ALC::rect r;
 		r.min = ALC::vec2(0.0f, 204.0f);

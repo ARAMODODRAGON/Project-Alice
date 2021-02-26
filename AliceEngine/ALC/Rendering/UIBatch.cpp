@@ -139,7 +139,7 @@ namespace ALC {
 		// finish
 	}
 
-	void UIBatch::DrawText(const string& text, const Font& font, const vec2& position, const vec4& color, const uint32 hAlign, const uint32 vAlign, const vec2& scale) {
+	void UIBatch::DrawText(const string& text, const Font& font, const vec2& position, const vec4& color, const HAlign hAlign, const VAlign vAlign, const vec2& scale) {
 		// dont draw
 		if (NearlyEqual(color.a, 0.0f)) return;
 
