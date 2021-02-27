@@ -284,71 +284,55 @@ void BattleLevel::Draw() {
 		}
 
 
-		// draw dialogue window
+		// drawing the dialogue window
 		if (m_dialogueTransition > 0.0f) {
 			const ALC::vec2 screenSize = m_ui.GetInternalScreenSize();
-			const ALC::vec4 color = ALC::vec4(1.0f, 1.0f, 1.0f, (m_dialogueTransition / m_dialogueMaxTransitionTime));
+			const ALC::vec4 color = ALC::vec4(1.0f, 0.0f, 0.0f, (m_dialogueTransition / m_dialogueMaxTransitionTime));
 
-			// The top-left section of the dialogue box
-			ALC::rect rect(ALC::vec2(120.0f, screenSize.y - 240.0f), ALC::vec2(140.0f, screenSize.y - 220.0f));
-			ALC::rect rectCoords(ALC::vec2(4.0f, 68.0f), ALC::vec2(24.0f, 88.0f));
-			m_ui.DrawQuad(rect, color, rectCoords, m_UIElements);
+			// Top-left dialogue box texture
+			ALC::rect rect(ALC::vec2(80.0f, screenSize.y - 240.0f), ALC::vec2(120.0f, screenSize.y - 200.0f));
+			ALC::rect rectTexCoords(ALC::vec2(98.0f, 34.0f), ALC::vec2(106.0f, 42.0f));
+			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
 
-			// The top section of the dialogue box
-			rect.min = ALC::vec2(140.0f, screenSize.y - 240.0f);
-			rect.max = ALC::vec2(screenSize.x - 140.0f, screenSize.y - 220.0f);
-			rectCoords.min = ALC::vec2(26.0f, 68.0f);
-			rectCoords.max = ALC::vec2(46.0f, 88.0f);
-			m_ui.DrawQuad(rect, color, rectCoords, m_UIElements);
+			// Top-middle dialogue box texture
+			rect = ALC::rect(ALC::vec2(120.0f, screenSize.y - 240.0f), ALC::vec2(screenSize.x - 120.0f, screenSize.y - 200.0f));
+			rectTexCoords = ALC::rect(ALC::vec2(108.0f, 34.0f), ALC::vec2(116.0f, 42.0f));
+			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
 
-			// The top-right section of the dialogue box
-			rect.min = ALC::vec2(screenSize.x - 140.0f, screenSize.y - 240.0f);
-			rect.max = ALC::vec2(screenSize.x - 120.0f, screenSize.y - 220.0f);
-			rectCoords.min = ALC::vec2(48.0f, 68.0f);
-			rectCoords.max = ALC::vec2(68.0f, 88.0f);
-			m_ui.DrawQuad(rect, color, rectCoords, m_UIElements);
+			// Top-right dialogue box texture
+			rect = ALC::rect(ALC::vec2(screenSize.x - 120.0f, screenSize.y - 240.0f), ALC::vec2(screenSize.x - 80.0f, screenSize.y - 200.0f));
+			rectTexCoords = ALC::rect(ALC::vec2(118.0f, 34.0f), ALC::vec2(126.0f, 42.0f));
+			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
 
-			// The middle-left section of the dialogue box
-			rect.min = ALC::vec2(120.0f, screenSize.y - 220.0f);
-			rect.max = ALC::vec2(140.0f, screenSize.y - 60.0f);
-			rectCoords.min = ALC::vec2(4.0f, 90.0f);
-			rectCoords.max = ALC::vec2(24.0f, 110.0f);
-			m_ui.DrawQuad(rect, color, rectCoords, m_UIElements);
+			// Left dialogue box texture
+			rect = ALC::rect(ALC::vec2(80.0f, screenSize.y - 200.0f), ALC::vec2(120.0f, screenSize.y - 80.0f));
+			rectTexCoords = ALC::rect(ALC::vec2(98.0f, 44.0f), ALC::vec2(106.0f, 52.0f));
+			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
 
-			// The middle section of the dialogue box
-			rect.min = ALC::vec2(140.0f, screenSize.y - 220.0f);
-			rect.max = ALC::vec2(screenSize.x - 140.0f, screenSize.y - 60.0f);
-			rectCoords.min = ALC::vec2(26.0f, 90.0f);
-			rectCoords.max = ALC::vec2(46.0f, 110.0f);
-			m_ui.DrawQuad(rect, color, rectCoords, m_UIElements);
+			// Middle dialogue box texture
+			rect = ALC::rect(ALC::vec2(120.0f, screenSize.y - 200.0f), ALC::vec2(screenSize.x - 120.0f, screenSize.y - 80.0f));
+			rectTexCoords = ALC::rect(ALC::vec2(108.0f, 44.0f), ALC::vec2(116.0f, 52.0f));
+			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
 
-			// The middle-right section of the dialogue box
-			rect.min = ALC::vec2(screenSize.x - 140.0f, screenSize.y - 220.0f);
-			rect.max = ALC::vec2(screenSize.x - 120.0f, screenSize.y - 60.0f);
-			rectCoords.min = ALC::vec2(48.0f, 90.0f);
-			rectCoords.max = ALC::vec2(68.0f, 110.0f);
-			m_ui.DrawQuad(rect, color, rectCoords, m_UIElements);
+			// Right dialogue box texture
+			rect = ALC::rect(ALC::vec2(screenSize.x - 120.0f, screenSize.y - 200.0f), ALC::vec2(screenSize.x - 80.0f, screenSize.y - 80.0f));
+			rectTexCoords = ALC::rect(ALC::vec2(118.0f, 44.0f), ALC::vec2(126.0f, 52.0f));
+			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
 
-			// The bottom-left section of the dialogue box
-			rect.min = ALC::vec2(120.0f, screenSize.y - 60.0f);
-			rect.max = ALC::vec2(140.0f, screenSize.y - 40.0f);
-			rectCoords.min = ALC::vec2(4.0f, 112.0f);
-			rectCoords.max = ALC::vec2(24.0f, 132.0f);
-			m_ui.DrawQuad(rect, color, rectCoords, m_UIElements);
+			// Bottom-left dialogue box texture
+			rect = ALC::rect(ALC::vec2(80.0f, screenSize.y - 80.0f), ALC::vec2(120.0f, screenSize.y - 40.0f));
+			rectTexCoords = ALC::rect(ALC::vec2(98.0f, 54.0f), ALC::vec2(106.0f, 62.0f));
+			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
 
-			// The bottom section of the dialogue box
-			rect.min = ALC::vec2(140.0f, screenSize.y - 60.0f);
-			rect.max = ALC::vec2(screenSize.x - 140.0f, screenSize.y - 40.0f);
-			rectCoords.min = ALC::vec2(26.0f, 112.0f);
-			rectCoords.max = ALC::vec2(46.0f, 132.0f);
-			m_ui.DrawQuad(rect, color, rectCoords, m_UIElements);
-			
-			// The bottom-right section of the dialogue box
-			rect.min = ALC::vec2(screenSize.x - 140.0f, screenSize.y - 60.0f);
-			rect.max = ALC::vec2(screenSize.x - 120.0f, screenSize.y - 40.0f);
-			rectCoords.min = ALC::vec2(48.0f, 112.0f);
-			rectCoords.max = ALC::vec2(68.0f, 132.0f);
-			m_ui.DrawQuad(rect, color, rectCoords, m_UIElements);
+			// Bottom-middle dialogue box texture
+			rect = ALC::rect(ALC::vec2(120.0f, screenSize.y - 80.0f), ALC::vec2(screenSize.x - 120.0f, screenSize.y - 40.0f));
+			rectTexCoords = ALC::rect(ALC::vec2(108.0f, 54.0f), ALC::vec2(116.0f, 62.0f));
+			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
+
+			// Right dialogue box texture
+			rect = ALC::rect(ALC::vec2(screenSize.x - 120.0f, screenSize.y - 80.0f), ALC::vec2(screenSize.x - 80.0f, screenSize.y - 40.0f));
+			rectTexCoords = ALC::rect(ALC::vec2(118.0f, 54.0f), ALC::vec2(126.0f, 62.0f));
+			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
 		}
 	}
 
