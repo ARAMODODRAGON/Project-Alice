@@ -106,6 +106,10 @@ private:
 	bool m_showDialogue;
 	float m_dialogueTransition;
 	float m_dialogueMaxTransitionTime;
+	
+	ALC::string m_dialogueVisibleText;
+	ALC::uint32 m_curCharacter;
+	float m_dialogueSpeed;
 
 	// TESTING
 	ALC::string multiLineText;

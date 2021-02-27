@@ -33,7 +33,9 @@ BattleLevel::BattleLevel()
 	, m_reloadDelay(0.1f)
 	, m_showDialogue(false)
 	, m_dialogueTransition(0.0f) 
-	, m_dialogueMaxTransitionTime(0.5f) {
+	, m_dialogueMaxTransitionTime(0.5f)
+	, m_curCharacter(0) 
+	, m_dialogueSpeed(2.5f) {
 	m_ui.SetInternalScreenSize(BattleManager::PrefferedResolution());
 }
 
@@ -289,6 +291,8 @@ void BattleLevel::Draw() {
 			const ALC::vec2 screenSize = m_ui.GetInternalScreenSize();
 			const ALC::vec4 color = ALC::vec4(1.0f, 0.0f, 0.0f, (m_dialogueTransition / m_dialogueMaxTransitionTime));
 
+			// Drawing the background for the dialogue to go on top of /////////////////////////////////////////////////////////
+
 			// Top-left dialogue box texture
 			ALC::rect rect(ALC::vec2(80.0f, screenSize.y - 240.0f), ALC::vec2(120.0f, screenSize.y - 200.0f));
 			ALC::rect rectTexCoords(ALC::vec2(98.0f, 34.0f), ALC::vec2(106.0f, 42.0f));
@@ -333,6 +337,10 @@ void BattleLevel::Draw() {
 			rect = ALC::rect(ALC::vec2(screenSize.x - 120.0f, screenSize.y - 80.0f), ALC::vec2(screenSize.x - 80.0f, screenSize.y - 40.0f));
 			rectTexCoords = ALC::rect(ALC::vec2(118.0f, 54.0f), ALC::vec2(126.0f, 62.0f));
 			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+			
 		}
 	}
 
@@ -460,11 +468,14 @@ void BattleLevel::Step(ALC::Timestep ts) {
 	// FOR TESTING //
 
 	// handles dialogue window transition
-	if (m_showDialogue) { // Opening transition
+	if (m_showDialogue) { // Opening transition/handling player input during dialog
 		m_dialogueTransition += ts;
 		if (m_dialogueTransition > m_dialogueMaxTransitionTime) {
 			m_dialogueTransition = m_dialogueMaxTransitionTime;
 		}
+
+		// TODO -- Add check for size of string so the cur character doesn't exceed that value, which will probably cause an error
+		m_curCharacter += m_dialogueSpeed * ts;
 	}
 	else { // Closing transition
 		m_dialogueTransition -= ts;
