@@ -5,7 +5,7 @@
 #include <ALC\Input.hpp>
 #include "../BattleManager.hpp"
 
-class MainMenuScene final : ALC::IScene {
+class MainMenuScene final : public ALC::IScene {
 public:
 
 	MainMenuScene();
@@ -14,7 +14,9 @@ public:
 	void Init() override;
 	void Exit() override;
 	void Step(ALC::Timestep ts) override;
+	void PreDraw() override { }
 	void Draw() override;
+	void PostDraw() override { }
 
 private:
 
@@ -29,12 +31,13 @@ private:
 		ALC::Font font;
 		float higlightFill = 0.0f;
 		bool isSelectable = true;
-		ALC::function<void()> func;
+		void (MainMenuScene::* confirmfunc)() = nullptr;
 	};
 
 	struct MenuList final {
 		ALC::vector<UISelection> selections;
 		ALC::uint32 position = 0;
+		void (MainMenuScene::* closefunc)() = nullptr;
 	};
 
 	enum class MenuState : ALC::uint8 {
@@ -43,7 +46,13 @@ private:
 		RewardsMenu
 	};
 
-	void UpdateMenu(MenuList& list, bool up, bool down, bool select);
+	void UpdateMenu(MenuList& list, bool up, bool down, bool select, ALC::Timestep ts);
+
+	void _ContinueOpt();
+	void _NewGameOpt();
+	void _RewardsOpt();
+	void _SettingsOpt();
+	void _QuitOpt();
 
 	MenuState m_menustate;
 	MenuState m_nextstate;
@@ -62,6 +71,8 @@ private:
 
 	ALC::int32 m_isTransitioning;
 	float m_uioffset;
+
+	ALC::uint32 m_gameProgress;
 
 };
 
