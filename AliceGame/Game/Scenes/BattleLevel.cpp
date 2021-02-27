@@ -30,7 +30,10 @@ BattleLevel::BattleLevel()
 	, m_fadeMaxTransitionTime(1.0f)
 	, m_pauseTransition(0.0f)
 	, m_pauseMaxTransitionTime(0.3f)
-	, m_reloadDelay(0.1f) {
+	, m_reloadDelay(0.1f)
+	, m_showDialogue(false)
+	, m_dialogueTransition(0.0f) 
+	, m_dialogueMaxTransitionTime(0.5f) {
 	m_ui.SetInternalScreenSize(BattleManager::PrefferedResolution());
 }
 
@@ -196,7 +199,8 @@ void BattleLevel::Draw() {
 		uint32_t health = (uint32_t)glm::ceil(BattleManager::GetCurrentCharacter()->GetHealth());
 		uint32_t maxHealth = (uint32_t)glm::ceil(BattleManager::GetCurrentCharacter()->GetMaxHealth());
 		for (uint32_t i = 0; i < maxHealth; i++) {
-			if (health > i) { m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIElements); } else { m_ui.DrawQuad(pos, ALC_COLOR_BLACK, target, m_UIElements); }
+			if (health > i) { m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIElements); } 
+			else { m_ui.DrawQuad(pos, ALC_COLOR_BLACK, target, m_UIElements); }
 			pos.min.x += 45.0f;
 			pos.max.x += 45.0f;
 		}
@@ -212,7 +216,7 @@ void BattleLevel::Draw() {
 		// Displaying the player's currently equipped defence spell
 		pos.min.x += 131.0f;
 		pos.max.x += 131.0f;
-
+		
 		target = BattleManager::GetCurrentCharacter()->GetDefenceTargetRect();
 		ALC::rect cooldown = BattleManager::GetCurrentCharacter()->GetDefenceTargetRectCooldown();
 		if (cooldown.max.y > 0.0f) { // Darken the image to show the cooldown timer
@@ -279,17 +283,84 @@ void BattleLevel::Draw() {
 			m_ui.DrawQuad(quad, ALC::vec4(0.0f, 0.0f, 0.0f, alpha));
 		}
 
+
+		// draw dialogue window
+		if (m_dialogueTransition > 0.0f) {
+			const ALC::vec2 screenSize = m_ui.GetInternalScreenSize();
+			const ALC::vec4 color = ALC::vec4(1.0f, 1.0f, 1.0f, (m_dialogueTransition / m_dialogueMaxTransitionTime));
+
+			// The top-left section of the dialogue box
+			ALC::rect rect(ALC::vec2(120.0f, screenSize.y - 240.0f), ALC::vec2(140.0f, screenSize.y - 220.0f));
+			ALC::rect rectCoords(ALC::vec2(4.0f, 68.0f), ALC::vec2(24.0f, 88.0f));
+			m_ui.DrawQuad(rect, color, rectCoords, m_UIElements);
+
+			// The top section of the dialogue box
+			rect.min = ALC::vec2(140.0f, screenSize.y - 240.0f);
+			rect.max = ALC::vec2(screenSize.x - 140.0f, screenSize.y - 220.0f);
+			rectCoords.min = ALC::vec2(26.0f, 68.0f);
+			rectCoords.max = ALC::vec2(46.0f, 88.0f);
+			m_ui.DrawQuad(rect, color, rectCoords, m_UIElements);
+
+			// The top-right section of the dialogue box
+			rect.min = ALC::vec2(screenSize.x - 140.0f, screenSize.y - 240.0f);
+			rect.max = ALC::vec2(screenSize.x - 120.0f, screenSize.y - 220.0f);
+			rectCoords.min = ALC::vec2(48.0f, 68.0f);
+			rectCoords.max = ALC::vec2(68.0f, 88.0f);
+			m_ui.DrawQuad(rect, color, rectCoords, m_UIElements);
+
+			// The middle-left section of the dialogue box
+			rect.min = ALC::vec2(120.0f, screenSize.y - 220.0f);
+			rect.max = ALC::vec2(140.0f, screenSize.y - 60.0f);
+			rectCoords.min = ALC::vec2(4.0f, 90.0f);
+			rectCoords.max = ALC::vec2(24.0f, 110.0f);
+			m_ui.DrawQuad(rect, color, rectCoords, m_UIElements);
+
+			// The middle section of the dialogue box
+			rect.min = ALC::vec2(140.0f, screenSize.y - 220.0f);
+			rect.max = ALC::vec2(screenSize.x - 140.0f, screenSize.y - 60.0f);
+			rectCoords.min = ALC::vec2(26.0f, 90.0f);
+			rectCoords.max = ALC::vec2(46.0f, 110.0f);
+			m_ui.DrawQuad(rect, color, rectCoords, m_UIElements);
+
+			// The middle-right section of the dialogue box
+			rect.min = ALC::vec2(screenSize.x - 140.0f, screenSize.y - 220.0f);
+			rect.max = ALC::vec2(screenSize.x - 120.0f, screenSize.y - 60.0f);
+			rectCoords.min = ALC::vec2(48.0f, 90.0f);
+			rectCoords.max = ALC::vec2(68.0f, 110.0f);
+			m_ui.DrawQuad(rect, color, rectCoords, m_UIElements);
+
+			// The bottom-left section of the dialogue box
+			rect.min = ALC::vec2(120.0f, screenSize.y - 60.0f);
+			rect.max = ALC::vec2(140.0f, screenSize.y - 40.0f);
+			rectCoords.min = ALC::vec2(4.0f, 112.0f);
+			rectCoords.max = ALC::vec2(24.0f, 132.0f);
+			m_ui.DrawQuad(rect, color, rectCoords, m_UIElements);
+
+			// The bottom section of the dialogue box
+			rect.min = ALC::vec2(140.0f, screenSize.y - 60.0f);
+			rect.max = ALC::vec2(screenSize.x - 140.0f, screenSize.y - 40.0f);
+			rectCoords.min = ALC::vec2(26.0f, 112.0f);
+			rectCoords.max = ALC::vec2(46.0f, 132.0f);
+			m_ui.DrawQuad(rect, color, rectCoords, m_UIElements);
+			
+			// The bottom-right section of the dialogue box
+			rect.min = ALC::vec2(screenSize.x - 140.0f, screenSize.y - 60.0f);
+			rect.max = ALC::vec2(screenSize.x - 120.0f, screenSize.y - 40.0f);
+			rectCoords.min = ALC::vec2(48.0f, 112.0f);
+			rectCoords.max = ALC::vec2(68.0f, 132.0f);
+			m_ui.DrawQuad(rect, color, rectCoords, m_UIElements);
+		}
 	}
 
 	// draw debug stuff like fps
 	if (m_debug) {
 		m_ui.DrawText("Current FPS:\nDelta Time:\nTimescale:\n\nTotal Entities:\nEnemy Health:", m_debugFont, ALC::vec2(0.0f, 0.0f));
 		m_ui.DrawText(VTOS(static_cast<int>(m_lastFPS)) 
-					+ "\n" + VTOS(m_delta) +
-					+ "\n" + VTOS(m_timescale)
-					+ "\n\n" + VTOS(GetReg().__GetReg().size<ALC::EntityInfo>())
-					+ "\n" + VTOS((int)BattleManager::GetEnemy()->GetHealth()) + " / " + VTOS((int)BattleManager::GetEnemy()->GetMaxHealth())
-				, m_debugFont, ALC::vec2(240.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), ALC::H_Align::Right);
+			+ "\n" + VTOS(m_delta)
+			+ "\n" + VTOS(m_timescale)
+			+ "\n\n" + VTOS(GetReg().__GetReg().size<ALC::EntityInfo>())
+			+ "\n" + VTOS((int)BattleManager::GetEnemy()->GetHealth()) + " / " + VTOS((int)BattleManager::GetEnemy()->GetMaxHealth()), 
+			m_debugFont, ALC::vec2(240.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), ALC::H_Align::Right);
 
 		/*ALC::rect r;
 		r.min = ALC::vec2(0.0f, 204.0f);
@@ -396,6 +467,27 @@ void BattleLevel::Step(ALC::Timestep ts) {
 		m_shouldFadeIn = false;
 	}
 	m_playerWasDead = m_character->IsDead();
+
+	// FOR TESTING //
+	if (Keyboard::GetKey(ALC::KeyCode::KeyQ).Pressed()) {
+		m_showDialogue = !m_showDialogue;
+		ALC_DEBUG_LOG("DIALOGUE WINDOW TOGGLED");
+	}
+	// FOR TESTING //
+
+	// handles dialogue window transition
+	if (m_showDialogue) { // Opening transition
+		m_dialogueTransition += ts;
+		if (m_dialogueTransition > m_dialogueMaxTransitionTime) {
+			m_dialogueTransition = m_dialogueMaxTransitionTime;
+		}
+	}
+	else { // Closing transition
+		m_dialogueTransition -= ts;
+		if (m_dialogueTransition < 0.0f) {
+			m_dialogueTransition = 0.0f;
+		}
+	}
 
 	// prepare our fixed timestep. it should be 0 if paused
 	ALC::Timestep fixedts((m_isPaused) ? 0.0 : ((1.0 / 60.0) * m_timescale));
