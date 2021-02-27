@@ -352,7 +352,7 @@ void BattleLevel::Draw() {
 			+ "\n" + VTOS(m_timescale)
 			+ "\n\n" + VTOS(GetReg().__GetReg().size<ALC::EntityInfo>())
 			+ "\n" + VTOS((int)BattleManager::GetEnemy()->GetHealth()) + " / " + VTOS((int)BattleManager::GetEnemy()->GetMaxHealth()), 
-			m_debugFont, ALC::vec2(240.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), ALC::H_Align::Right);
+			m_debugFont, ALC::vec2(240.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), ALC::HAlign::Right);
 
 		/*ALC::rect r;
 		r.min = ALC::vec2(0.0f, 204.0f);
