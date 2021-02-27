@@ -30,7 +30,12 @@ BattleLevel::BattleLevel()
 	, m_fadeMaxTransitionTime(1.0f)
 	, m_pauseTransition(0.0f)
 	, m_pauseMaxTransitionTime(0.3f)
-	, m_reloadDelay(0.1f) {
+	, m_reloadDelay(0.1f)
+	, m_showDialogue(false)
+	, m_dialogueTransition(0.0f) 
+	, m_dialogueMaxTransitionTime(0.5f)
+	, m_curCharacter(0) 
+	, m_dialogueSpeed(2.5f) {
 	m_ui.SetInternalScreenSize(BattleManager::PrefferedResolution());
 }
 
@@ -196,7 +201,8 @@ void BattleLevel::Draw() {
 		uint32_t health = (uint32_t)glm::ceil(BattleManager::GetCurrentCharacter()->GetHealth());
 		uint32_t maxHealth = (uint32_t)glm::ceil(BattleManager::GetCurrentCharacter()->GetMaxHealth());
 		for (uint32_t i = 0; i < maxHealth; i++) {
-			if (health > i) { m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIElements); } else { m_ui.DrawQuad(pos, ALC_COLOR_BLACK, target, m_UIElements); }
+			if (health > i) { m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIElements); } 
+			else { m_ui.DrawQuad(pos, ALC_COLOR_BLACK, target, m_UIElements); }
 			pos.min.x += 45.0f;
 			pos.max.x += 45.0f;
 		}
@@ -212,7 +218,7 @@ void BattleLevel::Draw() {
 		// Displaying the player's currently equipped defence spell
 		pos.min.x += 131.0f;
 		pos.max.x += 131.0f;
-
+		
 		target = BattleManager::GetCurrentCharacter()->GetDefenceTargetRect();
 		ALC::rect cooldown = BattleManager::GetCurrentCharacter()->GetDefenceTargetRectCooldown();
 		if (cooldown.max.y > 0.0f) { // Darken the image to show the cooldown timer
@@ -279,17 +285,74 @@ void BattleLevel::Draw() {
 			m_ui.DrawQuad(quad, ALC::vec4(0.0f, 0.0f, 0.0f, alpha));
 		}
 
+
+		// drawing the dialogue window
+		if (m_dialogueTransition > 0.0f) {
+			const ALC::vec2 screenSize = m_ui.GetInternalScreenSize();
+			const ALC::vec4 color = ALC::vec4(1.0f, 0.0f, 0.0f, (m_dialogueTransition / m_dialogueMaxTransitionTime));
+
+			// Drawing the background for the dialogue to go on top of /////////////////////////////////////////////////////////
+
+			// Top-left dialogue box texture
+			ALC::rect rect(ALC::vec2(80.0f, screenSize.y - 240.0f), ALC::vec2(120.0f, screenSize.y - 200.0f));
+			ALC::rect rectTexCoords(ALC::vec2(98.0f, 34.0f), ALC::vec2(106.0f, 42.0f));
+			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
+
+			// Top-middle dialogue box texture
+			rect = ALC::rect(ALC::vec2(120.0f, screenSize.y - 240.0f), ALC::vec2(screenSize.x - 120.0f, screenSize.y - 200.0f));
+			rectTexCoords = ALC::rect(ALC::vec2(108.0f, 34.0f), ALC::vec2(116.0f, 42.0f));
+			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
+
+			// Top-right dialogue box texture
+			rect = ALC::rect(ALC::vec2(screenSize.x - 120.0f, screenSize.y - 240.0f), ALC::vec2(screenSize.x - 80.0f, screenSize.y - 200.0f));
+			rectTexCoords = ALC::rect(ALC::vec2(118.0f, 34.0f), ALC::vec2(126.0f, 42.0f));
+			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
+
+			// Left dialogue box texture
+			rect = ALC::rect(ALC::vec2(80.0f, screenSize.y - 200.0f), ALC::vec2(120.0f, screenSize.y - 80.0f));
+			rectTexCoords = ALC::rect(ALC::vec2(98.0f, 44.0f), ALC::vec2(106.0f, 52.0f));
+			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
+
+			// Middle dialogue box texture
+			rect = ALC::rect(ALC::vec2(120.0f, screenSize.y - 200.0f), ALC::vec2(screenSize.x - 120.0f, screenSize.y - 80.0f));
+			rectTexCoords = ALC::rect(ALC::vec2(108.0f, 44.0f), ALC::vec2(116.0f, 52.0f));
+			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
+
+			// Right dialogue box texture
+			rect = ALC::rect(ALC::vec2(screenSize.x - 120.0f, screenSize.y - 200.0f), ALC::vec2(screenSize.x - 80.0f, screenSize.y - 80.0f));
+			rectTexCoords = ALC::rect(ALC::vec2(118.0f, 44.0f), ALC::vec2(126.0f, 52.0f));
+			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
+
+			// Bottom-left dialogue box texture
+			rect = ALC::rect(ALC::vec2(80.0f, screenSize.y - 80.0f), ALC::vec2(120.0f, screenSize.y - 40.0f));
+			rectTexCoords = ALC::rect(ALC::vec2(98.0f, 54.0f), ALC::vec2(106.0f, 62.0f));
+			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
+
+			// Bottom-middle dialogue box texture
+			rect = ALC::rect(ALC::vec2(120.0f, screenSize.y - 80.0f), ALC::vec2(screenSize.x - 120.0f, screenSize.y - 40.0f));
+			rectTexCoords = ALC::rect(ALC::vec2(108.0f, 54.0f), ALC::vec2(116.0f, 62.0f));
+			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
+
+			// Right dialogue box texture
+			rect = ALC::rect(ALC::vec2(screenSize.x - 120.0f, screenSize.y - 80.0f), ALC::vec2(screenSize.x - 80.0f, screenSize.y - 40.0f));
+			rectTexCoords = ALC::rect(ALC::vec2(118.0f, 54.0f), ALC::vec2(126.0f, 62.0f));
+			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+			
+		}
 	}
 
 	// draw debug stuff like fps
 	if (m_debug) {
 		m_ui.DrawText("Current FPS:\nDelta Time:\nTimescale:\n\nTotal Entities:\nEnemy Health:", m_debugFont, ALC::vec2(0.0f, 0.0f));
 		m_ui.DrawText(VTOS(static_cast<int>(m_lastFPS)) 
-					+ "\n" + VTOS(m_delta) +
-					+ "\n" + VTOS(m_timescale)
-					+ "\n\n" + VTOS(GetReg().__GetReg().size<ALC::EntityInfo>())
-					+ "\n" + VTOS((int)BattleManager::GetEnemy()->GetHealth()) + " / " + VTOS((int)BattleManager::GetEnemy()->GetMaxHealth())
-				, m_debugFont, ALC::vec2(240.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), ALC::HAlign::Right);
+			+ "\n" + VTOS(m_delta)
+			+ "\n" + VTOS(m_timescale)
+			+ "\n\n" + VTOS(GetReg().__GetReg().size<ALC::EntityInfo>())
+			+ "\n" + VTOS((int)BattleManager::GetEnemy()->GetHealth()) + " / " + VTOS((int)BattleManager::GetEnemy()->GetMaxHealth()), 
+			m_debugFont, ALC::vec2(240.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), ALC::H_Align::Right);
 
 		/*ALC::rect r;
 		r.min = ALC::vec2(0.0f, 204.0f);
@@ -396,6 +459,30 @@ void BattleLevel::Step(ALC::Timestep ts) {
 		m_shouldFadeIn = false;
 	}
 	m_playerWasDead = m_character->IsDead();
+
+	// FOR TESTING //
+	if (Keyboard::GetKey(ALC::KeyCode::KeyQ).Pressed()) {
+		m_showDialogue = !m_showDialogue;
+		ALC_DEBUG_LOG("DIALOGUE WINDOW TOGGLED");
+	}
+	// FOR TESTING //
+
+	// handles dialogue window transition
+	if (m_showDialogue) { // Opening transition/handling player input during dialog
+		m_dialogueTransition += ts;
+		if (m_dialogueTransition > m_dialogueMaxTransitionTime) {
+			m_dialogueTransition = m_dialogueMaxTransitionTime;
+		}
+
+		// TODO -- Add check for size of string so the cur character doesn't exceed that value, which will probably cause an error
+		m_curCharacter += m_dialogueSpeed * ts;
+	}
+	else { // Closing transition
+		m_dialogueTransition -= ts;
+		if (m_dialogueTransition < 0.0f) {
+			m_dialogueTransition = 0.0f;
+		}
+	}
 
 	// prepare our fixed timestep. it should be 0 if paused
 	ALC::Timestep fixedts((m_isPaused) ? 0.0 : ((1.0 / 60.0) * m_timescale));

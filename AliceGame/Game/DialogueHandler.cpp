@@ -40,11 +40,13 @@ DialogueHandler::DialogueHandler(const ALC::string& dialoguefile, ALC::ContentSt
 		ALC::json& actr = actors[i];
 		DHActor dhactor{};
 
-		// try load name
+		// try load name, name color, and window color
 		try {
 			dhactor.name = actr["Name"];
+			dhactor.nameColor = ALC::vec3(actr["Color"]["r"], actr["Color"]["g"], actr["Color"]["b"]);
+			dhactor.windowColor = ALC::vec3(actr["WindowColor"]["r"], actr["WindowColor"]["g"], actr["WindowColor"]["b"]);
 		} catch (const std::exception&) {
-			ALC_DEBUG_WARNING("Could not load name, actor ignored");
+			ALC_DEBUG_WARNING("Could not load name, name color, or window color, actor ignored");
 			continue;
 		}
 

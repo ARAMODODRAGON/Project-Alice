@@ -103,6 +103,14 @@ private:
 	float m_pauseMaxTransitionTime;
 	float m_reloadDelay;
 
+	bool m_showDialogue;
+	float m_dialogueTransition;
+	float m_dialogueMaxTransitionTime;
+	
+	ALC::string m_dialogueVisibleText;
+	ALC::uint32 m_curCharacter;
+	float m_dialogueSpeed;
+
 	// TESTING
 	ALC::string multiLineText;
 	ALC::vec2 stringDimensions;
