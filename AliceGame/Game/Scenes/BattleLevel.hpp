@@ -38,6 +38,7 @@ public:
 
 protected:
 
+	virtual void DrawBackground(ALC::UIBatch& ui) = 0;
 	virtual void GameStep(ALC::Timestep t) = 0;
 	virtual void Init();
 	virtual void Exit();

@@ -15,6 +15,7 @@ public:
 	void Exit() override;
 	void GameStep(ALC::Timestep t) override;
 	void Draw() override;
+	void DrawBackground(ALC::UIBatch& ui) override { }
 
 private:
 

@@ -20,6 +20,7 @@ private:
 	void Exit() override;
 	void GameStep(ALC::Timestep ts) override;
 	void Step(ALC::Timestep ts) override;
+	void DrawBackground(ALC::UIBatch& ui) override;
 
 	ALC::string m_musicFile;
 	DialogueHandler m_beginLevel;
@@ -30,6 +31,9 @@ private:
 	GravityBulletSystem m_gravitySystem;
 	CircleBombSystem m_cirlceBombSystem;
 	ZigZagBulletSystem m_ZzBulletSystem;
+
+	float m_timer;
+	ALC::Texture m_background;
 
 };
 

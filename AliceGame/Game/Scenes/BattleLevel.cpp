@@ -119,6 +119,11 @@ void BattleLevel::Exit() {
 
 void BattleLevel::Draw() {
 
+	// draw background 
+	m_ui.Begin();
+	DrawBackground(m_ui);
+	m_ui.End();
+
 	// draw sprites
 	m_batch.Begin(m_camera);
 
