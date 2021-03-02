@@ -97,7 +97,7 @@ void Battle1::DrawBackground(ALC::UIBatch& ui) {
 				pos.top += offsetY;
 				pos.bottom += offsetY;
 			}
-			ALC::vec4 color = ALC_COLOR_WHITE * 0.7f;
+			ALC::vec4 color = ALC_COLOR_WHITE * 0.9f;
 			if (i != 0) color.a = ((sinf(m_timer + (0.3f * float(i))) + 1.0f) * 0.5f) * 0.5f + 0.2f;
 
 			ui.DrawQuad(pos, color, targets[i], m_background);
