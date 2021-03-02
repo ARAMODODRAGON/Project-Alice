@@ -48,6 +48,7 @@ private:
 	float m_secondTimer; // yet another timer 
 	float stateTimer;
 	ALC::uint8 dirIndex;// an index to the direction array
+	ALC::vec2 oldPos;
 
 	ALC::vec2 dir[4] = {
 	ALC::vec2(0,1),	  //up

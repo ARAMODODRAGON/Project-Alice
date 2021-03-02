@@ -10,20 +10,20 @@ ZigZagBulletSystem::~ZigZagBulletSystem()
 
 void ZigZagBulletSystem::Step(ALC::Timestep ts, ALC::Entity e, ALC::BulletBody& bb, ZigZagBullets& zzBul)
 {
+	float shiftDist = 250.0f;
 	zzBul.timeToShift += ts.Get();
-	
-	if (zzBul.timeToShift > 1.1f) {
-		e.GetComponent<ALC::Transform2D>().position.x = (e.GetComponent<ALC::Transform2D>().position.x + 5.0f);
-		//zzBul.timeToShift = 0.0f;
+
+	if (zzBul.timeToShift >= ts.Get() && zzBul.timeToShift <= ts.Get() * 30.0f ) {
+		bb.velocity.x = shiftDist;
 	}
+
+	else if(zzBul.timeToShift > ts.Get() * 30.0f && zzBul.timeToShift <= (ts.Get() * 60.0f)){
+		bb.velocity.x = -shiftDist;
+	}
+
 	else {
-
-		zzBul.timeToShift = 0.0f;						
+		zzBul.timeToShift = 0.0f;
+		
 	}
 
-	/*zzBul.lifeSpan -= ts.Get();
-
-	if (zzBul.lifeSpan <= 0.0f) {
-		bb.isSimulated = false;
-	} */
 }

@@ -9,6 +9,9 @@
 struct ZigZagBullets {
 	float timeToShift = 0.0f;
     float lifeSpan = 2.5f;
+
+    bool posShift = false;
+
 };
 
 struct ZigZagBulletSystem final :public ALC::ISystem<ALC::BulletBody, ZigZagBullets>
@@ -16,7 +19,6 @@ struct ZigZagBulletSystem final :public ALC::ISystem<ALC::BulletBody, ZigZagBull
     ZigZagBulletSystem();
     ~ZigZagBulletSystem();
     
-
     void Step(ALC::Timestep ts, ALC::Entity e, ALC::BulletBody& bb, ZigZagBullets& zzBul) override;
 };
 #endif

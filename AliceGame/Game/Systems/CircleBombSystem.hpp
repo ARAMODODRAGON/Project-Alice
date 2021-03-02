@@ -8,9 +8,10 @@
 struct CircleBomb {
     // some data here (you need something to make this struct a valid component, even if you dont use the value)
     float timeToStop = 0.0f;
-    float timeToExld = 1.0f; // time untill the bullets move
+    float timeToExld = .3f; // time untill the bullets move
     bool canSetVel = true; // used to set the initial velocity for the bullet;
     ALC::vec2 initVel; // the intial velocity of the bullet
+    float timeToStopFollow = 1.0f;
 };
 
 struct CircleBombSystem final : public ALC::ISystem<ALC::BulletBody, CircleBomb> {
