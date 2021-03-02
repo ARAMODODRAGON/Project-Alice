@@ -177,7 +177,7 @@
     <ClInclude Include="ALC\Jobs\JobQueue.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ALC\Jobs\JobSystemSubmitter.hpp">
+    <ClInclude Include="ALC\Entities\JobSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -277,7 +277,7 @@
     <None Include="ALC\Jobs\cjs\worker_thread.inl">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="ALC\Jobs\JobSystemSubmitter.inl">
+    <None Include="ALC\Entities\JobSystem.inl">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

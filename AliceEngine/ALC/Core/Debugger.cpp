@@ -1,10 +1,15 @@
 #include "Debugger.hpp"
 #include <iostream>
 #include <fstream>
+#include "../Jobs.hpp"
 
 #define LOG_FILE_PATH string("Logs/Log_")
 
 namespace ALC {
+
+	namespace {
+		cjs::mutex m;
+	}
 
 	static const string& GetLogPath() {
 		static string logFilepath = "";
@@ -26,6 +31,7 @@ namespace ALC {
 	}
 
 	void Debugger::Log(const string& msg, const string& file, size_t line) {
+		cjs::mutex_guard mg(m);
 		// open file at the end
 		std::ofstream filestream;
 		filestream.open(GetLogPath(), std::ios::app);
@@ -41,6 +47,7 @@ namespace ALC {
 	}
 
 	void Debugger::Trace(const string& msg, const string& file, size_t line) {
+		cjs::mutex_guard mg(m);
 		// open file at the end
 		std::ofstream filestream;
 		filestream.open(GetLogPath(), std::ios::app);
@@ -56,6 +63,7 @@ namespace ALC {
 	}
 
 	void Debugger::Warning(const string& msg, const string& file, size_t line) {
+		cjs::mutex_guard mg(m);
 		// open file at the end
 		std::ofstream filestream;
 		filestream.open(GetLogPath(), std::ios::app);
@@ -71,6 +79,7 @@ namespace ALC {
 	}
 
 	void Debugger::Error(const string& msg, const string& file, size_t line) {
+		cjs::mutex_guard mg(m);
 		// open file at the end
 		std::ofstream filestream;
 		filestream.open(GetLogPath(), std::ios::app);
@@ -86,6 +95,7 @@ namespace ALC {
 	}
 
 	void Debugger::FatalError(const string& msg, const string& file, size_t line) {
+		cjs::mutex_guard mg(m);
 		// open file at the end
 		std::ofstream filestream;
 		filestream.open(GetLogPath(), std::ios::app);

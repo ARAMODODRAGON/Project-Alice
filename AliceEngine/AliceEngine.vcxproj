@@ -26,6 +26,7 @@
     <ClInclude Include="ALC\Bullets\BulletPhysicsHandler.hpp" />
     <ClInclude Include="ALC\Bullets\BulletSpawnerSystem.hpp" />
     <ClInclude Include="ALC\Bullets\ShooterBehavior.hpp" />
+    <ClInclude Include="ALC\Entities\JobSystem.hpp" />
     <ClInclude Include="ALC\Jobs.hpp" />
     <ClInclude Include="ALC\Content.hpp" />
     <ClInclude Include="ALC\Content\ContentManager.hpp" />
@@ -58,7 +59,6 @@
     <ClInclude Include="ALC\Jobs\cjs\worker_thread.hpp" />
     <ClInclude Include="ALC\Jobs\cjs\work_queue.hpp" />
     <ClInclude Include="ALC\Jobs\JobQueue.hpp" />
-    <ClInclude Include="ALC\Jobs\JobSystemSubmitter.hpp" />
     <ClInclude Include="ALC\Layermask.hpp" />
     <ClInclude Include="ALC\Physics\Collision2D.hpp" />
     <ClInclude Include="ALC\Physics\CollisionInfo.hpp" />
@@ -105,11 +105,11 @@
     <None Include="ALC\Bullets\detail\ShooterBehavior.inl" />
     <None Include="ALC\Entities\detail\EntityCreationHandler.inl" />
     <None Include="ALC\Entities\detail\Registry.inl" />
+    <None Include="ALC\Entities\JobSystem.inl" />
     <None Include="ALC\Jobs\cjs\common.inl" />
     <None Include="ALC\Jobs\cjs\fence.inl" />
     <None Include="ALC\Jobs\cjs\worker_thread.inl" />
     <None Include="ALC\Jobs\cjs\work_queue.inl" />
-    <None Include="ALC\Jobs\JobSystemSubmitter.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
