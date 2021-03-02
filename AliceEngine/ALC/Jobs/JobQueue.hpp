@@ -1,5 +1,5 @@
-#ifndef ALC_JOBS_JOBSYSTEM_HPP
-#define ALC_JOBS_JOBSYSTEM_HPP
+#ifndef ALC_JOBS_JOBQUEUE_HPP
+#define ALC_JOBS_JOBQUEUE_HPP
 #include "../General.hpp"
 #include "cjs\cjs.hpp"
 
@@ -10,8 +10,8 @@ namespace ALC {
 	using Fence = cjs::quick_fence;
 	using IFence = cjs::ifence;
 
-	class JobSystem final {
-		ALC_NON_CONSTRUCTABLE(JobSystem);
+	class JobQueue final {
+		ALC_NON_CONSTRUCTABLE(JobQueue);
 	public:
 
 		// submits a job to be worked on
@@ -30,4 +30,4 @@ namespace ALC {
 
 }
 
-#endif // !ALC_JOBS_JOBSYSTEM_HPP
+#endif // !ALC_JOBS_JOBQUEUE_HPP

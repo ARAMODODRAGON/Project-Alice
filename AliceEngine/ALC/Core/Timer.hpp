@@ -8,6 +8,7 @@ namespace ALC {
 
 	// wrapper around a delta value
 	struct Timestep final {
+		Timestep() : m_delta(0.0) { }
 		explicit Timestep(const double delta)
 			: m_delta(delta) { }
 

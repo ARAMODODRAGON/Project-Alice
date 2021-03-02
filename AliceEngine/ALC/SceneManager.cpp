@@ -21,7 +21,7 @@ namespace ALC {
 		}
 
 		// setup jobs
-		if (s_settings.jobsystem.enable) JobSystem::__Init(s_settings.jobsystem.threadcount);
+		if (s_settings.jobsystem.enable) JobQueue::__Init(s_settings.jobsystem.threadcount);
 
 		// setup variables
 		s_levelToLoad = -1;
@@ -88,7 +88,7 @@ namespace ALC {
 		}
 
 		// cleanup
-		if (s_settings.jobsystem.enable) JobSystem::__Exit();
+		if (s_settings.jobsystem.enable) JobQueue::__Exit();
 		FT_Done_FreeType(s_fontLib);
 		delete s_activeScene, s_activeScene = nullptr;
 	}

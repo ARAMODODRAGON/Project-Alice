@@ -174,7 +174,10 @@
     <ClInclude Include="ALC\Jobs\cjs\worker_thread.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ALC\Jobs\JobSystem.hpp">
+    <ClInclude Include="ALC\Jobs\JobQueue.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ALC\Jobs\JobSystemSubmitter.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -248,7 +251,7 @@
     <ClCompile Include="ALC\2D\Tilemap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ALC\Jobs\JobSystem.cpp">
+    <ClCompile Include="ALC\Jobs\JobQueue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -272,6 +275,9 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="ALC\Jobs\cjs\worker_thread.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="ALC\Jobs\JobSystemSubmitter.inl">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

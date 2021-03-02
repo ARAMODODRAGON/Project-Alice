@@ -40,6 +40,8 @@ int main(int argc, char* agrv[]) {
 	};
 	settings.scenes.startScene = 0;
 
+	settings.jobsystem.enable = true;
+
 	ALC::SceneManager::Start<AliceGame>(settings);
 
 	return 0;
