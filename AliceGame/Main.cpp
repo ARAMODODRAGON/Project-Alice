@@ -28,13 +28,19 @@ int main(int argc, char* agrv[]) {
 		
 	}
 
-	const ALC::vector<ALC::SceneBinding> SceneIndex = {
+	ALC::EngineSettings settings;
+
+	settings.window.title = "Project Alice";
+	settings.window.size = ALC::uvec2(1280, 720);
+
+	settings.scenes.bindings = {
 		ALC_BIND_SCENE(MainMenuScene),
 		ALC_BIND_SCENE(Battle1),
 		ALC_BIND_SCENE(Battle2)
 	};
+	settings.scenes.startScene = 0;
 
-	ALC::SceneManager::Start<AliceGame>("Project Alice", ALC::uvec2(1280, 720), SceneIndex);
+	ALC::SceneManager::Start<AliceGame>(settings);
 
 	return 0;
 }

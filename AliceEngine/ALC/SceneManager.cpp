@@ -1,8 +1,10 @@
 #include "SceneManager.hpp"
 #include "Input\detail\SystemEvents.hpp"
+#include "Jobs.hpp"
 
 namespace ALC {
 
+	EngineSettings SceneManager::s_settings;
 	uint32 SceneManager::s_levelToLoad = -1;
 	IScene* SceneManager::s_activeScene = nullptr;
 	uint32 SceneManager::s_currentSceneIndex = -1;
@@ -12,11 +14,14 @@ namespace ALC {
 	bool SceneManager::s_isRunning = false;
 	bool SceneManager::s_shouldQuit = false;
 
-	void SceneManager::StartGame(Game* game_, const std::vector<SceneBinding> bindings) {
-		if (bindings.size() == 0) {
+	void SceneManager::StartGame(Game* game_) {
+		if (s_settings.scenes.bindings.size() == 0) {
 			ALC_DEBUG_FATAL_ERROR("No scenes were bound");
 			return;
 		}
+
+		// setup jobs
+		if (s_settings.jobsystem.enable) JobSystem::__Init(s_settings.jobsystem.threadcount);
 
 		// setup variables
 		s_levelToLoad = -1;
@@ -24,8 +29,8 @@ namespace ALC {
 		s_shouldQuit = false;
 		Timer timer;
 		s_activeGame->__Initialize(s_window, &timer);
-		s_currentSceneIndex = 0;
-		s_activeScene = bindings[0]();
+		s_currentSceneIndex = s_settings.scenes.startScene;
+		s_activeScene = s_settings.scenes.bindings[s_currentSceneIndex]();
 		if (FT_Init_FreeType(&s_fontLib)) {
 			ALC_DEBUG_ERROR("Font library did not initialized.");
 			return;
@@ -47,11 +52,11 @@ namespace ALC {
 			timer.BeginFrame();
 
 			if (s_levelToLoad != -1) {
-				if (s_levelToLoad < bindings.size()) {
+				if (s_levelToLoad < s_settings.scenes.bindings.size()) {
 					s_activeScene->Exit();
 					delete s_activeScene;
 					s_currentSceneIndex = s_levelToLoad;
-					s_activeScene = bindings[s_levelToLoad]();
+					s_activeScene = s_settings.scenes.bindings[s_levelToLoad]();
 					s_activeScene->Init();
 				}
 				s_levelToLoad = -1;
@@ -83,6 +88,7 @@ namespace ALC {
 		}
 
 		// cleanup
+		if (s_settings.jobsystem.enable) JobSystem::__Exit();
 		FT_Done_FreeType(s_fontLib);
 		delete s_activeScene, s_activeScene = nullptr;
 	}

@@ -26,6 +26,7 @@
     <ClInclude Include="ALC\Bullets\BulletPhysicsHandler.hpp" />
     <ClInclude Include="ALC\Bullets\BulletSpawnerSystem.hpp" />
     <ClInclude Include="ALC\Bullets\ShooterBehavior.hpp" />
+    <ClInclude Include="ALC\Jobs.hpp" />
     <ClInclude Include="ALC\Content.hpp" />
     <ClInclude Include="ALC\Content\ContentManager.hpp" />
     <ClInclude Include="ALC\Content\detail\stb_image.h" />
@@ -48,6 +49,15 @@
     <ClInclude Include="ALC\Input\Keyboard.hpp" />
     <ClInclude Include="ALC\Input\Mouse.hpp" />
     <ClInclude Include="ALC\Input\detail\SystemEvents.hpp" />
+    <ClInclude Include="ALC\Jobs\cjs\cjs.hpp" />
+    <ClInclude Include="ALC\Jobs\cjs\common.hpp" />
+    <ClInclude Include="ALC\Jobs\cjs\detail\work.hpp" />
+    <ClInclude Include="ALC\Jobs\cjs\fence.hpp" />
+    <ClInclude Include="ALC\Jobs\cjs\ijob.hpp" />
+    <ClInclude Include="ALC\Jobs\cjs\iqueue.hpp" />
+    <ClInclude Include="ALC\Jobs\cjs\worker_thread.hpp" />
+    <ClInclude Include="ALC\Jobs\cjs\work_queue.hpp" />
+    <ClInclude Include="ALC\Jobs\JobSystem.hpp" />
     <ClInclude Include="ALC\Layermask.hpp" />
     <ClInclude Include="ALC\Physics\Collision2D.hpp" />
     <ClInclude Include="ALC\Physics\CollisionInfo.hpp" />
@@ -80,6 +90,7 @@
     <ClCompile Include="ALC\Input\Keyboard.cpp" />
     <ClCompile Include="ALC\Input\Mouse.cpp" />
     <ClCompile Include="ALC\Input\detail\SystemEvents.cpp" />
+    <ClCompile Include="ALC\Jobs\JobSystem.cpp" />
     <ClCompile Include="ALC\Physics\Collision2D.cpp" />
     <ClCompile Include="ALC\Physics\Physics2DHandler.cpp" />
     <ClCompile Include="ALC\Rendering\Camera.cpp" />
@@ -93,6 +104,10 @@
     <None Include="ALC\Bullets\detail\ShooterBehavior.inl" />
     <None Include="ALC\Entities\detail\EntityCreationHandler.inl" />
     <None Include="ALC\Entities\detail\Registry.inl" />
+    <None Include="ALC\Jobs\cjs\common.inl" />
+    <None Include="ALC\Jobs\cjs\fence.inl" />
+    <None Include="ALC\Jobs\cjs\worker_thread.inl" />
+    <None Include="ALC\Jobs\cjs\work_queue.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

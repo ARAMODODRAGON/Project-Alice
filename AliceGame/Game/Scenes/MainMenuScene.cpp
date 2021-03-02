@@ -244,7 +244,7 @@ void MainMenuScene::_ContinueOpt() { }
 
 void MainMenuScene::_NewGameOpt() {
 	SaveSystem::ResetSave();
-	ALC::SceneManager::LoadLevel(1); // load the first battle
+	ALC::SceneManager::LoadScene(1); // load the first battle
 }
 
 void MainMenuScene::_RewardsOpt() { }

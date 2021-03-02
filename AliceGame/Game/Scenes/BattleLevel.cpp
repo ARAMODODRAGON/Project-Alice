@@ -456,7 +456,7 @@ void BattleLevel::Step(ALC::Timestep ts) {
 		// reset scene
 		if (ALC::NearlyZero(m_fadeTransition, ts)) {
 			// TODO: built in reset functionality
-			ALC::SceneManager::LoadLevel(ALC::SceneManager::GetActiveSceneBuildIndex()); // reset scene
+			ALC::SceneManager::LoadScene(ALC::SceneManager::GetActiveSceneBindingIndex()); // reset scene
 		}
 	}
 	if (m_character->IsDead() != m_playerWasDead) {

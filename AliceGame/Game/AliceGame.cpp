@@ -14,7 +14,7 @@ void AliceGame::Step(ALC::Timestep t) {
 	auto R = ALC::Keyboard::GetKey(ALC::KeyCode::KeyR);
 
 	if (lc.IsHeld() && R.Pressed() || lc.Pressed() && R.IsHeld()) {
-		ALC::SceneManager::LoadLevel(ALC::SceneManager::GetActiveSceneBuildIndex());
+		ALC::SceneManager::LoadScene(ALC::SceneManager::GetActiveSceneBindingIndex());
 	}
 }
 
