@@ -75,9 +75,9 @@ void AliceChara::Start(ALC::Entity self) {
 		spr.layer = SPRL::PLAYER_COLLIDER;
 
 		if (i == 0) {
-			spr.textureBounds = ALC::rect(ALC::vec2(16.0f, 32.0f), ALC::vec2(32.0f, 48.0f));
+			spr.textureBounds = ALC::rect(16.0f, 32.0f, 32.0f, 48.0f);
 		} else {
-			spr.textureBounds = ALC::rect(ALC::vec2(0.0f, 48.0f), ALC::vec2(15.0f, 63.0f));
+			spr.textureBounds = ALC::rect(0.0f, 48.0f, 16.0f, 64.0f);
 		}
 		spr.bounds = spr.textureBounds.Centered();
 
@@ -458,7 +458,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 	// dont do anything if not shooting
 	if (!GetShootButton()) return;
 
-	float slowmult = (GetSlowButton() ? 1.13f : 1.0f);
+	float slowmult = (GetSlowButton() ? 1.7f : 1.0f);
 	auto& tr = self.GetComponent<ALC::Transform2D>();
 
 	// basic shooting

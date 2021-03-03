@@ -136,7 +136,7 @@ void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 	float fireRate = 0.3f;
 	auto* playerb = BattleManager::GetCurrentCharacter();
 	auto& playerTransform = playerb->GetEntity().GetComponent<ALC::Transform2D>();
-	playerb->SetHealth(100000000000.0f);
+	//playerb->SetHealth(100000000000.0f);
 
 	if (GetHealth() <= GetMaxHealth() / 2) {
 		numOfBullets = 20;
