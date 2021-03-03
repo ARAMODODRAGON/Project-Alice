@@ -122,6 +122,12 @@ void AliceChara::Start(ALC::Entity self) {
 
 void AliceChara::Update(ALC::Entity self, ALC::Timestep ts) {
 
+	auto Ctrl = ALC::Keyboard::GetKey(ALC::KeyCode::LeftCtrl);
+	auto KeyI = ALC::Keyboard::GetKey(ALC::KeyCode::KeyI);
+	if (Ctrl && KeyI.Pressed() || Ctrl.Pressed() && KeyI) {
+		SetInvuln(100000.0f);
+	}
+
 	if (ALC::Keyboard::GetKey(ALC::KeyCode::KeyF).Pressed())
 		TakeDamage();
 
