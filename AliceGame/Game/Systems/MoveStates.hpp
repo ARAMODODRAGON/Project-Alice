@@ -23,6 +23,7 @@ public:
 	MoveStates() : prevState(States::None), curntState(States::None), timer(NULL), e_acceleration(0.0f), e_speed(0.0f), isComplete(false) { }
 
 	bool GetIsComplete() { return isComplete; }
+	void SetIsComplete(bool isComplete_) { isComplete = isComplete_; }
 
 	void PerformMoveState(Enemy* enemy, States moveState, ALC::uint8 *_curntState, ALC::Timestep ts, 
 		                  float moveTime = NULL, ALC::uint8 nextState = 0,ALC::vec2 dest = ALC::vec2(0,0));
