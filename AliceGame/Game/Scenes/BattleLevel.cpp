@@ -32,9 +32,9 @@ BattleLevel::BattleLevel()
 	, m_pauseMaxTransitionTime(0.3f)
 	, m_reloadDelay(0.1f)
 	, m_showDialogue(false)
-	, m_dialogueTransition(0.0f) 
+	, m_dialogueTransition(0.0f)
 	, m_dialogueMaxTransitionTime(0.5f)
-	, m_curCharacter(0) 
+	, m_curCharacter(0)
 	, m_dialogueSpeed(2.5f) {
 	m_ui.SetInternalScreenSize(BattleManager::PrefferedResolution());
 }
@@ -206,8 +206,7 @@ void BattleLevel::Draw() {
 		uint32_t health = (uint32_t)glm::ceil(BattleManager::GetCurrentCharacter()->GetHealth());
 		uint32_t maxHealth = (uint32_t)glm::ceil(BattleManager::GetCurrentCharacter()->GetMaxHealth());
 		for (uint32_t i = 0; i < maxHealth; i++) {
-			if (health > i) { m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIElements); } 
-			else { m_ui.DrawQuad(pos, ALC_COLOR_BLACK, target, m_UIElements); }
+			if (health > i) { m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIElements); } else { m_ui.DrawQuad(pos, ALC_COLOR_BLACK, target, m_UIElements); }
 			pos.min.x += 45.0f;
 			pos.max.x += 45.0f;
 		}
@@ -223,7 +222,7 @@ void BattleLevel::Draw() {
 		// Displaying the player's currently equipped defence spell
 		pos.min.x += 131.0f;
 		pos.max.x += 131.0f;
-		
+
 		target = BattleManager::GetCurrentCharacter()->GetDefenceTargetRect();
 		ALC::rect cooldown = BattleManager::GetCurrentCharacter()->GetDefenceTargetRectCooldown();
 		if (cooldown.max.y > 0.0f) { // Darken the image to show the cooldown timer
@@ -345,19 +344,19 @@ void BattleLevel::Draw() {
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-			
+
 		}
 	}
 
 	// draw debug stuff like fps
 	if (m_debug) {
 		m_ui.DrawText("Current FPS:\nDelta Time:\nTimescale:\n\nTotal Entities:\nEnemy Health:", m_debugFont, ALC::vec2(0.0f, 0.0f));
-		m_ui.DrawText(VTOS(static_cast<int>(m_lastFPS)) 
-			+ "\n" + VTOS(m_delta)
-			+ "\n" + VTOS(m_timescale)
-			+ "\n\n" + VTOS(GetReg().__GetReg().size<ALC::EntityInfo>())
-			+ "\n" + VTOS((int)BattleManager::GetEnemy()->GetHealth()) + " / " + VTOS((int)BattleManager::GetEnemy()->GetMaxHealth()), 
-			m_debugFont, ALC::vec2(240.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), ALC::HAlign::Right);
+		m_ui.DrawText(VTOS(static_cast<int>(m_lastFPS))
+					  + "\n" + VTOS(m_delta)
+					  + "\n" + VTOS(m_timescale)
+					  + "\n\n" + VTOS(GetReg().__GetReg().size<ALC::EntityInfo>())
+					  + "\n" + VTOS((int)BattleManager::GetEnemy()->GetHealth()) + " / " + VTOS((int)BattleManager::GetEnemy()->GetMaxHealth()),
+					  m_debugFont, ALC::vec2(240.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), ALC::HAlign::Right);
 
 		/*ALC::rect r;
 		r.min = ALC::vec2(0.0f, 204.0f);
@@ -434,7 +433,9 @@ void BattleLevel::Step(ALC::Timestep ts) {
 			}
 		}
 
-		if (Keyboard::GetKey(KeyCode::KeyC).Pressed()) {
+		if (Keyboard::GetKey(KeyCode::KeyX).Released() || Keyboard::GetKey(KeyCode::KeyZ).Released()) {
+			OnContinue();
+		} else if (Keyboard::GetKey(KeyCode::KeyC).Released()) {
 			auto func = m_pauseSelection[m_pauseSelected].func;
 			(this->*func)();
 		}
@@ -481,8 +482,7 @@ void BattleLevel::Step(ALC::Timestep ts) {
 
 		// TODO -- Add check for size of string so the cur character doesn't exceed that value, which will probably cause an error
 		m_curCharacter += m_dialogueSpeed * ts;
-	}
-	else { // Closing transition
+	} else { // Closing transition
 		m_dialogueTransition -= ts;
 		if (m_dialogueTransition < 0.0f) {
 			m_dialogueTransition = 0.0f;
@@ -525,5 +525,5 @@ void BattleLevel::OnContinue() {
 
 void BattleLevel::OnRestart() {
 	OnContinue();
-	m_character->TakeDamage(1000.0f);
+	m_character->Kill();
 }
