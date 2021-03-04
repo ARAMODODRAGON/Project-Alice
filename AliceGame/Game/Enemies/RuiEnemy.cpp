@@ -126,7 +126,6 @@ void RuiEnemy::Phase0Begin(const Phase lastphase, ALC::Entity self, ALC::Timeste
 	m_state = State::RainBullets; 
 
 }
-
 void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {	  
 
 	auto [transform, cbody] = self.GetComponent<ALC::Transform2D, ALC::CharacterBody>();
@@ -136,7 +135,7 @@ void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 	float fireRate = 0.3f;
 	auto* playerb = BattleManager::GetCurrentCharacter();
 	auto& playerTransform = playerb->GetEntity().GetComponent<ALC::Transform2D>();
-	playerb->SetHealth(100000000000.0f);
+	//playerb->SetHealth(100000000000.0f);
 
 	if (GetHealth() <= GetMaxHealth() / 2) {
 		numOfBullets = 20;
@@ -430,7 +429,7 @@ void RuiEnemy::Phase1Step(ALC::Entity self, ALC::Timestep ts) {
 
 void RuiEnemy::Phase2Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
 
-	ResetHealth(10.0f);
+	ResetHealth(1000.0f);
 	SetLifetime(45.0f);
 
 	if (m_state != State::None) {
@@ -531,7 +530,7 @@ void RuiEnemy::Phase2Step(ALC::Entity self, ALC::Timestep ts) {
 }
 
 void RuiEnemy::Phase3Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
-	ResetHealth(1000.0f);
+	ResetHealth(1500.0f);
 	SetLifetime(5000000.0f);
 
 	if (m_state != State::None) {
