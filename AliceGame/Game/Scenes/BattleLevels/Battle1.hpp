@@ -7,7 +7,6 @@
 #include "../../Systems/Bullet Types/HomingBulletSystem.hpp"
 #include "../../Systems/GravityBulletSystem.hpp"
 #include "../../Systems/CircleBombSystem.hpp"
-#include "../../Systems/ZigZagBulletSystem.hpp"
 
 class Battle1 final : public BattleLevel {
 public:
@@ -30,7 +29,6 @@ private:
 	HomingBulletSystem m_homingsystem;
 	GravityBulletSystem m_gravitySystem;
 	CircleBombSystem m_cirlceBombSystem;
-	ZigZagBulletSystem m_ZzBulletSystem;
 
 	float m_timer;
 	ALC::Texture m_background;

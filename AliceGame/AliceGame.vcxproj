@@ -173,7 +173,6 @@
     <ClCompile Include="Game\Systems\GravityBulletSystem.cpp" />
     <ClCompile Include="Game\Systems\MoveStates.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Game\Systems\ZigZagBulletSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AliceEngine\AliceEngine.vcxproj">
@@ -202,7 +201,6 @@
     <ClInclude Include="Game\Systems\BulletDeleterSystem.hpp" />
     <ClInclude Include="Game\Systems\GravityBulletSystem.hpp" />
     <ClInclude Include="Game\Systems\MoveStates.hpp" />
-    <ClInclude Include="Game\Systems\ZigZagBulletSystem.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Dialogues\TestDialogue.json" />

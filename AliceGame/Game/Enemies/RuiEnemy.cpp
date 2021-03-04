@@ -2,7 +2,6 @@
 #include "../Systems/BulletDeleterSystem.hpp"
 #include "../Systems/GravityBulletSystem.hpp"
 #include "../Systems/CircleBombSystem.hpp"
-#include "../Systems/ZigZagBulletSystem.hpp"
 #include"../Systems/Bullet Types/HomingBulletSystem.hpp"
 #include "../BTA.hpp"
 #include "../Characters/Character.hpp"
@@ -98,16 +97,15 @@ void RuiEnemy::OnDeath(ALC::Entity self) {
 
 void RuiEnemy::BattleBegin() {
 	// we start by changing phases
-	m_phases.ChangeState(Phase::Phase2);
+	m_phases.ChangeState(Phase::Phase4);
 }
 
 void RuiEnemy::PreBattleBegin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) { }
 void RuiEnemy::PreBattleStep(ALC::Entity self, ALC::Timestep ts) { }
 
 void RuiEnemy::Phase0Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
-	ALC_DEBUG_LOG("Phase0Begin");
 	ResetHealth(200.0f);
-	SetLifetime(5000000.0f);
+	SetLifetime(90.0f);
 	m_timer = 0.0f;
 	if (m_state != State::None) {
 		m_prevState = m_state;
@@ -268,9 +266,8 @@ void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 }
 
 void RuiEnemy::Phase1Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
-	ALC_DEBUG_LOG("Phase1Begin");
 	ResetHealth(500.0f);
-	SetLifetime(500000.0f);
+	SetLifetime(90.0f);
 	m_timer = 0.0f;
 	if (m_state != State::None) {
 		m_prevState = m_state;
@@ -301,7 +298,7 @@ void RuiEnemy::Phase1Step(ALC::Entity self, ALC::Timestep ts) {
 		stateTimer += ts.Get();
 
 		if (GetHealth() <= (GetMaxHealth() / 2.0f)) {
-			numOfBuillets = 60;
+			numOfBuillets = 50;
 		}
 
 		for (int i = 1; i < numOfBuillets; ++i) {
@@ -438,10 +435,9 @@ void RuiEnemy::Phase1Step(ALC::Entity self, ALC::Timestep ts) {
 }
 
 void RuiEnemy::Phase2Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
-	ALC_DEBUG_LOG("Phase2Begin");
 
 	ResetHealth(1000.0f);
-	SetLifetime(45000.0f);
+	SetLifetime(90.0f);
 
 	if (m_state != State::None) {
 		m_prevState = m_state;
@@ -464,8 +460,8 @@ void RuiEnemy::Phase2Step(ALC::Entity self, ALC::Timestep ts) {
 
 	if (m_state == State::CircleBombs) {
 		oldPos = transform.position;
-		ShooterBehavior::SetDefaultPosition(transform.position);
 
+		ShooterBehavior::SetDefaultPosition(transform.position);
 		ShooterBehavior::SetDefaultVelocity(dir[0] * 300.0f);
 
 		ShooterBehavior::ShootCircle(self, 30, [tex](ALC::Entity bullet) {
@@ -491,7 +487,8 @@ void RuiEnemy::Phase2Step(ALC::Entity self, ALC::Timestep ts) {
 		float fireRate = 1.f;
 		int numOfBullets = 20;
 
-		if (GetHealth() < (GetMaxHealth() / 2)) { fireRate = 0.4f; numOfBullets = 65; }
+		
+		if (GetHealth() < (GetMaxHealth() / 2)) { fireRate = 0.7f; numOfBullets = 30; }
 
 		if (!moveStates.empty()) {
 
@@ -502,6 +499,7 @@ void RuiEnemy::Phase2Step(ALC::Entity self, ALC::Timestep ts) {
 
 			if (m_timer <= ts.Get()) {
 				ShooterBehavior::SetDefaultPosition(oldPos);
+				ShooterBehavior::SetDefaultVelocity(dir[0] * 300.0f);
 				ShooterBehavior::ShootCircle(self, numOfBullets, [tex](ALC::Entity bullet) {
 					// update body collision
 					auto& body = bullet.GetComponent<ALC::BulletBody>();
@@ -545,12 +543,13 @@ void RuiEnemy::Phase2Step(ALC::Entity self, ALC::Timestep ts) {
 			moveStates.push_back(MoveStates::States::Move);
 		}
 	}
+
+	
 }
 
 void RuiEnemy::Phase3Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
-	ALC_DEBUG_LOG("Phase3Begin");
 	ResetHealth(1500.0f);
-	SetLifetime(5000000.0f);
+	SetLifetime(90.0f);
 
 	if (m_state != State::None) {
 		m_prevState = m_state;
@@ -598,7 +597,7 @@ void RuiEnemy::Phase3Step(ALC::Entity self, ALC::Timestep ts) {
 			sprite.texture = tex;
 			sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
 			sprite.bounds = sprite.textureBounds.Centered();
-			}, ALC::BulletTypes<BulletDeleterComponent, ZigZagBullets>());
+			}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
 
 		ShooterBehavior::SetDefaultPosition(ALC::vec2(BattleManager::GetLevelBounds().left + 10.0f, BattleManager::GetLevelBounds().top));
 		ShooterBehavior::Shoot(self, 1, [tex](ALC::Entity bullet) {
@@ -610,7 +609,7 @@ void RuiEnemy::Phase3Step(ALC::Entity self, ALC::Timestep ts) {
 			sprite.texture = tex;
 			sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
 			sprite.bounds = sprite.textureBounds.Centered();
-			}, ALC::BulletTypes<BulletDeleterComponent, ZigZagBullets>());
+			}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
 
 		ShooterBehavior::SetDefaultPosition(ALC::vec2(BattleManager::GetLevelBounds().right - 10.0f, BattleManager::GetLevelBounds().top));
 		ShooterBehavior::Shoot(self, 1, [tex](ALC::Entity bullet) {
@@ -622,7 +621,7 @@ void RuiEnemy::Phase3Step(ALC::Entity self, ALC::Timestep ts) {
 			sprite.texture = tex;
 			sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
 			sprite.bounds = sprite.textureBounds.Centered();
-			}, ALC::BulletTypes<BulletDeleterComponent, ZigZagBullets>());
+			}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
 
 		ShooterBehavior::SetDefaultPosition(ALC::vec2(BattleManager::GetLevelBounds().left / 2.0f, BattleManager::GetLevelBounds().top));
 		ShooterBehavior::Shoot(self, 1, [tex](ALC::Entity bullet) {
@@ -634,7 +633,7 @@ void RuiEnemy::Phase3Step(ALC::Entity self, ALC::Timestep ts) {
 			sprite.texture = tex;
 			sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
 			sprite.bounds = sprite.textureBounds.Centered();
-			}, ALC::BulletTypes<BulletDeleterComponent, ZigZagBullets>());
+			}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
 
 		ShooterBehavior::SetDefaultPosition(ALC::vec2(BattleManager::GetLevelBounds().right / 2.0f, BattleManager::GetLevelBounds().top));
 		ShooterBehavior::Shoot(self, 1, [tex](ALC::Entity bullet) {
@@ -646,7 +645,7 @@ void RuiEnemy::Phase3Step(ALC::Entity self, ALC::Timestep ts) {
 			sprite.texture = tex;
 			sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
 			sprite.bounds = sprite.textureBounds.Centered();
-			}, ALC::BulletTypes<BulletDeleterComponent, ZigZagBullets>());
+			}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
 	}
 
 	ShooterBehavior::SetDefaultPosition(transform.position);
@@ -694,7 +693,6 @@ void RuiEnemy::Phase3Step(ALC::Entity self, ALC::Timestep ts) {
 }
 
 void RuiEnemy::Phase4Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
-	ALC_DEBUG_LOG("Phase4Begin");
 	ResetHealth(2500.0f);
 	SetLifetime(5000000.0f);
 
@@ -716,9 +714,9 @@ void RuiEnemy::Phase4Step(ALC::Entity self, ALC::Timestep ts) {
 	auto [transform, cbody] = self.GetComponent<ALC::Transform2D, ALC::CharacterBody>();
 	auto tex = m_bulletTexture;
 
-	float rndRange = rand() % 360 + 25;
-	float rndBulAmount = rand() % 5 + 1;
-	float rndVelScal = rand() % 200 + 100;  // a scalar for the velocity 
+	float rndRange = rand() % 360 + 35;
+	float rndBulAmount = rand() % 7 + 2;
+	float rndVelScal = rand() % 200 + 150;  // a scalar for the velocity 
 	int rndDir = rand() % 4;
 
 	//returns a random fire rate between 0.0 and 1.0 and then divides it by 2 
@@ -751,17 +749,22 @@ void RuiEnemy::Phase4Step(ALC::Entity self, ALC::Timestep ts) {
 		}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
 	}
 
-	ALC::uint8 tmpState = static_cast<ALC::uint8>(m_state);
-	m_moveState.PerformMoveState(this, moveStates[0], &tmpState, ts, 0.0f);
-
-	if (m_moveState.GetIsComplete()) { // when moving is complete  erease that moving state and go back to shooting state(just called state in ruiEnemy.cpp
-		moveStates.erase(moveStates.begin());
-		ResteTimer();
-	}
-
 	if (moveStates.empty()) {
-		ALC::uint8 rndPhase = rand() % 5;
-		m_phases.ChangeState(static_cast<Phase>(rndPhase));
+		ALC::uint8 tmpState = static_cast<ALC::uint8>(m_state);
+		m_moveState.PerformMoveState(this, moveStates[0], &tmpState, ts, 0.0f);
+
+		if (m_moveState.GetIsComplete()) { // when moving is complete  erease that moving state and go back to shooting state(just called state in ruiEnemy.cpp
+			moveStates.erase(moveStates.begin());
+			ResteTimer();
+		}
+	}
+	else {
+		moveStates.push_back(MoveStates::States::DownLeft);
+		moveStates.push_back(MoveStates::States::UpRight);
+		moveStates.push_back(MoveStates::States::Left);
+		moveStates.push_back(MoveStates::States::Right);
+		moveStates.push_back(MoveStates::States::DownRight);
+		moveStates.push_back(MoveStates::States::Move);
 	}
 
 	if (m_timer >= rndFireRate ) {
