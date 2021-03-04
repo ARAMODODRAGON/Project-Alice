@@ -105,6 +105,7 @@ void RuiEnemy::PreBattleBegin(const Phase lastphase, ALC::Entity self, ALC::Time
 void RuiEnemy::PreBattleStep(ALC::Entity self, ALC::Timestep ts) { }
 
 void RuiEnemy::Phase0Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
+	ALC_DEBUG_LOG("Phase0Begin");
 	ResetHealth(200.0f);
 	SetLifetime(5000000.0f);
 	m_timer = 0.0f;
@@ -265,6 +266,7 @@ void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 }
 
 void RuiEnemy::Phase1Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
+	ALC_DEBUG_LOG("Phase1Begin");
 	ResetHealth(500.0f);
 	SetLifetime(500000.0f);
 	m_timer = 0.0f;
@@ -437,6 +439,7 @@ void RuiEnemy::Phase1Step(ALC::Entity self, ALC::Timestep ts) {
 }
 
 void RuiEnemy::Phase2Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
+	ALC_DEBUG_LOG("Phase2Begin");
 
 	ResetHealth(1000.0f);
 	SetLifetime(45000.0f);
@@ -546,6 +549,7 @@ void RuiEnemy::Phase2Step(ALC::Entity self, ALC::Timestep ts) {
 }
 
 void RuiEnemy::Phase3Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
+	ALC_DEBUG_LOG("Phase3Begin");
 	ResetHealth(1500.0f);
 	SetLifetime(5000000.0f);
 
@@ -691,6 +695,7 @@ void RuiEnemy::Phase3Step(ALC::Entity self, ALC::Timestep ts) {
 }
 
 void RuiEnemy::Phase4Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
+	ALC_DEBUG_LOG("Phase4Begin");
 	ResetHealth(2500.0f);
 	SetLifetime(5000000.0f);
 

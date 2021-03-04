@@ -88,14 +88,16 @@ namespace ALC {
 	}
 
 	Font ContentManager::LoadFont(ContentStorage& storage, const string& path, const uint32 size, const uint32 vSpacing) {
+		string code = path + "{Size:" + VTOS(size) + "}";
+
 		// check if it already exists
-		auto it = storage.m_fonts.find(path);
+		auto it = storage.m_fonts.find(code);
 		if (it != storage.m_fonts.end())
 			return it->second;
 
 		// load the shader and add it to the map
 		Font font = Font::Load(path, size, vSpacing);
-		if (font) storage.m_fonts.emplace(path, font);
+		if (font) storage.m_fonts.emplace(code, font);
 
 		// return the newly loaded shader
 		return font;

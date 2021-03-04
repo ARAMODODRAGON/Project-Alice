@@ -112,6 +112,8 @@ private:
 	ALC::uint32 m_curCharacter;
 	float m_dialogueSpeed;
 
+	ALC::Font m_lifetimeFont;
+
 	// TESTING
 	ALC::string multiLineText;
 	ALC::vec2 stringDimensions;
