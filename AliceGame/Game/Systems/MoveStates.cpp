@@ -24,9 +24,9 @@ void MoveStates::PerformMoveState(Enemy* enemy,States moveState, ALC::uint8 *_cu
 		timer += ts.Get();
 	}
 
-	float right = (lvlBounds.right - 20);
-	float left = (lvlBounds.left + 20);
-	float up = (lvlBounds.top - 41);
+	float right = (lvlBounds.right - 60);
+	float left = (lvlBounds.left + 60);
+	float up = (lvlBounds.top - 61);
 	float down = (lvlBounds.top / 4);
 	isComplete = false;
 	auto result = BTA::Result::Error;
