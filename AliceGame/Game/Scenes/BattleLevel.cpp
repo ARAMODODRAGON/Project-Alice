@@ -86,6 +86,7 @@ void BattleLevel::Init() {
 	ALC::vec2 screenCenter = BattleManager::PrefferedResolution() / 2.0f;
 
 	auto PauseFont = CM::LoadFont(CM::Default(), "Resources/Fonts/Roboto-BoldItalic.ttf", 50);
+	m_lifetimeFont = CM::LoadFont(CM::Default(), "Resources/Fonts/Roboto-BoldItalic.ttf", 20);
 	auto SelectionFont = CM::LoadFont(CM::Default(), "Resources/Fonts/Roboto-Medium.ttf", 20);
 
 	m_itemPaused.text = "Paused";
@@ -194,6 +195,7 @@ void BattleLevel::Draw() {
 	}
 
 	// Drawing the player's current HP in hearts, their current spells, and the position of the enemy on the x-axis
+	// also the enemy health bar and timer
 	if (m_UIElements) {
 		ALC::rect pos(0.0f);
 		pos.min = ALC::vec2(980.0f, 125.0f);
@@ -232,6 +234,26 @@ void BattleLevel::Draw() {
 		} else { // Display the image as normal
 			m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIElements);
 		}
+
+		// draw the enemy health and timer
+		constexpr float healthbarmargin = 10.0f;
+		constexpr float healthbarthickness = 10.0f;
+		const static ALC::vec4 healthbarcolor(1.0f, 1.0f, 1.0f, 0.7f);
+
+		const ALC::rect levelbounds = GetScreenLevelBounds();
+		const float healthpercent = BattleManager::GetEnemy()->GetHealth() / BattleManager::GetEnemy()->GetMaxHealth();
+
+		pos = ALC::rect(levelbounds.left, levelbounds.bottom, levelbounds.right, levelbounds.bottom + healthbarthickness);
+		pos.left = levelbounds.left + healthbarmargin;
+		pos.right = ((levelbounds.right - healthbarmargin) - pos.left) * healthpercent + pos.left;
+		pos.top = levelbounds.bottom + healthbarmargin + healthbarthickness;
+		pos.bottom = levelbounds.bottom + healthbarmargin;
+		m_ui.DrawQuad(pos, healthbarcolor);
+
+		ALC::vec2 lifetimepos = m_ui.GetInternalScreenSize() * 0.5f;
+		lifetimepos.y = levelbounds.bottom + healthbarmargin + healthbarthickness;
+		const ALC::uint32 lifetime = static_cast<ALC::uint32>(glm::max(ceilf(BattleManager::GetEnemy()->GetLifetime()), 0.0f));
+		m_ui.DrawText(VTOS(lifetime), m_lifetimeFont, lifetimepos, healthbarcolor, ALC::HAlign::Center);
 
 		// Finally, display the tracker at the bottom of the screen to show the enemy's horizontal position on the screen
 		ALC::Transform2D& enemyTransform = BattleManager::GetEnemy()->GetEntity().GetComponent<ALC::Transform2D>();
