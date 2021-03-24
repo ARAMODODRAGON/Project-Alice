@@ -92,7 +92,7 @@ namespace ALC {
 	private:
 		uint32 m_textureID;
 		uvec2 m_textureSize;
-		Ref<unordered_map<char, Character>> m_characters;
+		Ref<unordered_map<char, Character>> m_coljobs;
 		uint32 m_fontSize;
 		uint32 m_verticalSpacing;
 

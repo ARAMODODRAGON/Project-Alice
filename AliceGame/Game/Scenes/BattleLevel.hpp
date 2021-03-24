@@ -2,11 +2,13 @@
 #define ALICE_SCENES_BATTLELEVEL_HPP
 #include <ALC\SceneManager.hpp>
 #include <ALC\Entities.hpp>
-#include <ALC\Bullets.hpp>
+#include "..\Bullets.hpp"
+#include "..\Bullets\BulletPhysicsSystem.hpp"
 #include <ALC\Rendering.hpp>
 #include <ALC\Input.hpp>
 #include "../BattleManager.hpp"
 #include "../DialogueHandler.hpp"
+#include "../JobsECSAdapter.hpp"
 
 class BattleLevel : public ALC::IScene {
 public:
@@ -36,6 +38,8 @@ public:
 
 	Character* GetCharacter() const { return m_character; }
 
+	JobsECSAdapter& GetJobs() { return m_jobsadp; }
+
 protected:
 
 	virtual void DrawBackground(ALC::UIBatch& ui) = 0;
@@ -57,7 +61,8 @@ private:
 	ALC::SpriteBatch m_batch;
 	ALC::UIBatch m_ui;
 	ALC::Camera m_camera;
-	ALC::BulletPhysicsHandler m_bPhysics;
+	BulletPhysicsSystem m_bPhysics;
+	JobsECSAdapter m_jobsadp;
 	Character* m_character;
 	float m_timescale;
 

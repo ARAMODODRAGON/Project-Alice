@@ -27,7 +27,7 @@ void Enemy::TakeDamage(ALC::Entity self, const float damage) {
 
 
 void Enemy::UpdateCollisions(ALC::Entity self, ALC::Timestep ts) {
-	auto& cb = self.GetComponent<ALC::CharacterBody>();
+	auto& cb = self.GetComponent<CharacterBody>();
 
 	// take damage for each collision
 	for (auto& cinfo : cb) {
@@ -50,7 +50,7 @@ void Enemy::UpdateLifetime(ALC::Entity self, ALC::Timestep ts, const float scala
 }
 
 void Enemy::UpdateMovement(ALC::Entity self, ALC::Timestep ts, const ALC::vec2& velocity) {
-	auto& body = self.GetComponent<ALC::CharacterBody>();
+	auto& body = self.GetComponent<CharacterBody>();
 	auto& tr = self.GetComponent<ALC::Transform2D>();
 
 	// update velocity
@@ -85,12 +85,12 @@ void Enemy::Start(ALC::Entity self) {
 	using CM = ALC::ContentManager;
 
 	// add the required components
-	if (!self.HasComponent<ALC::CharacterBody>())	self.AddComponent<ALC::CharacterBody>();
+	if (!self.HasComponent<CharacterBody>())	self.AddComponent<CharacterBody>();
 	if (!self.HasComponent<ALC::Transform2D>())		self.AddComponent<ALC::Transform2D>();
 	if (!self.HasComponent<ALC::SpriteComponent>())	self.AddComponent<ALC::SpriteComponent>();
 
 	// initalize components
-	auto [cb, tr, spr] = self.GetComponent<ALC::CharacterBody, ALC::Transform2D, ALC::SpriteComponent>();
+	auto [cb, tr, spr] = self.GetComponent<CharacterBody, ALC::Transform2D, ALC::SpriteComponent>();
 
 	cb.radius = 20.0f;
 	cb.mask = BTL_ENEMYMASK;

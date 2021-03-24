@@ -9,7 +9,7 @@ GravityBulletSystem::~GravityBulletSystem()
 }
 
 
-void GravityBulletSystem::Step(ALC::Timestep ts, ALC::Entity e, ALC::BulletBody& bb, GravityBullet& grav)
+void GravityBulletSystem::Step(ALC::Timestep ts, ALC::Entity e, BulletBody& bb, GravityBullet& grav)
 {
 	grav.timeToFall += ts.Get();
 

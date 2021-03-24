@@ -7,7 +7,7 @@ namespace ALC {
 
 	// cleans up the usage of ijob and quick_fence to be included under the ALC namespace
 	using IJob = cjs::ijob;
-	using Fence = cjs::quick_fence;
+	using Fence = cjs::fence;
 	using IFence = cjs::ifence;
 
 	class JobQueue final {
@@ -22,6 +22,12 @@ namespace ALC {
 
 		// submits a fence to block the threads
 		static void Submit(IFence* fence);
+
+		// returns the number of active workers
+		static uint32 GetWorkerCount();
+
+		// awaits all jobs to be finished
+		static void AwaitJobs();
 
 	public:
 		static void __Init(uint32 threadcount);

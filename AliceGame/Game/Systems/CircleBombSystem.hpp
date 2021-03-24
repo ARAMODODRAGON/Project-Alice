@@ -2,7 +2,7 @@
 #define CIRCLE_BOMB_SYSTEM_HPP
 #include <ALC\Entities\Registry.hpp>
 #include <ALC\Entities\EntityCreationHandler.hpp>
-#include <ALC\Bullets\BulletPhysics.hpp>
+#include "..\Bullets\BulletPhysics.hpp"
 #include <ALC\Rendering\SpriteBatch.hpp>
 
 struct CircleBomb {
@@ -14,12 +14,12 @@ struct CircleBomb {
     float timeToStopFollow = 1.0f;
 };
 
-struct CircleBombSystem final : public ALC::ISystem<ALC::BulletBody, CircleBomb> {
+struct CircleBombSystem final : public ALC::ISystem<BulletBody, CircleBomb> {
 
     CircleBombSystem();
     ~CircleBombSystem();
 
-    void Step(ALC::Timestep ts, ALC::Entity e, ALC::BulletBody& bb, CircleBomb& cirBmb) override;
+    void Step(ALC::Timestep ts, ALC::Entity e, BulletBody& bb, CircleBomb& cirBmb) override;
     
 
 private:

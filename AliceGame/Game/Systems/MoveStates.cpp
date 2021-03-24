@@ -1,6 +1,6 @@
 #include "MoveStates.hpp"
 #include <ALC/Physics/Transform2D.hpp>
-#include <ALC/Bullets/BulletPhysics.hpp>
+#include "../Bullets.hpp"
 
 #include "../BattleManager.hpp"
 #include "../Enemies/Enemy.hpp"
@@ -11,7 +11,7 @@ void MoveStates::PerformMoveState(Enemy* enemy,States moveState, ALC::uint8 *_cu
 {
 	auto lvlBounds = BattleManager::GetLevelBounds();
 	
-	auto [trans, eBody] = enemy->GetEntity().GetComponent< ALC::Transform2D, ALC::CharacterBody>();
+	auto [trans, eBody] = enemy->GetEntity().GetComponent< ALC::Transform2D, CharacterBody>();
 	auto arivd = BTA::Result::Arrived;
 	if (prevState == moveState) {
 		return;

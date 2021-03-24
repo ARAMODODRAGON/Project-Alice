@@ -1,7 +1,7 @@
 #ifndef ALC_BULLETS_BULLETSPAWNERSYSTEM_HPP
 #define ALC_BULLETS_BULLETSPAWNERSYSTEM_HPP
-#include "../General.hpp"
-#include "../Entities/Registry.hpp"
+//#include "../General.hpp"
+//#include "../Entities/Registry.hpp"
 
 //namespace ALC {
 //

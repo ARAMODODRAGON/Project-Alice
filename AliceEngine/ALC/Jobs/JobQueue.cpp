@@ -40,16 +40,29 @@ namespace ALC {
 		g_queue.submit(fence);
 	}
 
-	void JobQueue::__Init(uint32 threadcount) { 
+	uint32 JobQueue::GetWorkerCount() {
+		return g_threadCount;
+	}
+
+	void JobQueue::AwaitJobs() {
+		//if (g_queue.size() > 0) {
+		//	while (g_queue.size() > 0);
+		//}
+		Fence fence;
+		Submit(&fence);
+		fence.await_and_resume();
+	}
+
+	void JobQueue::__Init(uint32 threadcount) {
 		// garuntees that there are at least 1 thread if none are specified
 		if (threadcount == 0)
-			threadcount = glm::max(int(cjs::thread::hardware_concurrency() - 1), 2);
+			threadcount = glm::max(int(cjs::thread::hardware_concurrency() - 1), 1);
 		g_threadCount = threadcount;
 		g_threads.reset(new cjs::worker_thread[g_threadCount]);
 		for (size_t i = 0; i < g_threadCount; ++i) g_threads.get()[i].attach_to(&g_queue);
 	}
 
-	void JobQueue::__Exit() { 
+	void JobQueue::__Exit() {
 		g_threads.reset();
 		g_threadCount = 0;
 	}

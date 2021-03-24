@@ -7,6 +7,7 @@
 #include "../../Systems/Bullet Types/HomingBulletSystem.hpp"
 #include "../../Systems/GravityBulletSystem.hpp"
 #include "../../Systems/CircleBombSystem.hpp"
+//#include "../../Systems/ZigZagBulletSystem.hpp"
 
 class Battle1 final : public BattleLevel {
 public:
@@ -25,6 +26,7 @@ private:
 	DialogueHandler m_beginLevel;
 	ALC::EntityID m_enemy;
 	RuiEnemy* m_enemyBehavior;
+
 	BulletDeleterSystem m_deleter;
 	HomingBulletSystem m_homingsystem;
 	GravityBulletSystem m_gravitySystem;

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -152,6 +152,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Bullets\BulletPhysicsHandler.cpp" />
+    <ClCompile Include="Game\Bullets\BulletPhysicsSystem.cpp" />
+    <ClCompile Include="Game\Bullets\JobsBulletPhysicsHandler.cpp" />
     <ClCompile Include="Game\SaveSystem.cpp" />
     <ClCompile Include="Game\Scenes\MainMenuScene.cpp" />
     <ClCompile Include="Game\Systems\CircleBombSystem.cpp" />
@@ -180,6 +183,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Bullets.hpp" />
+    <ClInclude Include="Game\Bullets\BulletPhysics.hpp" />
+    <ClInclude Include="Game\Bullets\BulletPhysicsHandler.hpp" />
+    <ClInclude Include="Game\Bullets\BulletPhysicsSystem.hpp" />
+    <ClInclude Include="Game\Bullets\BulletSpawnerSystem.hpp" />
+    <ClInclude Include="Game\Bullets\JobsBulletPhysicsHandler.hpp" />
+    <ClInclude Include="Game\Bullets\ShooterBehavior.hpp" />
+    <ClInclude Include="Game\JobsECSAdapter.hpp" />
     <ClInclude Include="Game\SaveSystem.hpp" />
     <ClInclude Include="Game\Scenes\MainMenuScene.hpp" />
     <ClInclude Include="Game\Systems\CircleBombSystem.hpp" />
@@ -203,6 +214,8 @@
     <ClInclude Include="Game\Systems\MoveStates.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Game\Bullets\detail\ShooterBehavior.inl" />
+    <None Include="Game\JobsECSAdapter.inl" />
     <None Include="Resources\Dialogues\TestDialogue.json" />
     <None Include="Resources\Tilemaps\Test0.json" />
     <None Include="Resources\Tilemaps\Test1.json" />

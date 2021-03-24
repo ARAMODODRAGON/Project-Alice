@@ -359,7 +359,7 @@ void AliceChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 			ShooterBehavior::SetDefaultPosition(tr.position);
 			ShooterBehavior::Shoot(self, 1, [i, delay, tex](ALC::Entity e) {
 				// update body collision
-				auto& body = e.GetComponent<ALC::BulletBody>();
+				auto& body = e.GetComponent<BulletBody>();
 				body.radius = 18.0f;
 
 				// update position
@@ -374,7 +374,7 @@ void AliceChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 				if (i == 0) spr.textureBounds = ALC::rect(0.0f, 16.0f, 15.0f, 31.0f);
 				else		spr.textureBounds = ALC::rect(16.0f, 16.0f, 31.0f, 31.0f);
 				spr.bounds = spr.textureBounds.Centered();
-			}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
+			}, BulletTypes<BulletDeleterComponent, NormalBullet>());
 		}
 
 	}
@@ -392,7 +392,7 @@ void AliceChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 		ShooterBehavior::SetDefaultVelocity(ALC::vec2(0.0f, 800.0f) * slowmult);
 		ShooterBehavior::Shoot(self, 1, [delay, tex](ALC::Entity e) {
 			// update body collision
-			auto& body = e.GetComponent<ALC::BulletBody>();
+			auto& body = e.GetComponent<BulletBody>();
 			body.radius = 18.0f;
 
 			// update position
@@ -406,7 +406,7 @@ void AliceChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 			spr.textureBounds = ALC::rect(16.0f, 0.0f, 31.0f, 15.0f);
 			spr.bounds = spr.textureBounds.Centered();
 
-		}, ALC::BulletTypes<BulletDeleterComponent, HomingBullet>());
+		}, BulletTypes<BulletDeleterComponent, HomingBullet>());
 	}
 
 }
@@ -472,7 +472,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 		ShooterBehavior::SetDefaultPosition(ALC::vec2(tr.position.x, tr.position.y + 16.5f));
 		ShooterBehavior::Shoot(self, 1, [delay, tex](ALC::Entity e) {
 			// update body collision
-			auto& body = e.GetComponent<ALC::BulletBody>();
+			auto& body = e.GetComponent<BulletBody>();
 			body.radius = 18.0f;
 
 			// update position
@@ -487,7 +487,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 			//spr.textureBounds = ALC::rect(0.0f, 16.0f, 15.0f, 31.0f);
 			spr.textureBounds = ALC::rect(16.0f, 16.0f, 31.0f, 31.0f);
 			spr.bounds = spr.textureBounds.Centered();
-		}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
+		}, BulletTypes<BulletDeleterComponent, NormalBullet>());
 	}
 
 	// spin the point shooters
@@ -533,7 +533,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 			ShooterBehavior::SetDefaultPosition(pos);
 			ShooterBehavior::Shoot(self, 1, [shootA, tex](ALC::Entity e) {
 				// update body collision
-				auto& body = e.GetComponent<ALC::BulletBody>();
+				auto& body = e.GetComponent<BulletBody>();
 				body.radius = 4.5f;
 				body.damage = 2.0f;
 
@@ -547,7 +547,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 				spr.texture = tex;
 				spr.textureBounds = ALC::rect(0.0f, 0.0f, 15.0f, 15.0f);
 				spr.bounds = spr.textureBounds.Centered();
-			}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
+			}, BulletTypes<BulletDeleterComponent, NormalBullet>());
 		}
 
 		if (shootB > 0.0f) {
@@ -556,7 +556,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 			ShooterBehavior::SetDefaultPosition(pos);
 			ShooterBehavior::Shoot(self, 1, [shootB, tex](ALC::Entity e) {
 				// update body collision
-				auto& body = e.GetComponent<ALC::BulletBody>();
+				auto& body = e.GetComponent<BulletBody>();
 				body.radius = 18.0f;
 				body.damage = 2.0f;
 
@@ -570,7 +570,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 				spr.texture = tex;
 				spr.textureBounds = ALC::rect(0.0f, 0.0f, 15.0f, 15.0f);
 				spr.bounds = spr.textureBounds.Centered();
-			}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
+			}, BulletTypes<BulletDeleterComponent, NormalBullet>());
 		}
 
 		if (shootC > 0.0f) {
@@ -579,7 +579,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 			ShooterBehavior::SetDefaultPosition(pos);
 			ShooterBehavior::Shoot(self, 1, [shootC, tex](ALC::Entity e) {
 				// update body collision
-				auto& body = e.GetComponent<ALC::BulletBody>();
+				auto& body = e.GetComponent<BulletBody>();
 				body.radius = 18.0f;
 				body.damage = 2.0f;
 
@@ -593,7 +593,7 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 				spr.texture = tex;
 				spr.textureBounds = ALC::rect(0.0f, 0.0f, 15.0f, 15.0f);
 				spr.bounds = spr.textureBounds.Centered();
-			}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
+			}, BulletTypes<BulletDeleterComponent, NormalBullet>());
 		}
 
 		#pragma endregion

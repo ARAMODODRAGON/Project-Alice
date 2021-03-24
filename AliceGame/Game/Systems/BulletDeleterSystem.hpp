@@ -2,7 +2,7 @@
 #define SYSTEMS_BULLETDELETERSYSTEM_HPP
 #include <ALC\Entities\Registry.hpp>
 #include <ALC\Entities\EntityCreationHandler.hpp>
-#include <ALC\Bullets\BulletPhysics.hpp>
+#include "..\Bullets\BulletPhysics.hpp"
 #include <ALC\Rendering\SpriteBatch.hpp>
 
 struct BulletDeleterComponent final {
@@ -16,7 +16,7 @@ struct BulletDeleterComponent final {
 
 };
 
-struct BulletDeleterSystem final : public ALC::ISystem<BulletDeleterComponent, ALC::BulletBody> {
+struct BulletDeleterSystem final : public ALC::ISystem<BulletDeleterComponent, BulletBody> {
 
 	BulletDeleterSystem(ALC::EntityCreationHandler& ech);
 
@@ -25,7 +25,7 @@ struct BulletDeleterSystem final : public ALC::ISystem<BulletDeleterComponent, A
 
 private:
 
-	void Step(ALC::Timestep ts, ALC::Entity e, BulletDeleterComponent& bdc, ALC::BulletBody& bb) override;
+	void Step(ALC::Timestep ts, ALC::Entity e, BulletDeleterComponent& bdc, BulletBody& bb) override;
 
 	ALC::EntityCreationHandler& m_ech;
 	ALC::rect m_deathBoundry;

@@ -1,6 +1,6 @@
 #ifndef ALICE_ENEMIES_ENEMY_HPP
 #define ALICE_ENEMIES_ENEMY_HPP
-#include <ALC\Bullets.hpp>
+#include "..\Bullets.hpp"
 #include <ALC\Input.hpp>
 #include <ALC\Rendering.hpp>
 #include <ALC\Content.hpp>
@@ -12,7 +12,7 @@
 
 
 
-class Enemy : public ALC::ShooterBehavior {
+class Enemy : public ShooterBehavior {
 public:
 
 	Enemy();

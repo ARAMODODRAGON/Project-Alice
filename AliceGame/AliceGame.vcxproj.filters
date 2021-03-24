@@ -78,6 +78,15 @@
     <ClCompile Include="Game\SaveSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Bullets\BulletPhysicsHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Bullets\JobsBulletPhysicsHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Bullets\BulletPhysicsSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\AliceGame.hpp">
@@ -143,10 +152,40 @@
     <ClInclude Include="Game\SaveSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Game\JobsECSAdapter.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Bullets\BulletPhysics.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Bullets\BulletPhysicsHandler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Bullets\BulletSpawnerSystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Bullets\ShooterBehavior.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Bullets.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Bullets\JobsBulletPhysicsHandler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Bullets\BulletPhysicsSystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Dialogues\TestDialogue.json" />
     <None Include="Resources\Tilemaps\Test0.json" />
     <None Include="Resources\Tilemaps\Test1.json" />
+    <None Include="Game\JobsECSAdapter.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Game\Bullets\detail\ShooterBehavior.inl">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

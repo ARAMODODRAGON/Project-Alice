@@ -93,13 +93,7 @@
     <ClInclude Include="ALC\Physics\Collision2D.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ALC\Bullets\BulletPhysics.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ALC\Physics\CollisionInfo.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ALC\Bullets\BulletPhysicsHandler.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ALC\Entities\EntityID.hpp">
@@ -109,9 +103,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ALC\Content\Font.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ALC\Bullets\ShooterBehavior.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ALC\Rendering\UIBatch.hpp">
@@ -132,9 +123,6 @@
     <ClInclude Include="ALC\Rendering.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ALC\Bullets.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ALC\Content\Sound\SoundSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -142,9 +130,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ALC\Tools\TilemapEditorScene.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ALC\Bullets\BulletSpawnerSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ALC\Jobs.hpp">
@@ -230,9 +215,6 @@
     <ClCompile Include="ALC\Physics\Collision2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ALC\Bullets\BulletPhysicsHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ALC\Content\Font.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -260,9 +242,6 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="ALC\Entities\detail\EntityCreationHandler.inl">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="ALC\Bullets\detail\ShooterBehavior.inl">
       <Filter>Header Files</Filter>
     </None>
     <None Include="ALC\Jobs\cjs\common.inl">
