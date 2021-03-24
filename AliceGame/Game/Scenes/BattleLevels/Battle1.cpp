@@ -9,7 +9,8 @@ Battle1::Battle1()
 	, m_homingsystem(GetReg())
 	, m_gravitySystem()
 	, m_cirlceBombSystem()
-	, m_timer(0.0f) {
+	, m_timer(0.0f)
+	, m_jobsadp(GetReg()) {
 	m_deleter.SetDeathBoundry(BattleManager::GetLevelBounds());
 	m_gravitySystem.SetGravity(ALC::vec2(0.0f, -40.0f));
 }
@@ -56,10 +57,11 @@ void Battle1::Exit() {
 void Battle1::GameStep(ALC::Timestep ts) {
 	auto& reg = GetReg();
 
-	reg.StepSystem(ts, m_homingsystem);
-	reg.StepSystem(ts, m_gravitySystem);
-	reg.StepSystem(ts, m_cirlceBombSystem);
+	m_jobsadp.ApplyJobs(ts, m_homingsystem);
+	m_jobsadp.ApplyJobs(ts, m_gravitySystem);
+	m_jobsadp.ApplyJobs(ts, m_cirlceBombSystem);
 	reg.StepSystem(ts, m_deleter);
+
 }
 
 void Battle1::Step(ALC::Timestep ts) {

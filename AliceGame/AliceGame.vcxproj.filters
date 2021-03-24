@@ -143,10 +143,16 @@
     <ClInclude Include="Game\SaveSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Game\JobsECSAdapter.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Dialogues\TestDialogue.json" />
     <None Include="Resources\Tilemaps\Test0.json" />
     <None Include="Resources\Tilemaps\Test1.json" />
+    <None Include="Game\JobsECSAdapter.inl">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

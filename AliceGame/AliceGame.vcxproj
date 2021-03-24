@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -180,6 +180,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\JobsECSAdapter.hpp" />
     <ClInclude Include="Game\SaveSystem.hpp" />
     <ClInclude Include="Game\Scenes\MainMenuScene.hpp" />
     <ClInclude Include="Game\Systems\CircleBombSystem.hpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="Game\Systems\MoveStates.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Game\JobsECSAdapter.inl" />
     <None Include="Resources\Dialogues\TestDialogue.json" />
     <None Include="Resources\Tilemaps\Test0.json" />
     <None Include="Resources\Tilemaps\Test1.json" />

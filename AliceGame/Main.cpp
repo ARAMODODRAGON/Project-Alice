@@ -41,6 +41,7 @@ int main(int argc, char* agrv[]) {
 	settings.scenes.startScene = 0;
 
 	settings.jobsystem.enable = true;
+	//settings.jobsystem.threadcount = 1;
 
 	ALC::SceneManager::Start<AliceGame>(settings);
 
