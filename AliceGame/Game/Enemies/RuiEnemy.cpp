@@ -6,6 +6,21 @@
 #include "../BTA.hpp"
 #include "../Characters/Character.hpp"
 
+constexpr float phase0health = 200.0f;
+constexpr float phase0lifetime = 90.0f;
+
+constexpr float phase1health = 500.0f;
+constexpr float phase1lifetime = 90.0f;
+
+constexpr float phase2health = 1000.0f;
+constexpr float phase2lifetime = 90.0f;
+
+constexpr float phase3health = 1500.0f;
+constexpr float phase3lifetime = 90.0f;
+
+constexpr float phase4health = 2500.0f;
+constexpr float phase4lifetime = 90.0f;
+
 RuiEnemy::RuiEnemy()
 	: m_phases(this, Phase::PreBattle), m_state(State::None),m_prevState(State::None),m_timer(0.0f),stateTimer(0.0f) {
 	// bind phases
@@ -104,8 +119,8 @@ void RuiEnemy::PreBattleBegin(const Phase lastphase, ALC::Entity self, ALC::Time
 void RuiEnemy::PreBattleStep(ALC::Entity self, ALC::Timestep ts) { }
 
 void RuiEnemy::Phase0Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
-	ResetHealth(200.0f);
-	SetLifetime(90.0f);
+	ResetHealth(phase0health);
+	SetLifetime(phase0lifetime);
 	m_timer = 0.0f;
 	if (m_state != State::None) {
 		m_prevState = m_state;
@@ -266,8 +281,8 @@ void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 }
 
 void RuiEnemy::Phase1Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
-	ResetHealth(500.0f);
-	SetLifetime(90.0f);
+	ResetHealth(phase1health);
+	SetLifetime(phase1lifetime);
 	m_timer = 0.0f;
 	if (m_state != State::None) {
 		m_prevState = m_state;
@@ -436,8 +451,8 @@ void RuiEnemy::Phase1Step(ALC::Entity self, ALC::Timestep ts) {
 
 void RuiEnemy::Phase2Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
 
-	ResetHealth(1000.0f);
-	SetLifetime(90.0f);
+	ResetHealth(phase2health);
+	SetLifetime(phase2lifetime);
 
 	if (m_state != State::None) {
 		m_prevState = m_state;
@@ -548,8 +563,8 @@ void RuiEnemy::Phase2Step(ALC::Entity self, ALC::Timestep ts) {
 }
 
 void RuiEnemy::Phase3Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
-	ResetHealth(1500.0f);
-	SetLifetime(90.0f);
+	ResetHealth(phase3health);
+	SetLifetime(phase3lifetime);
 
 	if (m_state != State::None) {
 		m_prevState = m_state;
@@ -693,8 +708,8 @@ void RuiEnemy::Phase3Step(ALC::Entity self, ALC::Timestep ts) {
 }
 
 void RuiEnemy::Phase4Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
-	ResetHealth(2500.0f);
-	SetLifetime(5000000.0f);
+	ResetHealth(phase4health);
+	SetLifetime(phase4lifetime);
 
 	m_timer = 0.0f;
 
