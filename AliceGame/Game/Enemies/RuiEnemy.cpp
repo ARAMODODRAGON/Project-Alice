@@ -97,7 +97,7 @@ void RuiEnemy::OnDeath(ALC::Entity self) {
 
 void RuiEnemy::BattleBegin() {
 	// we start by changing phases
-	m_phases.ChangeState(Phase::Phase4);
+	m_phases.ChangeState(Phase::Phase0);
 }
 
 void RuiEnemy::PreBattleBegin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) { }

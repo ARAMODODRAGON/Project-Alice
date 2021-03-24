@@ -53,10 +53,14 @@ inline void JobsECSAdapter::ApplyJobs(ALC::Timestep ts, ALC::ISystem<Params...>&
 			job.reg = m_reg;
 			job.adpfunc = ADPFunc;
 
+			// this is so one of the jobs will always have any extra entities outside the chunk
+			ALC::int32 chunk = chunksize;
+
 			// set range
+			if (i == 0) chunk += groupsz % (m_adpjobs.size() + 1);
 			job.beginrange = begin;
-			job.endrange = job.beginrange + chunksize;
-			begin += chunksize;
+			job.endrange = job.beginrange + chunk;
+			begin += chunk;
 
 			// submit
 			ALC::JobQueue::Submit(&job);
