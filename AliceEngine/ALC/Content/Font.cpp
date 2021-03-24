@@ -7,9 +7,9 @@
 
 namespace ALC {
 
-	Font::Font() : m_textureID(0), m_textureSize(0), m_characters(nullptr), m_fontSize(0), m_verticalSpacing(0) { }
+	Font::Font() : m_textureID(0), m_textureSize(0), m_coljobs(nullptr), m_fontSize(0), m_verticalSpacing(0) { }
 
-	Font::Font(std::nullptr_t) : m_textureID(0), m_textureSize(0), m_characters(nullptr), m_fontSize(0), m_verticalSpacing(0) { }
+	Font::Font(std::nullptr_t) : m_textureID(0), m_textureSize(0), m_coljobs(nullptr), m_fontSize(0), m_verticalSpacing(0) { }
 
 	Font::~Font() {
 
@@ -22,7 +22,7 @@ namespace ALC {
 		float offset = 0.0f;
 		
 		// If no character set has been loaded for the font; don't attempt to calculate anything
-		if (m_characters == nullptr) {
+		if (m_coljobs == nullptr) {
 			ALC_DEBUG_ERROR("Invalid font has been used! No calculations will be processed.");
 			return dimensions;
 		}
@@ -36,7 +36,7 @@ namespace ALC {
 				continue;
 			}
 
-			const Font::Character& c = m_characters.get()->at(*p);
+			const Font::Character& c = m_coljobs.get()->at(*p);
 
 			float x0 = offset + ((c.position.x / c.bitSize.x) * c.bitSize.x);
 			float w = c.bitSize.x;
@@ -60,14 +60,14 @@ namespace ALC {
 		float wordStartPos = 0.0f, wordWidth = 0.0f, offset = 0.0f;
 
 		// If no character set has been loaded for the font; don't attempt to calculate anything
-		if (m_characters == nullptr) {
+		if (m_coljobs == nullptr) {
 			ALC_DEBUG_ERROR("Invalid font has been used! No calculations will be processed.");
 			return "";
 		}
 
 		for (const char* p = text.c_str(); *p; p++) {
 			if (*p < 32) continue;
-			const Font::Character& c = m_characters.get()->at(*p);
+			const Font::Character& c = m_coljobs.get()->at(*p);
 
 			// Get the position of the quad on-screen, but unaltered by scale or translation
 			float x0 = offset + ((c.position.x / c.bitSize.x) * c.bitSize.x);
@@ -196,25 +196,25 @@ namespace ALC {
 	}
 
 	bool Font::Contains(const char c) const {
-		if (m_characters.get() == nullptr)
+		if (m_coljobs.get() == nullptr)
 			return false;
-		return m_characters.get()->find(c) != m_characters.get()->end();
+		return m_coljobs.get()->find(c) != m_coljobs.get()->end();
 	}
 
 	const Font::Character& Font::At(const char c) const {
-		if (m_characters.get() == nullptr)
+		if (m_coljobs.get() == nullptr)
 			throw std::out_of_range("map was null");
-		return m_characters.get()->at(c);
+		return m_coljobs.get()->at(c);
 	}
 
 	const Font::Character& Font::operator[](const char c) const {
-		return m_characters.get()->operator[](c);
+		return m_coljobs.get()->operator[](c);
 	}
 
 	size_t Font::Size() const {
-		if (m_characters.get() == nullptr)
+		if (m_coljobs.get() == nullptr)
 			return 0;
-		return m_characters->size();
+		return m_coljobs->size();
 	}
 
 	bool Font::operator==(const Font& other) const {
@@ -296,7 +296,7 @@ namespace ALC {
 		Font font;
 		font.m_textureSize = uvec2(w, h);
 		font.m_textureID = textureID;
-		font.m_characters = std::move(characters);
+		font.m_coljobs = std::move(characters);
 		font.m_fontSize = size;
 		font.m_verticalSpacing = vSpacing;
 		return font;

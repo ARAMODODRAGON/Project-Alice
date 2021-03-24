@@ -27,7 +27,8 @@ void Enemy::TakeDamage(ALC::Entity self, const float damage) {
 
 
 void Enemy::UpdateCollisions(ALC::Entity self, ALC::Timestep ts) {
-	auto& cb = self.GetComponent<CharacterBody>();
+	// copy here because problem elsewhere
+	auto cb = self.GetComponent<CharacterBody>();
 
 	// take damage for each collision
 	for (auto& cinfo : cb) {

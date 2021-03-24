@@ -153,6 +153,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Game\Bullets\BulletPhysicsHandler.cpp" />
+    <ClCompile Include="Game\Bullets\BulletPhysicsSystem.cpp" />
+    <ClCompile Include="Game\Bullets\JobsBulletPhysicsHandler.cpp" />
     <ClCompile Include="Game\SaveSystem.cpp" />
     <ClCompile Include="Game\Scenes\MainMenuScene.cpp" />
     <ClCompile Include="Game\Systems\CircleBombSystem.cpp" />
@@ -184,7 +186,9 @@
     <ClInclude Include="Game\Bullets.hpp" />
     <ClInclude Include="Game\Bullets\BulletPhysics.hpp" />
     <ClInclude Include="Game\Bullets\BulletPhysicsHandler.hpp" />
+    <ClInclude Include="Game\Bullets\BulletPhysicsSystem.hpp" />
     <ClInclude Include="Game\Bullets\BulletSpawnerSystem.hpp" />
+    <ClInclude Include="Game\Bullets\JobsBulletPhysicsHandler.hpp" />
     <ClInclude Include="Game\Bullets\ShooterBehavior.hpp" />
     <ClInclude Include="Game\JobsECSAdapter.hpp" />
     <ClInclude Include="Game\SaveSystem.hpp" />

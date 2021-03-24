@@ -35,7 +35,9 @@ BattleLevel::BattleLevel()
 	, m_dialogueTransition(0.0f)
 	, m_dialogueMaxTransitionTime(0.5f)
 	, m_curCharacter(0)
-	, m_dialogueSpeed(2.5f) {
+	, m_dialogueSpeed(2.5f)
+	, m_bPhysics(GetReg()) 
+	, m_jobsadp(GetReg()) {
 	m_ui.SetInternalScreenSize(BattleManager::PrefferedResolution());
 }
 
@@ -526,7 +528,11 @@ void BattleLevel::Step(ALC::Timestep ts) {
 		m_ech.Cleanup(m_reg);
 
 		// update physics
-		m_bPhysics.Step(m_reg, fixedts);
+		m_bPhysics.UpdateCharacters(fixedts);
+		//m_reg.StepSystem(ts, m_bPhysics);
+		m_jobsadp.ApplyJobs(fixedts, m_bPhysics);
+		// dunno why this fixes it
+		ALC::JobQueue::AwaitJobs();
 
 		// late update the registry
 		m_reg.LateUpdateBehaviors(fixedts);
