@@ -45,9 +45,12 @@ namespace ALC {
 	}
 
 	void JobQueue::AwaitJobs() {
-		if (g_queue.size() > 0) {
-			while (g_queue.size() > 0);
-		}
+		//if (g_queue.size() > 0) {
+		//	while (g_queue.size() > 0);
+		//}
+		Fence fence;
+		Submit(&fence);
+		fence.await_and_resume();
 	}
 
 	void JobQueue::__Init(uint32 threadcount) {

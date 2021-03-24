@@ -41,7 +41,7 @@ int main(int argc, char* agrv[]) {
 	settings.scenes.startScene = 0;
 
 	settings.jobsystem.enable = true;
-	//settings.jobsystem.threadcount = 1;
+	settings.jobsystem.threadcount = glm::clamp(cjs::thread::hardware_concurrency(), 1u, 3u);
 
 	ALC::SceneManager::Start<AliceGame>(settings);
 

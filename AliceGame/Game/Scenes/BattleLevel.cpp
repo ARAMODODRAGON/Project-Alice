@@ -531,8 +531,6 @@ void BattleLevel::Step(ALC::Timestep ts) {
 		m_bPhysics.UpdateCharacters(fixedts);
 		//m_reg.StepSystem(ts, m_bPhysics);
 		m_jobsadp.ApplyJobs(fixedts, m_bPhysics);
-		// dunno why this fixes it
-		ALC::JobQueue::AwaitJobs();
 
 		// late update the registry
 		m_reg.LateUpdateBehaviors(fixedts);
