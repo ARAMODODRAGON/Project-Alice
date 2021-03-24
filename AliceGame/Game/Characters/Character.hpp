@@ -1,6 +1,6 @@
 #ifndef ALICE_CHARACTERS_CHARACTER_HPP
 #define ALICE_CHARACTERS_CHARACTER_HPP
-#include <ALC\Bullets.hpp>
+#include "../Bullets.hpp"
 #include <ALC\Input.hpp>
 #include <ALC\Rendering.hpp>
 #include <ALC\Content.hpp>
@@ -11,7 +11,7 @@ struct NormalBullet {
 private: bool _;
 };
 
-class Character : public ALC::ShooterBehavior {
+class Character : public ShooterBehavior {
 public:
 
 	Character();

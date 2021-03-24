@@ -21,11 +21,6 @@
   <ItemGroup>
     <ClInclude Include="ALC\2D\Tilemap.hpp" />
     <ClInclude Include="ALC\Audio\AudioSystem.hpp" />
-    <ClInclude Include="ALC\Bullets.hpp" />
-    <ClInclude Include="ALC\Bullets\BulletPhysics.hpp" />
-    <ClInclude Include="ALC\Bullets\BulletPhysicsHandler.hpp" />
-    <ClInclude Include="ALC\Bullets\BulletSpawnerSystem.hpp" />
-    <ClInclude Include="ALC\Bullets\ShooterBehavior.hpp" />
     <ClInclude Include="ALC\Entities\JobSystem.hpp" />
     <ClInclude Include="ALC\Jobs.hpp" />
     <ClInclude Include="ALC\Content.hpp" />
@@ -77,7 +72,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ALC\2D\Tilemap.cpp" />
-    <ClCompile Include="ALC\Bullets\BulletPhysicsHandler.cpp" />
     <ClCompile Include="ALC\Content\ContentManager.cpp" />
     <ClCompile Include="ALC\Content\Font.cpp" />
     <ClCompile Include="ALC\Content\Shader.cpp" />
@@ -102,7 +96,6 @@
     <ClCompile Include="ALC\Tools\TilemapEditorScene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ALC\Bullets\detail\ShooterBehavior.inl" />
     <None Include="ALC\Entities\detail\EntityCreationHandler.inl" />
     <None Include="ALC\Entities\detail\Registry.inl" />
     <None Include="ALC\Entities\JobSystem.inl" />

@@ -2,7 +2,7 @@
 #define GRAVITY_BULLET_SYSTEM_HPP
 #include <ALC\Entities\Registry.hpp>
 #include <ALC\Entities\EntityCreationHandler.hpp>
-#include <ALC\Bullets\BulletPhysics.hpp>
+#include "..\Bullets\BulletPhysics.hpp"
 #include <ALC\Rendering\SpriteBatch.hpp>
 
 struct GravityBullet {
@@ -11,12 +11,12 @@ struct GravityBullet {
     bool playerTracer;
 };
 
-struct GravityBulletSystem final : public ALC::ISystem<ALC::BulletBody,GravityBullet> {
+struct GravityBulletSystem final : public ALC::ISystem<BulletBody,GravityBullet> {
 
     GravityBulletSystem();
     ~GravityBulletSystem();
   
-    void Step(ALC::Timestep ts, ALC::Entity e, ALC::BulletBody& bb, GravityBullet& grav) override;
+    void Step(ALC::Timestep ts, ALC::Entity e, BulletBody& bb, GravityBullet& grav) override;
     // set gravity function too lazy to type
     void SetGravity(const ALC::vec2 gravity_) { gravity = gravity_; }
 

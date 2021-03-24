@@ -1,7 +1,7 @@
 #ifndef ALC_SYSTEMS_BULLETTYPES_HOMINGBULLETSYSTEM_HPP
 #define ALC_SYSTEMS_BULLETTYPES_HOMINGBULLETSYSTEM_HPP
 #include <ALC\Entities.hpp>
-#include <ALC\Bullets.hpp>
+#include "../../Bullets.hpp"
 #include <ALC\Rendering.hpp>
 
 struct HomingBullet {
@@ -21,12 +21,12 @@ public:
 	ALC::uint32 __targetID = ALC::uint32(-1);
 };
 
-struct HomingBulletSystem : public ALC::ISystem<ALC::BulletBody, ALC::Transform2D, HomingBullet> {
+struct HomingBulletSystem : public ALC::ISystem<BulletBody, ALC::Transform2D, HomingBullet> {
 
 	HomingBulletSystem(ALC::Registry& reg);
 	~HomingBulletSystem();
 
-	void Step(ALC::Timestep ts, ALC::Entity e, ALC::BulletBody& bb, ALC::Transform2D& tr, HomingBullet& homing) override;
+	void Step(ALC::Timestep ts, ALC::Entity e, BulletBody& bb, ALC::Transform2D& tr, HomingBullet& homing) override;
 
 	void AddTarget(ALC::EntityID target);
 	void RemoveTarget(ALC::EntityID target);

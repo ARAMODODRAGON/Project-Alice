@@ -1,7 +1,7 @@
 #ifndef ALICE_BATTLEMANAGER_HPP
 #define ALICE_BATTLEMANAGER_HPP
 #include <ALC\General.hpp>
-#include <ALC\Bullets.hpp>
+#include "Bullets.hpp"
 #include "SpriteLayers.hpp"
 
 class Character;

@@ -171,7 +171,7 @@ void RuiChara::StateStepBasic(ALC::Entity self, ALC::Timestep ts) {
 			sprite.textureBounds = ALC::rect(32.0f, 96.0f, 47.0f, 111.0f);
 			sprite.bounds = sprite.textureBounds.Centered();
 			sprite.color.a = 0.3f;
-		}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
+		}, BulletTypes<BulletDeleterComponent, NormalBullet>());
 
 	}
 
@@ -203,7 +203,7 @@ void RuiChara::StateStepBasic(ALC::Entity self, ALC::Timestep ts) {
 			bdel.lifetime = 10.0f;
 			auto& homing = bullet.GetComponent<HomingBullet>();
 			homing.rotationAccel = 1850.0f;
-		}, ALC::BulletTypes<BulletDeleterComponent, HomingBullet>());
+		}, BulletTypes<BulletDeleterComponent, HomingBullet>());
 
 	}
 
@@ -254,7 +254,7 @@ void RuiChara::StateStepRapid(ALC::Entity self, ALC::Timestep ts) {
 			homing.rotationSpeed = 270.0f;
 			auto& del = bullet.GetComponent<BulletDeleterComponent>();
 			del.lifetime = 2.0f;
-		}, ALC::BulletTypes<BulletDeleterComponent, HomingBullet>());
+		}, BulletTypes<BulletDeleterComponent, HomingBullet>());
 
 	}
 

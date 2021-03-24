@@ -68,7 +68,7 @@ void Character::UpdateCollisions(ALC::Entity self, ALC::Timestep ts) {
 		return;
 	}
 
-	auto& cb = self.GetComponent<ALC::CharacterBody>();
+	auto& cb = self.GetComponent<CharacterBody>();
 
 	// take damage once if there was a collision
 	// then do invuln
@@ -117,7 +117,7 @@ void Character::UpdateMovement(ALC::Entity self, ALC::Timestep ts) {
 }
 
 void Character::UpdateMovement(ALC::Entity self, ALC::Timestep ts, const ALC::vec2& inputAxis, const float speed) {
-	auto& body = self.GetComponent<ALC::CharacterBody>();
+	auto& body = self.GetComponent<CharacterBody>();
 	auto& tr = self.GetComponent<ALC::Transform2D>();
 
 	// update velocity
@@ -161,13 +161,13 @@ void Character::Start(ALC::Entity self) {
 	collEntity.AddComponent<ALC::SpriteComponent>();
 
 	// add the required components
-	if (!self.HasComponent<ALC::CharacterBody>())	self.AddComponent<ALC::CharacterBody>();
+	if (!self.HasComponent<CharacterBody>())	self.AddComponent<CharacterBody>();
 	if (!self.HasComponent<ALC::Transform2D>())		self.AddComponent<ALC::Transform2D>();
 	if (!self.HasComponent<ALC::SpriteComponent>())	self.AddComponent<ALC::SpriteComponent>();
 
 	// get our components only after 'adding' them
 
-	auto& cb = self.GetComponent<ALC::CharacterBody>();
+	auto& cb = self.GetComponent<CharacterBody>();
 	auto& tr = self.GetComponent<ALC::Transform2D>();
 	auto& spr = self.GetComponent<ALC::SpriteComponent>();
 	auto& tr0 = collEntity.GetComponent<ALC::Transform2D>();
@@ -191,7 +191,7 @@ void Character::Start(ALC::Entity self) {
 }
 
 void Character::UpdateSprites(ALC::Entity self, ALC::Timestep ts) {
-	auto [cb, tr, spr] = self.GetComponent<ALC::CharacterBody, ALC::Transform2D, ALC::SpriteComponent>();
+	auto [cb, tr, spr] = self.GetComponent<CharacterBody, ALC::Transform2D, ALC::SpriteComponent>();
 
 	if (m_shouldFlashOnInvuln) {
 		// update our sprite accordingly

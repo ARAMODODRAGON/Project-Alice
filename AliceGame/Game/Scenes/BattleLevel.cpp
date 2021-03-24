@@ -133,8 +133,8 @@ void BattleLevel::Draw() {
 		m_reg.ForeachComponent<ALC::Transform2D, ALC::SpriteComponent>(
 			[this, i](auto entity, auto tr, auto spr) {
 			if (spr.layer == i) {
-				if (entity.HasComponent<ALC::BulletBody>()) {
-					if (!entity.GetComponent<ALC::BulletBody>().isSimulated)
+				if (entity.HasComponent<BulletBody>()) {
+					if (!entity.GetComponent<BulletBody>().isSimulated)
 						return;
 				}
 				m_batch.Draw(tr, spr);

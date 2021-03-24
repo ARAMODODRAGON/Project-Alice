@@ -8,7 +8,7 @@ HomingBulletSystem::HomingBulletSystem(ALC::Registry& reg)
 
 HomingBulletSystem::~HomingBulletSystem() { }
 
-void HomingBulletSystem::Step(ALC::Timestep ts, ALC::Entity e, ALC::BulletBody& bb, ALC::Transform2D& tr, HomingBullet& homing) {
+void HomingBulletSystem::Step(ALC::Timestep ts, ALC::Entity e, BulletBody& bb, ALC::Transform2D& tr, HomingBullet& homing) {
 	if (!bb.isSimulated) return;
 
 	// check if this entity needs to decide what target to choose

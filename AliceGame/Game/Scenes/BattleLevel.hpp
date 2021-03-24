@@ -2,7 +2,7 @@
 #define ALICE_SCENES_BATTLELEVEL_HPP
 #include <ALC\SceneManager.hpp>
 #include <ALC\Entities.hpp>
-#include <ALC\Bullets.hpp>
+#include "..\Bullets.hpp"
 #include <ALC\Rendering.hpp>
 #include <ALC\Input.hpp>
 #include "../BattleManager.hpp"
@@ -57,7 +57,7 @@ private:
 	ALC::SpriteBatch m_batch;
 	ALC::UIBatch m_ui;
 	ALC::Camera m_camera;
-	ALC::BulletPhysicsHandler m_bPhysics;
+	BulletPhysicsHandler m_bPhysics;
 	Character* m_character;
 	float m_timescale;
 

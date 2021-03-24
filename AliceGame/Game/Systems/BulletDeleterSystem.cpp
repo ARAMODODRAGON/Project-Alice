@@ -8,7 +8,7 @@ void BulletDeleterSystem::SetDeathBoundry(const ALC::rect& deathBoundry) {
 	m_deathBoundry = deathBoundry;
 }
 
-void BulletDeleterSystem::Step(ALC::Timestep ts, ALC::Entity e, BulletDeleterComponent& bdc, ALC::BulletBody& bb) {
+void BulletDeleterSystem::Step(ALC::Timestep ts, ALC::Entity e, BulletDeleterComponent& bdc, BulletBody& bb) {
 	if (!bb.isSimulated) return;
 
 	// kill by collision
