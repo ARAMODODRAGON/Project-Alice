@@ -36,7 +36,7 @@ BattleLevel::BattleLevel()
 	, m_dialogueMaxTransitionTime(0.5f)
 	, m_curCharacter(0)
 	, m_dialogueSpeed(2.5f)
-	, m_bPhysics(GetReg()) 
+	, m_bPhysics(GetReg())
 	, m_jobsadp(GetReg()) {
 	m_ui.SetInternalScreenSize(BattleManager::PrefferedResolution());
 }
@@ -236,6 +236,39 @@ void BattleLevel::Draw() {
 		} else { // Display the image as normal
 			m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIElements);
 		}
+
+		// draw the onscreen controls
+		constexpr float keysoffset = 10.0f * 5.0f;
+		const static ALC::vec2 textoffset(1.0f * 5.0f, -2.5f * 5.0f);
+
+		// shift
+		pos.min = ALC::vec2(10.0f);
+		pos.max = pos.min + ALC::vec2(40.0f, 40.0f);
+		target = ALC::rect(112.0f, 64.0f, 119.0f, 71.0f);
+		m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIElements);
+		m_ui.DrawText("Slow", m_lifetimeFont, pos.max + textoffset,  
+					  ALC_COLOR_WHITE, ALC::HAlign::Left, ALC::VAlign::Bottom);
+		
+		// Z
+		pos.min.y += keysoffset; pos.max.y += keysoffset;
+		target = ALC::rect(121.0f, 64.0f, 128.0f, 71.0f);
+		m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIElements);
+		m_ui.DrawText("Mod/Switch", m_lifetimeFont, pos.max + textoffset,  
+					  ALC_COLOR_WHITE, ALC::HAlign::Left, ALC::VAlign::Bottom);
+		
+		// X
+		pos.min.y += keysoffset; pos.max.y += keysoffset;
+		target = ALC::rect(112.0f, 73.0f, 119.0f, 80.0f);
+		m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIElements);
+		m_ui.DrawText("Burst", m_lifetimeFont, pos.max + textoffset,  
+					  ALC_COLOR_WHITE, ALC::HAlign::Left, ALC::VAlign::Bottom);
+		
+		// C
+		pos.min.y += keysoffset; pos.max.y += keysoffset;
+		target = ALC::rect(121.0f, 73.0f, 128.0f, 80.0f);
+		m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIElements);
+		m_ui.DrawText("Shoot", m_lifetimeFont, pos.max + textoffset,  
+					  ALC_COLOR_WHITE, ALC::HAlign::Left, ALC::VAlign::Bottom);
 
 		// draw the enemy health and timer
 		constexpr float healthbarmargin = 10.0f;
