@@ -7,8 +7,7 @@
 #include "../BattleManager.hpp"
 #include "../BTA.hpp"
 #include "../Systems/MoveStates.hpp"
-
-
+#include <random>
 
 
 

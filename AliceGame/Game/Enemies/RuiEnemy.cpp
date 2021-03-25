@@ -112,7 +112,7 @@ void RuiEnemy::OnDeath(ALC::Entity self) {
 
 void RuiEnemy::BattleBegin() {
 	// we start by changing phases
-	m_phases.ChangeState(Phase::Phase0);
+	m_phases.ChangeState(Phase::Phase4);
 }
 
 void RuiEnemy::PreBattleBegin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) { }
@@ -353,8 +353,6 @@ void RuiEnemy::Phase1Step(ALC::Entity self, ALC::Timestep ts) {
 					sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
 					sprite.bounds = sprite.textureBounds.Centered();
 				}, BulletTypes<BulletDeleterComponent,NormalBullet>());
-
-
 
 				if (dirIndex < 3) {
 					tmpVec = glm::rotate((((dir[dirIndex] + dir[dirIndex + 1]) / 2.0f) * -1.0f) * 400.0f,
@@ -665,7 +663,7 @@ void RuiEnemy::Phase3Step(ALC::Entity self, ALC::Timestep ts) {
 			sprite.texture = tex;
 			sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
 			sprite.bounds = sprite.textureBounds.Centered();
-			}, ALC::BulletTypes<BulletDeleterComponent, NormalBullet>());
+			}, BulletTypes<BulletDeleterComponent, NormalBullet>());
 	} 
 
 	else if (m_timer >= fireRate) {
@@ -723,33 +721,31 @@ void RuiEnemy::Phase4Begin(const Phase lastphase, ALC::Entity self, ALC::Timeste
 	if (m_state != State::None) { m_prevState = m_state; }
 
 	if (!moveStates.empty()) { moveStates.clear(); }
-
-	moveStates.push_back(MoveStates::States::DownLeft);
-	moveStates.push_back(MoveStates::States::UpRight);
-	moveStates.push_back(MoveStates::States::Left);
-	moveStates.push_back(MoveStates::States::Right);
-	moveStates.push_back(MoveStates::States::DownRight);
-	moveStates.push_back(MoveStates::States::Move);
 }
 void RuiEnemy::Phase4Step(ALC::Entity self, ALC::Timestep ts) { 
 
 	auto [transform, cbody] = self.GetComponent<ALC::Transform2D, CharacterBody>();
 	auto tex = m_bulletTexture;
+	auto lvlBnds = BattleManager::GetLevelBounds();
 
 	float rndRange = rand() % 360 + 35;
 	float rndBulAmount = rand() % 7 + 2;
 	float rndVelScal = rand() % 200 + 150;  // a scalar for the velocity 
 	int rndDir = rand() % 4;
 
-	//returns a random fire rate between 0.0 and 1.0 and then divides it by 2 
-	float rndFireRate = static_cast <float> (rand()) / static_cast <float> (RAND_MAX) / 2.0f;
+	//returns a random fire rate between 0.0 and 1.0 	
+	float rndFireRate = static_cast <float> (rand()) / static_cast <float> (RAND_MAX) + 0.2;
+	std::random_device rd; // get seed from rnd number engine
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> distribX((lvlBnds.left + 61), (lvlBnds.right - 61));
 
 	// get a x pos between the left and right bounds of the level 
-	float rndXPos = static_cast<int>(BattleManager::GetLevelBounds().left) + rand() % (static_cast<int>(BattleManager::GetLevelBounds().right) 
-					- static_cast<int>(BattleManager::GetLevelBounds().left) + 1);
+	float rndXPos = distribX(gen);
+
+	std::uniform_int_distribution<> distribY((lvlBnds.top / 4), (lvlBnds.top - 61));
 
 	// get a y pos for the top to the enemies bottom (top / 4) of the level   
-	float rndYPos = rand() % static_cast<int>(BattleManager::GetLevelBounds().top) + static_cast<int>(BattleManager::GetLevelBounds().top / 4);
+	float rndYPos = distribY(gen);
 
 	ShooterBehavior::SetDefaultPosition(ALC::vec2(rndXPos,rndYPos));
 	ShooterBehavior::SetDefaultVelocity(dir[rndDir] * rndVelScal);
@@ -759,6 +755,7 @@ void RuiEnemy::Phase4Step(ALC::Entity self, ALC::Timestep ts) {
 
 	if (m_timer <= ts.Get()) {
 
+		transform.position = ALC::vec2(rndXPos, rndYPos);
 		ShooterBehavior::ShootRange(self, rndBulAmount,rndRange, [tex](ALC::Entity bullet) {
 			// update body collision
 			auto& body = bullet.GetComponent<BulletBody>();
@@ -769,24 +766,6 @@ void RuiEnemy::Phase4Step(ALC::Entity self, ALC::Timestep ts) {
 			sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
 			sprite.bounds = sprite.textureBounds.Centered();
 		}, BulletTypes<BulletDeleterComponent, NormalBullet>());
-	}
-
-	if (moveStates.empty()) {
-		ALC::uint8 tmpState = static_cast<ALC::uint8>(m_state);
-		m_moveState.PerformMoveState(this, moveStates[0], &tmpState, ts, 0.0f);
-
-		if (m_moveState.GetIsComplete()) { // when moving is complete  erease that moving state and go back to shooting state(just called state in ruiEnemy.cpp
-			moveStates.erase(moveStates.begin());
-			ResteTimer();
-		}
-	}
-	else {
-		moveStates.push_back(MoveStates::States::DownLeft);
-		moveStates.push_back(MoveStates::States::UpRight);
-		moveStates.push_back(MoveStates::States::Left);
-		moveStates.push_back(MoveStates::States::Right);
-		moveStates.push_back(MoveStates::States::DownRight);
-		moveStates.push_back(MoveStates::States::Move);
 	}
 
 	if (m_timer >= rndFireRate ) {
