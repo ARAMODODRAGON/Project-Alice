@@ -6,13 +6,13 @@
 #include "../BTA.hpp"
 #include "../Characters/Character.hpp"
 
-constexpr float phase0health = 750.0f;
+constexpr float phase0health = 200.0f;
 constexpr float phase0lifetime = 90.0f;
 
-constexpr float phase1health = 1000.0f;
+constexpr float phase1health = 500.0f;
 constexpr float phase1lifetime = 90.0f;
 
-constexpr float phase2health = 1250.0f;
+constexpr float phase2health = 1000.0f;
 constexpr float phase2lifetime = 90.0f;
 
 constexpr float phase3health = 1500.0f;
@@ -128,7 +128,6 @@ void RuiEnemy::Phase0Begin(const Phase lastphase, ALC::Entity self, ALC::Timeste
 
 	if (!moveStates.empty()) { moveStates.clear(); }
 
-	
 	moveStates.push_back(MoveStates::States::UpRight);
 	moveStates.push_back(MoveStates::States::Left);
 	moveStates.push_back(MoveStates::States::Up);
@@ -324,27 +323,27 @@ void RuiEnemy::Phase1Step(ALC::Entity self, ALC::Timestep ts) {
 
 			if (m_timer <= ts.Get()) {
 
+				// if checks make sure the direction goes clock wise 
 				if (dirIndex < 3) {
+					//get 2 direction vectors and get the vector in between them 
+					//use rotate to give it a circluar motion while shooting and not just in a line
 					tmpVec = glm::rotate(((dir[dirIndex] + dir[dirIndex + 1]) / 2.0f) * 400.0f,
 										 glm::radians(360.0f / static_cast<float>(numOfBuillets)) * static_cast<float>(i));
 
-					bultPos = transform.position;
 
 				}
 				else if (dirIndex == 3) {
 					tmpVec = glm::rotate(((dir[dirIndex] + dir[0]) / 2.0f) * 400.0f,
 										 glm::radians(360.0f / static_cast<float>(numOfBuillets)) * static_cast<float>(i));
 
-					bultPos = transform.position;
 				}
 
-				ShooterBehavior::SetDefaultPosition(bultPos);
-
+				ShooterBehavior::SetDefaultPosition(transform.position);
+				ShooterBehavior::SetDefaultVelocity(tmpVec);
 				ShooterBehavior::Shoot(self, 1, [tmpVec, tex](ALC::Entity bullet) {
 					// update body collision
 					auto& body = bullet.GetComponent<BulletBody>();
 					body.radius = 4.0f;
-					body.velocity = tmpVec;
 
 					auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
 					//sprite.bounds = ALC::rect(14.0f);
@@ -354,6 +353,7 @@ void RuiEnemy::Phase1Step(ALC::Entity self, ALC::Timestep ts) {
 					sprite.bounds = sprite.textureBounds.Centered();
 				}, BulletTypes<BulletDeleterComponent,NormalBullet>());
 
+				//Give it a negative dir do more bullets can be shot still in a circular motion 
 				if (dirIndex < 3) {
 					tmpVec = glm::rotate((((dir[dirIndex] + dir[dirIndex + 1]) / 2.0f) * -1.0f) * 400.0f,
 										 glm::radians(360.0f / static_cast<float>(numOfBuillets)) * static_cast<float>(i));
@@ -381,7 +381,7 @@ void RuiEnemy::Phase1Step(ALC::Entity self, ALC::Timestep ts) {
 					sprite.texture = tex;
 					sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
 					sprite.bounds = sprite.textureBounds.Centered();
-				}, BulletTypes<BulletDeleterComponent,NormalBullet>());
+				}, BulletTypes<BulletDeleterComponent,NormalBullet>());	 
 			}
 
 			if (m_timer >= 2.0f) {
@@ -404,20 +404,20 @@ void RuiEnemy::Phase1Step(ALC::Entity self, ALC::Timestep ts) {
 			m_state = State::Moving;
 		}
 
-		
 	}
 
 	else if (m_state == State::Moving) {
 		 //check if list is empty 
 		if (!moveStates.empty()) {
-
+			int bulAmount = rand() % 25 + 20;
+			fireRate = 0.4f;
 			ShooterBehavior::SetDefaultPosition(transform.position);
 
 			m_timer += ts.Get();
 
 			if (m_timer <= ts.Get()) {
 				 //shoot a bullet when moving
-				ShooterBehavior::ShootCircle(self, 20, [tex](ALC::Entity bullet) {
+				ShooterBehavior::ShootCircle(self, bulAmount, [tex](ALC::Entity bullet) {
 					// update body collision
 					auto& body = bullet.GetComponent<BulletBody>();
 					body.radius = 4.0f;
@@ -476,6 +476,7 @@ void RuiEnemy::Phase2Step(ALC::Entity self, ALC::Timestep ts) {
 	auto [transform, cbody] = self.GetComponent<ALC::Transform2D, CharacterBody>();
 	auto tex = m_bulletTexture;
 	bool shot = false;
+	int bulletAmnt = rand() % 25 + 20;
 
 	if (m_state == State::CircleBombs) {
 		oldPos = transform.position;
@@ -483,7 +484,7 @@ void RuiEnemy::Phase2Step(ALC::Entity self, ALC::Timestep ts) {
 		ShooterBehavior::SetDefaultPosition(transform.position);
 		ShooterBehavior::SetDefaultVelocity(dir[0] * 300.0f);
 
-		ShooterBehavior::ShootCircle(self, 30, [tex](ALC::Entity bullet) {
+		ShooterBehavior::ShootCircle(self, bulletAmnt, [tex](ALC::Entity bullet) {
 			// update body collision
 			auto& body = bullet.GetComponent<BulletBody>();
 			body.radius = 4.0f;
@@ -497,6 +498,7 @@ void RuiEnemy::Phase2Step(ALC::Entity self, ALC::Timestep ts) {
 		shot = true;
 
 		if (shot) {
+			m_timer += ts.Get();
 			m_state = State::Moving;
 		}
 	}
@@ -504,10 +506,8 @@ void RuiEnemy::Phase2Step(ALC::Entity self, ALC::Timestep ts) {
 	else if (m_state == State::Moving) {
 
 		float fireRate = 1.f;
-		int numOfBullets = 20;
 
-		
-		if (GetHealth() < (GetMaxHealth() / 2)) { fireRate = 0.7f; numOfBullets = 30; }
+		if (GetHealth() < (GetMaxHealth() / 2)) { fireRate = 0.7f; bulletAmnt = 30; }
 
 		if (!moveStates.empty()) {
 
@@ -519,7 +519,7 @@ void RuiEnemy::Phase2Step(ALC::Entity self, ALC::Timestep ts) {
 			if (m_timer <= ts.Get()) {
 				ShooterBehavior::SetDefaultPosition(oldPos);
 				ShooterBehavior::SetDefaultVelocity(dir[0] * 300.0f);
-				ShooterBehavior::ShootCircle(self, numOfBullets, [tex](ALC::Entity bullet) {
+				ShooterBehavior::ShootCircle(self, bulletAmnt, [tex](ALC::Entity bullet) {
 					// update body collision
 					auto& body = bullet.GetComponent<BulletBody>();
 					body.radius = 4.0f;
@@ -531,7 +531,7 @@ void RuiEnemy::Phase2Step(ALC::Entity self, ALC::Timestep ts) {
 					}, BulletTypes<BulletDeleterComponent, CircleBomb>());
 
 				ShooterBehavior::SetDefaultPosition(transform.position);
-				ShooterBehavior::ShootCircle(self, numOfBullets, [tex](ALC::Entity bullet) {
+				ShooterBehavior::ShootCircle(self, bulletAmnt, [tex](ALC::Entity bullet) {
 					// update body collision
 					auto& body = bullet.GetComponent<BulletBody>();
 					body.radius = 4.0f;
@@ -723,20 +723,37 @@ void RuiEnemy::Phase4Begin(const Phase lastphase, ALC::Entity self, ALC::Timeste
 	if (!moveStates.empty()) { moveStates.clear(); }
 }
 void RuiEnemy::Phase4Step(ALC::Entity self, ALC::Timestep ts) { 
+	// get seed from rnd number engine
+	std::random_device rd; 
+	std::mt19937 gen(rd());
 
 	auto [transform, cbody] = self.GetComponent<ALC::Transform2D, CharacterBody>();
 	auto tex = m_bulletTexture;
 	auto lvlBnds = BattleManager::GetLevelBounds();
+	float moveTime = 2.5f;
+	float rndRange;
+	int rndBulAmount = rand() % 10 + 8; // amount of bullets shot by the enemy 
 
-	float rndRange = rand() % 360 + 35;
-	float rndBulAmount = rand() % 7 + 2;
-	float rndVelScal = rand() % 200 + 150;  // a scalar for the velocity 
-	int rndDir = rand() % 4;
+	if (rndBulAmount >= 9) {
+		rndRange = rand() % 360 + 105; // range of the bullets 
+	}
+	else {
+		rndRange = rand() % 360 + 85; // range of the bullets 
+	}
+
+	float rndVelScal = rand() % 200 + 125;  // a scalar for the velocity 
+	std::uniform_int_distribution<int> rndDir(1, 3);
+	int Dir = rndDir(gen); // used to choose the direction of the bullet from the dir array 
 
 	//returns a random fire rate between 0.0 and 1.0 	
-	float rndFireRate = static_cast <float> (rand()) / static_cast <float> (RAND_MAX) + 0.2;
-	std::random_device rd; // get seed from rnd number engine
-	std::mt19937 gen(rd());
+	float rndFireRate = static_cast <float> (rand()) / static_cast <float> (RAND_MAX) / 2;
+
+	if (rndFireRate <= 0.0f) {
+		rndFireRate += 0.1;
+	}
+
+	//below produces a random int value
+	//use the distri to turn random uint to int // pick a pos from left to right lvl bounds
 	std::uniform_int_distribution<> distribX((lvlBnds.left + 61), (lvlBnds.right - 61));
 
 	// get a x pos between the left and right bounds of the level 
@@ -747,15 +764,17 @@ void RuiEnemy::Phase4Step(ALC::Entity self, ALC::Timestep ts) {
 	// get a y pos for the top to the enemies bottom (top / 4) of the level   
 	float rndYPos = distribY(gen);
 
-	ShooterBehavior::SetDefaultPosition(ALC::vec2(rndXPos,rndYPos));
-	ShooterBehavior::SetDefaultVelocity(dir[rndDir] * rndVelScal);
-
 	m_timer += ts.Get();
 	m_secondTimer += ts.Get();
 
-	if (m_timer <= ts.Get()) {
-
+	if (m_secondTimer <= ts.Get()) {
+		ShooterBehavior::SetDefaultPosition(ALC::vec2(rndXPos, rndYPos));
+		ShooterBehavior::SetDefaultVelocity(dir[Dir] * rndVelScal);
 		transform.position = ALC::vec2(rndXPos, rndYPos);
+	}
+	
+	if (m_timer <= ts.Get()) {
+	   
 		ShooterBehavior::ShootRange(self, rndBulAmount,rndRange, [tex](ALC::Entity bullet) {
 			// update body collision
 			auto& body = bullet.GetComponent<BulletBody>();
@@ -768,6 +787,10 @@ void RuiEnemy::Phase4Step(ALC::Entity self, ALC::Timestep ts) {
 		}, BulletTypes<BulletDeleterComponent, NormalBullet>());
 	}
 
+	if (m_secondTimer >= moveTime)
+	{
+		m_secondTimer = 0.0f;
+	}
 	if (m_timer >= rndFireRate ) {
 		m_timer = 0.0f;
 	}
