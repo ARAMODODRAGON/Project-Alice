@@ -3,7 +3,7 @@
 #define INVULN_FLASH_SPEED_SCALAR (1.0f / 0.06f)
 
 Character::Character()
-	: m_health(3.0f)
+	: m_health(6.0f)
 	, m_maxHealth(6.0f)
 	, m_invuln(0.0f)
 	, m_shouldFlashOnInvuln(true)
