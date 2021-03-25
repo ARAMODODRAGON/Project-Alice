@@ -594,7 +594,7 @@ void RuiEnemy::Phase3Step(ALC::Entity self, ALC::Timestep ts) {
 	auto [transform, cbody] = self.GetComponent<ALC::Transform2D, CharacterBody>();
 	auto tex = m_bulletTexture;
 	float fireRate = 0.2f; // maybe change this to a class var
-	float secFireRate =  0.2f; // used for tracking shot 
+	float secFireRate = 0.1f; // used for tracking shot 
 	
 
 	auto* playerb = BattleManager::GetCurrentCharacter();
@@ -648,7 +648,7 @@ void RuiEnemy::Phase3Step(ALC::Entity self, ALC::Timestep ts) {
 
 
 	if (m_secondTimer <= ts.Get()) {
-		if (canShoot) {
+		if (canShoot && shotCounter <= 6) {
 			//shoot a bullet when moving
 			ShooterBehavior::ShootRange(self, 5, 45.0f, [tex](ALC::Entity bullet) {
 				// update body collision
@@ -660,6 +660,7 @@ void RuiEnemy::Phase3Step(ALC::Entity self, ALC::Timestep ts) {
 				sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
 				sprite.bounds = sprite.textureBounds.Centered();
 				}, BulletTypes<BulletDeleterComponent, NormalBullet>());
+			shotCounter++;
 		}
 	}
 
@@ -672,6 +673,7 @@ void RuiEnemy::Phase3Step(ALC::Entity self, ALC::Timestep ts) {
 			if (m_moveState.GetIsComplete()) { // when moving is complete  erease that moving state and go back to shooting state(just called state in ruiEnemy.cpp
 				moveStates.erase(moveStates.begin());
 				canMove = false;
+				shotCounter = 0;
 			}
 		}
 		else {
@@ -695,8 +697,6 @@ void RuiEnemy::Phase3Step(ALC::Entity self, ALC::Timestep ts) {
 		canShoot = false;
 	}
 
-
-	
 	if (m_secondTimer >= secFireRate) {
 		m_secondTimer = 0.0f;
 	}

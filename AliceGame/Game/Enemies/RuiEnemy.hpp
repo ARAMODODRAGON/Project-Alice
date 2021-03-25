@@ -53,6 +53,7 @@ private:
 	float stateTimer;
 	ALC::uint8 dirIndex = 0;// an index to the direction array
 	ALC::uint8 rainPosIndex = 0; // used to determin which pos to drop bullets from the top 
+	ALC::uint8 shotCounter = 0;
 	ALC::vec2 oldPos;
 	ALC::vec2 plyrOldPos;
 
