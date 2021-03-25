@@ -246,28 +246,28 @@ void BattleLevel::Draw() {
 		pos.max = pos.min + ALC::vec2(40.0f, 40.0f);
 		target = ALC::rect(112.0f, 64.0f, 119.0f, 71.0f);
 		m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIElements);
-		m_ui.DrawText("Slow", m_lifetimeFont, pos.max + textoffset,  
+		m_ui.DrawText("Slow", m_lifetimeFont, pos.max + textoffset,
 					  ALC_COLOR_WHITE, ALC::HAlign::Left, ALC::VAlign::Bottom);
-		
+
 		// Z
 		pos.min.y += keysoffset; pos.max.y += keysoffset;
 		target = ALC::rect(121.0f, 64.0f, 128.0f, 71.0f);
 		m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIElements);
-		m_ui.DrawText("Mod/Switch", m_lifetimeFont, pos.max + textoffset,  
+		m_ui.DrawText("Mod/Switch", m_lifetimeFont, pos.max + textoffset,
 					  ALC_COLOR_WHITE, ALC::HAlign::Left, ALC::VAlign::Bottom);
-		
+
 		// X
 		pos.min.y += keysoffset; pos.max.y += keysoffset;
 		target = ALC::rect(112.0f, 73.0f, 119.0f, 80.0f);
 		m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIElements);
-		m_ui.DrawText("Burst", m_lifetimeFont, pos.max + textoffset,  
+		m_ui.DrawText("Burst", m_lifetimeFont, pos.max + textoffset,
 					  ALC_COLOR_WHITE, ALC::HAlign::Left, ALC::VAlign::Bottom);
-		
+
 		// C
 		pos.min.y += keysoffset; pos.max.y += keysoffset;
 		target = ALC::rect(121.0f, 73.0f, 128.0f, 80.0f);
 		m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIElements);
-		m_ui.DrawText("Shoot", m_lifetimeFont, pos.max + textoffset,  
+		m_ui.DrawText("Shoot", m_lifetimeFont, pos.max + textoffset,
 					  ALC_COLOR_WHITE, ALC::HAlign::Left, ALC::VAlign::Bottom);
 
 		// draw the enemy health and timer
@@ -287,8 +287,10 @@ void BattleLevel::Draw() {
 
 		ALC::vec2 lifetimepos = m_ui.GetInternalScreenSize() * 0.5f;
 		lifetimepos.y = levelbounds.bottom + healthbarmargin + healthbarthickness;
-		const ALC::uint32 lifetime = static_cast<ALC::uint32>(glm::max(ceilf(BattleManager::GetEnemy()->GetLifetime()), 0.0f));
-		m_ui.DrawText(VTOS(lifetime), m_lifetimeFont, lifetimepos, healthbarcolor, ALC::HAlign::Center);
+		if (BattleManager::GetEnemy()->GetLifetime() >= 0.0f) {
+			const ALC::uint32 lifetime = static_cast<ALC::uint32>(glm::max(ceilf(BattleManager::GetEnemy()->GetLifetime()), 0.0f));
+			m_ui.DrawText(VTOS(lifetime), m_lifetimeFont, lifetimepos, healthbarcolor, ALC::HAlign::Center);
+		}
 
 		// Finally, display the tracker at the bottom of the screen to show the enemy's horizontal position on the screen
 		ALC::Transform2D& enemyTransform = BattleManager::GetEnemy()->GetEntity().GetComponent<ALC::Transform2D>();

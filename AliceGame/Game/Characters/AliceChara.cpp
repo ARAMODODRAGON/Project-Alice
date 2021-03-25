@@ -550,15 +550,21 @@ void AliceChara::StateEndShield(const State nextstate, ALC::Entity self, ALC::Ti
 	auto shield = GetRegistry().GetEntity(m_shieldEntity);
 	auto& sprite = shield.GetComponent<ALC::SpriteComponent>();
 	sprite.shouldDraw = false;
+	SetShouldFlashOnInvuln(true);
 }
 void AliceChara::StateStepShield(ALC::Entity self, ALC::Timestep ts) {
 	auto shield = GetRegistry().GetEntity(m_shieldEntity);
 	auto [transform, sprite] = shield.GetComponent<ALC::Transform2D, ALC::SpriteComponent>();
 
 	// should shield state end?
-	if (!IsInvuln()) {
+	if (GetInvuln() <= 2.0f) {
 		m_activeSpell.ChangeState(m_lastSpell);
-		SetInvuln(2.0f);
+	}
+
+	// switch last state
+	if (GetModButton().Pressed()) {
+		if (m_lastSpell == State::Homing)		m_lastSpell = State::Spread;
+		else if (m_lastSpell == State::Spread)	m_lastSpell = State::Homing;
 	}
 
 	// update shield size
@@ -595,7 +601,7 @@ void AliceChara::StateStepShield(ALC::Entity self, ALC::Timestep ts) {
 			// update body collision
 			auto& body = e.GetComponent<BulletBody>();
 			body.radius = 18.0f;
-			body.damage = 0.125f;
+			body.damage = 0.33f;
 
 			// update sprite
 			auto& spr = e.GetComponent<ALC::SpriteComponent>();

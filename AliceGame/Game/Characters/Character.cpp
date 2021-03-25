@@ -174,7 +174,7 @@ void Character::Start(ALC::Entity self) {
 	auto& spr0 = collEntity.GetComponent<ALC::SpriteComponent>();
 
 	// initalize 
-	cb.radius = 4.0f;
+	cb.radius = 3.0f;
 	cb.mask = BTL_PLAYERMASK;
 	auto lb = BattleManager::GetLevelBounds();
 	tr.position.x = 0.0f;
@@ -210,7 +210,7 @@ void Character::UpdateSprites(ALC::Entity self, ALC::Timestep ts) {
 		tr0.position = tr.position; // place on top of character
 
 		auto& spr0 = collEntity.GetComponent<ALC::SpriteComponent>();
-		spr0.bounds = ALC::rect(cb.radius); // match size of character collider
+		spr0.bounds = ALC::rect(cb.radius * 1.5f); // match size of character collider
 
 	} else ALC_DEBUG_WARNING("Collider entity not found");
 }

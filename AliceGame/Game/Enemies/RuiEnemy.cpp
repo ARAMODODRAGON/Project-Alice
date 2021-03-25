@@ -63,6 +63,10 @@ void RuiEnemy::Update(ALC::Entity self, ALC::Timestep ts) {
 	// update the phase
 	m_phases(self, ts);
 
+	if (ALC::Keyboard::GetKey(ALC::KeyCode::KeyG).Pressed()) {
+		OnDeath(self);
+	}
+
 	auto* playerb = BattleManager::GetCurrentCharacter();
 	auto& playerTransform = playerb->GetEntity().GetComponent<ALC::Transform2D>();
 	ALC::vec2 offset = playerTransform.position - plyrOldPos;
@@ -100,11 +104,12 @@ void RuiEnemy::LateUpdate(ALC::Entity self, ALC::Timestep ts) {
 
 void RuiEnemy::OnDeath(ALC::Entity self) {
 	switch (m_phases.GetState()) {
-		case Phase::Phase0: m_phases.ChangeState(Phase::Phase1); break;
-		case Phase::Phase1: m_phases.ChangeState(Phase::Phase2); break;
-		case Phase::Phase2: m_phases.ChangeState(Phase::Phase3); break;
-		case Phase::Phase3: m_phases.ChangeState(Phase::Phase4); break;
-		case Phase::Phase4: m_phases.ChangeState(Phase::PostBattle); break;
+		case Phase::PreBattle:	m_phases.ChangeState(Phase::Phase0); break;
+		case Phase::Phase0:		m_phases.ChangeState(Phase::Phase1); break;
+		case Phase::Phase1:		m_phases.ChangeState(Phase::Phase2); break;
+		case Phase::Phase2:		m_phases.ChangeState(Phase::Phase3); break;
+		case Phase::Phase3:		m_phases.ChangeState(Phase::Phase4); break;
+		case Phase::Phase4:		m_phases.ChangeState(Phase::PostBattle); break;
 		default: break;
 	}
 	self.GetComponent<CharacterBody>().velocity = ALC::vec2();
@@ -112,7 +117,7 @@ void RuiEnemy::OnDeath(ALC::Entity self) {
 
 void RuiEnemy::BattleBegin() {
 	// we start by changing phases
-	m_phases.ChangeState(Phase::Phase4);
+	m_phases.ChangeState(Phase::PreBattle);
 }
 
 void RuiEnemy::PreBattleBegin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) { }
@@ -797,6 +802,8 @@ void RuiEnemy::Phase4Step(ALC::Entity self, ALC::Timestep ts) {
 }
 
 void RuiEnemy::PostBattleBegin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
+	SetHealth(0.0f);
+	SetLifetime(-1.0f);
 	// enemy is done fighting
 	MarkDone();
 }
