@@ -15,6 +15,7 @@ AliceChara::AliceChara()
 	, m_rotationspeed(300.0f)
 	, m_spinspeed(900.0f)
 	, m_isRepositioning(false)
+	, m_shootIndex(0)
 	, m_activeSpell(this, State::Homing)
 	, m_lastSpell(State::Homing)
 	, m_shieldCharge(100.0f)
@@ -24,7 +25,7 @@ AliceChara::AliceChara()
 	, m_curSpriteAnimation(0) {
 	// bind states
 	m_activeSpell.Bind(State::Homing, &AliceChara::StateStepHoming, &AliceChara::StateBeginHoming);
-	m_activeSpell.Bind(State::Spinning, &AliceChara::StateStepSpinning, &AliceChara::StateBeginSpinning);
+	m_activeSpell.Bind(State::Spread, &AliceChara::StateStepSpread, &AliceChara::StateBeginSpread);
 	m_activeSpell.Bind(State::Shield, &AliceChara::StateStepShield, &AliceChara::StateBeginShield, &AliceChara::StateEndShield);
 	//m_activeSpell.Bind(State::Death, &AliceChara::StateStepDeath, &AliceChara::StateBeginDeath);
 }
@@ -139,9 +140,9 @@ void AliceChara::Update(ALC::Entity self, ALC::Timestep ts) {
 		if (GetModButton().Pressed()) {
 			switch (m_activeSpell.GetState()) {
 				case State::Homing:
-					m_activeSpell.ChangeState(State::Spinning);
+					m_activeSpell.ChangeState(State::Spread);
 					break;
-				case State::Spinning:
+				case State::Spread:
 					m_activeSpell.ChangeState(State::Homing);
 					break;
 				default: ALC_DEBUG_WARNING("failed to switch states"); break;
@@ -253,7 +254,7 @@ ALC::rect AliceChara::GetAttackTargetRect() const {
 	State s = (m_activeSpell.GetState() == State::Shield ? m_lastSpell : m_activeSpell.GetState());
 	switch (s) {
 		case State::Homing: return ALC::rect(68.0f, 4.0f, 92.0f, 28.0f);
-		case State::Spinning: return ALC::rect(36.0f, 4.0f, 60.0f, 28.0f);
+		case State::Spread: return ALC::rect(36.0f, 4.0f, 60.0f, 28.0f);
 		default: break;
 	}
 	return ALC::rect(4.0f, 4.0f, 28.0f, 28.0f);
@@ -361,6 +362,7 @@ void AliceChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 				// update body collision
 				auto& body = e.GetComponent<BulletBody>();
 				body.radius = 18.0f;
+				body.damage = 0.75f;
 
 				// update position
 				auto& tr = e.GetComponent<ALC::Transform2D>();
@@ -394,6 +396,7 @@ void AliceChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 			// update body collision
 			auto& body = e.GetComponent<BulletBody>();
 			body.radius = 18.0f;
+			body.damage = 1.0f;
 
 			// update position
 			auto& tr = e.GetComponent<ALC::Transform2D>();
@@ -413,26 +416,18 @@ void AliceChara::StateStepHoming(ALC::Entity self, ALC::Timestep ts) {
 
 #pragma endregion
 
-#pragma region Spinning State
+#pragma region Spread State
 
-void AliceChara::StateBeginSpinning(const State laststate, ALC::Entity self, ALC::Timestep ts) {
-	m_basicShootTimer = 0.0f;
-
+void AliceChara::StateBeginSpread(const State laststate, ALC::Entity self, ALC::Timestep ts) {
 	m_isRepositioning = false;
 	for (size_t i = 0; i < m_pointShooters.size(); i++) {
 		auto& point = m_pointShooters[i];
-
-		// decide if it should reposition
 		const float targetrot = (i == 0 ? 90.0f : 270.0f);
 		if (!ALC::NearlyEqual(point.rotation, targetrot))
 			m_isRepositioning = true;
-
-		// reset the target
-		if (i == 0) point.target = 0;
-		else		point.target = 3;
 	}
 }
-void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
+void AliceChara::StateStepSpread(ALC::Entity self, ALC::Timestep ts) {
 	// make sure the points are in the right position
 	if (m_isRepositioning) {
 		float speed = m_spinspeed * 3.0f;
@@ -455,149 +450,81 @@ void AliceChara::StateStepSpinning(ALC::Entity self, ALC::Timestep ts) {
 		else			return;
 	}
 
-	// dont do anything if not shooting
-	if (!GetShootButton()) return;
+	auto& selftr = self.GetComponent<ALC::Transform2D>();
+	const float slowmult = (GetSlowButton() ? 1.13f : 1.0f);
+	auto tex = m_spellsTexture;
 
-	float slowmult = (GetSlowButton() ? 1.7f : 1.0f);
-	auto& tr = self.GetComponent<ALC::Transform2D>();
-
-	// basic shooting
-	if (GetShootButton())	m_basicShootTimer += ts * slowmult;
-	else					m_basicShootTimer = 0.0f;
+	// shoot range
+	if (GetShootButton()) m_basicShootTimer += ts * slowmult;
+	else m_basicShootTimer = 0.0f;
 	while (m_basicShootTimer > m_basicShootSpeed) {
 		m_basicShootTimer -= m_basicShootSpeed;
-		float delay = m_basicShootTimer;
-		ShooterBehavior::SetDefaultVelocity(ALC::vec2(0.0f, 800.0f) * slowmult);
-		auto tex = m_spellsTexture;
-		ShooterBehavior::SetDefaultPosition(ALC::vec2(tr.position.x, tr.position.y + 16.5f));
-		ShooterBehavior::Shoot(self, 1, [delay, tex](ALC::Entity e) {
+
+		ALC::vec2 vel(0.0f, 800.0f * slowmult);
+		SetDefaultVelocity(vel);
+		SetDefaultPosition(selftr.position + vel * m_basicShootTimer);
+
+		ALC::uint32 i = m_shootIndex++ % 2;
+		ShootRange(self, 12, 50.0f, [tex, &i](ALC::Entity e) {
+			// update body collision
+			auto& body = e.GetComponent<BulletBody>();
+			body.radius = 22.0f;
+			body.damage = 0.18f;
+
+			// update sprite
+			auto& spr = e.GetComponent<ALC::SpriteComponent>();
+			spr.color.a = 0.4f;
+			spr.texture = tex;
+
+			if (i++ % 2) spr.textureBounds = ALC::rect(0.0f, 32.0f, 15.0f, 47.0f);
+			else		spr.textureBounds = ALC::rect(16.0f, 48.0f, 31.0f, 63.0f);
+			spr.bounds = spr.textureBounds.Centered();
+		}, BulletTypes<BulletDeleterComponent, NormalBullet>());
+	}
+
+	// shoot homing
+	if (GetShootButton()) m_homingShootTimer += ts * slowmult;
+	else m_homingShootTimer = 0.0f;
+	while (m_homingShootTimer > m_homingShootSpeed) {
+		m_homingShootTimer -= m_homingShootSpeed;
+
+		auto callable = [tex](ALC::Entity e) {
 			// update body collision
 			auto& body = e.GetComponent<BulletBody>();
 			body.radius = 18.0f;
-
-			// update position
-			auto& tr = e.GetComponent<ALC::Transform2D>();
-			tr.position += body.velocity * delay;
+			body.damage = 0.125f;
 
 			// update sprite
 			auto& spr = e.GetComponent<ALC::SpriteComponent>();
 			spr.color.a = 0.3f;
 			spr.texture = tex;
-
-			//spr.textureBounds = ALC::rect(0.0f, 16.0f, 15.0f, 31.0f);
-			spr.textureBounds = ALC::rect(16.0f, 16.0f, 31.0f, 31.0f);
+			spr.textureBounds = ALC::rect(16.0f, 0.0f, 31.0f, 15.0f);
 			spr.bounds = spr.textureBounds.Centered();
-		}, BulletTypes<BulletDeleterComponent, NormalBullet>());
-	}
+		};
 
-	// spin the point shooters
-	for (size_t i = 0; i < m_pointShooters.size(); i++) {
-		auto& point = m_pointShooters[i];
+		const static ALC::vec2 vel0(0.0f, 800.0f * slowmult);
+		const float diffangle = glm::radians(30.0f);
+		const static ALC::vec2 vel1 = glm::rotate(vel0, -diffangle);
+		const static ALC::vec2 vel2 = glm::rotate(vel0, diffangle);
+		for (size_t i = 0; i < m_pointShooters.size(); i++) {
+			auto& point = m_pointShooters[i];
+			auto pos = point.CalcPosition(selftr.position);
 
-		// spin and wrap
-		point.rotation += m_spinspeed * ts * slowmult;
-		while (point.rotation > 360.0f) point.rotation -= 360.0f;
+			// forward
+			SetDefaultPosition(pos + vel0 * m_homingShootTimer);
+			SetDefaultVelocity(vel0);
+			Shoot(self, 1, callable, BulletTypes<BulletDeleterComponent, HomingBullet>());
 
-		float shootA = 0.0f, shootB = 0.0f, shootC = 0.0f;
-
-		constexpr float angleA = 150.0f;
-		constexpr float angleB = 180.0f;
-		constexpr float angleC = 210.0f;
-
-		// shoot when they reach certain positions
-		if (point.target == 0 && point.rotation > angleA) {
-			shootA = (point.rotation - angleA) / (m_spinspeed); // gives delay
-			point.target = 1;
+			// sideways
+			if (i == 0) {
+				SetDefaultPosition(pos + vel1 * m_homingShootTimer);
+				SetDefaultVelocity(vel1);
+			} else {
+				SetDefaultPosition(pos + vel2 * m_homingShootTimer);
+				SetDefaultVelocity(vel2);
+			}
+			Shoot(self, 1, callable, BulletTypes<BulletDeleterComponent, HomingBullet>());
 		}
-		if (point.target == 1 && point.rotation > angleB) {
-			shootB = (point.rotation - angleB) / (m_spinspeed); // gives delay
-			point.target = 2;
-		}
-		if (point.target == 2 && point.rotation > angleC) {
-			shootC = (point.rotation - angleC) / (m_spinspeed); // gives delay
-			point.target = 3;
-		}
-		if (point.target == 3 && point.rotation < angleA) {
-			point.target = 0; // reset
-		}
-
-		#pragma region Shooting the positional bullets
-
-		ALC::vec2 vel = ALC::vec2(0.0f, 800.0f) * slowmult;
-		auto tex = m_spellsTexture;
-		ShooterBehavior::SetDefaultVelocity(vel);
-
-		if (shootA > 0.0f) {
-			auto pos = tr.position + ALC::vec2(glm::rotateZ(VEC3_DOWN * point.distance, ALC_TO_RADIANS(angleA))) + vel * shootA;
-			pos.y = tr.position.y + point.distance;
-			ShooterBehavior::SetDefaultPosition(pos);
-			ShooterBehavior::Shoot(self, 1, [shootA, tex](ALC::Entity e) {
-				// update body collision
-				auto& body = e.GetComponent<BulletBody>();
-				body.radius = 4.5f;
-				body.damage = 2.0f;
-
-				// update position
-				auto& tr = e.GetComponent<ALC::Transform2D>();
-				tr.position += body.velocity * shootA;
-
-				// update sprite
-				auto& spr = e.GetComponent<ALC::SpriteComponent>();
-				spr.color.a = 0.3f;
-				spr.texture = tex;
-				spr.textureBounds = ALC::rect(0.0f, 0.0f, 15.0f, 15.0f);
-				spr.bounds = spr.textureBounds.Centered();
-			}, BulletTypes<BulletDeleterComponent, NormalBullet>());
-		}
-
-		if (shootB > 0.0f) {
-			auto pos = tr.position + ALC::vec2(glm::rotateZ(VEC3_DOWN * point.distance, ALC_TO_RADIANS(angleB))) + vel * shootB;
-			pos.y = tr.position.y + point.distance;
-			ShooterBehavior::SetDefaultPosition(pos);
-			ShooterBehavior::Shoot(self, 1, [shootB, tex](ALC::Entity e) {
-				// update body collision
-				auto& body = e.GetComponent<BulletBody>();
-				body.radius = 18.0f;
-				body.damage = 2.0f;
-
-				// update position
-				auto& tr = e.GetComponent<ALC::Transform2D>();
-				tr.position += body.velocity * shootB;
-
-				// update sprite
-				auto& spr = e.GetComponent<ALC::SpriteComponent>();
-				spr.color.a = 0.3f;
-				spr.texture = tex;
-				spr.textureBounds = ALC::rect(0.0f, 0.0f, 15.0f, 15.0f);
-				spr.bounds = spr.textureBounds.Centered();
-			}, BulletTypes<BulletDeleterComponent, NormalBullet>());
-		}
-
-		if (shootC > 0.0f) {
-			auto pos = tr.position + ALC::vec2(glm::rotateZ(VEC3_DOWN * point.distance, ALC_TO_RADIANS(angleC))) + vel * shootC;
-			pos.y = tr.position.y + point.distance;
-			ShooterBehavior::SetDefaultPosition(pos);
-			ShooterBehavior::Shoot(self, 1, [shootC, tex](ALC::Entity e) {
-				// update body collision
-				auto& body = e.GetComponent<BulletBody>();
-				body.radius = 18.0f;
-				body.damage = 2.0f;
-
-				// update position
-				auto& tr = e.GetComponent<ALC::Transform2D>();
-				tr.position += body.velocity * shootC;
-
-				// update sprite
-				auto& spr = e.GetComponent<ALC::SpriteComponent>();
-				spr.color.a = 0.3f;
-				spr.texture = tex;
-				spr.textureBounds = ALC::rect(0.0f, 0.0f, 15.0f, 15.0f);
-				spr.bounds = spr.textureBounds.Centered();
-			}, BulletTypes<BulletDeleterComponent, NormalBullet>());
-		}
-
-		#pragma endregion
-
 	}
 
 }
@@ -628,39 +555,58 @@ void AliceChara::StateStepShield(ALC::Entity self, ALC::Timestep ts) {
 	auto [transform, sprite] = shield.GetComponent<ALC::Transform2D, ALC::SpriteComponent>();
 
 	// should shield state end?
-	if (!IsInvuln()) m_activeSpell.ChangeState(m_lastSpell);
+	if (!IsInvuln()) {
+		m_activeSpell.ChangeState(m_lastSpell);
+		SetInvuln(2.0f);
+	}
 
 	// update shield size
 
-	m_basicShootTimer += ts * 5.0f;
+	m_homingShootTimer += ts * 5.0f;
 
 	ALC::rect bounds = sprite.textureBounds.Centered();
 
 	// (sin(timer) + 1.0f) * 0.5f	// generates a nuber from 0 to 1
 	// * 5.0f						// scales it from 0 to 5
-	bounds.min.x = -(bounds.max.x += (sin(m_basicShootTimer) + 1.0f) * 0.5f * 5.0f);
-	bounds.min.y = -(bounds.max.y += (cos(m_basicShootTimer) + 1.0f) * 0.5f * 5.0f);
+	bounds.min.x = -(bounds.max.x += (sin(m_homingShootTimer) + 1.0f) * 0.5f * 5.0f);
+	bounds.min.y = -(bounds.max.y += (cos(m_homingShootTimer) + 1.0f) * 0.5f * 5.0f);
 
 	sprite.bounds = bounds;
 
 	// update pos
-	auto& selfTransform = self.GetComponent<ALC::Transform2D>();
-	transform.position = selfTransform.position;
+	auto& selftr = self.GetComponent<ALC::Transform2D>();
+	transform.position = selftr.position;
+
+	const float slowmult = (GetSlowButton() ? 1.13f : 1.0f);
+	auto tex = m_spellsTexture;
+
+	// shoot
+	auto shootspeed = m_basicShootSpeed * 3.0f;
+	if (GetShootButton()) m_basicShootTimer += ts;
+	else m_basicShootTimer = 0.0f;
+	while (m_basicShootTimer > shootspeed) {
+		m_basicShootTimer -= shootspeed;
+
+		SetDefaultPosition(selftr.position);
+		SetDefaultVelocity(ALC::vec2(0.0f, 800.0f * slowmult));
+		ShootCircle(self, 20, [tex](ALC::Entity e){
+			// update body collision
+			auto& body = e.GetComponent<BulletBody>();
+			body.radius = 18.0f;
+			body.damage = 0.125f;
+
+			// update sprite
+			auto& spr = e.GetComponent<ALC::SpriteComponent>();
+			spr.color.a = 0.3f;
+			spr.texture = tex;
+			spr.textureBounds = ALC::rect(16.0f, 0.0f, 31.0f, 15.0f);
+			spr.bounds = spr.textureBounds.Centered();
+		}, BulletTypes<BulletDeleterComponent, HomingBullet>());
+	}
 
 }
 
 #pragma endregion
-
-//#pragma region Death State
-//
-//void AliceChara::StateBeginDeath(const State laststate, ALC::Entity self, ALC::Timestep ts) {
-//
-//}
-//void AliceChara::StateStepDeath(ALC::Entity self, ALC::Timestep ts) {
-//
-//}
-//
-//#pragma endregion
 
 ALC::vec2 AliceChara::PointShooter::CalcPosition(const ALC::vec2& playerpos) {
 	// set position

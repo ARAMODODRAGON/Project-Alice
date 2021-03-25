@@ -22,18 +22,16 @@ private:
 	void OnDeath(ALC::Entity self) override;
 
 	enum class State : ALC::uint8 {
-		Homing, Spinning, Shield
+		Homing, Spread, Shield
 	};
 
 	void StateBeginHoming(const State laststate, ALC::Entity self, ALC::Timestep ts);
 	void StateStepHoming(ALC::Entity self, ALC::Timestep ts);
-	void StateBeginSpinning(const State laststate, ALC::Entity self, ALC::Timestep ts);
-	void StateStepSpinning(ALC::Entity self, ALC::Timestep ts);
+	void StateBeginSpread(const State laststate, ALC::Entity self, ALC::Timestep ts);
+	void StateStepSpread(ALC::Entity self, ALC::Timestep ts);
 	void StateBeginShield(const State laststate, ALC::Entity self, ALC::Timestep ts);
 	void StateEndShield(const State nextstate, ALC::Entity self, ALC::Timestep ts);
 	void StateStepShield(ALC::Entity self, ALC::Timestep ts);
-	//void StateBeginDeath(const State laststate, ALC::Entity self, ALC::Timestep ts);
-	//void StateStepDeath(ALC::Entity self, ALC::Timestep ts);
 
 	struct PointShooter {
 		ALC::EntityID entityID;
@@ -55,6 +53,7 @@ private:
 	float m_rotationspeed;
 	float m_spinspeed;
 	bool m_isRepositioning;
+	ALC::uint32 m_shootIndex;
 	ALC::EntityStateMachine<AliceChara, State> m_activeSpell;
 	ALC::array<PointShooter, 2> m_pointShooters;
 	ALC::Texture m_spellsTexture;

@@ -7,7 +7,7 @@ Character::Character()
 	, m_maxHealth(6.0f)
 	, m_invuln(0.0f)
 	, m_shouldFlashOnInvuln(true)
-	, m_invulnOnHit(1.0f)
+	, m_invulnOnHit(3.0f)
 	, m_maxSpeed(300.0f)
 	, m_slowScalar(0.4f) {
 	ShooterBehavior::SetDefaultCollisionmask(BTL_ENEMYMASK); // only hit enemies
