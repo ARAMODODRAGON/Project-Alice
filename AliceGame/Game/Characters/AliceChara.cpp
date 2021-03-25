@@ -14,6 +14,7 @@ AliceChara::AliceChara()
 	, m_homingShootSpeed(0.12f)
 	, m_rotationspeed(300.0f)
 	, m_spinspeed(900.0f)
+	, m_shieldspinoff(0.0f)
 	, m_isRepositioning(false)
 	, m_shootIndex(0)
 	, m_activeSpell(this, State::Homing)
@@ -582,14 +583,15 @@ void AliceChara::StateStepShield(ALC::Entity self, ALC::Timestep ts) {
 
 	// shoot
 	auto shootspeed = m_basicShootSpeed * 3.0f;
-	if (GetShootButton()) m_basicShootTimer += ts;
+	m_shieldspinoff += ts * slowmult;
+	if (GetShootButton()) m_basicShootTimer += ts * slowmult;
 	else m_basicShootTimer = 0.0f;
 	while (m_basicShootTimer > shootspeed) {
 		m_basicShootTimer -= shootspeed;
 
 		SetDefaultPosition(selftr.position);
 		SetDefaultVelocity(ALC::vec2(0.0f, 800.0f * slowmult));
-		ShootCircle(self, 20, [tex](ALC::Entity e){
+		ShootCircle(self, 20, [tex](ALC::Entity e) {
 			// update body collision
 			auto& body = e.GetComponent<BulletBody>();
 			body.radius = 18.0f;

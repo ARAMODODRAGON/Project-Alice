@@ -52,6 +52,7 @@ private:
 	float m_homingShootSpeed;
 	float m_rotationspeed;
 	float m_spinspeed;
+	float m_shieldspinoff;
 	bool m_isRepositioning;
 	ALC::uint32 m_shootIndex;
 	ALC::EntityStateMachine<AliceChara, State> m_activeSpell;
