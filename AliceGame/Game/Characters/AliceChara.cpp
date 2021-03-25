@@ -146,7 +146,8 @@ void AliceChara::Update(ALC::Entity self, ALC::Timestep ts) {
 				case State::Spread:
 					m_activeSpell.ChangeState(State::Homing);
 					break;
-				default: ALC_DEBUG_WARNING("failed to switch states"); break;
+				default: //ALC_DEBUG_WARNING("failed to switch states"); 
+					break;
 			}
 		}
 
