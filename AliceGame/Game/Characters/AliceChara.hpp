@@ -48,10 +48,10 @@ private:
 
 	float m_basicShootTimer;
 	float m_homingShootTimer;
-	float m_basicShootSpeed;
-	float m_homingShootSpeed;
-	float m_rotationspeed;
-	float m_spinspeed;
+	const float m_basicShootSpeed;
+	const float m_homingShootSpeed;
+	const float m_rotationspeed;
+	const float m_spinspeed;
 	float m_shieldspinoff;
 	bool m_isRepositioning;
 	ALC::uint32 m_shootIndex;
