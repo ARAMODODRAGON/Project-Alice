@@ -44,19 +44,23 @@ private:
 	State m_prevState;
 	ALC::Texture m_bulletTexture;
 	ALC::vector<MoveStates::States> moveStates;
+	bool canMove = true;
+	bool canShoot;
 	float m_timer;
 	float m_secondTimer; // yet another timer 
+	float m_thirdTimer; // gosh i love my timers 
 	float plyrMoveTimer; //another Timer? jeez
 	float stateTimer;
-	ALC::uint8 dirIndex;// an index to the direction array
+	ALC::uint8 dirIndex = 0;// an index to the direction array
+	ALC::uint8 rainPosIndex = 0; // used to determin which pos to drop bullets from the top 
 	ALC::vec2 oldPos;
 	ALC::vec2 plyrOldPos;
 
 	ALC::vec2 dir[4] = {
-	ALC::vec2(0,1),	  //up
-	ALC::vec2(1,0),	  //right
-	ALC::vec2(0,-1),  //down
-	ALC::vec2(-1,0)	 //left
+		ALC::vec2(0,1),	  //up
+		ALC::vec2(1,0),	  //right
+		ALC::vec2(0,-1),  //down
+		ALC::vec2(-1,0)	 //left
 	};
 
 	// phases

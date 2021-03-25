@@ -18,7 +18,7 @@ constexpr float phase2lifetime = 90.0f;
 constexpr float phase3health = 1500.0f;
 constexpr float phase3lifetime = 90.0f;
 
-constexpr float phase4health = 1500.0f;
+constexpr float phase4health = 2500.0f;
 constexpr float phase4lifetime = 90.0f;
 
 RuiEnemy::RuiEnemy()
@@ -112,7 +112,7 @@ void RuiEnemy::OnDeath(ALC::Entity self) {
 
 void RuiEnemy::BattleBegin() {
 	// we start by changing phases
-	m_phases.ChangeState(Phase::Phase4);
+	m_phases.ChangeState(Phase::Phase3);
 }
 
 void RuiEnemy::PreBattleBegin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) { }
@@ -588,8 +588,9 @@ void RuiEnemy::Phase3Begin(const Phase lastphase, ALC::Entity self, ALC::Timeste
 void RuiEnemy::Phase3Step(ALC::Entity self, ALC::Timestep ts) {
 	auto [transform, cbody] = self.GetComponent<ALC::Transform2D, CharacterBody>();
 	auto tex = m_bulletTexture;
-	float fireRate = 0.5f; // maybe change this to a class var
-	float secFireRate = 1.0f; // used for tracking shot 
+	float fireRate = 0.2f; // maybe change this to a class var
+	float secFireRate =  0.2f; // used for tracking shot 
+	
 
 	auto* playerb = BattleManager::GetCurrentCharacter();
 	auto& playerTransform = playerb->GetEntity().GetComponent<ALC::Transform2D>();
@@ -599,13 +600,22 @@ void RuiEnemy::Phase3Step(ALC::Entity self, ALC::Timestep ts) {
 	if (glm::length2(targetdir) > 0.0f) { targetdir = glm::normalize(targetdir); }
 
 	ShooterBehavior::SetDefaultVelocity(dir[2] * 300.0f);
+	ALC::vec2 rainPos[5] = {
+		  ALC::vec2(0.0f, BattleManager::GetLevelBounds().top),
+		  ALC::vec2(BattleManager::GetLevelBounds().left + 60.0f, BattleManager::GetLevelBounds().top),
+		  ALC::vec2(BattleManager::GetLevelBounds().right - 60.0f, BattleManager::GetLevelBounds().top),
+		  ALC::vec2(BattleManager::GetLevelBounds().left / 2.0f, BattleManager::GetLevelBounds().top),
+		  ALC::vec2(BattleManager::GetLevelBounds().right / 2.0f, BattleManager::GetLevelBounds().top)
+
+	};
 
 	m_timer += ts.Get();
 	stateTimer += ts.Get();
 	m_secondTimer += ts.Get(); // used for the tracking shot 
 
 	if (m_timer <= ts.Get()) {
-		ShooterBehavior::SetDefaultPosition(ALC::vec2(0.0f, BattleManager::GetLevelBounds().top));
+
+		ShooterBehavior::SetDefaultPosition(rainPos[rainPosIndex]);
 		ShooterBehavior::Shoot(self, 1, [tex](ALC::Entity bullet) {
 			// update body collision
 			auto& body = bullet.GetComponent<BulletBody>();
@@ -617,93 +627,69 @@ void RuiEnemy::Phase3Step(ALC::Entity self, ALC::Timestep ts) {
 			sprite.bounds = sprite.textureBounds.Centered();
 			}, BulletTypes<BulletDeleterComponent, NormalBullet>());
 
-		ShooterBehavior::SetDefaultPosition(ALC::vec2(BattleManager::GetLevelBounds().left + 10.0f, BattleManager::GetLevelBounds().top));
-		ShooterBehavior::Shoot(self, 1, [tex](ALC::Entity bullet) {
-			// update body collision
-			auto& body = bullet.GetComponent<BulletBody>();
-			body.radius = 4.0f;
-			auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
-			// this should be loaded ahead of time
-			sprite.texture = tex;
-			sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
-			sprite.bounds = sprite.textureBounds.Centered();
-			}, BulletTypes<BulletDeleterComponent, NormalBullet>());
+		rainPosIndex++;
 
-		ShooterBehavior::SetDefaultPosition(ALC::vec2(BattleManager::GetLevelBounds().right - 10.0f, BattleManager::GetLevelBounds().top));
-		ShooterBehavior::Shoot(self, 1, [tex](ALC::Entity bullet) {
-			// update body collision
-			auto& body = bullet.GetComponent<BulletBody>();
-			body.radius = 4.0f;
-			auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
-			// this should be loaded ahead of time
-			sprite.texture = tex;
-			sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
-			sprite.bounds = sprite.textureBounds.Centered();
-			}, BulletTypes<BulletDeleterComponent, NormalBullet>());
-
-		ShooterBehavior::SetDefaultPosition(ALC::vec2(BattleManager::GetLevelBounds().left / 2.0f, BattleManager::GetLevelBounds().top));
-		ShooterBehavior::Shoot(self, 1, [tex](ALC::Entity bullet) {
-			// update body collision
-			auto& body = bullet.GetComponent<BulletBody>();
-			body.radius = 4.0f;
-			auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
-			// this should be loaded ahead of time
-			sprite.texture = tex;
-			sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
-			sprite.bounds = sprite.textureBounds.Centered();
-			}, BulletTypes<BulletDeleterComponent, NormalBullet>());
-
-		ShooterBehavior::SetDefaultPosition(ALC::vec2(BattleManager::GetLevelBounds().right / 2.0f, BattleManager::GetLevelBounds().top));
-		ShooterBehavior::Shoot(self, 1, [tex](ALC::Entity bullet) {
-			// update body collision
-			auto& body = bullet.GetComponent<BulletBody>();
-			body.radius = 4.0f;
-			auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
-			// this should be loaded ahead of time
-			sprite.texture = tex;
-			sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
-			sprite.bounds = sprite.textureBounds.Centered();
-			}, BulletTypes<BulletDeleterComponent, NormalBullet>());
+		if (rainPosIndex > 4) {
+			rainPosIndex = 0;
+		}
 	} 
 
 	else if (m_timer >= fireRate) {
 		m_timer = 0.0f;
-	
 	}
-
+	
 	ShooterBehavior::SetDefaultPosition(transform.position);
 	ShooterBehavior::SetDefaultVelocity(targetdir * 300.0f);
 
+
 	if (m_secondTimer <= ts.Get()) {
-		//shoot a bullet when moving
-		ShooterBehavior::ShootRange(self, 5, 45.0f, [tex](ALC::Entity bullet) {
-			// update body collision
-			auto& body = bullet.GetComponent<BulletBody>();
-			body.radius = 4.0f;
-			auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
-			// this should be loaded ahead of time
-			sprite.texture = tex;
-			sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
-			sprite.bounds = sprite.textureBounds.Centered();
-			}, BulletTypes<BulletDeleterComponent, NormalBullet>());
-	}
-
-	if (!moveStates.empty()) {
-		ALC::uint8 tmpState = static_cast<ALC::uint8>(m_state);
-		m_moveState.PerformMoveState(this, moveStates[0], &tmpState, ts, 0.0f);
-
-		if (m_moveState.GetIsComplete()) { // when moving is complete  erease that moving state and go back to shooting state(just called state in ruiEnemy.cpp
-			moveStates.erase(moveStates.begin());
+		if (canShoot) {
+			//shoot a bullet when moving
+			ShooterBehavior::ShootRange(self, 5, 45.0f, [tex](ALC::Entity bullet) {
+				// update body collision
+				auto& body = bullet.GetComponent<BulletBody>();
+				body.radius = 4.0f;
+				auto& sprite = bullet.GetComponent<ALC::SpriteComponent>();
+				// this should be loaded ahead of time
+				sprite.texture = tex;
+				sprite.textureBounds = ALC::rect(16.0f, 80.0f, 31.0f, 95.0f);
+				sprite.bounds = sprite.textureBounds.Centered();
+				}, BulletTypes<BulletDeleterComponent, NormalBullet>());
 		}
 	}
-	else {
-		moveStates.push_back(MoveStates::States::UpLeft);
-		moveStates.push_back(MoveStates::States::UpRight);
-		moveStates.push_back(MoveStates::States::Left);
-		moveStates.push_back(MoveStates::States::Move);
-		moveStates.push_back(MoveStates::States::DownLeft);
-		moveStates.push_back(MoveStates::States::Right);
+
+	if(canMove) {
+
+		if (!moveStates.empty()) {
+			ALC::uint8 tmpState = static_cast<ALC::uint8>(m_state);
+			m_moveState.PerformMoveState(this, moveStates[0], &tmpState, ts, 0.0f);
+
+			if (m_moveState.GetIsComplete()) { // when moving is complete  erease that moving state and go back to shooting state(just called state in ruiEnemy.cpp
+				moveStates.erase(moveStates.begin());
+				canMove = false;
+			}
+		}
+		else {
+			moveStates.push_back(MoveStates::States::UpLeft);
+			moveStates.push_back(MoveStates::States::UpRight);
+			moveStates.push_back(MoveStates::States::Left);
+			moveStates.push_back(MoveStates::States::Move);
+			moveStates.push_back(MoveStates::States::DownLeft);
+			moveStates.push_back(MoveStates::States::Right);
+		}
 	}
+
+	if (!canMove) {
+		m_thirdTimer += ts.Get();
+		canShoot = true;
+	}
+
+	if (m_moveState.GetIsComplete() && m_thirdTimer >= 4.0f) { 
+		m_thirdTimer = 0.0f; 
+		canMove = true; 
+		canShoot = false;
+	}
+
 
 	
 	if (m_secondTimer >= secFireRate) {
