@@ -18,7 +18,7 @@ constexpr float phase2lifetime = 90.0f;
 constexpr float phase3health = 1500.0f;
 constexpr float phase3lifetime = 90.0f;
 
-constexpr float phase4health = 2500.0f;
+constexpr float phase4health = 1500.0f;
 constexpr float phase4lifetime = 90.0f;
 
 RuiEnemy::RuiEnemy()
