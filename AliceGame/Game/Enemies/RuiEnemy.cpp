@@ -724,8 +724,13 @@ void RuiEnemy::Phase4Begin(const Phase lastphase, ALC::Entity self, ALC::Timeste
 	if (m_state != State::None) { m_prevState = m_state; }
 
 	if (!moveStates.empty()) { moveStates.clear(); }
+
+	
 }
 void RuiEnemy::Phase4Step(ALC::Entity self, ALC::Timestep ts) { 
+
+	//stop drifting problem in this phase 
+	self.GetComponent<CharacterBody>().velocity = ALC::vec2();
 	// get seed from rnd number engine
 	std::random_device rd; 
 	std::mt19937 gen(rd());
