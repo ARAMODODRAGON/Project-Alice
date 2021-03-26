@@ -39,7 +39,6 @@ namespace cjs {
 	inline void fence::resume() {
 		m_shouldresume = true;
 		while (m_joinedcount > 0);
-		std::this_thread::yield();
 	}
 
 	inline void fence::await_and_resume() {
