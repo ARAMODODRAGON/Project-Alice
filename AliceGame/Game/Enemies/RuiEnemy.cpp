@@ -50,6 +50,10 @@ void RuiEnemy::Start(ALC::Entity self) {
 	auto* playerb = BattleManager::GetCurrentCharacter();
 	auto& playerTransform = playerb->GetEntity().GetComponent<ALC::Transform2D>();
 	plyrOldPos = playerTransform.position;
+	
+	auto& transform = self.GetComponent<ALC::Transform2D>();
+	transform.position = ALC::vec2(0, BattleManager::GetLevelBounds().top + 45);
+
 	// match the ratio 
 	//float ratio = spr.textureBounds.Height() / spr.textureBounds.Width();
 	//float newHeight = spr.bounds.Width() * ratio;
