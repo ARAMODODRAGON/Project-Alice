@@ -1,6 +1,7 @@
 #include "BattleManager.hpp"
 #include "Characters\AliceChara.hpp"
 #include "Characters\RuiChara.hpp"
+#include "Enemies\Enemy.hpp"
 
 ALC::rect BattleManager::s_levelBounds;
 CharaType BattleManager::s_type = CharaType::None;
@@ -41,4 +42,16 @@ Character* BattleManager::InitAsCharacter(ALC::Entity entity) {
 
 Character* BattleManager::GetCurrentCharacter() {
 	return s_player;
+}
+
+void BattleManager::ToggleBattle() { 
+	// calls begin battle
+	if (s_player && s_enemy) {
+		s_enemy->BattleBegin();
+		s_player->BattleToggle();
+	}
+	// failed
+	else {
+
+	}
 }

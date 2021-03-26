@@ -554,7 +554,7 @@ void BattleLevel::Step(ALC::Timestep ts) {
 			m_dialogueVisibleText = m_dialogueFullText.substr(0, _curChar + 1);
 		}
 
-		bool keyNext = Keyboard::GetKey(KeyCode::Space).Pressed();
+		bool keyNext = Keyboard::GetKey(KeyCode::KeyC).Pressed();
 		if (keyNext) {
 			if (m_dialogueVisibleText != m_dialogueFullText && m_curCharacter >= 4.0f) {
 				m_dialogueVisibleText = m_dialogueFullText;
@@ -578,6 +578,7 @@ void BattleLevel::Step(ALC::Timestep ts) {
 		m_dialogueTransition -= ts;
 		if (m_dialogueTransition < 0.0f) {
 			m_dialogueTransition = 0.0f;
+			BattleManager::ToggleBattle();
 		}
 	}
 

@@ -3,7 +3,8 @@
 #define INVULN_FLASH_SPEED_SCALAR (1.0f / 0.06f)
 
 Character::Character()
-	: m_health(6.0f)
+	: m_isInputEnabled(false)
+	, m_health(6.0f)
 	, m_maxHealth(6.0f)
 	, m_invuln(0.0f)
 	, m_shouldFlashOnInvuln(true)
@@ -17,38 +18,53 @@ Character::Character()
 Character::~Character() { }
 
 ALC::vec2 Character::GetInputAxis() const {
-	using KM = ALC::Keyboard;
-	using KC = ALC::KeyCode;
-	auto up = KM::GetKey(KC::ArrowUp);
-	auto down = KM::GetKey(KC::ArrowDown);
-	auto left = KM::GetKey(KC::ArrowLeft);
-	auto right = KM::GetKey(KC::ArrowRight);
-	return ALC::vec2(
-		static_cast<float>(right.IsHeld()) - static_cast<float>(left.IsHeld()),
-		static_cast<float>(up.IsHeld()) - static_cast<float>(down.IsHeld())
-	);
+	if (m_isInputEnabled) {
+		using KM = ALC::Keyboard;
+		using KC = ALC::KeyCode;
+		auto up = KM::GetKey(KC::ArrowUp);
+		auto down = KM::GetKey(KC::ArrowDown);
+		auto left = KM::GetKey(KC::ArrowLeft);
+		auto right = KM::GetKey(KC::ArrowRight);
+		return ALC::vec2(
+			static_cast<float>(right.IsHeld()) - static_cast<float>(left.IsHeld()),
+			static_cast<float>(up.IsHeld()) - static_cast<float>(down.IsHeld())
+		);
+	}
+	return ALC::vec2(0.0f);
 }
 
 ALC::Button Character::GetShootButton() const {
-	return ALC::Keyboard::GetKey(ALC::KeyCode::KeyC);
+	if (m_isInputEnabled)
+		return ALC::Keyboard::GetKey(ALC::KeyCode::KeyC);
+	return ALC::Button(false, false);
 }
 
 ALC::Button Character::GetSlowButton() const {
-	return ALC::Keyboard::GetKey(ALC::KeyCode::LeftShift);
+	if (m_isInputEnabled)
+		return ALC::Keyboard::GetKey(ALC::KeyCode::LeftShift);
+	return ALC::Button(false, false);
 }
 
 ALC::Button Character::GetBurstButton() const {
-	return ALC::Keyboard::GetKey(ALC::KeyCode::KeyX);
+	if (m_isInputEnabled)
+		return ALC::Keyboard::GetKey(ALC::KeyCode::KeyX);
+	return ALC::Button(false, false);
 }
 
 ALC::Button Character::GetModButton() const {
-	return ALC::Keyboard::GetKey(ALC::KeyCode::KeyZ);
+	if (m_isInputEnabled)
+		return ALC::Keyboard::GetKey(ALC::KeyCode::KeyZ);
+	return ALC::Button(false, false);
 }
 
 void Character::TakeDamage(const float damage) {
 	// call the other function, require 'self' to invoke virtual functions
 	auto self = GetRegistry().GetEntity(GetEntityID());
 	TakeDamage(self, damage);
+}
+
+void Character::BattleToggle() {
+	m_isInputEnabled = true;
 }
 
 void Character::TakeDamage(ALC::Entity self, const float damage) {

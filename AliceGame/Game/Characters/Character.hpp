@@ -87,6 +87,9 @@ public:
 	// returns the target rect for the heart texture
 	virtual ALC::rect GetHeartTargetRect() const = 0;
 
+	// call to enable input in the character
+	void BattleToggle();
+
 protected:
 
 	// called on death, always after OnTakeDamage(...)
@@ -96,6 +99,7 @@ private:
 
 	void TakeDamage(ALC::Entity self, const float damage = 1.0f);
 
+	bool m_isInputEnabled;
 	float m_health;
 	float m_maxHealth;
 	float m_invuln;

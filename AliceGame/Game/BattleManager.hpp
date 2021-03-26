@@ -40,6 +40,9 @@ public:
 	// returns the current player
 	static Character* GetCurrentCharacter();
 
+	// starts the battle and lets the player and enemy know
+	static void ToggleBattle();
+
 private:
 	static ALC::rect s_levelBounds;
 	static CharaType s_type;

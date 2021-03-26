@@ -92,7 +92,7 @@ void RuiEnemy::Update(ALC::Entity self, ALC::Timestep ts) {
 
 void RuiEnemy::LateUpdate(ALC::Entity self, ALC::Timestep ts) {
 	// only do this stuff when the battle actually starts
-	if (m_phases.GetState() != Phase::PreBattle ||
+	if (m_phases.GetState() != Phase::PreBattle &&
 		m_phases.GetState() != Phase::PostBattle) {
 		// takes damage from all bullets, calls OnDeath when it reaches 0
 		UpdateCollisions(self, ts);
