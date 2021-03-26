@@ -59,6 +59,9 @@ namespace cjs {
 	}
 
 	inline void fence::_mark_done() {
+		++m_joinedcount;
+		while (!m_shouldresume);
 		m_done = true;
+		--m_joinedcount;
 	}
 }
