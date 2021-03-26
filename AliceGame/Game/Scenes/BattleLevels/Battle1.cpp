@@ -1,5 +1,6 @@
 #include "Battle1.hpp"
 #include <ALC/Input.hpp>
+#include "../../Characters/Character.hpp"
 
 Battle1::Battle1()
 	: m_musicFile("Resources/Audio/Empty_Score.mp3")
@@ -8,7 +9,8 @@ Battle1::Battle1()
 	, m_homingsystem(GetReg())
 	, m_gravitySystem()
 	, m_cirlceBombSystem()
-	, m_timer(0.0f){
+	, m_timer(0.0f)
+	, m_battleDone(false) {
 	m_deleter.SetDeathBoundry(BattleManager::GetLevelBounds());
 	m_gravitySystem.SetGravity(ALC::vec2(0.0f, -40.0f));
 }
@@ -67,6 +69,11 @@ void Battle1::GameStep(ALC::Timestep ts) {
 void Battle1::Step(ALC::Timestep ts) {
 	BattleLevel::Step(ts);
 	m_timer += ts;
+	if (m_enemyBehavior->IsDone() && !m_battleDone) {
+		SetStartingDialogue("Resources/Dialogues/TestDialogue.json");
+		m_battleDone = true;
+		BattleManager::GetCurrentCharacter()->BattleToggle();
+	}
 }
 
 void Battle1::DrawBackground(ALC::UIBatch& ui) {

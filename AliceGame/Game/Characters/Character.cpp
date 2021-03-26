@@ -64,7 +64,7 @@ void Character::TakeDamage(const float damage) {
 }
 
 void Character::BattleToggle() {
-	m_isInputEnabled = true;
+	m_isInputEnabled = !m_isInputEnabled;
 }
 
 void Character::TakeDamage(ALC::Entity self, const float damage) {
@@ -127,9 +127,20 @@ ALC::Entity Character::GetColliderSprite() {
 }
 
 void Character::UpdateMovement(ALC::Entity self, ALC::Timestep ts) {
-	auto inputAxis = GetInputAxis();
-	auto slowinput = GetSlowButton().IsHeld();
-	UpdateMovement(self, ts, inputAxis, (slowinput ? m_slowScalar : 1.0f) * m_maxSpeed);
+	// move to input
+	if (m_isInputEnabled) {
+		auto inputAxis = GetInputAxis();
+		auto slowinput = GetSlowButton().IsHeld();
+		UpdateMovement(self, ts, inputAxis, (slowinput ? m_slowScalar : 1.0f) * m_maxSpeed);
+	}
+	// move to center
+	else {
+		auto& transform = self.GetComponent<ALC::Transform2D>();
+		ALC::vec2 target(0.0f, BattleManager::GetLevelBounds().bottom * 0.5f);
+		if (ALC::NearlyEqual(transform.position, target, m_maxSpeed * ts))
+			transform.position = target;
+		else UpdateMovement(self, ts, glm::sign(target - transform.position), m_maxSpeed);
+	}
 }
 
 void Character::UpdateMovement(ALC::Entity self, ALC::Timestep ts, const ALC::vec2& inputAxis, const float speed) {

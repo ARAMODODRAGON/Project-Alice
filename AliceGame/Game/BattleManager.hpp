@@ -44,6 +44,7 @@ public:
 	static void ToggleBattle();
 
 private:
+	static bool s_isBattleActive;
 	static ALC::rect s_levelBounds;
 	static CharaType s_type;
 	static Enemy* s_enemy;

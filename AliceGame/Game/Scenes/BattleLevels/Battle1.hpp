@@ -31,6 +31,7 @@ private:
 	GravityBulletSystem m_gravitySystem;
 	CircleBombSystem m_cirlceBombSystem;
 
+	bool m_battleDone;
 	float m_timer;
 	ALC::Texture m_background;
 
