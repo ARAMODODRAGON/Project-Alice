@@ -1,4 +1,3 @@
-
 #ifndef CJS_DETAIL_HPP
 #define CJS_DETAIL_HPP
 #include "../ijob.hpp"

@@ -90,11 +90,6 @@ namespace cjs {
 			m_nodepool = node;
 			++m_nodepool_sz;
 
-			if (work.type == work_t::type_fence) {
-				work.fence->_mark_done();
-				return work_t();
-			}
-
 		}
 
 		// return the work
