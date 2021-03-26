@@ -625,6 +625,7 @@ void BattleLevel::OnContinue() {
 
 void BattleLevel::OnRestart() {
 	OnContinue();
+	BattleManager::ToggleBattle();
 	m_character->Kill();
 }
 

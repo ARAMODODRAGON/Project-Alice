@@ -62,5 +62,6 @@ void BattleManager::ToggleBattle() {
 	// end
 	else {
 		s_player->BattleToggle();
+		s_isBattleActive = false;
 	}
 }
