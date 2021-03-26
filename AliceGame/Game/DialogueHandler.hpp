@@ -17,12 +17,14 @@ struct DHDialogue final {
 
 class DialogueHandler final {
 public:
+	DialogueHandler(ALC::ContentStorage* _preferredStorage = nullptr);
 
-	// loads a dialogue file,
-	DialogueHandler(const ALC::string& dialoguefile, ALC::ContentStorage* preferredStorage = nullptr);
+	// Loads in a dialogue file.
+	bool LoadDialogue(const ALC::string& _filepath);
 
 	// returns if the dialogue file loaded correctly
 	bool IsLoaded() const;
+	void Unload();
 
 	// gets the number of actors
 	ALC::uint32 ActorsSize() const;

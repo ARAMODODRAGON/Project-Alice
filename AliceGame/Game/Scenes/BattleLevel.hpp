@@ -40,6 +40,8 @@ public:
 
 	JobsECSAdapter& GetJobs() { return m_jobsadp; }
 
+	void SetStartingDialogue(const ALC::string& _filepath);
+
 protected:
 
 	virtual void DrawBackground(ALC::UIBatch& ui) = 0;
@@ -113,9 +115,17 @@ private:
 	float m_dialogueTransition;
 	float m_dialogueMaxTransitionTime;
 	
+
+	DialogueHandler m_beginLevel;
+	ALC::string m_dialogueFullText;
 	ALC::string m_dialogueVisibleText;
-	ALC::uint32 m_curCharacter;
+	float m_curCharacter;
 	float m_dialogueSpeed;
+	int m_dialogueIndex;
+
+	ALC::string m_name;
+	ALC::vec3 m_backColor;
+	ALC::vec3 m_nameColor;
 
 	ALC::Font m_lifetimeFont;
 

@@ -3,7 +3,6 @@
 
 Battle1::Battle1()
 	: m_musicFile("Resources/Audio/Empty_Score.mp3")
-	, m_beginLevel("Resources/Dialogues/TestDialogue.json", &GetStorage())
 	, m_enemyBehavior(nullptr)
 	, m_deleter(GetECH())
 	, m_homingsystem(GetReg())
@@ -34,11 +33,12 @@ void Battle1::Init() {
 
 	// alice will spawn here
 	BattleLevel::Init();
+	SetStartingDialogue("Resources/Dialogues/TestDialogue.json");
 
 	// create enemy
 	auto enemy = GetReg().Create();
 	m_enemyBehavior = enemy.AddBehavior<RuiEnemy>();
-	m_enemyBehavior->BattleBegin();
+	//m_enemyBehavior->BattleBegin();
 	m_enemy = enemy.GetComponent<ALC::EntityInfo>().GetID();
 
 	// target enemy

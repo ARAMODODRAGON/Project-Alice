@@ -141,7 +141,7 @@ namespace ALC {
 
 	void UIBatch::DrawText(const string& text, const Font& font, const vec2& position, const vec4& color, const HAlign hAlign, const VAlign vAlign, const vec2& scale) {
 		// dont draw
-		if (NearlyEqual(color.a, 0.0f)) return;
+		if (NearlyEqual(color.a, 0.0f) || text == "") return;
 
 		// font must be valid
 		if (font == nullptr) {

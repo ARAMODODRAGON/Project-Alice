@@ -34,8 +34,15 @@ BattleLevel::BattleLevel()
 	, m_showDialogue(false)
 	, m_dialogueTransition(0.0f)
 	, m_dialogueMaxTransitionTime(0.5f)
-	, m_curCharacter(0)
-	, m_dialogueSpeed(2.5f)
+	, m_beginLevel(&GetStorage())
+	, m_dialogueFullText("")
+	, m_dialogueVisibleText("")
+	, m_dialogueIndex(0)
+	, m_curCharacter(0.0f)
+	, m_dialogueSpeed(25.0f)
+	, m_name("")
+	, m_nameColor(ALC::vec3(0.0f))
+	, m_backColor(ALC::vec3(0.0f))
 	, m_bPhysics(GetReg())
 	, m_jobsadp(GetReg()) {
 	m_ui.SetInternalScreenSize(BattleManager::PrefferedResolution());
@@ -352,69 +359,78 @@ void BattleLevel::Draw() {
 		// drawing the dialogue window
 		if (m_dialogueTransition > 0.0f) {
 			const ALC::vec2 screenSize = m_ui.GetInternalScreenSize();
-			const ALC::vec4 color = ALC::vec4(1.0f, 0.0f, 0.0f, (m_dialogueTransition / m_dialogueMaxTransitionTime));
+
+			const ALC::vec4 color = ALC::vec4(1.0f, 1.0f, 1.0f, (m_dialogueTransition / m_dialogueMaxTransitionTime));
+			const ALC::vec4 backColor = ALC::vec4(m_backColor.r, m_backColor.g, m_backColor.b, color.a);
+			const ALC::vec4 nameColor = ALC::vec4(m_nameColor.r, m_nameColor.g, m_nameColor.b, color.a);
 
 			// Drawing the background for the dialogue to go on top of /////////////////////////////////////////////////////////
 
 			// Top-left dialogue box texture
 			ALC::rect rect(ALC::vec2(80.0f, screenSize.y - 240.0f), ALC::vec2(120.0f, screenSize.y - 200.0f));
 			ALC::rect rectTexCoords(ALC::vec2(98.0f, 34.0f), ALC::vec2(106.0f, 42.0f));
-			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
+			m_ui.DrawQuad(rect, backColor, rectTexCoords, m_UIElements);
 
 			// Top-middle dialogue box texture
 			rect = ALC::rect(ALC::vec2(120.0f, screenSize.y - 240.0f), ALC::vec2(screenSize.x - 120.0f, screenSize.y - 200.0f));
 			rectTexCoords = ALC::rect(ALC::vec2(108.0f, 34.0f), ALC::vec2(116.0f, 42.0f));
-			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
+			m_ui.DrawQuad(rect, backColor, rectTexCoords, m_UIElements);
 
 			// Top-right dialogue box texture
 			rect = ALC::rect(ALC::vec2(screenSize.x - 120.0f, screenSize.y - 240.0f), ALC::vec2(screenSize.x - 80.0f, screenSize.y - 200.0f));
 			rectTexCoords = ALC::rect(ALC::vec2(118.0f, 34.0f), ALC::vec2(126.0f, 42.0f));
-			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
+			m_ui.DrawQuad(rect, backColor, rectTexCoords, m_UIElements);
 
 			// Left dialogue box texture
 			rect = ALC::rect(ALC::vec2(80.0f, screenSize.y - 200.0f), ALC::vec2(120.0f, screenSize.y - 80.0f));
 			rectTexCoords = ALC::rect(ALC::vec2(98.0f, 44.0f), ALC::vec2(106.0f, 52.0f));
-			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
+			m_ui.DrawQuad(rect, backColor, rectTexCoords, m_UIElements);
 
 			// Middle dialogue box texture
 			rect = ALC::rect(ALC::vec2(120.0f, screenSize.y - 200.0f), ALC::vec2(screenSize.x - 120.0f, screenSize.y - 80.0f));
 			rectTexCoords = ALC::rect(ALC::vec2(108.0f, 44.0f), ALC::vec2(116.0f, 52.0f));
-			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
+			m_ui.DrawQuad(rect, backColor, rectTexCoords, m_UIElements);
 
 			// Right dialogue box texture
 			rect = ALC::rect(ALC::vec2(screenSize.x - 120.0f, screenSize.y - 200.0f), ALC::vec2(screenSize.x - 80.0f, screenSize.y - 80.0f));
 			rectTexCoords = ALC::rect(ALC::vec2(118.0f, 44.0f), ALC::vec2(126.0f, 52.0f));
-			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
+			m_ui.DrawQuad(rect, backColor, rectTexCoords, m_UIElements);
 
 			// Bottom-left dialogue box texture
 			rect = ALC::rect(ALC::vec2(80.0f, screenSize.y - 80.0f), ALC::vec2(120.0f, screenSize.y - 40.0f));
 			rectTexCoords = ALC::rect(ALC::vec2(98.0f, 54.0f), ALC::vec2(106.0f, 62.0f));
-			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
+			m_ui.DrawQuad(rect, backColor, rectTexCoords, m_UIElements);
 
 			// Bottom-middle dialogue box texture
 			rect = ALC::rect(ALC::vec2(120.0f, screenSize.y - 80.0f), ALC::vec2(screenSize.x - 120.0f, screenSize.y - 40.0f));
 			rectTexCoords = ALC::rect(ALC::vec2(108.0f, 54.0f), ALC::vec2(116.0f, 62.0f));
-			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
+			m_ui.DrawQuad(rect, backColor, rectTexCoords, m_UIElements);
 
 			// Right dialogue box texture
 			rect = ALC::rect(ALC::vec2(screenSize.x - 120.0f, screenSize.y - 80.0f), ALC::vec2(screenSize.x - 80.0f, screenSize.y - 40.0f));
 			rectTexCoords = ALC::rect(ALC::vec2(118.0f, 54.0f), ALC::vec2(126.0f, 62.0f));
-			m_ui.DrawQuad(rect, color, rectTexCoords, m_UIElements);
+			m_ui.DrawQuad(rect, backColor, rectTexCoords, m_UIElements);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+			// Drawing the currently visible dialogue text /////////////////////////////////////////////////////////////////////
 
+			m_ui.DrawText(m_name, m_lifetimeFont, glm::vec2(120.0f, screenSize.y - 220.0f), nameColor);
+			m_ui.DrawText(m_dialogueVisibleText, m_lifetimeFont, glm::vec2(140.0f, screenSize.y - 180.0f), color);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		}
 	}
 
 	// draw debug stuff like fps
 	if (m_debug) {
-		m_ui.DrawText("Current FPS:\nDelta Time:\nTimescale:\n\nTotal Entities:\nEnemy Health:", m_debugFont, ALC::vec2(0.0f, 0.0f));
+		m_ui.DrawText("Current FPS:\nDelta Time:\nTimescale:\n\nTotal Entities:\nEnemy Health:\ncurCharacter:", m_debugFont, ALC::vec2(0.0f, 0.0f));
 		m_ui.DrawText(VTOS(static_cast<int>(m_lastFPS))
 					  + "\n" + VTOS(m_delta)
 					  + "\n" + VTOS(m_timescale)
 					  + "\n\n" + VTOS(GetReg().__GetReg().size<ALC::EntityInfo>())
-					  + "\n" + VTOS((int)BattleManager::GetEnemy()->GetHealth()) + " / " + VTOS((int)BattleManager::GetEnemy()->GetMaxHealth()),
+					  + "\n" + VTOS((int)BattleManager::GetEnemy()->GetHealth()) + " / " + VTOS((int)BattleManager::GetEnemy()->GetMaxHealth())
+					  + "\n" + VTOS((int)m_curCharacter),
 					  m_debugFont, ALC::vec2(240.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), ALC::HAlign::Right);
 
 		/*ALC::rect r;
@@ -525,13 +541,6 @@ void BattleLevel::Step(ALC::Timestep ts) {
 	}
 	m_playerWasDead = m_character->IsDead();
 
-	// FOR TESTING //
-	if (Keyboard::GetKey(ALC::KeyCode::KeyQ).Pressed()) {
-		m_showDialogue = !m_showDialogue;
-		ALC_DEBUG_LOG("DIALOGUE WINDOW TOGGLED");
-	}
-	// FOR TESTING //
-
 	// handles dialogue window transition
 	if (m_showDialogue) { // Opening transition/handling player input during dialog
 		m_dialogueTransition += ts;
@@ -539,8 +548,32 @@ void BattleLevel::Step(ALC::Timestep ts) {
 			m_dialogueTransition = m_dialogueMaxTransitionTime;
 		}
 
-		// TODO -- Add check for size of string so the cur character doesn't exceed that value, which will probably cause an error
 		m_curCharacter += m_dialogueSpeed * ts;
+		ALC::int32 _curChar = floor(m_curCharacter);
+		if (m_curCharacter < m_dialogueFullText.size() && _curChar >= m_dialogueVisibleText.size()) {
+			m_dialogueVisibleText = m_dialogueFullText.substr(0, _curChar + 1);
+		}
+
+		bool keyNext = Keyboard::GetKey(KeyCode::Space).Pressed();
+		if (keyNext) {
+			if (m_dialogueVisibleText != m_dialogueFullText && m_curCharacter >= 4.0f) {
+				m_dialogueVisibleText = m_dialogueFullText;
+			} else {
+				m_dialogueIndex++;
+				if (m_dialogueIndex < m_beginLevel.DialoguesSize()) {
+					m_dialogueVisibleText.clear();
+					m_dialogueFullText = m_lifetimeFont.StringSplitLines(m_beginLevel.GetDialogue(m_dialogueIndex).text, 1120.0f);
+					m_name = m_beginLevel.GetActor(m_beginLevel.GetDialogue(m_dialogueIndex).actorIndex).name;
+					m_nameColor = m_beginLevel.GetActor(m_beginLevel.GetDialogue(m_dialogueIndex).actorIndex).nameColor;
+					m_backColor = m_beginLevel.GetActor(m_beginLevel.GetDialogue(m_dialogueIndex).actorIndex).windowColor;
+
+					m_curCharacter = 0.0f;
+				} else {
+					m_dialogueIndex = 0;
+					m_showDialogue = false;
+				}
+			}
+		}
 	} else { // Closing transition
 		m_dialogueTransition -= ts;
 		if (m_dialogueTransition < 0.0f) {
@@ -587,4 +620,24 @@ void BattleLevel::OnContinue() {
 void BattleLevel::OnRestart() {
 	OnContinue();
 	m_character->Kill();
+}
+
+void BattleLevel::SetStartingDialogue(const ALC::string& _filepath) {
+	m_showDialogue = m_beginLevel.LoadDialogue(_filepath);
+
+	m_dialogueIndex = 0;
+	m_curCharacter = 0.0f;
+
+	m_dialogueVisibleText.clear();
+	if (m_beginLevel.IsLoaded()) { 
+		m_dialogueFullText = m_lifetimeFont.StringSplitLines(m_beginLevel.GetDialogue(m_dialogueIndex).text, 1120.0f);
+		m_name = m_beginLevel.GetActor(m_beginLevel.GetDialogue(m_dialogueIndex).actorIndex).name;
+		m_nameColor = m_beginLevel.GetActor(m_beginLevel.GetDialogue(m_dialogueIndex).actorIndex).nameColor;
+		m_backColor = m_beginLevel.GetActor(m_beginLevel.GetDialogue(m_dialogueIndex).actorIndex).windowColor;
+	} else { 
+		m_dialogueFullText.clear(); 
+		m_name = "";
+		m_nameColor = glm::vec3(1.0f);
+		m_backColor = glm::vec3(1.0f);
+	}
 }

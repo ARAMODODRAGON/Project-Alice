@@ -23,7 +23,6 @@ private:
 	void DrawBackground(ALC::UIBatch& ui) override;
 
 	ALC::string m_musicFile;
-	DialogueHandler m_beginLevel;
 	ALC::EntityID m_enemy;
 	RuiEnemy* m_enemyBehavior;
 
