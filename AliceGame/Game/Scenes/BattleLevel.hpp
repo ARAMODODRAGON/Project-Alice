@@ -115,7 +115,7 @@ private:
 	float m_dialogueTransition;
 	float m_dialogueMaxTransitionTime;
 	
-
+	bool m_firstDialogue;
 	DialogueHandler m_beginLevel;
 	ALC::string m_dialogueFullText;
 	ALC::string m_dialogueVisibleText;

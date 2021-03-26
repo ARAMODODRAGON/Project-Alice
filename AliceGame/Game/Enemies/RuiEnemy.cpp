@@ -6,7 +6,7 @@
 #include "../BTA.hpp"
 #include "../Characters/Character.hpp"
 
-constexpr float phase0health = 200.0f;
+constexpr float phase0health = 500.0f;
 constexpr float phase0lifetime = 90.0f;
 
 constexpr float phase1health = 500.0f;
@@ -154,6 +154,9 @@ void RuiEnemy::Phase0Begin(const Phase lastphase, ALC::Entity self, ALC::Timeste
 	moveStates.push_back(MoveStates::States::Right);
 
 	m_state = State::RainBullets; 
+
+	self.GetComponent<CharacterBody>().velocity =ALC::vec2(0.0f);
+	self.GetComponent<ALC::Transform2D>().position.y = BattleManager::GetLevelBounds().top * 0.5f;
 
 }
 void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {	  

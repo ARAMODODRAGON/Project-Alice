@@ -34,6 +34,7 @@ BattleLevel::BattleLevel()
 	, m_showDialogue(false)
 	, m_dialogueTransition(0.0f)
 	, m_dialogueMaxTransitionTime(0.5f)
+	, m_firstDialogue(true)
 	, m_beginLevel(&GetStorage())
 	, m_dialogueFullText("")
 	, m_dialogueVisibleText("")
@@ -578,7 +579,10 @@ void BattleLevel::Step(ALC::Timestep ts) {
 		m_dialogueTransition -= ts;
 		if (m_dialogueTransition < 0.0f) {
 			m_dialogueTransition = 0.0f;
-			BattleManager::ToggleBattle();
+			if (m_firstDialogue) {
+				BattleManager::ToggleBattle();
+				m_firstDialogue = false;
+			}
 		}
 	}
 

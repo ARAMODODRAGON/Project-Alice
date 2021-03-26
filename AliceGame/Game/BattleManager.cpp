@@ -3,12 +3,13 @@
 #include "Characters\RuiChara.hpp"
 #include "Enemies\Enemy.hpp"
 
+bool BattleManager::s_isBattleActive = false;
 ALC::rect BattleManager::s_levelBounds;
 CharaType BattleManager::s_type = CharaType::None;
 Enemy* BattleManager::s_enemy = nullptr;
 Character* BattleManager::s_player = nullptr;
 
-void BattleManager::AddEnemy(Enemy* enemy) { 
+void BattleManager::AddEnemy(Enemy* enemy) {
 	s_enemy = enemy;
 }
 
@@ -16,7 +17,7 @@ Enemy* BattleManager::GetEnemy() {
 	return s_enemy;
 }
 
-void BattleManager::RemoveEnemy(Enemy* enemy) { 
+void BattleManager::RemoveEnemy(Enemy* enemy) {
 	if (s_enemy == enemy) s_enemy = nullptr;
 }
 
@@ -44,14 +45,22 @@ Character* BattleManager::GetCurrentCharacter() {
 	return s_player;
 }
 
-void BattleManager::ToggleBattle() { 
-	// calls begin battle
-	if (s_player && s_enemy) {
-		s_enemy->BattleBegin();
-		s_player->BattleToggle();
+void BattleManager::ToggleBattle() {
+	// start
+	if (!s_isBattleActive) {
+		// calls begin battle
+		if (s_player && s_enemy) {
+			s_enemy->BattleBegin();
+			s_player->BattleToggle();
+			s_isBattleActive = true;
+		}
+		// failed
+		else {
+			ALC_DEBUG_ERROR("Could not start battle without both enemy and player");
+		}
 	}
-	// failed
+	// end
 	else {
-
+		s_player->BattleToggle();
 	}
 }

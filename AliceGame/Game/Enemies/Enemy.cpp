@@ -96,7 +96,7 @@ void Enemy::Start(ALC::Entity self) {
 	cb.mask = BTL_ENEMYMASK;
 	auto lb = BattleManager::GetLevelBounds();
 	tr.position.x = 0.0f;
-	tr.position.y = lb.max.y * 0.5f;
+	tr.position.y = BattleManager::GetLevelBounds().top * 0.5f;
 	spr.bounds = ALC::rect(20.0f);
 	spr.layer = SPRL::ENEMY;
 
