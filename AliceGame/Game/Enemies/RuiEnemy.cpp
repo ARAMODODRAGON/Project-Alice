@@ -724,8 +724,13 @@ void RuiEnemy::Phase4Begin(const Phase lastphase, ALC::Entity self, ALC::Timeste
 	if (m_state != State::None) { m_prevState = m_state; }
 
 	if (!moveStates.empty()) { moveStates.clear(); }
+
+	
 }
 void RuiEnemy::Phase4Step(ALC::Entity self, ALC::Timestep ts) { 
+
+	//stop drifting problem in this phase 
+	self.GetComponent<CharacterBody>().velocity = ALC::vec2();
 	// get seed from rnd number engine
 	std::random_device rd; 
 	std::mt19937 gen(rd());
@@ -804,7 +809,11 @@ void RuiEnemy::PostBattleBegin(const Phase lastphase, ALC::Entity self, ALC::Tim
 	SetLifetime(-1.0f);
 	// enemy is done fighting
 	MarkDone();
+
+	if (!moveStates.empty()) { moveStates.clear(); }
+
+	moveStates.push_back(MoveStates::States::Move);
 }
-void RuiEnemy::PostBattleStep(ALC::Entity self, ALC::Timestep ts) { }
+void RuiEnemy::PostBattleStep(ALC::Entity self, ALC::Timestep ts) { m_moveState.PerformMoveState(this, moveStates[0], 0, ts, 0.0f); }
 
 
