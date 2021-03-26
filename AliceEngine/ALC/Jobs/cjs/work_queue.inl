@@ -60,11 +60,12 @@ namespace cjs {
 	}
 
 	inline void work_queue::submit(ifence* fence_object) {
+		fence_object->_submit();
 		work_t work;
 		work.fence = fence_object;
 		work.thread_count = m_workers.size() - 1;
 		work.type = work_t::type_fence;
-		work.fence->_submit();
+		work.fence->_tell_workercount(m_workers.size());
 		push_work(work);
 	}
 

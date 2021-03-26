@@ -10,6 +10,7 @@ namespace cjs {
 		virtual void _submit() = 0;
 		virtual void _join() = 0;
 		virtual void _mark_done() = 0;
+		virtual void _tell_workercount(size_t count) = 0;
 	};
 
 	// can quickly stop and start worker threads
@@ -35,10 +36,12 @@ namespace cjs {
 		std::atomic_bool m_done;
 		std::atomic_bool m_shouldresume;
 		std::atomic_size_t m_joinedcount;
+		std::atomic_size_t m_workercount;
 
 		void _submit() override;
 		void _join() override;
 		void _mark_done() override;
+		void _tell_workercount(size_t count) override;
 	};
 
 	// stops the threads but may not wake them immediately
