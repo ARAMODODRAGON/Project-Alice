@@ -13,13 +13,12 @@ void MoveStates::PerformMoveState(Enemy* enemy,States moveState, ALC::uint8 *_cu
 	
 	auto [trans, eBody] = enemy->GetEntity().GetComponent< ALC::Transform2D, CharacterBody>();
 	auto arivd = BTA::Result::Arrived;
+
+	//if the previous state is the same as the current state given return out of the function 
 	if (prevState == moveState) {
 		return;
 	} 
-	
-	//no destination given and move state is move just go to centre
-	
-
+	// if a move time is not NULL start counter 
 	if (moveTime > 0.0f) {
 		timer += ts.Get();
 	}
@@ -39,20 +38,22 @@ void MoveStates::PerformMoveState(Enemy* enemy,States moveState, ALC::uint8 *_cu
 
 	switch (static_cast<ALC::uint8>(moveState)) {
 
-	case 1:
-
+	case 1:	// move
+		//no destination given and move state is move just go to center
 		if (dest == ALC::vec2(0, 0) && moveState == States::Move) {
 			dest = ALC::vec2( (lvlBounds.left + lvlBounds.right),(lvlBounds.top / 2));
 		}
 
 		result = BTA::MoveTo(&eBody.velocity, trans.position, dest, e_acceleration, e_speed, ts);
-
+		//Once the destination is reached
 		if (result == arivd) {
-			prevState = moveState;
-			if (nextState != 0) { *_curntState = nextState; }
-			isComplete = true;
+			prevState = moveState;	// assign prev move state to current move state 
+			if (nextState != 0) { *_curntState = nextState; }	//assign a next state to curnt state if one is provided
+			isComplete = true;	// set complete to true so the AI can take the necessary steps once move is done 
 		}
 
+		//same thing as above but with the timer 
+		//not really tested but should work ..... maybe ....
 		else if (timer > moveTime) {
 			prevState = moveState;
 			if (nextState != 0) { *_curntState = nextState; }
@@ -61,7 +62,7 @@ void MoveStates::PerformMoveState(Enemy* enemy,States moveState, ALC::uint8 *_cu
 
 		break;
 
-	case 2:
+	case 2:	 //right
 
 		dest = ALC::vec2(right, trans.position.y);
 
@@ -81,7 +82,7 @@ void MoveStates::PerformMoveState(Enemy* enemy,States moveState, ALC::uint8 *_cu
 
 		break;
 
-	case 3:
+	case 3:	//left
 
 		dest = ALC::vec2(left, trans.position.y);
 
@@ -101,18 +102,20 @@ void MoveStates::PerformMoveState(Enemy* enemy,States moveState, ALC::uint8 *_cu
 
 		break;
 
-	case 4:
+	case 4:	//up
 
 		dest = ALC::vec2(trans.position.x, up);
 
 		 result = BTA::MoveTo(&eBody.velocity, trans.position, dest, e_acceleration, e_speed, ts);
 
+		 
 		if (result == arivd) {
-			prevState = moveState;
-			if (nextState != 0) { *_curntState = nextState; }
-			isComplete = true;
+			prevState = moveState;	
+			if (nextState != 0) { *_curntState = nextState; }	 
+			isComplete = true;  
 		}
 
+	
 		else if (timer > moveTime) {
 			prevState = moveState;
 			if (nextState != 0) { *_curntState = nextState; }
@@ -121,7 +124,7 @@ void MoveStates::PerformMoveState(Enemy* enemy,States moveState, ALC::uint8 *_cu
 
 		break;
 
-	case 5:
+	case 5:	//Down
 
 		dest = ALC::vec2(trans.position.x, down);
 		 result = BTA::MoveTo(&eBody.velocity, trans.position, dest, e_acceleration, e_speed, ts);
@@ -140,8 +143,10 @@ void MoveStates::PerformMoveState(Enemy* enemy,States moveState, ALC::uint8 *_cu
 
 		break;
 
-	case 6:
+	case 6:	//Up Left
 
+		//these checks are in all the 2 dir movments to check if the AI is already at one of the desired destinations 
+		//for example if up left is called but the AI is alread all the way left just move up 
 		if (trans.position.x <= left) {
 			dest = ALC::vec2(trans.position.x, up);
 		}
@@ -168,8 +173,9 @@ void MoveStates::PerformMoveState(Enemy* enemy,States moveState, ALC::uint8 *_cu
 
 		break;
 
-	case 7:
+	case 7://Down Left
 
+	
 		if (trans.position.x <= left) {
 			dest = ALC::vec2(trans.position.x, down);
 		}
@@ -196,7 +202,7 @@ void MoveStates::PerformMoveState(Enemy* enemy,States moveState, ALC::uint8 *_cu
 
 		break;
 
-	case 8:
+	case 8:	 //Up right
 
 		if (trans.position.x >= right) {
 			dest = ALC::vec2(trans.position.x, up);
@@ -224,7 +230,7 @@ void MoveStates::PerformMoveState(Enemy* enemy,States moveState, ALC::uint8 *_cu
 
 		break;
 
-	case 9:
+	case 9:	 //Down right
 
 		if (trans.position.x >= right) {
 			dest = ALC::vec2(trans.position.x, down);

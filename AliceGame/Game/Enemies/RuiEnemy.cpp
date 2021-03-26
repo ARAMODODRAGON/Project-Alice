@@ -32,7 +32,6 @@ RuiEnemy::RuiEnemy()
 	m_phases.Bind(Phase::Phase4, &RuiEnemy::Phase4Step, &RuiEnemy::Phase4Begin);
 	m_phases.Bind(Phase::PostBattle, &RuiEnemy::PostBattleStep, &RuiEnemy::PostBattleBegin);
 
-
 }
 
 RuiEnemy::~RuiEnemy() { }
@@ -69,13 +68,16 @@ void RuiEnemy::Update(ALC::Entity self, ALC::Timestep ts) {
 
 	auto* playerb = BattleManager::GetCurrentCharacter();
 	auto& playerTransform = playerb->GetEntity().GetComponent<ALC::Transform2D>();
-	ALC::vec2 offset = playerTransform.position - plyrOldPos;
 
-	float threshHold = 2.0f;
+	ALC::vec2 offset = playerTransform.position - plyrOldPos; // used to check if the player is moving if its 0 then player hasnt moved 
 
-	// these if checks
+	float threshHold = 2.0f; //if the player moves more then this stop timer  if its less then start it 
+
+	// always check if the player has moved if they havent start a timer 
+
+	// if player has moved outside the thresh hold 
 	if (offset.x > threshHold || offset.y > threshHold) {
-		plyrOldPos = playerTransform.position;
+		plyrOldPos = playerTransform.position; // player oldPos in now the new pos 
 		plyrMoveTimer = 0.0f;
 	}
 
@@ -117,11 +119,18 @@ void RuiEnemy::OnDeath(ALC::Entity self) {
 
 void RuiEnemy::BattleBegin() {
 	// we start by changing phases
-	m_phases.ChangeState(Phase::Phase3);
+	m_phases.ChangeState(Phase::Phase0);
 }
 
-void RuiEnemy::PreBattleBegin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) { }
-void RuiEnemy::PreBattleStep(ALC::Entity self, ALC::Timestep ts) { }
+void RuiEnemy::PreBattleBegin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
+
+	auto [transform, cbody] = self.GetComponent<ALC::Transform2D, CharacterBody>();
+	transform.position = ALC::vec2(0, BattleManager::GetLevelBounds().top + 45);
+	moveStates.push_back(MoveStates::States::Move);
+}
+void RuiEnemy::PreBattleStep(ALC::Entity self, ALC::Timestep ts) {
+	m_moveState.PerformMoveState(this, moveStates[0], 0, ts, 0.0f);
+}
 
 void RuiEnemy::Phase0Begin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
 	ResetHealth(phase0health);
@@ -152,7 +161,6 @@ void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 	float fireRate = 0.5f;
 	auto* playerb = BattleManager::GetCurrentCharacter();
 	auto& playerTransform = playerb->GetEntity().GetComponent<ALC::Transform2D>();
-	//playerb->SetHealth(100000000000.0f);
 
 	if (GetHealth() <= GetMaxHealth() / 2) {
 		numOfBullets = 11;
@@ -220,7 +228,7 @@ void RuiEnemy::Phase0Step(ALC::Entity self, ALC::Timestep ts) {
 		m_prevState = m_state;
 
 		if (stateTimer >= 5.0f) {
-			ChangeState(State::Moving);
+			m_state = State::Moving;
 			stateTimer = 0.0f;
 		}
 	}
@@ -794,29 +802,5 @@ void RuiEnemy::PostBattleBegin(const Phase lastphase, ALC::Entity self, ALC::Tim
 	MarkDone();
 }
 void RuiEnemy::PostBattleStep(ALC::Entity self, ALC::Timestep ts) { }
-
-void RuiEnemy::ChangeDirectionState(State curntState)
-{
-	State randomState = static_cast<State>(rand() % 11 + 1);
-
-	if (randomState == curntState) {
-		ChangeDirectionState(curntState);
-	}
-
-	if (m_state != State::None) {
-		m_prevState = m_state;
-	}
-
-	m_state = randomState;
-}
-
-void RuiEnemy::ChangeState(State nextState)
-{
-	if (m_state != State::None) {
-		m_prevState = m_state;
-	}
-
-	m_state = nextState;
-}
 
 

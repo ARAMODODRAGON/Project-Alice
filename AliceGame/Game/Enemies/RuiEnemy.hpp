@@ -43,17 +43,24 @@ private:
 	State m_state;
 	State m_prevState;
 	ALC::Texture m_bulletTexture;
-	ALC::vector<MoveStates::States> moveStates;
+	ALC::vector<MoveStates::States> moveStates; //  a vector used to hold the move states for the phase 
+
 	bool canMove = true;
 	bool canShoot;
-	float m_timer;
+	//all below timers are used for fire rate purposes 
+	float m_timer; 
 	float m_secondTimer; // yet another timer 
 	float m_thirdTimer; // gosh i love my timers 
-	float plyrMoveTimer; //another Timer? jeez
-	float stateTimer;
+
+	 //except for these two 
+	float plyrMoveTimer; //another Timer? jeez // anyways used to check how long the player has been in one position 
+	float stateTimer;  //  not really needed but used for one phase to call an end to the shooting phase 
+
 	ALC::uint8 dirIndex = 0;// an index to the direction array
 	ALC::uint8 rainPosIndex = 0; // used to determin which pos to drop bullets from the top 
-	ALC::uint8 shotCounter = 0;
+	ALC::uint8 shotCounter = 0;	// used for pahse 3 so the AI dosent shoot all the time 
+
+	// used to check if the player has moved 
 	ALC::vec2 oldPos;
 	ALC::vec2 plyrOldPos;
 
@@ -88,8 +95,8 @@ private:
 	void PostBattleStep(ALC::Entity self, ALC::Timestep ts);
 
 	//move To Enemy?
-	void ChangeDirectionState(State curntState);
-	void ChangeState(State nextState);
+	//void ChangeDirectionState(State curntState);
+	//void ChangeState(State nextState);
 
 	void ResteTimer() { m_timer = m_secondTimer = 0.0f; }
 
