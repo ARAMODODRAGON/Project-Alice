@@ -6,13 +6,13 @@
 #include "../BTA.hpp"
 #include "../Characters/Character.hpp"
 
-constexpr float phase0health = 500.0f;
+constexpr float phase0health = 700.0f;
 constexpr float phase0lifetime = 90.0f;
 
 constexpr float phase1health = 500.0f;
 constexpr float phase1lifetime = 90.0f;
 
-constexpr float phase2health = 1000.0f;
+constexpr float phase2health = 600.0f;
 constexpr float phase2lifetime = 90.0f;
 
 constexpr float phase3health = 1500.0f;

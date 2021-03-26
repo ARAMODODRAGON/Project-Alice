@@ -27,7 +27,8 @@ void Battle1::Init() {
 	// load our music
 	if (ALC::SoundSystem::LoadMusic(m_musicFile)) {
 		// play
-		//ALC::SoundSystem::PlayMusic(m_musicFile);
+		ALC::SoundSystem::PlayMusic(m_musicFile);
+		ALC::SoundSystem::PauseMusic();
 	}
 
 	// we want to spawn alice

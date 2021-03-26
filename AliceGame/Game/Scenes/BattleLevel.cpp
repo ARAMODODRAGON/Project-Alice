@@ -583,6 +583,9 @@ void BattleLevel::Step(ALC::Timestep ts) {
 			if (m_firstDialogue) {
 				BattleManager::ToggleBattle();
 				m_firstDialogue = false;
+				ALC::SoundSystem::ResumeMusic();
+			} else {
+				ALC::SoundSystem::PauseMusic();
 			}
 		}
 	}
@@ -636,13 +639,13 @@ void BattleLevel::SetStartingDialogue(const ALC::string& _filepath) {
 	m_curCharacter = 0.0f;
 
 	m_dialogueVisibleText.clear();
-	if (m_beginLevel.IsLoaded()) { 
+	if (m_beginLevel.IsLoaded()) {
 		m_dialogueFullText = m_lifetimeFont.StringSplitLines(m_beginLevel.GetDialogue(m_dialogueIndex).text, 1120.0f);
 		m_name = m_beginLevel.GetActor(m_beginLevel.GetDialogue(m_dialogueIndex).actorIndex).name;
 		m_nameColor = m_beginLevel.GetActor(m_beginLevel.GetDialogue(m_dialogueIndex).actorIndex).nameColor;
 		m_backColor = m_beginLevel.GetActor(m_beginLevel.GetDialogue(m_dialogueIndex).actorIndex).windowColor;
-	} else { 
-		m_dialogueFullText.clear(); 
+	} else {
+		m_dialogueFullText.clear();
 		m_name = "";
 		m_nameColor = glm::vec3(1.0f);
 		m_backColor = glm::vec3(1.0f);
