@@ -312,51 +312,6 @@ void BattleLevel::Draw() {
 
 		m_ui.DrawQuad(pos, ALC_COLOR_WHITE, target, m_UIElements);
 
-		// draw pause menu
-		if (m_isPaused) {
-
-			// cover the screen with a semi transparent black texture to darken the background
-			const float alpha = (m_pauseTransition / m_pauseMaxTransitionTime) * 0.8f;
-			ALC::rect quad(ALC::vec2(0.0f), m_ui.GetInternalScreenSize());
-			m_ui.DrawQuad(quad, ALC::vec4(0.0f, 0.0f, 0.0f, alpha));
-
-			constexpr float margin = 7.0f;
-
-			// draw text
-			m_ui.DrawText(m_itemPaused.text, m_itemPaused.font, m_itemPaused.position);
-			for (size_t i = 0; i < m_pauseSelection.size(); ++i) {
-				UIItem& item = m_pauseSelection[i];
-
-				// selection box
-				quad.min = item.position;
-				quad.max = quad.min;
-				//quad.min.y -= item.font.GetSize().y;
-				quad.max += item.dimensions;
-
-				quad.min.x -= margin;
-				quad.min.y -= (margin - 6.0f);
-				quad.max.x += margin;
-				quad.max.y += margin;
-
-				quad.max.x = (quad.max.x - quad.min.x) * (item.fillamount / m_itemFillspeed) + quad.min.x;
-
-				m_ui.DrawQuad(quad, ALC::vec4(ALC::vec3(0.5f), 1.0f));
-
-				// text
-				m_ui.DrawText(item.text, item.font, item.position);
-			}
-
-		}
-
-		// draw start fade
-		if (m_isFading) {
-			// cover the screen with a semi transparent black texture 
-			const float alpha = 1.0f - (m_fadeTransition / m_fadeMaxTransitionTime);
-			ALC::rect quad(ALC::vec2(0.0f), m_ui.GetInternalScreenSize());
-			m_ui.DrawQuad(quad, ALC::vec4(0.0f, 0.0f, 0.0f, alpha));
-		}
-
-
 		// drawing the dialogue window
 		if (m_dialogueTransition > 0.0f) {
 			const ALC::vec2 screenSize = m_ui.GetInternalScreenSize();
@@ -421,6 +376,52 @@ void BattleLevel::Draw() {
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		}
+
+		// draw pause menu
+		if (m_isPaused) {
+
+			// cover the screen with a semi transparent black texture to darken the background
+			const float alpha = (m_pauseTransition / m_pauseMaxTransitionTime) * 0.8f;
+			ALC::rect quad(ALC::vec2(0.0f), m_ui.GetInternalScreenSize());
+			m_ui.DrawQuad(quad, ALC::vec4(0.0f, 0.0f, 0.0f, alpha));
+
+			constexpr float margin = 7.0f;
+
+			// draw text
+			m_ui.DrawText(m_itemPaused.text, m_itemPaused.font, m_itemPaused.position);
+			for (size_t i = 0; i < m_pauseSelection.size(); ++i) {
+				UIItem& item = m_pauseSelection[i];
+
+				// selection box
+				quad.min = item.position;
+				quad.max = quad.min;
+				//quad.min.y -= item.font.GetSize().y;
+				quad.max += item.dimensions;
+
+				quad.min.x -= margin;
+				quad.min.y -= (margin - 6.0f);
+				quad.max.x += margin;
+				quad.max.y += margin;
+
+				quad.max.x = (quad.max.x - quad.min.x) * (item.fillamount / m_itemFillspeed) + quad.min.x;
+
+				m_ui.DrawQuad(quad, ALC::vec4(ALC::vec3(0.5f), 1.0f));
+
+				// text
+				m_ui.DrawText(item.text, item.font, item.position);
+			}
+
+		}
+
+		// draw start fade
+		if (m_isFading) {
+			// cover the screen with a semi transparent black texture 
+			const float alpha = 1.0f - (m_fadeTransition / m_fadeMaxTransitionTime);
+			ALC::rect quad(ALC::vec2(0.0f), m_ui.GetInternalScreenSize());
+			m_ui.DrawQuad(quad, ALC::vec4(0.0f, 0.0f, 0.0f, alpha));
+		}
+
+
 	}
 
 	// draw debug stuff like fps
@@ -556,7 +557,7 @@ void BattleLevel::Step(ALC::Timestep ts) {
 		}
 
 		bool keyNext = Keyboard::GetKey(KeyCode::KeyC).Pressed();
-		if (keyNext) {
+		if (keyNext && !m_isPaused) {
 			if (m_dialogueVisibleText != m_dialogueFullText && m_curCharacter >= 4.0f) {
 				m_dialogueVisibleText = m_dialogueFullText;
 			} else {
