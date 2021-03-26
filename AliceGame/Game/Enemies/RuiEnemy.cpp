@@ -127,9 +127,6 @@ void RuiEnemy::BattleBegin() {
 }
 
 void RuiEnemy::PreBattleBegin(const Phase lastphase, ALC::Entity self, ALC::Timestep ts) {
-
-	auto [transform, cbody] = self.GetComponent<ALC::Transform2D, CharacterBody>();
-	transform.position = ALC::vec2(0, BattleManager::GetLevelBounds().top + 45);
 	moveStates.push_back(MoveStates::States::Move);
 }
 void RuiEnemy::PreBattleStep(ALC::Entity self, ALC::Timestep ts) {
