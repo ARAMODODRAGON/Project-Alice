@@ -583,10 +583,7 @@ void BattleLevel::Step(ALC::Timestep ts) {
 			if (m_firstDialogue) {
 				BattleManager::ToggleBattle();
 				m_firstDialogue = false;
-				ALC::SoundSystem::ResumeMusic();
-			} else {
-				ALC::SoundSystem::PauseMusic();
-			}
+			} else { }
 		}
 	}
 
