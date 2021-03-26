@@ -49,7 +49,11 @@ BattleLevel::BattleLevel()
 	m_ui.SetInternalScreenSize(BattleManager::PrefferedResolution());
 }
 
-BattleLevel::~BattleLevel() { }
+BattleLevel::~BattleLevel() { 
+	if (m_character->IsDead()) {
+		BattleManager::ToggleBattle();
+	}
+}
 
 ALC::rect BattleLevel::GetScreenLevelBounds() const {
 	return GetScreenLevelBounds(BattleManager::PrefferedResolution());
@@ -625,7 +629,6 @@ void BattleLevel::OnContinue() {
 
 void BattleLevel::OnRestart() {
 	OnContinue();
-	BattleManager::ToggleBattle();
 	m_character->Kill();
 }
 

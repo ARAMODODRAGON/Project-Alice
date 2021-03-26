@@ -42,6 +42,7 @@ int main(int argc, char* agrv[]) {
 
 	settings.jobsystem.enable = true;
 	// min of one job thread, max of 3 job threads
+	// its clamping a value of ((cpu_threads / 2) - 1)
 	settings.jobsystem.threadcount = glm::clamp((cjs::thread::hardware_concurrency() / 2u) - 1u, 1u, 3u);
 	//settings.jobsystem.threadcount = 15u;
 
