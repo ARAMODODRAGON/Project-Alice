@@ -19,9 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ALC\2D\Tilemap.hpp" />
-    <ClInclude Include="ALC\Audio\AudioSystem.hpp" />
-    <ClInclude Include="ALC\Entities\JobSystem.hpp" />
     <ClInclude Include="ALC\Jobs.hpp" />
     <ClInclude Include="ALC\Content.hpp" />
     <ClInclude Include="ALC\Content\ContentManager.hpp" />
@@ -68,10 +65,8 @@
     <ClInclude Include="ALC\Rendering\SpriteBatch.hpp" />
     <ClInclude Include="ALC\SceneManager.hpp" />
     <ClInclude Include="ALC\StateMachine.hpp" />
-    <ClInclude Include="ALC\Tools\TilemapEditorScene.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ALC\2D\Tilemap.cpp" />
     <ClCompile Include="ALC\Content\ContentManager.cpp" />
     <ClCompile Include="ALC\Content\Font.cpp" />
     <ClCompile Include="ALC\Content\Shader.cpp" />
@@ -86,19 +81,15 @@
     <ClCompile Include="ALC\Input\Mouse.cpp" />
     <ClCompile Include="ALC\Input\detail\SystemEvents.cpp" />
     <ClCompile Include="ALC\Jobs\JobQueue.cpp" />
-    <ClCompile Include="ALC\Physics\Collision2D.cpp" />
     <ClCompile Include="ALC\Physics\Physics2DHandler.cpp" />
     <ClCompile Include="ALC\Rendering\Camera.cpp" />
     <ClCompile Include="ALC\Rendering\detail\SpriteShaderSource.cpp" />
     <ClCompile Include="ALC\Rendering\SpriteBatch.cpp" />
     <ClCompile Include="ALC\Rendering\UIBatch.cpp" />
     <ClCompile Include="ALC\SceneManager.cpp" />
-    <ClCompile Include="ALC\Tools\TilemapEditorScene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ALC\Entities\detail\EntityCreationHandler.inl" />
     <None Include="ALC\Entities\detail\Registry.inl" />
-    <None Include="ALC\Entities\JobSystem.inl" />
     <None Include="ALC\Jobs\cjs\common.inl" />
     <None Include="ALC\Jobs\cjs\fence.inl" />
     <None Include="ALC\Jobs\cjs\worker_thread.inl" />

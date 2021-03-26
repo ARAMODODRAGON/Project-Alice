@@ -65,6 +65,6 @@ namespace ALC {
 
 }
 
-#include "detail\EntityCreationHandler.inl"
+//#include "detail\EntityCreationHandler.inl"
 
 #endif // !ALC_ENTITIES_ENTITYCREATIONHANDLER_HPP

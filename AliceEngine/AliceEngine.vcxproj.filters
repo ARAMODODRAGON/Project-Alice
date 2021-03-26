@@ -99,9 +99,6 @@
     <ClInclude Include="ALC\Entities\EntityID.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ALC\Audio\AudioSystem.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ALC\Content\Font.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -124,12 +121,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ALC\Content\Sound\SoundSystem.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ALC\2D\Tilemap.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ALC\Tools\TilemapEditorScene.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ALC\Jobs.hpp">
@@ -160,9 +151,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ALC\Jobs\JobQueue.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ALC\Entities\JobSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -212,9 +200,6 @@
     <ClCompile Include="ALC\Physics\Physics2DHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ALC\Physics\Collision2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ALC\Content\Font.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -227,21 +212,12 @@
     <ClCompile Include="ALC\Content\Sound\SoundSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ALC\Tools\TilemapEditorScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ALC\2D\Tilemap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ALC\Jobs\JobQueue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ALC\Entities\detail\Registry.inl">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="ALC\Entities\detail\EntityCreationHandler.inl">
       <Filter>Header Files</Filter>
     </None>
     <None Include="ALC\Jobs\cjs\common.inl">
@@ -254,9 +230,6 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="ALC\Jobs\cjs\worker_thread.inl">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="ALC\Entities\JobSystem.inl">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>
