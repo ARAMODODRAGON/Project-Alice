@@ -3,7 +3,7 @@
 #include "../../Characters/Character.hpp"
 
 Battle1::Battle1()
-	: m_musicFile("Resources/Audio/Empty_Score.mp3")
+	: m_musicFile("Resources/Audio/First_Boss.mp3")
 	, m_enemyBehavior(nullptr)
 	, m_deleter(GetECH())
 	, m_homingsystem(GetReg())
@@ -26,8 +26,7 @@ void Battle1::Init() {
 
 	// load our music
 	if (ALC::SoundSystem::LoadMusic(m_musicFile)) {
-		// play
-		//ALC::SoundSystem::PlayMusic(m_musicFile);
+		ALC::SoundSystem::PlayMusic(m_musicFile);
 	}
 
 	// we want to spawn alice
