@@ -804,7 +804,11 @@ void RuiEnemy::PostBattleBegin(const Phase lastphase, ALC::Entity self, ALC::Tim
 	SetLifetime(-1.0f);
 	// enemy is done fighting
 	MarkDone();
+
+	if (!moveStates.empty()) { moveStates.clear(); }
+
+	moveStates.push_back(MoveStates::States::Move);
 }
-void RuiEnemy::PostBattleStep(ALC::Entity self, ALC::Timestep ts) { }
+void RuiEnemy::PostBattleStep(ALC::Entity self, ALC::Timestep ts) { m_moveState.PerformMoveState(this, moveStates[0], 0, ts, 0.0f); }
 
 
