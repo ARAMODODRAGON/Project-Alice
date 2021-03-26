@@ -24,7 +24,8 @@
 #ifndef ALC_JOBS_JOBQUEUE_HPP
 #define ALC_JOBS_JOBQUEUE_HPP
 #include "../General.hpp"
-#include "cjs\cjs.hpp"
+#include "cjs\ijob.hpp"
+#include "cjs\fence.hpp"
 
 namespace ALC {
 

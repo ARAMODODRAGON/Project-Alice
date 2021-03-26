@@ -22,6 +22,7 @@
 * SOFTWARE.
 */
 #include "JobQueue.hpp"
+#include "cjs\cjs.hpp"
 
 namespace ALC {
 
