@@ -30,7 +30,7 @@ namespace BTA {
 		const ALC::vec2 veldir = glm::normalize(destination - currentpos);
 		const float distRemaining = glm::length(currentpos - destination);
 		const float timeToSlowdown = (-maxSpeed / acceleration);
-		const float distToSlowdown = glm::abs(maxSpeed * timeToSlowdown + 0.5f * acceleration * timeToSlowdown * timeToSlowdown);
+		const float distToSlowdown = glm::abs(maxSpeed * timeToSlowdown + 0.5f * acceleration * timeToSlowdown * timeToSlowdown) * 0.5f;
 
 		// check if we should slow down or not
 

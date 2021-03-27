@@ -26,7 +26,9 @@ void Battle1::Init() {
 
 	// load our music
 	if (ALC::SoundSystem::LoadMusic(m_musicFile)) {
+		// play
 		ALC::SoundSystem::PlayMusic(m_musicFile);
+		//ALC::SoundSystem::PauseMusic();
 	}
 
 	// we want to spawn alice
@@ -69,6 +71,7 @@ void Battle1::Step(ALC::Timestep ts) {
 	BattleLevel::Step(ts);
 	m_timer += ts;
 	if (m_enemyBehavior->IsDone() && !m_battleDone) {
+		ALC::SoundSystem::PauseMusic();
 		SetStartingDialogue("Resources/Dialogues/TestDialogue.json");
 		m_battleDone = true;
 		BattleManager::GetCurrentCharacter()->BattleToggle();
