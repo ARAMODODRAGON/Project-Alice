@@ -10,7 +10,10 @@ namespace {
 	fs::path g_folderPath;
 	fs::path g_savepath;
 	fs::path g_settingspath;
-	#define GAME_SAVE_PATH "/CelestialVoid_StarsOfTheAbyss"
+	//#define GAME_SAVE_PATH "/CelestialVoid_StarsOfTheAbyss"
+	//#define SAVE_FILE "/save.dat"
+	//#define SETTINGS_FILE "/settings.json"
+	#define GAME_SAVE_PATH "saves"
 	#define SAVE_FILE "/save.dat"
 	#define SETTINGS_FILE "/settings.json"
 
@@ -18,16 +21,16 @@ namespace {
 
 void SaveSystem::InitSavedata() {
 
-	constexpr int appdatapath_size = 50;
-	char appdatapath[appdatapath_size];
-
-	// get appdata path
-	ZeroMemory(appdatapath, appdatapath_size);
-	appdatapath[appdatapath_size - 1] = '\0';
-	SHGetSpecialFolderPathA(NULL, appdatapath, CSIDL_LOCAL_APPDATA, FALSE);
+	//constexpr int appdatapath_size = 50;
+	//char appdatapath[appdatapath_size];
+	//
+	//// get appdata path
+	//ZeroMemory(appdatapath, appdatapath_size);
+	//appdatapath[appdatapath_size - 1] = '\0';
+	//SHGetSpecialFolderPathA(NULL, appdatapath, CSIDL_LOCAL_APPDATA, FALSE);
 
 	// confirm the existence of the base folder
-	g_folderPath = fs::path(ALC::string(appdatapath) + GAME_SAVE_PATH);
+	g_folderPath = fs::path(GAME_SAVE_PATH);
 	if (!fs::exists(g_folderPath)) {
 		fs::create_directory(g_folderPath);
 	}

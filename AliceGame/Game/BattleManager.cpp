@@ -50,7 +50,7 @@ void BattleManager::ToggleBattle() {
 	if (!s_isBattleActive) {
 		// calls begin battle
 		if (s_player && s_enemy) {
-			s_enemy->BattleBegin();
+			s_enemy->BattleToggle();
 			s_player->BattleToggle();
 			s_isBattleActive = true;
 		}

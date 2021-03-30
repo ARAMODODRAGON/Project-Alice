@@ -4,6 +4,7 @@
 #include "Game\Scenes\BattleLevels\Battle2.hpp"
 #include "Game\Scenes\MainMenuScene.hpp"
 #include "Game\SaveSystem.hpp"
+#include <SDL.h>
 
 int main(int argc, char* agrv[]) {
 	SaveSystem::InitSavedata();
