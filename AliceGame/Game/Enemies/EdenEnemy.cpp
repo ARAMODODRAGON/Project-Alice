@@ -20,4 +20,4 @@ void EdenEnemy::OnDeath(ALC::Entity self) {
 	Enemy::OnDeath(self);
 }
 
-void EdenEnemy::BattleBegin() { }
+void EdenEnemy::BattleToggle() { }

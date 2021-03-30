@@ -60,7 +60,7 @@ public:
 	void UpdateLifetime(ALC::Entity self, ALC::Timestep ts, const float scalar = 1.0f);
 
 	// called by the scene when a battle begins
-	virtual void BattleBegin() = 0;
+	virtual void BattleToggle() = 0;
 
 	// call this to update the characters movement
 	// and clamp them within the BattleManager::GetLevelBounds()

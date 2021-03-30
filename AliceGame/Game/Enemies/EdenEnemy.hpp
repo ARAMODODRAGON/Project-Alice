@@ -12,7 +12,7 @@ public:
 	void Update(ALC::Entity self, ALC::Timestep ts) override;
 	void LateUpdate(ALC::Entity self, ALC::Timestep ts) override;
 	void OnDeath(ALC::Entity self) override;
-	void BattleBegin() override;
+	void BattleToggle() override;
 
 private:
 
