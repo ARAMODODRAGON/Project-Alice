@@ -327,7 +327,6 @@ void RuiEnemy::Phase1Step(ALC::Entity self, ALC::Timestep ts) {
 	if (m_state == State::TwinSpin) {
 		int numOfBuillets = 40;
 		stateTimer += ts.Get();
-		ALC::Debugger::Log(VTOS(stateTimer), "", __LINE__);
 
 		if (GetHealth() <= (GetMaxHealth() / 2.0f)) {
 			numOfBuillets = 50;

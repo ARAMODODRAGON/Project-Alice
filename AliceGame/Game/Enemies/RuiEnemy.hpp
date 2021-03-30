@@ -60,9 +60,8 @@ private:
 	ALC::uint8 rainPosIndex = 0; // used to determin which pos to drop bullets from the top 
 	ALC::uint8 shotCounter = 0;	// used for pahse 3 so the AI dosent shoot all the time 
 
-	// used to check if the player has moved 
-	ALC::vec2 oldPos;
-	ALC::vec2 plyrOldPos;
+	ALC::vec2 oldPos;	// used for the circle bomb phase 
+	ALC::vec2 plyrOldPos;	// used to check if the player has moved 
 
 	ALC::vec2 dir[4] = {
 		ALC::vec2(0,1),	  //up
