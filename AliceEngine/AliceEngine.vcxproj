@@ -43,13 +43,10 @@
     <ClInclude Include="ALC\Input\Mouse.hpp" />
     <ClInclude Include="ALC\Input\detail\SystemEvents.hpp" />
     <ClInclude Include="ALC\Jobs\cjs\cjs.hpp" />
-    <ClInclude Include="ALC\Jobs\cjs\common.hpp" />
+    <ClInclude Include="ALC\Jobs\cjs\context.hpp" />
     <ClInclude Include="ALC\Jobs\cjs\detail\work.hpp" />
-    <ClInclude Include="ALC\Jobs\cjs\fence.hpp" />
+    <ClInclude Include="ALC\Jobs\cjs\handle.hpp" />
     <ClInclude Include="ALC\Jobs\cjs\ijob.hpp" />
-    <ClInclude Include="ALC\Jobs\cjs\iqueue.hpp" />
-    <ClInclude Include="ALC\Jobs\cjs\worker_thread.hpp" />
-    <ClInclude Include="ALC\Jobs\cjs\work_queue.hpp" />
     <ClInclude Include="ALC\Jobs\JobQueue.hpp" />
     <ClInclude Include="ALC\Layermask.hpp" />
     <ClInclude Include="ALC\Physics\Collision2D.hpp" />
@@ -91,9 +88,6 @@
   <ItemGroup>
     <None Include="ALC\Entities\detail\Registry.inl" />
     <None Include="ALC\Jobs\cjs\common.inl" />
-    <None Include="ALC\Jobs\cjs\fence.inl" />
-    <None Include="ALC\Jobs\cjs\worker_thread.inl" />
-    <None Include="ALC\Jobs\cjs\work_queue.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

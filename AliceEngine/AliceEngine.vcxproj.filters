@@ -132,25 +132,16 @@
     <ClInclude Include="ALC\Jobs\cjs\cjs.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ALC\Jobs\cjs\common.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ALC\Jobs\cjs\fence.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ALC\Jobs\cjs\ijob.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ALC\Jobs\cjs\iqueue.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ALC\Jobs\cjs\work_queue.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ALC\Jobs\cjs\worker_thread.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ALC\Jobs\JobQueue.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ALC\Jobs\cjs\context.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ALC\Jobs\cjs\handle.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -221,15 +212,6 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="ALC\Jobs\cjs\common.inl">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="ALC\Jobs\cjs\fence.inl">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="ALC\Jobs\cjs\work_queue.inl">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="ALC\Jobs\cjs\worker_thread.inl">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

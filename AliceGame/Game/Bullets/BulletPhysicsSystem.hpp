@@ -17,7 +17,7 @@ private:
 	// pairs for each charcter
 	struct CharPair final {
 		ALC::Entity entity;
-		cjs::mutex lock;
+		std::mutex lock;
 		CharPair() = default;
 		CharPair(const CharPair&) { /* DO NOTHING */ }
 		CharPair(CharPair&&) { /* DO NOTHING */ }

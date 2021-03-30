@@ -41,6 +41,7 @@ inline void JobsECSAdapter::ApplyJobs(ALC::Timestep ts, ALC::ISystem<Params...>&
 	const ALC::uint32 chunksize = groupsz / (m_adpjobs.size() + 1);
 
 	ALC::uint32 begin = 0;
+	ALC::Handle handle;
 
 	// fill the jobs and submit
 	if (chunksize > 1) {
@@ -63,9 +64,12 @@ inline void JobsECSAdapter::ApplyJobs(ALC::Timestep ts, ALC::ISystem<Params...>&
 			begin += chunk;
 
 			// submit
-			ALC::JobQueue::Submit(&job);
+			//ALC::JobQueue::Submit(&job);
+			handle += &job;
 		}
 	}
+
+	ALC::JobQueue::Submit(&handle);
 
 	// do the remaining work on this thread
 	entt::registry* reg = &(m_reg->__GetReg());
@@ -74,7 +78,7 @@ inline void JobsECSAdapter::ApplyJobs(ALC::Timestep ts, ALC::ISystem<Params...>&
 		system.Step(ts, e, group.get<Params>(entities[i])...);
 	}
 
-	ALC::JobQueue::AwaitJobs();
+	handle.await_complete();
 
 }
 

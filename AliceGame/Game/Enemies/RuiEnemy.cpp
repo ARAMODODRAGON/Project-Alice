@@ -121,7 +121,7 @@ void RuiEnemy::OnDeath(ALC::Entity self) {
 	self.GetComponent<CharacterBody>().velocity = ALC::vec2();
 }
 
-void RuiEnemy::BattleBegin() {
+void RuiEnemy::BattleToggle() {
 	// we start by changing phases
 	m_phases.ChangeState(Phase::Phase0);
 }

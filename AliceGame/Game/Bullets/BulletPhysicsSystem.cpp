@@ -1,5 +1,7 @@
 #include "BulletPhysicsSystem.hpp"
 
+using mutex_guard = std::lock_guard<std::mutex>;
+
 BulletPhysicsSystem::BulletPhysicsSystem(ALC::Registry& reg)
 	: m_reg(reg) { }
 
@@ -52,7 +54,7 @@ void BulletPhysicsSystem::Step(ALC::Timestep ts, ALC::Entity e, BulletBody& bb, 
 			glm::length2(tr.position - ct.position) >= (mindist * mindist)) continue;
 
 		// lock and write collision info
-		cjs::mutex_guard _(chp.lock);
+		mutex_guard _(chp.lock);
 
 		// get some stuff
 		auto& ci = chp.entity.GetComponent<ALC::EntityInfo>();

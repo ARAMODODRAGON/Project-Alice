@@ -1,5 +1,6 @@
 #include "JobsBulletPhysicsHandler.hpp"
 
+using mutex_guard = std::lock_guard<std::mutex>;
 #define CHARACTER_GROUP_P get_t<ALC::Transform2D, ALC::EntityInfo>{}, exclude_t<BulletBody>{}
 #define BULLET_GROUP_P get_t<ALC::Transform2D, ALC::EntityInfo>{}, exclude_t<CharacterBody>{}
 
@@ -59,6 +60,8 @@ void JobsBulletsPhysicsHandler::Step(ALC::Timestep ts) {
 	const size_t chunksize = bultg.size() / m_bultjobs.size();
 	const size_t extrasize = bultg.size() % m_bultjobs.size();
 	
+	ALC::Handle handle;
+
 	size_t pos = 0;
 	if (chunksize > 1) {
 		for (size_t i = 0; i < m_bultjobs.size(); i++) {
@@ -76,9 +79,11 @@ void JobsBulletsPhysicsHandler::Step(ALC::Timestep ts) {
 			// set group, timestep and submit
 			j.bgroup = &bultg;
 			j.ts = ts;
-			ALC::JobQueue::Submit(&j);
+			handle += &j;
 		}
 	}
+
+	ALC::JobQueue::Submit(&handle);
 
 	// last few remaining bullets done in extra job
 	m_mthrjob.bgroup = &bultg;
@@ -88,7 +93,7 @@ void JobsBulletsPhysicsHandler::Step(ALC::Timestep ts) {
 	if (m_mthrjob.begin < m_mthrjob.end) m_mthrjob.execute();
 
 	// await
-	ALC::JobQueue::AwaitJobs();
+	handle.await_complete();
 
 }
 
@@ -120,7 +125,7 @@ void JobsBulletsPhysicsHandler::BulletJob::execute() {
 				glm::length2(tr.position - ct.position) >= (mindist * mindist)) continue;
 
 			// lock and write collision info
-			cjs::mutex_guard _(chp.lock);
+			mutex_guard _(chp.lock);
 
 			// get some stuff
 			auto& bi = bgroup->get<ALC::EntityInfo>(bgroup->operator[](i));
