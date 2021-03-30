@@ -1,6 +1,7 @@
 #include "Battle1.hpp"
 #include <ALC/Input.hpp>
 #include "../../Characters/Character.hpp"
+#include "../../SaveSystem.hpp"
 
 Battle1::Battle1()
 	: m_musicFile("Resources/Audio/First_Boss.mp3")
@@ -36,7 +37,7 @@ void Battle1::Init() {
 
 	// alice will spawn here
 	BattleLevel::Init();
-	SetStartingDialogue("Resources/Dialogues/TestDialogue.json");
+	SetStartingDialogue("Resources/Dialogues/Battle1A.json");
 
 	// create enemy
 	auto enemy = GetReg().Create();
@@ -72,9 +73,11 @@ void Battle1::Step(ALC::Timestep ts) {
 	m_timer += ts;
 	if (m_enemyBehavior->IsDone() && !m_battleDone) {
 		ALC::SoundSystem::PauseMusic();
-		SetStartingDialogue("Resources/Dialogues/TestDialogue.json");
+		SetStartingDialogue("Resources/Dialogues/Battle1B.json");
 		m_battleDone = true;
 		BattleManager::GetCurrentCharacter()->BattleToggle();
+		if (SaveSystem::Get(STORY_PROGRESS) == 0)
+			SaveSystem::Set(STORY_PROGRESS, 1);
 	}
 }
 

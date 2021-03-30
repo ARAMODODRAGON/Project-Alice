@@ -178,7 +178,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Dialogues\TestDialogue.json" />
     <None Include="Resources\Tilemaps\Test0.json" />
     <None Include="Resources\Tilemaps\Test1.json" />
     <None Include="Game\JobsECSAdapter.inl">
@@ -187,5 +186,7 @@
     <None Include="Game\Bullets\detail\ShooterBehavior.inl">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="Resources\Dialogues\Battle1B.json" />
+    <None Include="Resources\Dialogues\Battle1A.json" />
   </ItemGroup>
 </Project>

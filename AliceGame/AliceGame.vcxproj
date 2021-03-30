@@ -216,7 +216,8 @@
   <ItemGroup>
     <None Include="Game\Bullets\detail\ShooterBehavior.inl" />
     <None Include="Game\JobsECSAdapter.inl" />
-    <None Include="Resources\Dialogues\TestDialogue.json" />
+    <None Include="Resources\Dialogues\Battle1A.json" />
+    <None Include="Resources\Dialogues\Battle1B.json" />
     <None Include="Resources\Tilemaps\Test0.json" />
     <None Include="Resources\Tilemaps\Test1.json" />
   </ItemGroup>

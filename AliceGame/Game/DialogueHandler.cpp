@@ -57,10 +57,6 @@ bool DialogueHandler::LoadDialogue(const ALC::string& _filepath){
 			continue;
 		}
 
-		// load icon if it has one
-		if (actr.contains("Icon") && actr["Icon"].is_string())
-			dhactor.icon = LoadTexture(actr["Icon"]);
-
 		// push the actor into the vector
 		m_actors.push_back(dhactor);
 	}

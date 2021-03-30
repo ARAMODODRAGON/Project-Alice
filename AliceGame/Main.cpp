@@ -3,8 +3,10 @@
 #include "Game\Scenes\BattleLevels\Battle1.hpp"
 #include "Game\Scenes\BattleLevels\Battle2.hpp"
 #include "Game\Scenes\MainMenuScene.hpp"
+#include "Game\SaveSystem.hpp"
 
 int main(int argc, char* agrv[]) {
+	SaveSystem::InitSavedata();
 
 	// prepare the level boundries
 	// 0.88f is the ratio of the level bounds in touhou

@@ -11,8 +11,7 @@
 				"r": 0.35,
 				"g": 0.0,
 				"b": 0.0
-			},
-			"Icon": "Resources/Textures/Whatever.png"
+			}
 		},
 		{
 			"Name": "Rui",
@@ -25,8 +24,7 @@
 				"r": 0.35,
 				"g": 0.0,
 				"b": 0.35
-			},
-			"Icon": "Resources/Textures/Whoever.png"
+			}
 		}
 	],
 	"Dialogue": [

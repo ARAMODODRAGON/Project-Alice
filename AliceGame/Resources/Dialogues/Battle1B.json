@@ -1,0 +1,52 @@
+{
+	"Actors": [
+		{
+			"Name": "Alice",
+			"Color": {
+				"r": 1.0,
+				"g": 0.0,
+				"b": 0.0
+			},
+			"WindowColor": {
+				"r": 0.35,
+				"g": 0.0,
+				"b": 0.0
+			}
+		},
+		{
+			"Name": "Rui",
+			"Color": {
+				"r": 1.0,
+				"g": 0.0,
+				"b": 1.0
+			},
+			"WindowColor": {
+				"r": 0.35,
+				"g": 0.0,
+				"b": 0.35
+			}
+		}
+	],
+	"Dialogue": [
+		{
+			"Actor": "Alice",
+			"Text": "Blah blah blah"
+		},
+		{
+			"Actor": "Rui",
+			"Text": "The pork?"
+		},
+		{
+			"Actor": "Alice",
+			"Text": "Hey no swearing! You're too young to be saying stuff like that"
+		},
+		{
+			"Actor": "Rui",
+			"Text": "Bitch"
+		},
+		{
+			"Actor": "Alice",
+			"Text": "Rui nooooooooooooo!"
+		}
+	]
+}

@@ -20,7 +20,6 @@ MainMenuScene::~MainMenuScene() { }
 
 void MainMenuScene::Init() {
 	using CM = ALC::ContentManager;
-	SaveSystem::InitSavedata();
 	m_gameProgress = SaveSystem::Get(STORY_PROGRESS);
 
 	m_mainMenuTex = CM::LoadTexture(m_storage, "Resources/Textures/UI/Title Screen Sheet.png");

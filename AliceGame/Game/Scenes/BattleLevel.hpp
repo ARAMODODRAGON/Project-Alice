@@ -53,6 +53,8 @@ protected:
 	virtual void PreDraw() { }
 	void Step(ALC::Timestep t) override;
 
+	void ExitToMainMenu();
+
 private:
 
 	ALC::Texture m_UIOverlay;
@@ -94,7 +96,7 @@ private:
 	float m_itemsOffset;
 	float m_itemFillspeed;
 	UIItem m_itemPaused;
-	ALC::array<UIItem, 2> m_pauseSelection;
+	ALC::array<UIItem, 3> m_pauseSelection;
 	ALC::int32 m_pauseSelected;
 
 	void OnContinue();
@@ -105,6 +107,7 @@ private:
 	bool m_isPaused;
 	bool m_isFading;
 	bool m_shouldFadeIn;
+	bool m_exitOnFadeOut;
 	float m_fadeTransition;
 	float m_fadeMaxTransitionTime;
 	float m_pauseTransition;
@@ -115,7 +118,7 @@ private:
 	float m_dialogueTransition;
 	float m_dialogueMaxTransitionTime;
 	
-	bool m_firstDialogue;
+	ALC::uint32 m_firstDialogue;
 	DialogueHandler m_beginLevel;
 	ALC::string m_dialogueFullText;
 	ALC::string m_dialogueVisibleText;

@@ -26,6 +26,7 @@ BattleLevel::BattleLevel()
 	, m_isPaused(false)
 	, m_isFading(true)
 	, m_shouldFadeIn(true)
+	, m_exitOnFadeOut(false)
 	, m_fadeTransition(0.0f)
 	, m_fadeMaxTransitionTime(1.0f)
 	, m_pauseTransition(0.0f)
@@ -49,7 +50,7 @@ BattleLevel::BattleLevel()
 	m_ui.SetInternalScreenSize(BattleManager::PrefferedResolution());
 }
 
-BattleLevel::~BattleLevel() { 
+BattleLevel::~BattleLevel() {
 	if (m_character->IsDead()) {
 		BattleManager::ToggleBattle();
 	}
@@ -124,6 +125,14 @@ void BattleLevel::Init() {
 	RestartItem.font = SelectionFont;
 	RestartItem.dimensions = RestartItem.font.StringDimensions(RestartItem.text);
 	RestartItem.func = &BattleLevel::OnRestart;
+	
+	auto& ExitItem = m_pauseSelection[2];
+	ExitItem.text = "Exit To Main Menu";
+	ExitItem.position = RestartItem.position;
+	ExitItem.position.y += RestartItem.dimensions.y + m_itemsOffset;
+	ExitItem.font = SelectionFont;
+	ExitItem.dimensions = ExitItem.font.StringDimensions(ExitItem.text);
+	ExitItem.func = &BattleLevel::ExitToMainMenu;
 
 }
 
@@ -469,19 +478,22 @@ void BattleLevel::Step(ALC::Timestep ts) {
 		m_debug = !m_debug;
 	}
 
-	// fade in
 	if (m_isFading) {
+		// fade in
 		if (m_shouldFadeIn) {
 			m_fadeTransition += ts;
 			if (m_fadeTransition > m_fadeMaxTransitionTime) {
 				m_isFading = false;
 				m_fadeTransition = m_fadeMaxTransitionTime;
 			}
-		} else {
+		} 
+		// fade out
+		else {
 			m_fadeTransition -= ts;
 			if (m_fadeTransition < 0.0f) {
 				m_isFading = false;
 				m_fadeTransition = 0.0f;
+				if (m_exitOnFadeOut) ALC::SceneManager::LoadScene(0);
 			}
 		}
 	}
@@ -580,14 +592,17 @@ void BattleLevel::Step(ALC::Timestep ts) {
 				}
 			}
 		}
+		if (m_firstDialogue == -1) m_firstDialogue = false;
 	} else { // Closing transition
 		m_dialogueTransition -= ts;
 		if (m_dialogueTransition < 0.0f) {
 			m_dialogueTransition = 0.0f;
-			if (m_firstDialogue) {
+			if (m_firstDialogue == true) {
 				BattleManager::ToggleBattle();
-				m_firstDialogue = false;
-			} else { }
+				m_firstDialogue = -1;
+			} else if (m_firstDialogue == false) {
+				ExitToMainMenu();
+			}
 		}
 	}
 
@@ -617,6 +632,12 @@ void BattleLevel::Step(ALC::Timestep ts) {
 		m_ech.Cleanup(m_reg);
 	}
 
+}
+
+void BattleLevel::ExitToMainMenu() {
+	m_exitOnFadeOut = true;
+	m_shouldFadeIn = false;
+	m_isFading = true;
 }
 
 void BattleLevel::OnContinue() {
